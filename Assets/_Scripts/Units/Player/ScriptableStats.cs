@@ -21,6 +21,23 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("The top horizontal movement speed")]
     public float MaxSpeed = 14;
 
+    [Tooltip("Walk speed multiplier (relative to MaxSpeed)")]
+    [Range(0.1f, 1f)]
+    public float WalkSpeedMultiplier = 0.6f;
+
+    [Tooltip("Run speed multiplier (relative to MaxSpeed)")]
+    [Range(0.5f, 2f)]
+    public float RunSpeedMultiplier = 1f;
+
+    [Tooltip("Crouch speed multiplier (relative to MaxSpeed)")]
+    [Range(0f, 1f)]
+    public float CrouchSpeedMultiplier = 0.4f;
+
+    [Header("CROUCH")]
+    [Tooltip("Collider height percent while crouching (0.1 = 10%, 1 = 100%)")]
+    [Range(0.1f, 1f)]
+    public float CrouchHeightPercent = 0.6f;
+
     [Tooltip("The player's capacity to gain horizontal speed")]
     public float Acceleration = 120;
 

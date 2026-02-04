@@ -14,13 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableStats
   PlayerLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
   MaxSpeed: 14
+  WalkSpeedMultiplier: 0.6
+  RunSpeedMultiplier: 1
+  CrouchSpeedMultiplier: 0.4
+  CrouchHeightPercent: 0.6
   Acceleration: 120
-  GroundDeceleration: 40
+  GroundDeceleration: 60
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
