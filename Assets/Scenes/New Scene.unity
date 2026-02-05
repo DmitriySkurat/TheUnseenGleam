@@ -329,6 +329,8 @@ GameObject:
   - component: {fileID: 350522734}
   - component: {fileID: 350522733}
   - component: {fileID: 350522732}
+  - component: {fileID: 350522737}
+  - component: {fileID: 350522736}
   m_Layer: 0
   m_Name: PlayerNew
   m_TagString: Untagged
@@ -363,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 016c5975bc7c31f48bcbc81a7081dadd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _stats: {fileID: 11400000, guid: ec94824e96d53c843a909f546564b7c1, type: 2}
+  _stats: {fileID: 11400000, guid: 6fb8996e3e56fde42b7376a4dc08a773, type: 2}
 --- !u!70 &350522733
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -487,6 +489,30 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &350522736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350522730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bb473dc92f0d7a4994a48a2963f3ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollisionProbe
+--- !u!114 &350522737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350522730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6c11c71b9145224eb39c7f5d0541a9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReader
 --- !u!1 &373506554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,6 +1860,24 @@ MonoBehaviour:
   MoveStats: {fileID: 11400000, guid: d1c4eff34564d7445af1de782d515ea0, type: 2}
   _feetColl: {fileID: 619988366}
   _bodyColl: {fileID: 1934821460}
+  _rb: {fileID: 0}
+  _moveVelocity: {x: 0, y: 0}
+  _isFacingRight: 0
+  _isGrounded: 0
+  _bumpedHead: 0
+  <VerticalVelocity>k__BackingField: 0
+  _isJumping: 0
+  _isFastFalling: 0
+  _isFalling: 0
+  _fastFallTime: 0
+  _fastFallReleaseSpeed: 0
+  _numberOfJumpsUsed: 0
+  _apexPoint: 0
+  _timePastApexThreshold: 0
+  _isPastApexThreshold: 0
+  _jumpBufferTimer: 0
+  _jumpReleasedDuringBuffer: 0
+  _coyoteTimer: 0
 --- !u!50 &1362085409
 Rigidbody2D:
   serializedVersion: 5
