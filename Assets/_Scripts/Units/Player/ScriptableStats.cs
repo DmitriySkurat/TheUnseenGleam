@@ -1,14 +1,12 @@
- using UnityEngine;
+using UnityEngine;
 
-[CreateAssetMenu(menuName = "Player Stats")]
+[CreateAssetMenu]
 public class ScriptableStats : ScriptableObject
 {
-    [Header("LAYERS")]
-    [Tooltip("Set this to the layer your player is on")]
+    [Header("LAYERS")] [Tooltip("Set this to the layer your player is on")]
     public LayerMask PlayerLayer;
 
-    [Header("INPUT")]
-    [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
+    [Header("INPUT")] [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
     public bool SnapInput = true;
 
     [Tooltip("Minimum input required before you mount a ladder or climb a ledge. Avoids unwanted climbing using controllers"), Range(0.01f, 0.99f)]
@@ -17,26 +15,8 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("Minimum input required before a left or right is recognized. Avoids drifting with sticky controllers"), Range(0.01f, 0.99f)]
     public float HorizontalDeadZoneThreshold = 0.1f;
 
-    [Header("MOVEMENT")]
-    [Tooltip("The top horizontal movement speed")]
+    [Header("MOVEMENT")] [Tooltip("The top horizontal movement speed")]
     public float MaxSpeed = 14;
-
-    [Tooltip("Walk speed multiplier (relative to MaxSpeed)")]
-    [Range(0.1f, 1f)]
-    public float WalkSpeedMultiplier = 0.6f;
-
-    [Tooltip("Run speed multiplier (relative to MaxSpeed)")]
-    [Range(0.5f, 2f)]
-    public float RunSpeedMultiplier = 1f;
-
-    [Tooltip("Crouch speed multiplier (relative to MaxSpeed)")]
-    [Range(0f, 1f)]
-    public float CrouchSpeedMultiplier = 0.4f;
-
-    [Header("CROUCH")]
-    [Tooltip("Collider height percent while crouching (0.1 = 10%, 1 = 100%)")]
-    [Range(0.1f, 1f)]
-    public float CrouchHeightPercent = 0.6f;
 
     [Tooltip("The player's capacity to gain horizontal speed")]
     public float Acceleration = 120;
@@ -53,8 +33,7 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.5f)]
     public float GrounderDistance = 0.05f;
 
-    [Header("JUMP")]
-    [Tooltip("The immediate velocity applied when jumping")]
+    [Header("JUMP")] [Tooltip("The immediate velocity applied when jumping")]
     public float JumpPower = 36;
 
     [Tooltip("The maximum vertical movement speed")]
@@ -72,4 +51,3 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("The amount of time we buffer a jump. This allows jump input before actually hitting the ground")]
     public float JumpBuffer = .2f;
 }
-
