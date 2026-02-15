@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using System.Linq;
+using HSM;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlayerController : MonoBehaviour, IPlayerController
@@ -15,9 +17,17 @@ public class PlayerController : MonoBehaviour, IPlayerController
     #region Interface
 
     public Vector2 FrameInput => _frameInput.Move;
-    public event Action<bool, float> GroundedChanged;
-    public event Action Jumped;
+    //public event Action<bool, float> GroundedChanged;
+    //public event Action Jumped;
 
+    #endregion
+    
+    #region HSM
+    
+    private StateMachine _machine;
+    private PlayerRoot _root;
+    private PlayerContext _ctx;
+    
     #endregion
 
     private float _time;
@@ -29,8 +39,18 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
         
-        
         if (_inputManager == null) _inputManager = GetComponent<InputManager>();
+        
+        _ctx = new PlayerContext
+        {
+            rb = _rb,
+            renderer = GetComponent<Renderer>(),
+            anim = GetComponentInChildren<Animator>()
+        };
+        
+        _root = new PlayerRoot(null, _ctx);
+        var builder = new StateMachineBuilder(_root); 
+        _machine = builder.Build();
     }
     
     private void OnEnable()
@@ -50,6 +70,20 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private void Update()
     {
         _time += Time.deltaTime;
+        
+        _machine.Tick(Time.deltaTime);
+        
+        
+        var path = StatePath(_machine.Root.Leaf());
+        if (path != lastPath) {
+            lastPath = path;
+        }
+    }
+    
+    string lastPath;
+    
+    static string StatePath(State s) {
+        return string.Join(" > ", s.PathToRoot().Reverse().Select(n => n.GetType().Name));
     }
     
     #region Input Handling
@@ -118,17 +152,19 @@ public class PlayerController : MonoBehaviour, IPlayerController
             _coyoteUsable = true;
             _bufferedJumpUsable = true;
             _endedJumpEarly = false;
-            GroundedChanged?.Invoke(true, Mathf.Abs(_frameVelocity.y));
+            //GroundedChanged?.Invoke(true, Mathf.Abs(_frameVelocity.y));
         }
         // Left the Ground
         else if (_grounded && !groundHit)
         {
             _grounded = false;
             _frameLeftGrounded = _time;
-            GroundedChanged?.Invoke(false, 0);
+            //GroundedChanged?.Invoke(false, 0);
         }
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
+        
+        _ctx.isGrounded = _grounded;
     }
 
     #endregion
@@ -163,7 +199,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _bufferedJumpUsable = false;
         _coyoteUsable = false;
         _frameVelocity.y = _stats.JumpPower;
-        Jumped?.Invoke();
+        //Jumped?.Invoke();
     }
 
     #endregion
@@ -222,8 +258,8 @@ public struct FrameInput
 
 public interface IPlayerController
 {
-    public event Action<bool, float> GroundedChanged;
+    //public event Action<bool, float> GroundedChanged;
 
-    public event Action Jumped;
+    //public event Action Jumped;
     public Vector2 FrameInput { get; }
 }

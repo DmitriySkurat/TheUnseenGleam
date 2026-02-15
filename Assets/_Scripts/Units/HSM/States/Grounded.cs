@@ -10,26 +10,28 @@ namespace HSM {
             this.ctx = ctx;
             Idle = new Idle(m, this, ctx);
             Move = new Move(m, this, ctx);
-            Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.yellow,  // runs while Grounded is activating
-            });
+            // Add(new ColorPhaseActivity(ctx.renderer){
+            //     enterColor = Color.yellow,  // runs while Grounded is activating
+            // });
         }
         
         protected override State GetInitialState() => Idle;
 
         protected override State GetTransition() {
-            if (ctx.jumpPressed) {
-                ctx.jumpPressed = false;
-                var rb = ctx.rb;
+            // if (ctx.jumpPressed) {
+            //     ctx.jumpPressed = false;
+            //     var rb = ctx.rb;
 
-                if (rb != null) {
-                    var v = rb.linearVelocity;
-                    v.y = ctx.jumpSpeed;
-                    rb.linearVelocity = v;
-                }
-                return ((PlayerRoot)Parent).Airborne;
-            }
-            return ctx.grounded ? null : ((PlayerRoot)Parent).Airborne;
+            //     if (rb != null) {
+            //         var v = rb.linearVelocity;
+            //         v.y = ctx.jumpSpeed;
+            //         rb.linearVelocity = v;
+            //     }
+            //     return ((PlayerRoot)Parent).Airborne;
+            // }
+            // return ctx.grounded ? null : ((PlayerRoot)Parent).Airborne;
+            
+            return null;
         }
     }
 }
