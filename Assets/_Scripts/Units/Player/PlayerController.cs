@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
         
-        _ctx.isGrounded = _grounded;
+        _ctx.grounded = _grounded;
     }
 
     #endregion
