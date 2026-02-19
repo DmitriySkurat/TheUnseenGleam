@@ -19,41 +19,7 @@ namespace HSM {
         protected override State GetInitialState() => Idle;
 
         protected override State GetTransition() {
-            return ctx.grounded ? null : ((PlayerRoot)Parent).Airborne;
-        }
-
-        protected override void OnUpdate(float deltaTime) {
-            if (ctx.stats == null) return;
-            HandleJump();
-            HandleGravity(deltaTime);
-        }
-
-        void HandleJump() {
-            if (!ctx.endedJumpEarly && !ctx.grounded && !ctx.jumpHeld && ctx.velocity.y > 0) ctx.endedJumpEarly = true;
-
-            if (!ctx.jumpToConsume && !ctx.HasBufferedJump) return;
-
-            if (ctx.grounded || ctx.CanUseCoyote) ExecuteJump();
-
-            ctx.jumpToConsume = false;
-        }
-
-        void ExecuteJump() {
-            ctx.endedJumpEarly = false;
-            ctx.timeJumpWasPressed = 0;
-            ctx.bufferedJumpUsable = false;
-            ctx.coyoteUsable = false;
-            ctx.velocity.y = ctx.stats.JumpPower;
-        }
-
-        void HandleGravity(float deltaTime) {
-            if (ctx.grounded && ctx.velocity.y <= 0f) {
-                ctx.velocity.y = ctx.stats.GroundingForce;
-            } else {
-                var inAirGravity = ctx.stats.FallAcceleration;
-                if (ctx.endedJumpEarly && ctx.velocity.y > 0) inAirGravity *= ctx.stats.JumpEndEarlyGravityModifier;
-                ctx.velocity.y = Mathf.MoveTowards(ctx.velocity.y, -ctx.stats.MaxFallSpeed, inAirGravity * deltaTime);
-            }
+            return ctx.grounded ? null : (Machine != null ? Machine.GetState<Airborne>() : null);
         }
     }
 }

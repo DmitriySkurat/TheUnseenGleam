@@ -10,13 +10,15 @@ namespace HSM {
         }
 
         protected override State GetTransition() {
-            return Mathf.Abs(ctx.move.x) > 0.01f ? ((Grounded)Parent).Move : null;
+            return Mathf.Abs(ctx.move.x) > 0.01f ? (Machine != null ? Machine.GetState<Move>() : null) : null;
         }
 
         protected override void OnUpdate(float deltaTime) {
-            if (ctx.stats == null) return;
-            var deceleration = ctx.grounded ? ctx.stats.GroundDeceleration : ctx.stats.AirDeceleration;
-            ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0, deceleration * deltaTime);
+            if (ctx.stats != null) {
+                var deceleration = ctx.grounded ? ctx.stats.GroundDeceleration : ctx.stats.AirDeceleration;
+                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0, deceleration * deltaTime);
+            }
+            base.OnUpdate(deltaTime);
         }
     }
 }

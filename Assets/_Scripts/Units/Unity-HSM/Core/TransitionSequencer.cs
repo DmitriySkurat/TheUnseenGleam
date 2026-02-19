@@ -14,6 +14,7 @@ namespace HSM {
         
         CancellationTokenSource cts;
         bool UseSequential = false;          // set false to use parallel
+        public bool IsTransitioning => sequencer != null;
 
         public TransitionSequencer(StateMachine machine) {
             Machine = machine;
@@ -110,7 +111,6 @@ namespace HSM {
                         EndTransition();
                     }
                 }
-                return; // while transitioning, we don't run normal updates
             }
             Machine.InternalTick(deltaTime);
         }

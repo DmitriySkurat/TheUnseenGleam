@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace HSM {
@@ -5,10 +6,28 @@ namespace HSM {
         public readonly State Root;
         public readonly TransitionSequencer Sequencer;
         bool started;
+        readonly Dictionary<Type, State> statesByType = new Dictionary<Type, State>();
 
         public StateMachine(State root) {
             Root = root;
             Sequencer = new TransitionSequencer(this);
+        }
+
+        internal void RegisterState(State s) {
+            if (s == null) return;
+            var t = s.GetType();
+            if (!statesByType.ContainsKey(t)) statesByType.Add(t, s);
+        }
+
+        public T GetState<T>() where T : State {
+            State s;
+            if (statesByType.TryGetValue(typeof(T), out s)) return s as T;
+
+            foreach (var kvp in statesByType) {
+                if (typeof(T).IsAssignableFrom(kvp.Key)) return (T)kvp.Value;
+            }
+
+            return null;
         }
 
         public void Start() {

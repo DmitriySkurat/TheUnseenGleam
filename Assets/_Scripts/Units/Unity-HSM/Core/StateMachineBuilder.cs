@@ -22,6 +22,7 @@ namespace HSM {
             var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
             var machineField = typeof(State).GetField("Machine", flags);
             if (machineField != null) machineField.SetValue(s, m);
+            m.RegisterState(s);
 
             foreach (var fld in s.GetType().GetFields(flags)) {
                 if (!typeof(State).IsAssignableFrom(fld.FieldType)) continue; // Only consider fields that are State

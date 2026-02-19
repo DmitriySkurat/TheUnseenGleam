@@ -11,18 +11,20 @@ namespace HSM {
         }
 
         protected override State GetTransition() {
-            if (!ctx.grounded) return ((PlayerRoot)Parent).Airborne;
+            if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
             
-            return Mathf.Abs(ctx.move.x) <= 0.01f ? ((Grounded)Parent).Idle : null;
+            return Mathf.Abs(ctx.move.x) <= 0.01f ? (Machine != null ? Machine.GetState<Idle>() : null) : null;
         }
         
         protected override void OnUpdate(float deltaTime) {
-            if (ctx.stats == null) return;
-            if (Mathf.Abs(ctx.move.x) <= 0.01f) {
-                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0, ctx.stats.GroundDeceleration * deltaTime);
-            } else {
-                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, ctx.move.x * ctx.stats.MaxSpeed, ctx.stats.Acceleration * deltaTime);
+            if (ctx.stats != null) {
+                if (Mathf.Abs(ctx.move.x) <= 0.01f) {
+                    ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0, ctx.stats.GroundDeceleration * deltaTime);
+                } else {
+                    ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, ctx.move.x * ctx.stats.MaxSpeed, ctx.stats.Acceleration * deltaTime);
+                }
             }
+            base.OnUpdate(deltaTime);
         }
     }
 }
