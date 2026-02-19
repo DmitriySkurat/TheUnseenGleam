@@ -331,6 +331,7 @@ GameObject:
   - component: {fileID: 350522739}
   - component: {fileID: 350522738}
   - component: {fileID: 350522740}
+  - component: {fileID: 350522741}
   m_Layer: 0
   m_Name: PlayerNew
   m_TagString: Untagged
@@ -350,7 +351,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 802739782}
   m_Father: {fileID: 1287094037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &350522733
@@ -483,28 +485,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350522730}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbd12aa311d04bd394a0b6e112d2466f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HSM.PlayerStateDriver
   ctx:
-    move: {x: 0, y: 0, z: 0}
-    velocity: {x: 0, y: 0, z: 0}
+    move: {x: 0, y: 0}
+    velocity: {x: 0, y: 0}
     grounded: 0
     moveSpeed: 6
     accel: 40
     jumpSpeed: 7
     jumpPressed: 0
-    anim: {fileID: 0}
+    anim: {fileID: 350522741}
     rb: {fileID: 350522734}
-    renderer: {fileID: 0}
-  groundCheck: {fileID: 0}
-  groundRadius: 0.2
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 0
-  drawGizmos: 1
+    renderer: {fileID: 350522735}
+    coll: {fileID: 350522733}
+  _stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
+  _inputManager: {fileID: 780010395}
 --- !u!114 &350522739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,13 +528,35 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350522730}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 016c5975bc7c31f48bcbc81a7081dadd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
   _inputManager: {fileID: 780010395}
+--- !u!95 &350522741
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350522730}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &373506554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,6 +1304,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d79113e25860fa45a275789247c6a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputManager
+--- !u!1 &802739781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 802739782}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &802739782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802739781}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.17, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 350522731}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &845458828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1881,6 +1933,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084e2d14b829dab44b21a7c88d2e6760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  body: {fileID: 0}
+  groundCheck: {fileID: 0}
+  groundMask:
+    m_Bits: 0
+  acceleration: 0
+  groundDecay: 0
+  maxXSpeed: 0
+  jumpSpeed: 0
+  grounded: 0
+  xInput: 0
+  yInput: 0
 --- !u!50 &1362085409
 Rigidbody2D:
   serializedVersion: 5
@@ -2183,7 +2246,7 @@ SceneRoots:
   - {fileID: 1265911990}
   - {fileID: 1075448130}
   - {fileID: 1287094037}
-  - {fileID: 695484859}
   - {fileID: 622143118}
+  - {fileID: 695484859}
   - {fileID: 847967646}
   - {fileID: 845458829}

@@ -17,21 +17,7 @@ namespace HSM {
         private StateMachine _machine;
         private PlayerRoot _root;
 
-        private float _time;
-
-        private bool _grounded;
-        private float _frameLeftGrounded = float.MinValue;
-
-        private bool _jumpToConsume;
-        private bool _bufferedJumpUsable;
-        private bool _endedJumpEarly;
-        private bool _coyoteUsable;
-        private float _timeJumpWasPressed;
-
         private string _lastPath;
-
-        private bool HasBufferedJump => _bufferedJumpUsable && _stats != null && _time < _timeJumpWasPressed + _stats.JumpBuffer;
-        private bool CanUseCoyote => _coyoteUsable && !_grounded && _stats != null && _time < _frameLeftGrounded + _stats.CoyoteTime;
 
         void Awake() {
             _rb = gameObject.GetComponent<Rigidbody2D>();
@@ -42,7 +28,10 @@ namespace HSM {
 
             ctx.rb = _rb;
             ctx.anim = GetComponentInChildren<Animator>();
-            ctx.renderer = GetComponent<Renderer>();
+            ctx.renderer = GetComponentInChildren<Renderer>();
+            ctx.coll = _col;
+            ctx.audio = GetComponent<AudioSource>();
+            ctx.stats = _stats;
 
             if (_stats != null) {
                 ctx.moveSpeed = _stats.MaxSpeed;
@@ -73,14 +62,19 @@ namespace HSM {
             _inputManager.OnJumpCanceled -= HandleJumpCanceled;
         }
 
-        void Update() {
-            _time += Time.deltaTime;
+        void FixedUpdate() {
+            if (_stats == null || _col == null) return;
 
+            ctx.time = Time.time;
             ctx.move = _frameInput.Move;
             ctx.jumpPressed = _frameInput.JumpDown;
-            ctx.grounded = _grounded;
+            ctx.jumpHeld = _frameInput.JumpHeld;
 
-            _machine.Tick(Time.deltaTime);
+            CheckCollisions();
+            _machine.Tick(Time.fixedDeltaTime);
+            ApplyMovement();
+
+            _frameInput.JumpDown = false;
 
             var path = StatePath(_machine.Root.Leaf());
             if (path != _lastPath) {
@@ -89,76 +83,28 @@ namespace HSM {
             }
         }
 
-        void FixedUpdate() {
-            if (_stats == null || _col == null) return;
-
-            CheckCollisions();
-            HandleJump();
-            HandleDirection();
-            HandleGravity();
-            ApplyMovement();
-
-            _frameInput.JumpDown = false;
-        }
-
         void CheckCollisions() {
             Physics2D.queriesStartInColliders = false;
 
+            bool wasGrounded = ctx.grounded;
             bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _stats.GrounderDistance, ~_stats.PlayerLayer);
             bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _stats.GrounderDistance, ~_stats.PlayerLayer);
 
             if (ceilingHit) ctx.velocity.y = Mathf.Min(0, ctx.velocity.y);
 
-            if (!_grounded && groundHit) {
-                _grounded = true;
-                _coyoteUsable = true;
-                _bufferedJumpUsable = true;
-                _endedJumpEarly = false;
-            } else if (_grounded && !groundHit) {
-                _grounded = false;
-                _frameLeftGrounded = _time;
+            if (!wasGrounded && groundHit) {
+                ctx.grounded = true;
+                ctx.coyoteUsable = true;
+                ctx.bufferedJumpUsable = true;
+                ctx.endedJumpEarly = false;
+            } else if (wasGrounded && !groundHit) {
+                ctx.grounded = false;
+                ctx.frameLeftGrounded = ctx.time;
+            } else {
+                ctx.grounded = groundHit;
             }
 
             Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
-
-            ctx.grounded = _grounded;
-        }
-
-        void HandleJump() {
-            if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.linearVelocity.y > 0) _endedJumpEarly = true;
-
-            if (!_jumpToConsume && !HasBufferedJump) return;
-
-            if (_grounded || CanUseCoyote) ExecuteJump();
-
-            _jumpToConsume = false;
-        }
-
-        void ExecuteJump() {
-            _endedJumpEarly = false;
-            _timeJumpWasPressed = 0;
-            _bufferedJumpUsable = false;
-            _coyoteUsable = false;
-            ctx.velocity.y = _stats.JumpPower;
-        }
-
-        void HandleDirection() {
-            if (_frameInput.Move.x == 0) {
-                var deceleration = _grounded ? _stats.GroundDeceleration : _stats.AirDeceleration;
-                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0, deceleration * Time.fixedDeltaTime);
-            } else {
-                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
-            }
-        }
-
-        void HandleGravity() {
-            if (_grounded && ctx.velocity.y <= 0f) {
-                ctx.velocity.y = _stats.GroundingForce;
-            } else {
-                var inAirGravity = _stats.FallAcceleration;
-                if (_endedJumpEarly && ctx.velocity.y > 0) inAirGravity *= _stats.JumpEndEarlyGravityModifier;
-                ctx.velocity.y = Mathf.MoveTowards(ctx.velocity.y, -_stats.MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
-            }
         }
 
         void ApplyMovement() => _rb.linearVelocity = ctx.velocity;
@@ -176,8 +122,8 @@ namespace HSM {
             _frameInput.JumpDown = true;
             _frameInput.JumpHeld = true;
 
-            _jumpToConsume = true;
-            _timeJumpWasPressed = _time;
+            ctx.jumpToConsume = true;
+            ctx.timeJumpWasPressed = Time.time;
         }
 
         void HandleJumpCanceled() {
