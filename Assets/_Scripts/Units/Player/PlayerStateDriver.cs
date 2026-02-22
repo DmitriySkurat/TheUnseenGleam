@@ -53,6 +53,7 @@ namespace HSM {
             _inputManager.OnJumpStarted += HandleJumpStarted;
             _inputManager.OnJumpCanceled += HandleJumpCanceled;
             _inputManager.OnCrouchToggled += HandleCrouchInput;
+            _inputManager.OnRunToggled += HandleRunInput;
         }
 
         void OnDisable() {
@@ -62,6 +63,7 @@ namespace HSM {
             _inputManager.OnJumpStarted -= HandleJumpStarted;
             _inputManager.OnJumpCanceled -= HandleJumpCanceled;
             _inputManager.OnCrouchToggled -= HandleCrouchInput;
+            _inputManager.OnRunToggled -= HandleRunInput;
         }
 
         void FixedUpdate() {
@@ -71,6 +73,8 @@ namespace HSM {
             ctx.move = _frameInput.Move;
             ctx.jumpPressed = _frameInput.JumpDown;
             ctx.jumpHeld = _frameInput.JumpHeld;
+            ctx.crouchHeld = _frameInput.CrouchHeld;
+            ctx.runHeld = _frameInput.RunHeld;
 
             CheckCollisions();
             _machine.Tick(Time.fixedDeltaTime);
@@ -140,7 +144,12 @@ namespace HSM {
         
         void HandleCrouchInput(bool isCrouching)
         {
-            ctx.crouchHeld = isCrouching;
+            _frameInput.CrouchHeld = isCrouching;
+        }
+        
+        void HandleRunInput(bool isRunning)
+        {
+            _frameInput.RunHeld = isRunning;
         }
 
 #if UNITY_EDITOR
@@ -190,4 +199,6 @@ public struct FrameInput
     public bool JumpDown;
     public bool JumpHeld;
     public Vector2 Move;
+    public bool CrouchHeld;
+    public bool RunHeld;
 }
