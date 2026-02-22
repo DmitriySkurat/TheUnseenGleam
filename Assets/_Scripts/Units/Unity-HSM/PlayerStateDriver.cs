@@ -90,19 +90,7 @@ namespace HSM {
 
             bool wasGrounded = ctx.grounded;
             bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _stats.GrounderDistance, ~_stats.PlayerLayer);
-            const float eps = 0.01f; // небольшая поправка, чтобы начать чуть внутри коллайдера
-    Vector2 ceilingOrigin = new Vector2(_col.bounds.center.x, _col.bounds.max.y - eps);
-
-    bool ceilingHit = Physics2D.CapsuleCast(
-        ceilingOrigin,
-        _col.size,
-        _col.direction,
-        0f,
-        Vector2.up,
-        _stats.CeilingCheckDistance,
-        ~_stats.PlayerLayer
-    );
-            ctx.ceilingAbove = ceilingHit;
+            bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _stats.GrounderDistance, ~_stats.PlayerLayer);
 
             if (ceilingHit) ctx.velocity.y = Mathf.Min(0, ctx.velocity.y);
 
@@ -116,6 +104,11 @@ namespace HSM {
                 ctx.frameLeftGrounded = ctx.time;
             } else {
                 ctx.grounded = groundHit;
+            }
+            
+            if (ctx.isCrouching)
+            {
+                ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _stats.CeilingCheckDistance, ~_stats.PlayerLayer);
             }
 
             Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
@@ -172,6 +165,11 @@ namespace HSM {
             Gizmos.DrawWireCube(col.offset, col.size);
 
             Gizmos.matrix = Matrix4x4.identity;
+            
+            // CeilingAbove
+            Gizmos.color = ctx.ceilingAbove ? Color.red : Color.green;
+            Gizmos.DrawLine(transform.position, transform.position + Vector3.up * _stats.CeilingCheckDistance);
+            Gizmos.DrawWireSphere(transform.position + Vector3.up * _stats.CeilingCheckDistance, 0.05f);
 
             // Проверка вниз (groundHit)
             Gizmos.color = Color.green;
