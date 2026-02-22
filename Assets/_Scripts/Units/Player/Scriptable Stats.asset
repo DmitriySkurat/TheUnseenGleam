@@ -30,3 +30,7 @@ MonoBehaviour:
   JumpEndEarlyGravityModifier: 3
   CoyoteTime: 0.15
   JumpBuffer: 0.2
+  CrouchSpeedMultiplier: 0.5
+  CrouchHeightMultiplier: 0.5
+  CeilingCheckDistance: 0.435
+  CrouchNoiseMultiplier: 0.3

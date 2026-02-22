@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.Rendering;
 
 namespace HSM
 {
@@ -26,6 +27,10 @@ namespace HSM
         public Collider2D coll;
         public AudioSource audio;
         public ScriptableStats stats;
+        
+        public bool crouchHeld;
+        public bool isCrouching;
+        public bool ceilingAbove;
 
         public bool HasBufferedJump => bufferedJumpUsable && stats != null && time < timeJumpWasPressed + stats.JumpBuffer;
         public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && time < frameLeftGrounded + stats.CoyoteTime;

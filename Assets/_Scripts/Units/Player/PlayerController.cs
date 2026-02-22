@@ -249,12 +249,12 @@ public class PlayerController : MonoBehaviour, IPlayerController
 #endif
 }
 
-public struct FrameInput
-{
-    public bool JumpDown;
-    public bool JumpHeld;
-    public Vector2 Move;
-}
+// public struct FrameInput
+// {
+//     public bool JumpDown;
+//     public bool JumpHeld;
+//     public Vector2 Move;
+// }
 
 public interface IPlayerController
 {
