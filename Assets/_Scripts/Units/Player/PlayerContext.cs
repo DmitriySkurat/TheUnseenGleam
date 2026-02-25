@@ -14,6 +14,7 @@ namespace HSM
         public bool crouchHeld;
         public bool runHeld;
         
+        
         // connected to states
         public bool isCrouching;
         public bool isInteracting;

@@ -5,83 +5,87 @@ using NUnit.Framework;
 using HSM;
 
 [RequireComponent(typeof(Collider2D))]
-    public class PlayerInteractor : MonoBehaviour {
-        [Header("Detection")]
-        public float interactRadius = 1.2f;
-        public LayerMask interactableLayer;
+public class PlayerInteractor : Interactor {
+    [Header("Detection")]
+    public float interactRadius = 1.2f;
+    public LayerMask interactableLayer;
+    public Transform interactOrigin;
 
-        [Header("References")]
-        public Transform interactOrigin;
-        public TextMeshProUGUI promptText; // optional UI element
+    [Header("UI")]
+    public TextMeshProUGUI promptText;
 
-        PlayerContext ctx;
+    private PlayerContext _ctx;
+    private PlayerStateDriver _driver;
+    
+    public void Initialize(PlayerContext context, PlayerStateDriver driver) {
+        _ctx = context;
+        _driver = driver;
+    }
+    
+    // public PlayerInteractor(PlayerContext ctx)
+    // {
+    //     _ctx = ctx;
+    // }
+    
 
-        private IInteractable current;
-        
-        public PlayerInteractor(PlayerContext ctx)
+    void Awake() {
+        if (interactOrigin == null) 
+            interactOrigin = transform;
+    }
+
+    void Update() {
+        if (_ctx == null || _driver == null)
         {
-            this.ctx = ctx;
+            Debug.LogError("Придурок забыл инициализировать PlayerInteractor");
+            return;
         }
         
+        ScanForInteractable();
 
-        void Awake() {
-            if (interactOrigin == null) interactOrigin = transform;
+        UpdatePromptUI();
+        
+        if (_ctx.isInteracting)
+            AttemptInteract();
+    }
+
+    void ScanForInteractable() {
+        var hits = Physics2D.OverlapCircleAll(interactOrigin.position, interactRadius, interactableLayer);
+        
+        IInteractable nearest = null;
+        float best = float.MaxValue;
+
+        foreach (var col in hits) {
+            // ищем компонент, реализующий IInteractable
+            var interactable = col.GetComponentInParent<IInteractable>();
+            if (interactable == null) continue;
+
+            float dist = Vector2.SqrMagnitude(((MonoBehaviour)interactable).transform.position - interactOrigin.position);
+            if (dist < best) { best = dist; nearest = interactable; }
         }
+        
+        SetCurrentInteractable(nearest);
+    }
 
-        void Update() {
-            ScanForInteractable();
+    private void AttemptInteract() {
+        if (currentInteractable == null) return;
 
-            UpdatePromptUI();
-            
-            if (ctx.isInteracting) {
-                Interact();
-            }
-        }
-
-        void ScanForInteractable() {
-            var hits = Physics2D.OverlapCircleAll(interactOrigin.position, interactRadius, interactableLayer);
-            IInteractable nearest = null;
-            float best = float.MaxValue;
-
-            foreach (var c in hits) {
-                // ищем компонент, реализующий IInteractable
-                var interactable = c.GetComponentInParent<MonoBehaviour>() as IInteractable;
-                if (interactable == null) {
-                    // пробуем через GetComponents
-                    var comps = c.GetComponentsInParent<MonoBehaviour>();
-                    foreach (var comp in comps) {
-                        if (comp is IInteractable ii) { interactable = ii; break;}
-                    }
-                }
-                if (interactable == null) continue;
-
-                float dist = Vector2.SqrMagnitude(((MonoBehaviour)interactable).transform.position - interactOrigin.position);
-                if (dist < best) { best = dist; nearest = interactable; }
-            }
-
-            if (!ReferenceEquals(nearest, current)) {
-                if (current != null) current.OnDefocus();
-                current = nearest;
-                if (current != null) current.OnFocus();
-            }
-        }
-
-        void UpdatePromptUI() {
-            if (promptText == null) return;
-            if (current != null) promptText.text = current.InteractionPrompt;
-            else promptText.text = "";
-        }
-
-        public void Interact() {
-            if (current != null) {
-                current.Interact(gameObject);
-            }
-        }
-
-        // визуализация радиуса в редакторе
-        void OnDrawGizmosSelected() {
-            Gizmos.color = Color.cyan;
-            var origin = interactOrigin != null ? interactOrigin.position : transform.position;
-            Gizmos.DrawWireSphere(origin, interactRadius);
+        // Если объект сложный — просим драйвер сменить состояние HSM
+        if (currentInteractable.IsComplex) {
+            _driver.RequestInteractionState(currentInteractable);
+        } else {
+            // Если простой — вызываем базовый метод
+            PerformInteraction();
         }
     }
+
+    private void UpdatePromptUI() {
+        if (promptText == null) return;
+        promptText.text = currentInteractable != null ? currentInteractable.InteractionPrompt : "";
+    }
+
+    void OnDrawGizmosSelected() {
+        Gizmos.color = Color.cyan;
+        var origin = interactOrigin != null ? interactOrigin.position : transform.position;
+        Gizmos.DrawWireSphere(origin, interactRadius);
+    }
+}

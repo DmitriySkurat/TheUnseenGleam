@@ -2,15 +2,14 @@ using System.Linq;
 using UnityEngine;
 
 namespace HSM {
-    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlayerInteractor))]
     public class PlayerStateDriver : MonoBehaviour {
         public PlayerContext ctx = new PlayerContext();
 
         [SerializeField] private ScriptableStats _stats;
         [SerializeField] private InputManager _inputManager;
-        
-        private PlayerInteractor _interactor; 
-        
+        [SerializeField] private PlayerInteractor _interactor;
+               
 
         private Rigidbody2D _rb;
         private CapsuleCollider2D _col;
@@ -28,8 +27,9 @@ namespace HSM {
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
             if (_inputManager == null) _inputManager = GetComponent<InputManager>();
+            if (_interactor == null) _interactor = GetComponent<PlayerInteractor>();
             
-            _interactor = new PlayerInteractor(ctx);
+            if (_interactor != null) _interactor.Initialize(ctx, this);
 
             ctx.rb = _rb;
             ctx.anim = GetComponentInChildren<Animator>();
@@ -207,5 +207,33 @@ namespace HSM {
             Gizmos.DrawWireSphere(col.bounds.center + Vector3.up * _stats.GrounderDistance, 0.05f);
         }
         
+        
+        public void RequestInteractionState(IInteractable interactable)
+        {
+            
+        }
+        
     }   
 }
+
+// public class PlayerStateDriver : MonoBehaviour {
+//     // Твой текущий контекст и машина
+//     private PlayerContext _ctx;
+//     private Machine _machine;
+//     public InteractionState InteractionState { get; private set; }
+
+//     void Start() {
+//         // ... инициализация машины ...
+//         InteractionState = new InteractionState(this);
+        
+//         // Инициализируем интерктор
+//         var interactor = GetComponent<PlayerInteractor>();
+//         interactor.Initialize(_ctx, this);
+//     }
+
+//     public void RequestInteractionState(IInteractable target) {
+//         // Устанавливаем цель в стейт и просим машину перейти
+//         InteractionState.SetTarget(target);
+//         _machine.Sequencer.RequestTransition(_machine.Root.Leaf(), InteractionState);
+//     }
+// }

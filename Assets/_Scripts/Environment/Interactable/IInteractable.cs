@@ -1,8 +1,14 @@
 using UnityEngine;
 
 public interface IInteractable {
+        void Select(); // Подсветка вкл
+        void Unselect(); // Подсветка выкл
+        void Interact(Interactor interactor); 
+        
+        // Скорее всего удалю
         string InteractionPrompt { get; }
-        void OnFocus();      // игрок "прицелился" на объект
-        void OnDefocus();    // игрок отвёл взгляд
-        void Interact(GameObject interactor); // вызов взаимодействия
+        
+        
+        // Нужно ли переходить в состояние HSM
+        bool IsComplex { get; }
 }
