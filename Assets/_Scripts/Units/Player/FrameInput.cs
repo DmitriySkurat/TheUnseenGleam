@@ -7,4 +7,6 @@ public struct FrameInput
     public Vector2 Move;
     public bool CrouchHeld;
     public bool RunHeld;
+    
+    public bool InteractDown;
 }

@@ -11,6 +11,8 @@ public class InputManager : MonoBehaviour
     public event Action<bool> OnRunToggled;
     public event Action<bool> OnCrouchToggled;
     
+    public event Action<bool> OnInteractToggled;
+    
     private PlayerInput _playerInput;
     
     private void Awake()
@@ -43,6 +45,9 @@ public class InputManager : MonoBehaviour
 
         actions["Crouch"].performed += HandleCrouch;
         actions["Crouch"].canceled += HandleCrouch;
+        
+        actions["Interact"].performed += HandleInteract;
+        actions["Interact"].canceled += HandleInteract;
     }
     
     private void UnregisterInputs()
@@ -60,6 +65,9 @@ public class InputManager : MonoBehaviour
 
         actions["Crouch"].performed -= HandleCrouch;
         actions["Crouch"].canceled -= HandleCrouch;
+        
+        actions["Interact"].performed -= HandleInteract;
+        actions["Interact"].canceled -= HandleInteract;
     }
 
     private void HandleMove(InputAction.CallbackContext ctx) => OnMove?.Invoke(ctx.ReadValue<Vector2>());
@@ -67,4 +75,5 @@ public class InputManager : MonoBehaviour
     private void HandleJumpCanceled(InputAction.CallbackContext ctx) => OnJumpCanceled?.Invoke();
     private void HandleRun(InputAction.CallbackContext ctx) => OnRunToggled?.Invoke(ctx.performed);
     private void HandleCrouch(InputAction.CallbackContext ctx) => OnCrouchToggled?.Invoke(ctx.performed);
+    private void HandleInteract(InputAction.CallbackContext ctx) => OnInteractToggled?.Invoke(ctx.performed);
 }

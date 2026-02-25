@@ -32,5 +32,5 @@ MonoBehaviour:
   JumpBuffer: 0.2
   CrouchSpeedMultiplier: 0.5
   CrouchHeightMultiplier: 0.5
-  CeilingCheckDistance: 0.435
+  CeilingCheckDistance: 0.524
   CrouchNoiseMultiplier: 0.3

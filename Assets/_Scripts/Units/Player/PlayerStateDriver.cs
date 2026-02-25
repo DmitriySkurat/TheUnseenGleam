@@ -8,6 +8,9 @@ namespace HSM {
 
         [SerializeField] private ScriptableStats _stats;
         [SerializeField] private InputManager _inputManager;
+        
+        private PlayerInteractor _interactor; 
+        
 
         private Rigidbody2D _rb;
         private CapsuleCollider2D _col;
@@ -25,6 +28,8 @@ namespace HSM {
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
             if (_inputManager == null) _inputManager = GetComponent<InputManager>();
+            
+            _interactor = new PlayerInteractor(ctx);
 
             ctx.rb = _rb;
             ctx.anim = GetComponentInChildren<Animator>();
@@ -32,6 +37,7 @@ namespace HSM {
             ctx.coll = _col;
             ctx.audio = GetComponent<AudioSource>();
             ctx.stats = _stats;
+            
 
             if (_stats != null) {
                 ctx.moveSpeed = _stats.MaxSpeed;
@@ -54,6 +60,7 @@ namespace HSM {
             _inputManager.OnJumpCanceled += HandleJumpCanceled;
             _inputManager.OnCrouchToggled += HandleCrouchInput;
             _inputManager.OnRunToggled += HandleRunInput;
+            _inputManager.OnInteractToggled += HandleInteractInput;
         }
 
         void OnDisable() {
@@ -64,6 +71,7 @@ namespace HSM {
             _inputManager.OnJumpCanceled -= HandleJumpCanceled;
             _inputManager.OnCrouchToggled -= HandleCrouchInput;
             _inputManager.OnRunToggled -= HandleRunInput;
+            _inputManager.OnInteractToggled -= HandleInteractInput;
         }
 
         void FixedUpdate() {
@@ -75,6 +83,7 @@ namespace HSM {
             ctx.jumpHeld = _frameInput.JumpHeld;
             ctx.crouchHeld = _frameInput.CrouchHeld;
             ctx.runHeld = _frameInput.RunHeld;
+            ctx.isInteracting = _frameInput.InteractDown;
 
             CheckCollisions();
             _machine.Tick(Time.fixedDeltaTime);
@@ -82,6 +91,8 @@ namespace HSM {
 
             _frameInput.JumpDown = false;
 
+
+            // for debbing, print current state path when it changes
             var path = StatePath(_machine.Root.Leaf());
             if (path != _lastPath) {
                 Debug.Log("State: " + path);
@@ -151,6 +162,11 @@ namespace HSM {
         {
             _frameInput.RunHeld = isRunning;
         }
+        
+        void HandleInteractInput(bool isInteracting)
+        {
+            _frameInput.InteractDown = isInteracting;
+        }
 
 #if UNITY_EDITOR
         void OnValidate() {
@@ -192,13 +208,4 @@ namespace HSM {
         }
         
     }   
-}
-
-public struct FrameInput
-{
-    public bool JumpDown;
-    public bool JumpHeld;
-    public Vector2 Move;
-    public bool CrouchHeld;
-    public bool RunHeld;
 }
