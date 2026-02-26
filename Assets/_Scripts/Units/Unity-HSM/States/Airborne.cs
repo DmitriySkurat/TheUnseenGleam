@@ -24,10 +24,10 @@ namespace HSM {
         }
 
         void HandleHorizontal(float deltaTime) {
-            if (Mathf.Abs(ctx.move.x) <= 0.01f) {
+            if (Mathf.Abs(ctx.input.Move.x) <= 0.01f) {
                 ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0, ctx.stats.AirDeceleration * deltaTime);
             } else {
-                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, ctx.move.x * ctx.stats.MaxSpeed, ctx.stats.Acceleration * deltaTime);
+                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, ctx.input.Move.x * ctx.stats.MaxSpeed, ctx.stats.Acceleration * deltaTime);
             }
         }
     }

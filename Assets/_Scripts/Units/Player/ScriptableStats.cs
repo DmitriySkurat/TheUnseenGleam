@@ -51,6 +51,11 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("The amount of time we buffer a jump. This allows jump input before actually hitting the ground")]
     public float JumpBuffer = .2f;
     
+    [Header("INTERACTION")]
+    [Tooltip("Delay between interactions")]
+    [Range(0f, 0.5f)]
+    public float InteractionCooldown = 0.25f;
+    
     [Header("CROUCH")]
     [Tooltip("Multiplier applied to MaxSpeed while crouching")]
     [Range(0.1f, 1f)]
@@ -63,7 +68,6 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("Distance to check above the standing height for obstacles")]
     [Range(0f, 1f)]
     public float CeilingCheckDistance = 0.05f;
-
 
     [Tooltip("Noise multiplier while crouching (for stealth systems)")]
     [Range(0f, 1f)]

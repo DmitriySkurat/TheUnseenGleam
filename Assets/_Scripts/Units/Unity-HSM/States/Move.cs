@@ -12,17 +12,17 @@ namespace HSM {
 
         protected override State GetTransition() {
             if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
-            if (ctx.crouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
+            if (ctx.input.CrouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
             
-            return Mathf.Abs(ctx.move.x) <= 0.01f ? (Machine != null ? Machine.GetState<Idle>() : null) : null;
+            return Mathf.Abs(ctx.input.Move.x) <= 0.01f ? (Machine != null ? Machine.GetState<Idle>() : null) : null;
         }
         
         protected override void OnUpdate(float deltaTime) {
             if (ctx.stats != null) {
-                if (Mathf.Abs(ctx.move.x) <= 0.01f) {
+                if (Mathf.Abs(ctx.input.Move.x) <= 0.01f) {
                     ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0, ctx.stats.GroundDeceleration * deltaTime);
                 } else {
-                    ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, ctx.move.x * ctx.stats.MaxSpeed, ctx.stats.Acceleration * deltaTime);
+                    ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, ctx.input.Move.x * ctx.stats.MaxSpeed, ctx.stats.Acceleration * deltaTime);
                 }
             }
             base.OnUpdate(deltaTime);

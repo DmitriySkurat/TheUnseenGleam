@@ -5,6 +5,7 @@ public interface IInteractable {
         void Unselect(); // Подсветка выкл
         void Interact(Interactor interactor); 
         
+        
         // Скорее всего удалю
         string InteractionPrompt { get; }
         

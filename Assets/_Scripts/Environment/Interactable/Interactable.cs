@@ -12,7 +12,7 @@ public abstract class Interactable : MonoBehaviour, IInteractable {
     public bool highlightOnFocus = true;
     public Color highlightColor = Color.yellow;
     
-    private SpriteRenderer _sr;
+    protected SpriteRenderer _sr;
     private Color _defaultColor;
 
     public virtual bool IsComplex => false;

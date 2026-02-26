@@ -8,12 +8,13 @@ namespace HSM {
 
         [SerializeField] private ScriptableStats _stats;
         [SerializeField] private InputManager _inputManager;
-        [SerializeField] private PlayerInteractor _interactor;
-               
+        
+        //player components (like PlayerInteractor) will register themselves here to receive context and driver references
+        private IPlayerComponent[] _components;
 
         private Rigidbody2D _rb;
         private CapsuleCollider2D _col;
-        private FrameInput _frameInput;
+        private FrameInput _frameInput = new FrameInput();
         private bool _cachedQueryStartInColliders;
 
         private StateMachine _machine;
@@ -27,9 +28,13 @@ namespace HSM {
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
             if (_inputManager == null) _inputManager = GetComponent<InputManager>();
-            if (_interactor == null) _interactor = GetComponent<PlayerInteractor>();
             
-            if (_interactor != null) _interactor.Initialize(ctx, this);
+            // initialize components
+            _components = GetComponents<IPlayerComponent>();
+            
+            foreach (var component in _components) {
+                component.Initialize(ctx, this);
+            }
 
             ctx.rb = _rb;
             ctx.anim = GetComponentInChildren<Animator>();
@@ -52,38 +57,21 @@ namespace HSM {
             _machine = builder.Build();
         }
 
-        void OnEnable() {
-            if (_inputManager == null) return;
-
-            _inputManager.OnMove += HandleMoveInput;
-            _inputManager.OnJumpStarted += HandleJumpStarted;
-            _inputManager.OnJumpCanceled += HandleJumpCanceled;
-            _inputManager.OnCrouchToggled += HandleCrouchInput;
-            _inputManager.OnRunToggled += HandleRunInput;
-            _inputManager.OnInteractToggled += HandleInteractInput;
-        }
-
-        void OnDisable() {
-            if (_inputManager == null) return;
-
-            _inputManager.OnMove -= HandleMoveInput;
-            _inputManager.OnJumpStarted -= HandleJumpStarted;
-            _inputManager.OnJumpCanceled -= HandleJumpCanceled;
-            _inputManager.OnCrouchToggled -= HandleCrouchInput;
-            _inputManager.OnRunToggled -= HandleRunInput;
-            _inputManager.OnInteractToggled -= HandleInteractInput;
-        }
+        
 
         void FixedUpdate() {
             if (_stats == null || _col == null) return;
 
             ctx.time = Time.time;
-            ctx.move = _frameInput.Move;
-            ctx.jumpPressed = _frameInput.JumpDown;
-            ctx.jumpHeld = _frameInput.JumpHeld;
-            ctx.crouchHeld = _frameInput.CrouchHeld;
-            ctx.runHeld = _frameInput.RunHeld;
-            ctx.isInteracting = _frameInput.InteractDown;
+            // ctx.move = _frameInput.Move;
+            // ctx.jumpPressed = _frameInput.JumpDown;
+            // ctx.jumpHeld = _frameInput.JumpHeld;
+            // ctx.crouchHeld = _frameInput.CrouchHeld;
+            // ctx.runHeld = _frameInput.RunHeld;
+            // ctx.isInteracting = _frameInput.InteractDown;
+            
+            ctx.input = _frameInput;
+            
 
             CheckCollisions();
             _machine.Tick(Time.fixedDeltaTime);
@@ -130,6 +118,32 @@ namespace HSM {
         }
 
         void ApplyMovement() => _rb.linearVelocity = ctx.velocity;
+        
+        #region Player Input Handling
+        
+        void OnEnable() {
+            if (_inputManager == null) return;
+
+            _inputManager.OnMove += HandleMoveInput;
+            _inputManager.OnJumpStarted += HandleJumpStarted;
+            _inputManager.OnJumpCanceled += HandleJumpCanceled;
+            _inputManager.OnCrouchToggled += HandleCrouchInput;
+            _inputManager.OnRunToggled += HandleRunInput;
+            _inputManager.OnInteractStarted += HandleInteractStarted;
+            _inputManager.OnInteractCanceled += HandleInteractCanceled;
+        }
+
+        void OnDisable() {
+            if (_inputManager == null) return;
+
+            _inputManager.OnMove -= HandleMoveInput;
+            _inputManager.OnJumpStarted -= HandleJumpStarted;
+            _inputManager.OnJumpCanceled -= HandleJumpCanceled;
+            _inputManager.OnCrouchToggled -= HandleCrouchInput;
+            _inputManager.OnRunToggled -= HandleRunInput;
+            _inputManager.OnInteractStarted -= HandleInteractStarted;
+            _inputManager.OnInteractCanceled -= HandleInteractCanceled;
+        }
 
         void HandleMoveInput(Vector2 direction) {
             _frameInput.Move = direction;
@@ -163,10 +177,23 @@ namespace HSM {
             _frameInput.RunHeld = isRunning;
         }
         
-        void HandleInteractInput(bool isInteracting)
+        void HandleInteractStarted()
         {
-            _frameInput.InteractDown = isInteracting;
+            _frameInput.InteractDown = true;
+            _frameInput.InteractHeld = true;
+            
+            ctx.timeInteractWasPressed = Time.time;
         }
+        
+        void HandleInteractCanceled()
+        {
+            _frameInput.InteractDown = false;
+            _frameInput.InteractHeld = false;
+        }
+        
+        #endregion
+        
+        #region Debugging
 
 #if UNITY_EDITOR
         void OnValidate() {
@@ -207,33 +234,10 @@ namespace HSM {
             Gizmos.DrawWireSphere(col.bounds.center + Vector3.up * _stats.GrounderDistance, 0.05f);
         }
         
+        #endregion
         
-        public void RequestInteractionState(IInteractable interactable)
-        {
-            
-        }
+        
+        
         
     }   
 }
-
-// public class PlayerStateDriver : MonoBehaviour {
-//     // Твой текущий контекст и машина
-//     private PlayerContext _ctx;
-//     private Machine _machine;
-//     public InteractionState InteractionState { get; private set; }
-
-//     void Start() {
-//         // ... инициализация машины ...
-//         InteractionState = new InteractionState(this);
-        
-//         // Инициализируем интерктор
-//         var interactor = GetComponent<PlayerInteractor>();
-//         interactor.Initialize(_ctx, this);
-//     }
-
-//     public void RequestInteractionState(IInteractable target) {
-//         // Устанавливаем цель в стейт и просим машину перейти
-//         InteractionState.SetTarget(target);
-//         _machine.Sequencer.RequestTransition(_machine.Root.Leaf(), InteractionState);
-//     }
-// }

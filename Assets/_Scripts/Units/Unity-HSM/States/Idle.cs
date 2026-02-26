@@ -10,8 +10,8 @@ namespace HSM {
         }
 
         protected override State GetTransition() {
-            if (ctx.crouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
-            return Mathf.Abs(ctx.move.x) > 0.01f ? (Machine != null ? Machine.GetState<Move>() : null) : null;
+            if (ctx.input.CrouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
+            return Mathf.Abs(ctx.input.Move.x) > 0.01f ? (Machine != null ? Machine.GetState<Move>() : null) : null;
         }
 
         protected override void OnUpdate(float deltaTime) {

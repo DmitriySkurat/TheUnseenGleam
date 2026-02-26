@@ -11,7 +11,8 @@ public class InputManager : MonoBehaviour
     public event Action<bool> OnRunToggled;
     public event Action<bool> OnCrouchToggled;
     
-    public event Action<bool> OnInteractToggled;
+    public event Action OnInteractStarted;
+    public event Action OnInteractCanceled;
     
     private PlayerInput _playerInput;
     
@@ -46,8 +47,8 @@ public class InputManager : MonoBehaviour
         actions["Crouch"].performed += HandleCrouch;
         actions["Crouch"].canceled += HandleCrouch;
         
-        actions["Interact"].performed += HandleInteract;
-        actions["Interact"].canceled += HandleInteract;
+        actions["Interact"].performed += HandleInteractStarted;
+        actions["Interact"].canceled += HandleInteractCanceled;
     }
     
     private void UnregisterInputs()
@@ -66,8 +67,8 @@ public class InputManager : MonoBehaviour
         actions["Crouch"].performed -= HandleCrouch;
         actions["Crouch"].canceled -= HandleCrouch;
         
-        actions["Interact"].performed -= HandleInteract;
-        actions["Interact"].canceled -= HandleInteract;
+        actions["Interact"].performed -= HandleInteractStarted;
+        actions["Interact"].canceled -= HandleInteractCanceled;
     }
 
     private void HandleMove(InputAction.CallbackContext ctx) => OnMove?.Invoke(ctx.ReadValue<Vector2>());
@@ -75,5 +76,6 @@ public class InputManager : MonoBehaviour
     private void HandleJumpCanceled(InputAction.CallbackContext ctx) => OnJumpCanceled?.Invoke();
     private void HandleRun(InputAction.CallbackContext ctx) => OnRunToggled?.Invoke(ctx.performed);
     private void HandleCrouch(InputAction.CallbackContext ctx) => OnCrouchToggled?.Invoke(ctx.performed);
-    private void HandleInteract(InputAction.CallbackContext ctx) => OnInteractToggled?.Invoke(ctx.performed);
+    private void HandleInteractStarted(InputAction.CallbackContext ctx) => OnInteractStarted?.Invoke();
+    private void HandleInteractCanceled(InputAction.CallbackContext ctx) => OnInteractCanceled?.Invoke();
 }

@@ -24,7 +24,7 @@ namespace HSM {
         }
 
         void HandleJump() {
-            if (!ctx.endedJumpEarly && !ctx.grounded && !ctx.jumpHeld && ctx.velocity.y > 0) ctx.endedJumpEarly = true;
+            if (!ctx.endedJumpEarly && !ctx.grounded && !ctx.input.JumpHeld && ctx.velocity.y > 0) ctx.endedJumpEarly = true;
             
             if (ctx.ceilingAbove && ctx.isCrouching)
             {

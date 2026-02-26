@@ -6,7 +6,7 @@ public class Interactor : MonoBehaviour {
     
     public IInteractable CurrentInteractable => currentInteractable;
 
-    public void SetCurrentInteractable(IInteractable interactable) {
+    protected void SetCurrentInteractable(IInteractable interactable) {
         if (ReferenceEquals(currentInteractable, interactable)) return;
         
         if (currentInteractable != null) currentInteractable.Unselect();
@@ -14,8 +14,10 @@ public class Interactor : MonoBehaviour {
         if (currentInteractable != null) currentInteractable.Select();
     }
 
-    public void PerformInteraction() {
+    protected virtual void PerformInteraction() {
         if (currentInteractable == null) return;
+        if (currentInteractable.IsComplex) return;
+        
         currentInteractable.Interact(this);
     }
 }

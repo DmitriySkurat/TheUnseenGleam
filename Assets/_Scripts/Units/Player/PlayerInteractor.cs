@@ -5,7 +5,7 @@ using NUnit.Framework;
 using HSM;
 
 [RequireComponent(typeof(Collider2D))]
-public class PlayerInteractor : Interactor {
+public class PlayerInteractor : Interactor, IPlayerComponent {
     [Header("Detection")]
     public float interactRadius = 1.2f;
     public LayerMask interactableLayer;
@@ -21,12 +21,7 @@ public class PlayerInteractor : Interactor {
         _ctx = context;
         _driver = driver;
     }
-    
-    // public PlayerInteractor(PlayerContext ctx)
-    // {
-    //     _ctx = ctx;
-    // }
-    
+
 
     void Awake() {
         if (interactOrigin == null) 
@@ -44,7 +39,7 @@ public class PlayerInteractor : Interactor {
 
         UpdatePromptUI();
         
-        if (_ctx.isInteracting)
+        if (_ctx.input.InteractDown && _ctx.CanInteract)
             AttemptInteract();
     }
 
@@ -67,15 +62,20 @@ public class PlayerInteractor : Interactor {
     }
 
     private void AttemptInteract() {
-        if (currentInteractable == null) return;
+        PerformInteraction();
+            
+        _ctx.timeLastInteraction = _ctx.time;
+        
+        // Логика переделывается и переносится в HSM 
+        // Здесь пока только логика для isComplex = false, в HSM будем проверять нажата ли Interact и IsComplex = true
 
-        // Если объект сложный — просим драйвер сменить состояние HSM
-        if (currentInteractable.IsComplex) {
-            _driver.RequestInteractionState(currentInteractable);
-        } else {
-            // Если простой — вызываем базовый метод
-            PerformInteraction();
-        }
+        // // Если объект сложный — просим драйвер сменить состояние HSM
+        // if (currentInteractable.IsComplex) {
+        //     _driver.RequestInteractionState(currentInteractable);
+        // } else {
+        //     // Если простой — вызываем базовый метод
+        //     PerformInteraction();
+        // }
     }
 
     private void UpdatePromptUI() {
