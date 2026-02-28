@@ -30,7 +30,7 @@ namespace HSM {
             if (_inputManager == null) _inputManager = GetComponent<InputManager>();
             
             // initialize components
-            _components = GetComponents<IPlayerComponent>();
+            _components = GetComponentsInChildren<IPlayerComponent>();
             
             foreach (var component in _components) {
                 component.Initialize(ctx, this);
@@ -63,12 +63,6 @@ namespace HSM {
             if (_stats == null || _col == null) return;
 
             ctx.time = Time.time;
-            // ctx.move = _frameInput.Move;
-            // ctx.jumpPressed = _frameInput.JumpDown;
-            // ctx.jumpHeld = _frameInput.JumpHeld;
-            // ctx.crouchHeld = _frameInput.CrouchHeld;
-            // ctx.runHeld = _frameInput.RunHeld;
-            // ctx.isInteracting = _frameInput.InteractDown;
             
             ctx.input = _frameInput;
             
@@ -129,8 +123,12 @@ namespace HSM {
             _inputManager.OnJumpCanceled += HandleJumpCanceled;
             _inputManager.OnCrouchToggled += HandleCrouchInput;
             _inputManager.OnRunToggled += HandleRunInput;
+            
             _inputManager.OnInteractStarted += HandleInteractStarted;
             _inputManager.OnInteractCanceled += HandleInteractCanceled;
+            
+            _inputManager.OnLook += HandleLookInput;
+            _inputManager.OnLookAroundToggled += HandleLookAroundInput;
         }
 
         void OnDisable() {
@@ -141,8 +139,12 @@ namespace HSM {
             _inputManager.OnJumpCanceled -= HandleJumpCanceled;
             _inputManager.OnCrouchToggled -= HandleCrouchInput;
             _inputManager.OnRunToggled -= HandleRunInput;
+            
             _inputManager.OnInteractStarted -= HandleInteractStarted;
             _inputManager.OnInteractCanceled -= HandleInteractCanceled;
+            
+            _inputManager.OnLook -= HandleLookInput;
+            _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
         }
 
         void HandleMoveInput(Vector2 direction) {
@@ -190,6 +192,17 @@ namespace HSM {
             _frameInput.InteractDown = false;
             _frameInput.InteractHeld = false;
         }
+        
+        void HandleLookInput(Vector2 mousePosition)
+        {
+            _frameInput.LookPosition = mousePosition;
+        }
+        
+        void HandleLookAroundInput(bool isLookingAround)
+        {
+            _frameInput.LookAroundHeld = isLookingAround;
+        }
+        
         
         #endregion
         

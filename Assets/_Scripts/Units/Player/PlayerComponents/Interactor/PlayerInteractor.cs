@@ -17,11 +17,12 @@ public class PlayerInteractor : Interactor, IPlayerComponent {
     private PlayerContext _ctx;
     private PlayerStateDriver _driver;
     
+    public PlayerContext Context => _ctx;
+    
     public void Initialize(PlayerContext context, PlayerStateDriver driver) {
         _ctx = context;
         _driver = driver;
     }
-
 
     void Awake() {
         if (interactOrigin == null) 
@@ -62,9 +63,25 @@ public class PlayerInteractor : Interactor, IPlayerComponent {
     }
 
     private void AttemptInteract() {
+        if (currentInteractable == null) return;
+        
+        if (!currentInteractable.CanBeInteractedBy(this)) {
+            var missingItems = currentInteractable.GetMissingItemsString(this);
+            Debug.Log($"Cannot interact, missing items: {missingItems}");
+            
+            if (promptText != null) 
+            {
+                promptText.text = $"Missing: {missingItems}";
+            }
+            
+            return;
+        }    
+    
         PerformInteraction();
             
         _ctx.timeLastInteraction = _ctx.time;
+        
+        
         
         // Логика переделывается и переносится в HSM 
         // Здесь пока только логика для isComplex = false, в HSM будем проверять нажата ли Interact и IsComplex = true
@@ -80,7 +97,22 @@ public class PlayerInteractor : Interactor, IPlayerComponent {
 
     private void UpdatePromptUI() {
         if (promptText == null) return;
-        promptText.text = currentInteractable != null ? currentInteractable.InteractionPrompt : "";
+        if (currentInteractable == null) {
+            promptText.text = "";
+            return;
+        }
+
+        string basePrompt = currentInteractable.InteractionPrompt;
+        string suffix = "";
+
+        if (currentInteractable is Interactable interactable) {
+            if (!interactable.CanBeInteractedBy(this)) {
+                var miss = interactable.GetMissingItemsString(this);
+                suffix = $"\n(Требуется: {miss})";
+            }
+        }
+
+        promptText.text = basePrompt + suffix;
     }
 
     void OnDrawGizmosSelected() {

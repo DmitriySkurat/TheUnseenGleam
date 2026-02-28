@@ -4,11 +4,16 @@ public class DoorInteractable : Interactable
 {
     [Header("Door Settings")]
     [SerializeField] private bool isOpen = false;
+    [SerializeField] private bool isUnlocked = false;
     
     [SerializeField] private Sprite openDoorSprite;
     [SerializeField] private Sprite closedDoorSprite;
 
     [SerializeField] private bool disableColliderWhenOpen = true;
+    
+    [Header("Consume Settings")]
+    [Tooltip("Whether to delete required items after interaction")]
+    [SerializeField] private bool consumeRequiredItems = true;
 
     private Collider2D _doorCollider;
     
@@ -27,13 +32,34 @@ public class DoorInteractable : Interactable
         isOpen = state;
         UpdateDoorVisuals(); 
     }
+    
+    public override bool CanBeInteractedBy(Interactor interactor)
+    {
+        if (isUnlocked)
+            return true;
+
+        return base.CanBeInteractedBy(interactor);
+    }
 
     public override void Interact(Interactor interactor)
     {
+        if (interactor is PlayerInteractor p) 
+        {
+            var inv = p.Context?.inventory;
+            if (inv == null) return;
+            
+            if (consumeRequiredItems && requiredItems != null) {
+                foreach (var req in requiredItems) {
+                    if (req.item == null) continue;
+                    inv.Remove(req.item, req.count);
+                }
+            }
+            
+            isUnlocked = true;
+        }
+    
         isOpen = !isOpen;
-
         UpdateDoorVisuals();
-
         Debug.Log(isOpen ? "Door Opened" : "Door Closed");
     }
 

@@ -10,4 +10,7 @@ public struct FrameInput
     
     public bool InteractDown;
     public bool InteractHeld;
+    
+    public Vector2 LookPosition;
+    public bool LookAroundHeld;
 }

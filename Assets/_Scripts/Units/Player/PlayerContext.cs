@@ -19,7 +19,7 @@ namespace HSM
         public bool isCrouching;
         
         
-        // for Complex interactables
+        // for Complex interactables (may be in future)
         public bool isInteracting;
         
         
@@ -44,7 +44,7 @@ namespace HSM
         public Collider2D coll;
         public AudioSource audio;
         
-        
+        public PlayerInventory inventory;
 
         public bool HasBufferedJump => bufferedJumpUsable && stats != null && time < timeJumpWasPressed + stats.JumpBuffer;
         public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && time < frameLeftGrounded + stats.CoyoteTime;

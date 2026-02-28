@@ -14,6 +14,9 @@ public class InputManager : MonoBehaviour
     public event Action OnInteractStarted;
     public event Action OnInteractCanceled;
     
+    public event Action<Vector2> OnLook;
+    public event Action<bool> OnLookAroundToggled;
+    
     private PlayerInput _playerInput;
     
     private void Awake()
@@ -49,6 +52,12 @@ public class InputManager : MonoBehaviour
         
         actions["Interact"].performed += HandleInteractStarted;
         actions["Interact"].canceled += HandleInteractCanceled;
+        
+        actions["Look"].performed += HandleLook;
+        actions["Look"].canceled += HandleLook;
+        
+        actions["LookAround"].performed += HandleLookAround;
+        actions["LookAround"].canceled += HandleLookAround;
     }
     
     private void UnregisterInputs()
@@ -69,6 +78,12 @@ public class InputManager : MonoBehaviour
         
         actions["Interact"].performed -= HandleInteractStarted;
         actions["Interact"].canceled -= HandleInteractCanceled;
+        
+        actions["Look"].performed -= HandleLook;
+        actions["Look"].canceled -= HandleLook;
+        
+        actions["LookAround"].performed -= HandleLookAround;
+        actions["LookAround"].canceled -= HandleLookAround;
     }
 
     private void HandleMove(InputAction.CallbackContext ctx) => OnMove?.Invoke(ctx.ReadValue<Vector2>());
@@ -76,6 +91,10 @@ public class InputManager : MonoBehaviour
     private void HandleJumpCanceled(InputAction.CallbackContext ctx) => OnJumpCanceled?.Invoke();
     private void HandleRun(InputAction.CallbackContext ctx) => OnRunToggled?.Invoke(ctx.performed);
     private void HandleCrouch(InputAction.CallbackContext ctx) => OnCrouchToggled?.Invoke(ctx.performed);
+    
     private void HandleInteractStarted(InputAction.CallbackContext ctx) => OnInteractStarted?.Invoke();
     private void HandleInteractCanceled(InputAction.CallbackContext ctx) => OnInteractCanceled?.Invoke();
+    
+    private void HandleLook(InputAction.CallbackContext ctx) => OnLook?.Invoke(ctx.ReadValue<Vector2>());
+    private void HandleLookAround(InputAction.CallbackContext ctx) => OnLookAroundToggled?.Invoke(ctx.performed);
 }

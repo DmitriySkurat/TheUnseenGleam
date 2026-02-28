@@ -5,41 +5,46 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Volume))]
 public class VignetteController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private CameraFollow cameraFollow;
-
-    private Volume volume;
-    private Vignette vignette;
-
+    
+    [Header("Intensity Settings")]
     [SerializeField] private float defaultIntensity = 0.5f;
     [SerializeField] private float aimIntensity = 0.25f;
+    
+    [Header("Smoothing")]
     [SerializeField] private float smoothSpeed = 5f;
+    
+    private Volume _volume;
+    private Vignette _vignette;
+
 
     private float currentIntensity;
 
     private void Awake()
     {
-        volume = GetComponent<Volume>();
+        _volume = GetComponent<Volume>();
 
-        if (!volume.profile.TryGet(out vignette))
+        if (!_volume.profile.TryGet(out _vignette))
         {
             Debug.LogError("Vignette effect not found in Volume Profile!");
         }
         else
         {
             currentIntensity = defaultIntensity;
-            vignette.intensity.value = defaultIntensity;
+            _vignette.intensity.value = defaultIntensity;
         }
     }
 
     private void Update()
     {
-        if (vignette == null || cameraFollow == null) return;
+        if (_vignette == null || cameraFollow == null) return;
 
         // Vignette reduces only when camera is looking around
         bool isLooking = cameraFollow.IsLookingAround();
         float targetIntensity = isLooking ? aimIntensity : defaultIntensity;
 
         currentIntensity = Mathf.Lerp(currentIntensity, targetIntensity, Time.deltaTime * smoothSpeed);
-        vignette.intensity.value = currentIntensity;
+        _vignette.intensity.value = currentIntensity;
     }
 }
