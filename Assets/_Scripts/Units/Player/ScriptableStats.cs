@@ -43,6 +43,10 @@ public class ScriptableStats : ScriptableObject
     [Range(1f, 2f)]
     public float RunSpeedMultiplier = 1.5f;
     
+    [Tooltip("Window of time during which a specific input is still considered valid, even if the timing wasn't frame-perfect")]  
+    [Range(0.01f, 0.5f)]
+    public float GraceTime = 0.08f;
+    
     [Header("STAMINA")]
     [Tooltip("Maximum stamina value")]
     public float MaxStamina = 100f;

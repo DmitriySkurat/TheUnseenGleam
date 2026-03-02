@@ -17,7 +17,8 @@ namespace HSM
         public float timeInteractWasPressed;
         
         
-        
+        public float movementGraceTimer;
+
         public bool isCrouching;
         
         
@@ -55,5 +56,8 @@ namespace HSM
         public bool CanInteract => time > timeLastInteraction + stats.InteractionCooldown;
         
         public bool CanRun => stamina > stats.MinStaminaToRun;
+        
+        public bool HasMovementIntent => movementGraceTimer > 0f;
+        
     }
 }

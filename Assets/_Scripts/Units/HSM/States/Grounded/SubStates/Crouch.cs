@@ -19,7 +19,6 @@ namespace HSM {
 
             col = ctx.coll as CapsuleCollider2D;
             if (col != null) {
-                // сохранение оригинала
                 originalColliderSize = col.size;
                 originalColliderOffset = col.offset;
 
@@ -50,7 +49,8 @@ namespace HSM {
             if (ctx.ceilingAbove) return null;
             if (!ctx.input.CrouchHeld) 
             {
-                if (Mathf.Abs(ctx.input.Move.x) > 0.01f) return Machine != null ? Machine.GetState<Move>() : null;
+                //if (Mathf.Abs(ctx.input.Move.x) > 0.01f) return Machine != null ? Machine.GetState<Move>() : null;
+                if (ctx.HasMovementIntent) return Machine != null ? Machine.GetState<Move>() : null;
                 return Machine != null ? Machine.GetState<Idle>() : null;
             }
             return null;

@@ -20,10 +20,17 @@ MonoBehaviour:
   HorizontalDeadZoneThreshold: 0.1
   MaxSpeed: 14
   Acceleration: 120
-  GroundDeceleration: 60
+  GroundDeceleration: 50
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
+  WalkSpeedMultiplier: 1
+  RunSpeedMultiplier: 1.5
+  GraceTime: 0.08
+  MaxStamina: 100
+  StaminaDrainPerSecond: 20
+  StaminaRegenPerSecond: 15
+  MinStaminaToRun: 35
   JumpPower: 36
   MaxFallSpeed: 40
   FallAcceleration: 110

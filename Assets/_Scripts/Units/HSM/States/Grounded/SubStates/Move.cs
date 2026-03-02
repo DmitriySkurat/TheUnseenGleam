@@ -15,14 +15,15 @@ namespace HSM {
             Run = new Run (m, this, ctx);
             
             Add(new AnimatorBoolActivity(ctx.anim, "Moving", true, false));
-            Add(new AudioLoopActivity(ctx.audio));
+            //Add(new AudioLoopActivity(ctx.audio));
         }
 
         protected override State GetInitialState() => Walk;
         
         protected override State GetTransition() {
             if (ctx.input.CrouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
-            if (Mathf.Abs(ctx.input.Move.x) <= 0.01f) return Machine != null ? Machine.GetState<Idle>() : null;      
+            //if (Mathf.Abs(ctx.input.Move.x) <= 0.01f) return Machine != null ? Machine.GetState<Idle>() : null;      
+            if (!ctx.HasMovementIntent) return Machine != null ? Machine.GetState<Idle>() : null;      
             
             return null;
         }

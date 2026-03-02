@@ -4,12 +4,14 @@ namespace HSM {
     public class PlayerRoot : State {
         public readonly Grounded Grounded;
         public readonly Airborne Airborne;
+        public readonly Interaction Interaction;
         readonly PlayerContext ctx;
 
         public PlayerRoot(StateMachine m, PlayerContext ctx) : base(m, null) {
             this.ctx = ctx;
             Grounded = new Grounded(m, this, ctx);
             Airborne = new Airborne(m, this, ctx);
+            Interaction = new Interaction(m, this, ctx);
         }
         
         protected override State GetInitialState() => Grounded;

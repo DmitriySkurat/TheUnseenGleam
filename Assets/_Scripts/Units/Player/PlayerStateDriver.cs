@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 namespace HSM {
@@ -20,7 +21,8 @@ namespace HSM {
         private StateMachine _machine;
         private PlayerRoot _root;
 
-        private string _lastPath;
+        
+        #region Initialization
 
         void Awake() {
             _rb = gameObject.GetComponent<Rigidbody2D>();
@@ -29,11 +31,7 @@ namespace HSM {
 
             if (_inputManager == null) _inputManager = GetComponent<InputManager>();
             
-            // initialize components
-            _components = GetComponentsInChildren<IPlayerComponent>();
-            foreach (var component in _components) {
-                component.Initialize(ctx, this);
-            }
+            InitializeComponents();
 
             ctx.rb = _rb;
             ctx.anim = GetComponentInChildren<Animator>();
@@ -56,7 +54,15 @@ namespace HSM {
             _machine = builder.Build();
         }
 
-        
+        void InitializeComponents()
+        {
+            _components = GetComponentsInChildren<IPlayerComponent>();
+            foreach (var component in _components) {
+                component.Initialize(ctx, this);
+            }
+        }
+
+        #endregion
 
         void FixedUpdate() {
             if (_stats == null || _col == null) return;
@@ -64,7 +70,7 @@ namespace HSM {
             ctx.time = Time.time;
             
             ctx.input = _frameInput;
-            
+            UpdateMovementGrace(Time.fixedDeltaTime);
 
             CheckCollisions();
             _machine.Tick(Time.fixedDeltaTime);
@@ -73,13 +79,13 @@ namespace HSM {
             _frameInput.JumpDown = false;
 
 
-            // for debbing, print current state path when it changes
-            var path = StatePath(_machine.Root.Leaf());
-            if (path != _lastPath) {
-                Debug.Log("State: " + path);
-                _lastPath = path;
-            }
+            //Debug
+            PrintStatePath();
+            
+            //Debug.Log($"Stamina: {ctx.stamina}");
         }
+
+        #region Physics And Similar
 
         void CheckCollisions() {
             Physics2D.queriesStartInColliders = false;
@@ -109,8 +115,25 @@ namespace HSM {
 
             Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
         }
+        
+        void UpdateMovementGrace(float deltaTime)
+        {
+            if (Mathf.Abs(ctx.input.Move.x) > 0.01f)
+            {
+                ctx.movementGraceTimer = _stats.GraceTime;
+            }
+            else
+            {
+                ctx.movementGraceTimer -= deltaTime;
+            }
+        }
 
-        void ApplyMovement() => _rb.linearVelocity = ctx.velocity;
+        void ApplyMovement()
+        {
+           _rb.linearVelocity = ctx.velocity; 
+        } 
+        
+        #endregion
         
         #region Player Input Handling
         
@@ -212,6 +235,17 @@ namespace HSM {
             if (_stats == null) Debug.LogWarning("Please assign a ScriptableStats asset to the Player State Driver's Stats slot", this);
         }
 #endif
+
+        private string _lastPath;
+        
+        void PrintStatePath() 
+        {
+            var path = StatePath(_machine.Root.Leaf());
+            if (path != _lastPath) {
+                Debug.Log("State: " + path);
+                _lastPath = path;
+            }
+        }
 
         static string StatePath(State s) {
             return string.Join(" > ", s.PathToRoot().Reverse().Select(n => n.GetType().Name));

@@ -8,7 +8,7 @@ namespace HSM {
         public Run(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
             Add(new AnimatorBoolActivity(ctx.anim, "Running", true, false));
-            Add(new AudioLoopActivity(ctx.audio));
+            //Add(new AudioLoopActivity(ctx.audio));
         }
         
         protected override void OnEnter()
@@ -18,7 +18,7 @@ namespace HSM {
         }
 
         protected override State GetTransition() {
-            if (!ctx.input.RunHeld || !ctx.CanRun) return Machine != null ? Machine.GetState<Walk>() : null;
+            if (!ctx.input.RunHeld || ctx.stamina <= 0.01f) return Machine != null ? Machine.GetState<Walk>() : null;
             
             return null;
         }

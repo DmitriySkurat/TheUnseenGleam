@@ -7,8 +7,8 @@ namespace HSM {
 
         public Walk(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "Running", true, false));
-            Add(new AudioLoopActivity(ctx.audio));
+            Add(new AnimatorBoolActivity(ctx.anim, "Walking", true, false));
+            //Add(new AudioLoopActivity(ctx.audio));
         }
         
         protected override void OnEnter()
