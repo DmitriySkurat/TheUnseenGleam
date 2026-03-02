@@ -10,10 +10,7 @@ public class DoorInteractable : Interactable
     [SerializeField] private Sprite closedDoorSprite;
 
     [SerializeField] private bool disableColliderWhenOpen = true;
-    
-    [Header("Consume Settings")]
-    [Tooltip("Whether to delete required items after interaction")]
-    [SerializeField] private bool consumeRequiredItems = true;
+
 
     private Collider2D _doorCollider;
     
@@ -33,36 +30,6 @@ public class DoorInteractable : Interactable
         UpdateDoorVisuals(); 
     }
     
-    public override bool CanBeInteractedBy(Interactor interactor)
-    {
-        if (isUnlocked)
-            return true;
-
-        return base.CanBeInteractedBy(interactor);
-    }
-
-    public override void Interact(Interactor interactor)
-    {
-        if (interactor is PlayerInteractor p) 
-        {
-            var inv = p.Context?.inventory;
-            if (inv == null) return;
-            
-            if (consumeRequiredItems && requiredItems != null) {
-                foreach (var req in requiredItems) {
-                    if (req.item == null) continue;
-                    inv.Remove(req.item, req.count);
-                }
-            }
-            
-            isUnlocked = true;
-        }
-    
-        isOpen = !isOpen;
-        UpdateDoorVisuals();
-        Debug.Log(isOpen ? "Door Opened" : "Door Closed");
-    }
-
     private void UpdateDoorVisuals() {
         if (_sr != null) {
             if (isOpen && openDoorSprite != null) _sr.sprite = openDoorSprite;
@@ -72,9 +39,23 @@ public class DoorInteractable : Interactable
         if (_doorCollider != null && disableColliderWhenOpen) {
             _doorCollider.isTrigger = isOpen; 
             // не сработает с - _doorCollider.enabled = !isOpen;
-        }
+        } 
+    }
 
-        
+    public override void OnInteract(Interactor interactor)
+    {
+        isUnlocked = true;
+    
+        isOpen = !isOpen;
+        UpdateDoorVisuals();
+        Debug.Log(isOpen ? "Door Opened" : "Door Closed");
+    }
+
+    protected override void OnAfterInteraction(PlayerInteractor player)
+    {
+        if (isUnlocked) return;
+
+        base.OnAfterInteraction(player);
     }
 
     public override void Select() {

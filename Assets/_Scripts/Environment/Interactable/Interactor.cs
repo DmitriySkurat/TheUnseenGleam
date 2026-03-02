@@ -18,6 +18,6 @@ public class Interactor : MonoBehaviour {
         if (currentInteractable == null) return;
         if (currentInteractable.IsComplex) return;
         
-        currentInteractable.Interact(this);
+        currentInteractable.TryInteract(this);
     }
 }

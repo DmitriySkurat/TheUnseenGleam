@@ -3,10 +3,12 @@ using UnityEngine;
 [CreateAssetMenu]
 public class ScriptableStats : ScriptableObject
 {
-    [Header("LAYERS")] [Tooltip("Set this to the layer your player is on")]
+    [Header("LAYERS")]
+    [Tooltip("Set this to the layer your player is on")]
     public LayerMask PlayerLayer;
 
-    [Header("INPUT")] [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
+    [Header("INPUT")]
+    [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
     public bool SnapInput = true;
 
     [Tooltip("Minimum input required before you mount a ladder or climb a ledge. Avoids unwanted climbing using controllers"), Range(0.01f, 0.99f)]
@@ -15,7 +17,8 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("Minimum input required before a left or right is recognized. Avoids drifting with sticky controllers"), Range(0.01f, 0.99f)]
     public float HorizontalDeadZoneThreshold = 0.1f;
 
-    [Header("MOVEMENT")] [Tooltip("The top horizontal movement speed")]
+    [Header("MOVEMENT")]
+    [Tooltip("The top horizontal movement speed")]
     public float MaxSpeed = 14;
 
     [Tooltip("The player's capacity to gain horizontal speed")]
@@ -32,8 +35,29 @@ public class ScriptableStats : ScriptableObject
 
     [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.5f)]
     public float GrounderDistance = 0.05f;
+    
+    [Tooltip("Multiplier applied to MaxSpeed while walking")]
+    public float WalkSpeedMultiplier = 1f;
+    
+    [Tooltip("Multiplier applied to MaxSpeed while running")]
+    [Range(1f, 2f)]
+    public float RunSpeedMultiplier = 1.5f;
+    
+    [Header("STAMINA")]
+    [Tooltip("Maximum stamina value")]
+    public float MaxStamina = 100f;
 
-    [Header("JUMP")] [Tooltip("The immediate velocity applied when jumping")]
+    [Tooltip("Stamina drained per second while running")]
+    public float StaminaDrainPerSecond = 20f;
+
+    [Tooltip("Stamina regenerated per second when not running")]
+    public float StaminaRegenPerSecond = 15f;
+    
+    [Tooltip("Minimum stamina required to START running")]
+    public float MinStaminaToRun = 35f;
+
+    [Header("JUMP")]
+    [Tooltip("The immediate velocity applied when jumping")]
     public float JumpPower = 36;
 
     [Tooltip("The maximum vertical movement speed")]
@@ -72,4 +96,6 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("Noise multiplier while crouching (for stealth systems)")]
     [Range(0f, 1f)]
     public float CrouchNoiseMultiplier = 0.3f;
+    
+
 }

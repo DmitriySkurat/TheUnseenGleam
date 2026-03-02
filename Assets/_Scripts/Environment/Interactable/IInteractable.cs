@@ -3,7 +3,8 @@ using UnityEngine;
 public interface IInteractable {
         void Select(); // Подсветка вкл
         void Unselect(); // Подсветка выкл
-        void Interact(Interactor interactor); 
+        void TryInteract(Interactor interactor);
+        void OnInteract(Interactor interactor); 
 
         bool CanBeInteractedBy(Interactor interactor);
         

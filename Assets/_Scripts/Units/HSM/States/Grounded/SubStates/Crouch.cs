@@ -14,7 +14,7 @@ namespace HSM {
         }
         
         protected override void OnEnter() {
-            base.OnEnter();
+            ctx.currentSpeedMultiplier = ctx.stats.CrouchSpeedMultiplier;
             ctx.isCrouching = true;
 
             col = ctx.coll as CapsuleCollider2D;
@@ -32,6 +32,8 @@ namespace HSM {
                 col.size = newSize;
                 col.offset = newOffset;
             }
+            
+            base.OnEnter();
         }
         
         protected override void OnExit() {
@@ -46,18 +48,13 @@ namespace HSM {
 
         protected override State GetTransition() {
             if (ctx.ceilingAbove) return null;
-            if (!ctx.input.CrouchHeld) return Machine != null ? Machine.GetState<Idle>() : null;
-            return ctx.grounded ? null : (Machine != null ? Machine.GetState<Airborne>() : null);
+            if (!ctx.input.CrouchHeld) 
+            {
+                if (Mathf.Abs(ctx.input.Move.x) > 0.01f) return Machine != null ? Machine.GetState<Move>() : null;
+                return Machine != null ? Machine.GetState<Idle>() : null;
+            }
+            return null;
         }
 
-        protected override void OnUpdate(float deltaTime) {
-            // ограничиваем горизонтальную скорость в приседе
-            if (ctx.stats != null) {
-                float target = 0f;
-                if (Mathf.Abs(ctx.input.Move.x) > 0.01f) target = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.stats.CrouchSpeedMultiplier;
-                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, target, ctx.stats.Acceleration * deltaTime);
-            }
-            base.OnUpdate(deltaTime);
-        }
     }
 }

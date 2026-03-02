@@ -19,6 +19,7 @@ namespace HSM {
             if (ctx.stats != null) {
                 HandleJump();
                 HandleGravity(deltaTime);
+                StaminaRecovery(deltaTime);
             }
             base.OnUpdate(deltaTime);
         }
@@ -54,6 +55,15 @@ namespace HSM {
                 var inAirGravity = ctx.stats.FallAcceleration;
                 if (ctx.endedJumpEarly && ctx.velocity.y > 0) inAirGravity *= ctx.stats.JumpEndEarlyGravityModifier;
                 ctx.velocity.y = Mathf.MoveTowards(ctx.velocity.y, -ctx.stats.MaxFallSpeed, inAirGravity * deltaTime);
+            }
+        }
+        
+        void StaminaRecovery(float deltaTime)
+        {
+            if (!(Machine.Root.Leaf() is Run))
+            {
+                ctx.stamina += ctx.stats.StaminaRegenPerSecond * deltaTime;
+                ctx.stamina = Mathf.Min(ctx.stamina, ctx.stats.MaxStamina);
             }
         }
     }

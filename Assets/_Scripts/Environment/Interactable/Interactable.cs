@@ -12,8 +12,13 @@ public abstract class Interactable : MonoBehaviour, IInteractable {
     public bool highlightOnFocus = true; // Включать ли подсветку при фокусе
     public Color highlightColor = Color.yellow;
     
+    [Header("Interaction Settings")]
+    [SerializeField] private bool canEnemyInteract = true;
+    
+    [SerializeField] private bool consumeRequiredItems = true;
+    
     protected SpriteRenderer _sr;
-    private Color _defaultColor;
+    protected Color _defaultColor;
 
     public virtual bool IsComplex => false;
     
@@ -26,6 +31,7 @@ public abstract class Interactable : MonoBehaviour, IInteractable {
     
     [Header("Requirements (optional)")]
     public List<ItemRequirement> requiredItems = new List<ItemRequirement>();
+
 
     void Awake()
     {
@@ -46,38 +52,102 @@ public abstract class Interactable : MonoBehaviour, IInteractable {
         _sr.color = _defaultColor;
     }
     
-    // Проверка, может ли данный Interactor выполнить взаимодействие (наличие предметов)
+    // Может ли Interactor взаимодействовать (наличие предметов)
     public virtual bool CanBeInteractedBy(Interactor interactor) {
-        if (requiredItems == null || requiredItems.Count == 0) return true; // ничего не нужно
-        if (interactor is PlayerInteractor player) {
-            var inv = player.Context?.inventory;
-            if (inv == null) return false;
-            foreach (var req in requiredItems) {
-                if (req.item == null) continue;
-                if (!inv.Has(req.item, req.count)) return false;
-            }
-            return true;
-        }
-        // если интерактор не игрок — по умолчанию запрещаем (или разрешаем — на ваш выбор)
-        return false;
+        if (requiredItems == null || requiredItems.Count == 0) return true;
+        if (!(interactor is PlayerInteractor player)) return canEnemyInteract;
+        
+        return HasAllRequiredItems(player);
     }
 
-    // Удобная строка с отсутствующими предметами (для UI)
+    // Отсутствующие предметы (мб для UI сделать потом)
     public virtual string GetMissingItemsString(Interactor interactor) {
         if (requiredItems == null || requiredItems.Count == 0) return "";
         if (!(interactor is PlayerInteractor player)) return "";
+        
         var inv = player.Context?.inventory;
         if (inv == null) return "";
+        
         var missing = new List<string>();
         foreach (var req in requiredItems) {
             if (req.item == null) continue;
             int have = 0;
             var e = inv.GetEntries();
-            foreach (var en in e) { if (en.item == req.item) { have = en.count; break; } }
-            if (have < req.count) missing.Add($"{req.item.itemName} x{req.count - have}");
+            
+            foreach (var en in e) 
+            { 
+                if (en.item == req.item) 
+                { 
+                    have = en.count;
+                    break; 
+                } 
+            }
+            if (have < req.count) 
+                missing.Add($"{req.item.itemName} x{req.count - have}");
         }
+        
         return string.Join(", ", missing);
     }
+    
+    // Проверка на нужные предметы
+    protected virtual bool HasAllRequiredItems(PlayerInteractor player)
+    {
+        if (requiredItems == null || requiredItems.Count == 0) return true;
 
-    public abstract void Interact(Interactor interactor);
+        var inv = player.Context?.inventory;
+        if (inv == null) return false;
+
+        foreach (var req in requiredItems)
+        {
+            if (req.item == null) continue;
+            if (!inv.Has(req.item, req.count))
+                return false;
+        }
+
+        return true;
+    }
+    
+    // Удаление предметов при взаимодействии
+    protected virtual void ConsumeRequiredItems(PlayerInteractor player)
+    {
+        if (!consumeRequiredItems || requiredItems == null || requiredItems.Count == 0) return;
+
+        var inv = player.Context?.inventory;
+        if (inv == null) return;
+
+        foreach (var req in requiredItems)
+        {
+            if (req.item == null) continue;
+            inv.Remove(req.item, req.count);
+        }
+    }
+    
+    public void TryInteract(Interactor interactor)
+    {
+        if (!CanBeInteractedBy(interactor))
+            return;
+
+        if (interactor is PlayerInteractor player)
+        {
+            if (!HasAllRequiredItems(player))
+                return;
+
+            OnBeforeInteraction(player); 
+            OnInteract(interactor);     
+            OnAfterInteraction(player);   
+        }
+        else
+        {
+            OnInteract(interactor);
+        }
+    }
+
+    protected virtual void OnBeforeInteraction(PlayerInteractor player) { }
+
+    protected virtual void OnAfterInteraction(PlayerInteractor player)
+    {
+        ConsumeRequiredItems(player);
+    }
+    
+    public abstract void OnInteract(Interactor interactor);
 }

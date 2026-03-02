@@ -10,6 +10,8 @@ namespace HSM
         public FrameInput input;
         public ScriptableStats stats;
         
+        public float currentSpeedMultiplier = 1f;
+        
         
         public bool jumpToConsume;
         public float timeInteractWasPressed;
@@ -23,6 +25,7 @@ namespace HSM
         public bool isInteracting;
         
         
+        public float stamina = 100f;
         
         public bool ceilingAbove;
 
@@ -50,5 +53,7 @@ namespace HSM
         public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && time < frameLeftGrounded + stats.CoyoteTime;
         
         public bool CanInteract => time > timeLastInteraction + stats.InteractionCooldown;
+        
+        public bool CanRun => stamina > stats.MinStaminaToRun;
     }
 }

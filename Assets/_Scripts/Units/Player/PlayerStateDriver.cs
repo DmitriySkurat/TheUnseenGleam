@@ -31,7 +31,6 @@ namespace HSM {
             
             // initialize components
             _components = GetComponentsInChildren<IPlayerComponent>();
-            
             foreach (var component in _components) {
                 component.Initialize(ctx, this);
             }
