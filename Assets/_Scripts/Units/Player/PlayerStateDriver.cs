@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace HSM {
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlayerInteractor))]
-    public class PlayerStateDriver : MonoBehaviour, IInitializable, IDisposable {
+    public class PlayerStateDriver : MonoBehaviour, ISceneLifecycle {
         public PlayerContext ctx = new PlayerContext();
 
         [SerializeField] private ScriptableStats _stats;
@@ -37,6 +37,8 @@ namespace HSM {
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
             _inputManager = Services.Get<InputManager>();
+            
+            SubscribeInput();
             
             InitializeComponents();
 
