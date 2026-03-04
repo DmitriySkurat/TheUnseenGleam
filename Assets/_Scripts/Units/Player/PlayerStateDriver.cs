@@ -6,7 +6,7 @@ using UnityEngine;
 namespace HSM {
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlayerInteractor))]
     public class PlayerStateDriver : MonoBehaviour, ISceneLifecycle {
-        public PlayerContext ctx = new PlayerContext();
+        private PlayerContext _ctx;
 
         [SerializeField] private ScriptableStats _stats;
         [SerializeField] private InputManager _inputManager;
@@ -14,7 +14,7 @@ namespace HSM {
         public InitializationOrder Order => InitializationOrder.Player;
         
         //player components (like PlayerInteractor) will register themselves here to receive context and driver references
-        private IPlayerComponent[] _components;
+        //private IPlayerComponent[] _components;
 
         private Rigidbody2D _rb;
         private CapsuleCollider2D _col;
@@ -32,40 +32,53 @@ namespace HSM {
         
         public void Initialize()
         {
-            _rb = gameObject.GetComponent<Rigidbody2D>();
-            _col = GetComponent<CapsuleCollider2D>();
+            _ctx = Services.Get<PlayerContext>();
+            
+            
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
             _inputManager = Services.Get<InputManager>();
             
+            
+            //InitializeComponents();
+
+            SetupReferences();
+            
             SubscribeInput();
-            
-            InitializeComponents();
 
-            ctx.rb = _rb;
-            ctx.anim = GetComponentInChildren<Animator>();
-            ctx.renderer = GetComponentInChildren<Renderer>();
-            ctx.coll = _col;
-            ctx.audio = GetComponent<AudioSource>();
-            ctx.stats = _stats;
-            
-
-            if (_stats != null) {
-                ctx.moveSpeed = _stats.MaxSpeed;
-                ctx.accel = _stats.Acceleration;
-                ctx.jumpSpeed = _stats.JumpPower;
-            }
-
-            ctx.velocity = _rb.linearVelocity;
-
-            _root = new PlayerRoot(null, ctx);
+            _root = new PlayerRoot(null, _ctx);
             var builder = new StateMachineBuilder(_root);
             _machine = builder.Build();
+        }
+        
+        void SetupReferences()
+        {
+            _rb = gameObject.GetComponent<Rigidbody2D>();
+            _col = GetComponent<CapsuleCollider2D>();
+            
+            _ctx.rb = _rb;
+            _ctx.anim = GetComponentInChildren<Animator>();
+            _ctx.renderer = GetComponentInChildren<Renderer>();
+            _ctx.coll = _col;
+            _ctx.audio = GetComponent<AudioSource>();
+            _ctx.stats = _stats;
+            
+
+            if (_stats != null) 
+            {
+                _ctx.moveSpeed = _stats.MaxSpeed;
+                _ctx.accel = _stats.Acceleration;
+                _ctx.jumpSpeed = _stats.JumpPower;
+            }
+
+            _ctx.velocity = _rb.linearVelocity;
         }
         
         public void Dispose()
         {
             UnsubscribeInput();
+            
+            //Services.Unregister<PlayerContext>();
         }
 
         // void Awake() {
@@ -98,22 +111,22 @@ namespace HSM {
         //     _machine = builder.Build();
         // }
 
-        void InitializeComponents()
-        {
-            _components = GetComponentsInChildren<IPlayerComponent>();
-            foreach (var component in _components) {
-                component.Initialize(ctx, this);
-            }
-        }
+        // void InitializeComponents()
+        // {
+        //     _components = GetComponentsInChildren<IPlayerComponent>();
+        //     foreach (var component in _components) {
+        //         component.Initialize(ctx, this);
+        //     }
+        // }
 
         #endregion
 
         void FixedUpdate() {
             if (_stats == null || _col == null) return;
 
-            ctx.time = Time.time;
+            _ctx.time = Time.time;
             
-            ctx.input = _frameInput;
+            _ctx.input = _frameInput;
             UpdateMovementGrace(Time.fixedDeltaTime);
 
             CheckCollisions();
@@ -134,27 +147,27 @@ namespace HSM {
         void CheckCollisions() {
             Physics2D.queriesStartInColliders = false;
 
-            bool wasGrounded = ctx.grounded;
+            bool wasGrounded = _ctx.grounded;
             bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _stats.GrounderDistance, ~_stats.PlayerLayer);
             bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _stats.GrounderDistance, ~_stats.PlayerLayer);
 
-            if (ceilingHit) ctx.velocity.y = Mathf.Min(0, ctx.velocity.y);
+            if (ceilingHit) _ctx.velocity.y = Mathf.Min(0, _ctx.velocity.y);
 
             if (!wasGrounded && groundHit) {
-                ctx.grounded = true;
-                ctx.coyoteUsable = true;
-                ctx.bufferedJumpUsable = true;
-                ctx.endedJumpEarly = false;
+                _ctx.grounded = true;
+                _ctx.coyoteUsable = true;
+                _ctx.bufferedJumpUsable = true;
+                _ctx.endedJumpEarly = false;
             } else if (wasGrounded && !groundHit) {
-                ctx.grounded = false;
-                ctx.frameLeftGrounded = ctx.time;
+                _ctx.grounded = false;
+                _ctx.frameLeftGrounded = _ctx.time;
             } else {
-                ctx.grounded = groundHit;
+                _ctx.grounded = groundHit;
             }
             
-            if (ctx.isCrouching)
+            if (_ctx.isCrouching)
             {
-                ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _stats.CeilingCheckDistance, ~_stats.PlayerLayer);
+                _ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _stats.CeilingCheckDistance, ~_stats.PlayerLayer);
             }
 
             Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
@@ -162,19 +175,19 @@ namespace HSM {
         
         void UpdateMovementGrace(float deltaTime)
         {
-            if (Mathf.Abs(ctx.input.Move.x) > 0.01f)
+            if (Mathf.Abs(_ctx.input.Move.x) > 0.01f)
             {
-                ctx.movementGraceTimer = _stats.GraceTime;
+                _ctx.movementGraceTimer = _stats.GraceTime;
             }
             else
             {
-                ctx.movementGraceTimer -= deltaTime;
+                _ctx.movementGraceTimer -= deltaTime;
             }
         }
 
         void ApplyMovement()
         {
-           _rb.linearVelocity = ctx.velocity; 
+           _rb.linearVelocity = _ctx.velocity; 
         } 
         
         #endregion
@@ -258,8 +271,8 @@ namespace HSM {
             _frameInput.JumpDown = true;
             _frameInput.JumpHeld = true;
 
-            ctx.jumpToConsume = true;
-            ctx.timeJumpWasPressed = Time.time;
+            _ctx.jumpToConsume = true;
+            _ctx.timeJumpWasPressed = Time.time;
         }
 
         void HandleJumpCanceled() {
@@ -282,7 +295,7 @@ namespace HSM {
             _frameInput.InteractDown = true;
             _frameInput.InteractHeld = true;
             
-            ctx.timeInteractWasPressed = Time.time;
+            _ctx.timeInteractWasPressed = Time.time;
         }
         
         void HandleInteractCanceled()
@@ -346,7 +359,7 @@ namespace HSM {
             Gizmos.matrix = Matrix4x4.identity;
             
             // CeilingAbove
-            Gizmos.color = ctx.ceilingAbove ? Color.red : Color.green;
+            Gizmos.color = _ctx.ceilingAbove ? Color.red : Color.green;
             Gizmos.DrawLine(transform.position, transform.position + Vector3.up * _stats.CeilingCheckDistance);
             Gizmos.DrawWireSphere(transform.position + Vector3.up * _stats.CeilingCheckDistance, 0.05f);
 

@@ -2,9 +2,11 @@
 using HSM;
 using Unity.VisualScripting;
 
-public class CameraFollow : MonoBehaviour, IPlayerComponent
+public class CameraFollow : MonoBehaviour, IInitializable
 {
-    [Header("References")]
+    public InitializationOrder Order => InitializationOrder.Camera;
+
+    [Header("References")] 
     [SerializeField] private Transform target;
     
     [Header("Movement")]
@@ -18,17 +20,19 @@ public class CameraFollow : MonoBehaviour, IPlayerComponent
     private Vector3 _currentOffset;
     private bool _isLookingAround; 
     
+    
+    
     PlayerContext _ctx;
-    PlayerStateDriver _driver;
+    //PlayerStateDriver _driver;
 
     public bool IsLookingAround() => _isLookingAround;
 
-    public void Initialize(PlayerContext context, PlayerStateDriver driver) {
-        _ctx = context;
-        _driver = driver;
+    public void Initialize() {
+        _ctx = Services.Get<PlayerContext>();
+        // _driver = driver;
         
-        if (target == null)
-            target = _driver.transform;
+        // if (target == null)
+        //     target = _driver.transform;
     }
 
     private void Update()

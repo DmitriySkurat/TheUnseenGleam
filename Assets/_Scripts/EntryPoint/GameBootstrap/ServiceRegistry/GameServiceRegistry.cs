@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class ServiceRegistry : MonoBehaviour
+public class GameServiceRegistry : MonoBehaviour
 {
     [SerializeField] private InputManager inputPrefab;
     [SerializeField] private AudioManager audioPrefab;

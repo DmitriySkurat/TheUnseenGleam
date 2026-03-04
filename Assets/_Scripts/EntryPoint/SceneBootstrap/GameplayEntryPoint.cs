@@ -10,16 +10,26 @@ namespace EntryPoint
     {
         [Header("Debug")]
         [SerializeField] private Utility.Logger _logger;
-
+        
         private List<IInitializable> _initializables;
         private List<IDisposable> _disposables;
 
         protected override void Bootstrap()
+        {    
+            // Скрываем курсор для погружения в игру
+            Cursor.visible = false;
+            
+            FindInializableObjects();
+            InitializeSceneObjects();
+
+            _logger?.Log("Scene initialization complete", this);
+        }
+        
+        private void FindInializableObjects()
         {
-            // Находим все IInitializable
             _initializables = Object
                 .FindObjectsByType<MonoBehaviour>(
-                    FindObjectsInactive.Exclude, // Inactive if we need to initialize them too
+                    FindObjectsInactive.Include, 
                     FindObjectsSortMode.None
                 )
                 .OfType<IInitializable>()
@@ -27,14 +37,13 @@ namespace EntryPoint
                 .ToList();
 
             _logger?.Log($"Found {_initializables.Count} initializables", this);
-
-            // Инициализация
+        }
+        
+        private void InitializeSceneObjects()
+        {
             foreach (var obj in _initializables)
             {
-                _logger?.Log(
-                    $"Initializing {obj.GetType().Name} | Order: {obj.Order}",
-                    obj as Object
-                );
+                _logger?.Log($"Initializing {obj.GetType().Name} | Order: {obj.Order}", obj as Object);
 
                 obj.Initialize();
             }
@@ -43,8 +52,6 @@ namespace EntryPoint
             _disposables = _initializables
                 .OfType<IDisposable>()
                 .ToList();
-
-            _logger?.Log("Scene initialization complete", this);
         }
 
         private void OnDestroy()

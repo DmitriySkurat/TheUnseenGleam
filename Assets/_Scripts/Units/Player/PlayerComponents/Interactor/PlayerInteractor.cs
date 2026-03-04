@@ -5,32 +5,39 @@ using NUnit.Framework;
 using HSM;
 
 [RequireComponent(typeof(Collider2D))]
-public class PlayerInteractor : Interactor, IPlayerComponent {
+public class PlayerInteractor : Interactor, IInitializable {
+    public InitializationOrder Order => InitializationOrder.Player + 10;
+
+
     [Header("Detection")]
     public float interactRadius = 1.2f;
     public LayerMask interactableLayer;
     public Transform interactOrigin;
+    
 
     [Header("UI")]
     public TextMeshProUGUI promptText;
 
     private PlayerContext _ctx;
-    private PlayerStateDriver _driver;
+    //private PlayerStateDriver _driver;
     
     public PlayerContext Context => _ctx;
     
-    public void Initialize(PlayerContext context, PlayerStateDriver driver) {
-        _ctx = context;
-        _driver = driver;
-    }
-
-    void Awake() {
+    public void Initialize() {
+        _ctx = Services.Get<PlayerContext>();
+        //_driver = driver;
+        
         if (interactOrigin == null) 
             interactOrigin = transform;
     }
 
+    // void Awake() {
+    //     if (interactOrigin == null) 
+    //         interactOrigin = transform;
+    // }
+
     void Update() {
-        if (_ctx == null || _driver == null)
+        if (_ctx == null) //|| _driver == null)
         {
             Debug.LogError("Придурок забыл инициализировать PlayerInteractor");
             return;

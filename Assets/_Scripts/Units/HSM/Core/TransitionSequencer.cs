@@ -23,6 +23,10 @@ namespace HSM {
         // Request a transition from one state to another
         public void RequestTransition(State from, State to) {
             if (to == null || from == to) return;
+            
+            if (Machine.Root.Leaf() == to)
+                return;
+            
             if (sequencer != null){ pending = (from, to); return; }
             BeginTransition(from, to);
         }

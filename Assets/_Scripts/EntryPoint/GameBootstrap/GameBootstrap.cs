@@ -10,7 +10,7 @@ namespace EntryPoint
     public class GameBootstrap : MonoBehaviour
     {
         //public static GameBootstrap Instance { get; private set; }
-        [SerializeField] private ServiceRegistry serviceRegistry;
+        [SerializeField] private GameServiceRegistry serviceRegistry;
 
 
         private IEnumerator Start()
@@ -35,7 +35,7 @@ namespace EntryPoint
             var loadingDuration = 1f;
             while(loadingDuration > 0f) {
                 loadingDuration -= Time.deltaTime;
-                Debug.Log("Loading... " + (2f - loadingDuration) / 2f * 100f + "%");
+                Debug.Log("Loading... " + (1f - loadingDuration) * 100f + "%");
                 yield return null;
             }
             Debug.Log("Loading complete! Starting game...");

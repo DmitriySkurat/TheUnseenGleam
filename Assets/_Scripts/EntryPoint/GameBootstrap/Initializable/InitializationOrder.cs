@@ -1,6 +1,6 @@
 public enum InitializationOrder
 {
-    SceneServices = 0,
+    SceneServices = 1,
     GameplayCore = 100,
     Player = 200,
     Camera = 300,

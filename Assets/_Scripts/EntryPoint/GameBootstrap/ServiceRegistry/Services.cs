@@ -14,6 +14,14 @@ public static class Services
 
         _services[type] = service;
     }
+    
+    public static void Unregister<T>() where T : class
+    {
+        var type = typeof(T);
+
+        if (_services.ContainsKey(type))
+            _services.Remove(type);
+    }
 
     public static T Get<T>() where T : class
     {

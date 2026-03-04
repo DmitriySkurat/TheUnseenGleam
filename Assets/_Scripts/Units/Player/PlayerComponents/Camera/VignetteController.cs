@@ -5,10 +5,12 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Volume))]
 public class VignetteController : MonoBehaviour, IInitializable
 {
+    public InitializationOrder Order => InitializationOrder.PostProcessing;
+
+
     [Header("References")]
     [SerializeField] private CameraFollow cameraFollow;
     
-    public InitializationOrder Order => InitializationOrder.PostProcessing;
     
     [Header("Intensity Settings")]
     [SerializeField] private float defaultIntensity = 0.5f;
