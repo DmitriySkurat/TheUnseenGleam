@@ -19,7 +19,7 @@ namespace EntryPoint
             // Находим все IInitializable
             _initializables = Object
                 .FindObjectsByType<MonoBehaviour>(
-                    FindObjectsInactive.Include,
+                    FindObjectsInactive.Exclude, // Inactive if we need to initialize them too
                     FindObjectsSortMode.None
                 )
                 .OfType<IInitializable>()

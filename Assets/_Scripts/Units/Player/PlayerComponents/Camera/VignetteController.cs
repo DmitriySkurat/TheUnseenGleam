@@ -3,10 +3,12 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Volume))]
-public class VignetteController : MonoBehaviour
+public class VignetteController : MonoBehaviour, IInitializable
 {
     [Header("References")]
     [SerializeField] private CameraFollow cameraFollow;
+    
+    public InitializationOrder Order => InitializationOrder.PostProcessing;
     
     [Header("Intensity Settings")]
     [SerializeField] private float defaultIntensity = 0.5f;
@@ -20,8 +22,9 @@ public class VignetteController : MonoBehaviour
 
 
     private float currentIntensity;
-
-    private void Awake()
+    
+    
+    public void Initialize()
     {
         _volume = GetComponent<Volume>();
 
@@ -35,6 +38,21 @@ public class VignetteController : MonoBehaviour
             _vignette.intensity.value = defaultIntensity;
         }
     }
+
+    // private void Awake()
+    // {
+    //     _volume = GetComponent<Volume>();
+
+    //     if (!_volume.profile.TryGet(out _vignette))
+    //     {
+    //         Debug.LogError("Vignette effect not found in Volume Profile!");
+    //     }
+    //     else
+    //     {
+    //         currentIntensity = defaultIntensity;
+    //         _vignette.intensity.value = defaultIntensity;
+    //     }
+    // }
 
     private void Update()
     {
