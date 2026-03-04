@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Threading.Tasks;
 
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviour, IService
 {
     public event Action<Vector2> OnMove;
     public event Action OnJumpStarted;
@@ -19,20 +20,46 @@ public class InputManager : MonoBehaviour
     
     private PlayerInput _playerInput;
     
-    private void Awake()
+    
+    private bool _initialized;
+    
+    public async Task InitializeAsync()
     {
         _playerInput = GetComponent<PlayerInput>();
-    }
-
-    private void OnEnable()
-    {
+        
+        if (_playerInput == null) {
+            Debug.LogError("PlayerInput component not found on InputManager!", this);
+            return;
+        }
+        
         RegisterInputs();
+        EnableGameplay();
+        
+        _initialized = true;
+        
+        await Task.CompletedTask;
     }
-
-    private void OnDisable()
+    
+    private void OnDestroy()
     {
-        UnregisterInputs();
+        if (_initialized)
+            UnregisterInputs();
     }
+    
+    // private void Awake()
+    // {
+    //     _playerInput = GetComponent<PlayerInput>();
+    // }
+    //
+    // private void OnEnable()
+    // {
+    //     RegisterInputs();
+    // }
+
+    // private void OnDisable()
+    // {
+    //     UnregisterInputs();
+    // }
     
     private void RegisterInputs()
     {
@@ -86,6 +113,19 @@ public class InputManager : MonoBehaviour
         actions["LookAround"].canceled -= HandleLookAround;
     }
 
+
+    public void EnableGameplay()
+    {
+        _playerInput.SwitchCurrentActionMap("Gameplay");
+    }
+
+    public void EnableUI()
+    {
+        _playerInput.SwitchCurrentActionMap("UI");
+    }
+
+    #region Input Handlers
+    
     private void HandleMove(InputAction.CallbackContext ctx) => OnMove?.Invoke(ctx.ReadValue<Vector2>());
     private void HandleJumpStarted(InputAction.CallbackContext ctx) => OnJumpStarted?.Invoke();
     private void HandleJumpCanceled(InputAction.CallbackContext ctx) => OnJumpCanceled?.Invoke();
@@ -97,4 +137,6 @@ public class InputManager : MonoBehaviour
     
     private void HandleLook(InputAction.CallbackContext ctx) => OnLook?.Invoke(ctx.ReadValue<Vector2>());
     private void HandleLookAround(InputAction.CallbackContext ctx) => OnLookAroundToggled?.Invoke(ctx.performed);
+    
+    #endregion
 }

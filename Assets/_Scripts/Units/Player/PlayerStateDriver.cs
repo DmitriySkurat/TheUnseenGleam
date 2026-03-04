@@ -1,14 +1,17 @@
 using System.Linq;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 namespace HSM {
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlayerInteractor))]
-    public class PlayerStateDriver : MonoBehaviour {
+    public class PlayerStateDriver : MonoBehaviour, IInitializable, IDisposable {
         public PlayerContext ctx = new PlayerContext();
 
         [SerializeField] private ScriptableStats _stats;
         [SerializeField] private InputManager _inputManager;
+        
+        public InitializationOrder Order => InitializationOrder.Player;
         
         //player components (like PlayerInteractor) will register themselves here to receive context and driver references
         private IPlayerComponent[] _components;
@@ -20,16 +23,20 @@ namespace HSM {
 
         private StateMachine _machine;
         private PlayerRoot _root;
+        
+        [Header("Debugging")]
+        [SerializeField] private Utility.Logger _logger;
 
         
         #region Initialization
-
-        void Awake() {
+        
+        public void Initialize()
+        {
             _rb = gameObject.GetComponent<Rigidbody2D>();
             _col = GetComponent<CapsuleCollider2D>();
             _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
 
-            if (_inputManager == null) _inputManager = GetComponent<InputManager>();
+            _inputManager = Services.Get<InputManager>();
             
             InitializeComponents();
 
@@ -53,6 +60,41 @@ namespace HSM {
             var builder = new StateMachineBuilder(_root);
             _machine = builder.Build();
         }
+        
+        public void Dispose()
+        {
+            UnsubscribeInput();
+        }
+
+        // void Awake() {
+        //     _rb = gameObject.GetComponent<Rigidbody2D>();
+        //     _col = GetComponent<CapsuleCollider2D>();
+        //     _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
+
+        //     if (_inputManager == null) _inputManager = GetComponent<InputManager>();
+            
+        //     InitializeComponents();
+
+        //     ctx.rb = _rb;
+        //     ctx.anim = GetComponentInChildren<Animator>();
+        //     ctx.renderer = GetComponentInChildren<Renderer>();
+        //     ctx.coll = _col;
+        //     ctx.audio = GetComponent<AudioSource>();
+        //     ctx.stats = _stats;
+            
+
+        //     if (_stats != null) {
+        //         ctx.moveSpeed = _stats.MaxSpeed;
+        //         ctx.accel = _stats.Acceleration;
+        //         ctx.jumpSpeed = _stats.JumpPower;
+        //     }
+
+        //     ctx.velocity = _rb.linearVelocity;
+
+        //     _root = new PlayerRoot(null, ctx);
+        //     var builder = new StateMachineBuilder(_root);
+        //     _machine = builder.Build();
+        // }
 
         void InitializeComponents()
         {
@@ -82,7 +124,7 @@ namespace HSM {
             //Debug
             PrintStatePath();
             
-            //Debug.Log($"Stamina: {ctx.stamina}");
+            //_logger.Log($"Stamina: {ctx.stamina}", this);
         }
 
         #region Physics And Similar
@@ -137,7 +179,7 @@ namespace HSM {
         
         #region Player Input Handling
         
-        void OnEnable() {
+        void SubscribeInput() {
             if (_inputManager == null) return;
 
             _inputManager.OnMove += HandleMoveInput;
@@ -153,7 +195,7 @@ namespace HSM {
             _inputManager.OnLookAroundToggled += HandleLookAroundInput;
         }
 
-        void OnDisable() {
+        void UnsubscribeInput() {
             if (_inputManager == null) return;
 
             _inputManager.OnMove -= HandleMoveInput;
@@ -168,6 +210,38 @@ namespace HSM {
             _inputManager.OnLook -= HandleLookInput;
             _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
         }
+        
+        // void OnEnable() {
+        //     if (_inputManager == null) return;
+
+        //     _inputManager.OnMove += HandleMoveInput;
+        //     _inputManager.OnJumpStarted += HandleJumpStarted;
+        //     _inputManager.OnJumpCanceled += HandleJumpCanceled;
+        //     _inputManager.OnCrouchToggled += HandleCrouchInput;
+        //     _inputManager.OnRunToggled += HandleRunInput;
+            
+        //     _inputManager.OnInteractStarted += HandleInteractStarted;
+        //     _inputManager.OnInteractCanceled += HandleInteractCanceled;
+            
+        //     _inputManager.OnLook += HandleLookInput;
+        //     _inputManager.OnLookAroundToggled += HandleLookAroundInput;
+        // }
+
+        // void OnDisable() {
+        //     if (_inputManager == null) return;
+
+        //     _inputManager.OnMove -= HandleMoveInput;
+        //     _inputManager.OnJumpStarted -= HandleJumpStarted;
+        //     _inputManager.OnJumpCanceled -= HandleJumpCanceled;
+        //     _inputManager.OnCrouchToggled -= HandleCrouchInput;
+        //     _inputManager.OnRunToggled -= HandleRunInput;
+            
+        //     _inputManager.OnInteractStarted -= HandleInteractStarted;
+        //     _inputManager.OnInteractCanceled -= HandleInteractCanceled;
+            
+        //     _inputManager.OnLook -= HandleLookInput;
+        //     _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
+        // }
 
         void HandleMoveInput(Vector2 direction) {
             _frameInput.Move = direction;
@@ -242,7 +316,12 @@ namespace HSM {
         {
             var path = StatePath(_machine.Root.Leaf());
             if (path != _lastPath) {
-                Debug.Log("State: " + path);
+                if (_logger != null) {
+                    _logger.Log("State: " + path, this);
+                }
+                else {
+                    Debug.Log("State: " + path);
+                }
                 _lastPath = path;
             }
         }
