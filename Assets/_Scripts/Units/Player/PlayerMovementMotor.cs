@@ -20,7 +20,22 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
         if (_ctx == null || _rb == null) return;
         
         UpdateMovementGrace(Time.fixedDeltaTime);
+        HandleGravity(Time.fixedDeltaTime);
         ApplyMovement();
+    }
+    
+    void HandleGravity(float deltaTime) 
+    {
+        if (_ctx.isClimbing)
+            return;
+
+        if (_ctx.grounded && _ctx.velocity.y <= 0f) {
+            _ctx.velocity.y = _ctx.stats.GroundingForce;
+        } else {
+            var inAirGravity = _ctx.stats.FallAcceleration;
+            if (_ctx.endedJumpEarly && _ctx.velocity.y > 0) inAirGravity *= _ctx.stats.JumpEndEarlyGravityModifier;
+            _ctx.velocity.y = Mathf.MoveTowards(_ctx.velocity.y, -_ctx.stats.MaxFallSpeed, inAirGravity * deltaTime);
+        }
     }
     
     

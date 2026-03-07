@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableStats
   PlayerLayer:
     serializedVersion: 2
+    m_Bits: 256
+  GroundLayer:
+    serializedVersion: 2
     m_Bits: 0
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
@@ -42,3 +45,5 @@ MonoBehaviour:
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
   CrouchNoiseMultiplier: 0.3
+  ClimbVerticalSpeedMultiplier: 0.5
+  ClimbHorizontalSpeedMultiplier: 0.5

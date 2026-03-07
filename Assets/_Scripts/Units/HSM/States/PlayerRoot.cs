@@ -29,7 +29,6 @@ namespace HSM {
         protected override void OnUpdate(float deltaTime) {
             if (ctx.stats != null) {
                 HandleJump();
-                HandleGravity(deltaTime);
                 StaminaRecovery(deltaTime);
             }
             base.OnUpdate(deltaTime);
@@ -59,19 +58,7 @@ namespace HSM {
             ctx.velocity.y = ctx.stats.JumpPower;
         }
 
-        void HandleGravity(float deltaTime) {
         
-            if (ctx.isClimbing)
-                return;
-    
-            if (ctx.grounded && ctx.velocity.y <= 0f) {
-                ctx.velocity.y = ctx.stats.GroundingForce;
-            } else {
-                var inAirGravity = ctx.stats.FallAcceleration;
-                if (ctx.endedJumpEarly && ctx.velocity.y > 0) inAirGravity *= ctx.stats.JumpEndEarlyGravityModifier;
-                ctx.velocity.y = Mathf.MoveTowards(ctx.velocity.y, -ctx.stats.MaxFallSpeed, inAirGravity * deltaTime);
-            }
-        }
         
         void StaminaRecovery(float deltaTime)
         {

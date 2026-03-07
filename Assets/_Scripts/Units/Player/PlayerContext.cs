@@ -35,7 +35,6 @@ public class PlayerContext
     // ===== LADDER =====
     public bool onLadder;
     public bool isClimbing;
-    public Collider2D ladder;
 
     
     // ===== TIMERS =====

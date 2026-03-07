@@ -32,8 +32,8 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         Physics2D.queriesStartInColliders = false;
 
         bool wasGrounded = _ctx.grounded;
-        bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, ~_ctx.stats.PlayerLayer);
-        bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, ~_ctx.stats.PlayerLayer);
+        bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
+        bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
 
         if (ceilingHit) _ctx.velocity.y = Mathf.Min(0, _ctx.velocity.y);
 
@@ -51,7 +51,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         
         if (_ctx.isCrouching)
         {
-            _ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.CeilingCheckDistance, ~_ctx.stats.PlayerLayer);
+            _ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.CeilingCheckDistance, ~_ctx.stats.GroundLayer);
         }
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
@@ -62,7 +62,6 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         if (other.GetComponent<Ladder>())
         {
             _ctx.onLadder = true;
-            _ctx.ladder = other;
         }
     }
 
@@ -71,7 +70,6 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         if (other.GetComponent<Ladder>())
         {
             _ctx.onLadder = false;
-            _ctx.ladder = null;
         }
     }
 }
