@@ -18,7 +18,13 @@ namespace HSM {
         }
         
         protected override State GetInitialState() => Grounded;
-        protected override State GetTransition() => ctx.grounded ? null : (Machine != null ? Machine.GetState<Airborne>() : null);
+        protected override State GetTransition()
+        {
+            if (ctx.onLadder) return null;
+            if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
+            
+            return null;
+        } 
 
         protected override void OnUpdate(float deltaTime) {
             if (ctx.stats != null) {

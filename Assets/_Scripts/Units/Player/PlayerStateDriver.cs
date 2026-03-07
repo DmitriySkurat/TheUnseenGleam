@@ -36,6 +36,7 @@ namespace HSM {
             
             //Debug
             PrintStatePath();
+            _logger.Log($"ctx.isClimbing: {_ctx.isClimbing}, ctx.velocity: {_ctx.velocity}", this);
             //_logger.Log($"Stamina: {ctx.stamina}", this);
         }
 

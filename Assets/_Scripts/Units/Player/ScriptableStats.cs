@@ -101,6 +101,15 @@ public class PlayerScriptableStats : ScriptableObject
     [Range(0f, 1f)]
     public float CrouchNoiseMultiplier = 0.3f;
     
+    [Header("CLIMB")]
+    [Tooltip("Multiplier applied to (vertical) MaxSpeed while climbing")]
+    [Range(0f, 2f)]
+    public float ClimbVerticalSpeedMultiplier = 0.5f;
+    
+    [Tooltip("Multiplier applied to (horizontal) MaxSpeed while climbing")]
+    [Range(0f, 2f)]
+    public float ClimbHorizontalSpeedMultiplier = 0.5f;
+    
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]
     // public float SlideDuration = 2f;
