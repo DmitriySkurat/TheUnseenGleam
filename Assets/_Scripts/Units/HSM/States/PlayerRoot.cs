@@ -5,6 +5,8 @@ namespace HSM {
         public readonly Grounded Grounded;
         public readonly Airborne Airborne;
         public readonly Interaction Interaction;
+        public readonly Climb Climb;
+        
         readonly PlayerContext ctx;
 
         public PlayerRoot(StateMachine m, PlayerContext ctx) : base(m, null) {
@@ -12,6 +14,7 @@ namespace HSM {
             Grounded = new Grounded(m, this, ctx);
             Airborne = new Airborne(m, this, ctx);
             Interaction = new Interaction(m, this, ctx);
+            Climb = new Climb(m, this, ctx);
         }
         
         protected override State GetInitialState() => Grounded;
@@ -51,6 +54,10 @@ namespace HSM {
         }
 
         void HandleGravity(float deltaTime) {
+        
+            if (ctx.isClimbing)
+                return;
+    
             if (ctx.grounded && ctx.velocity.y <= 0f) {
                 ctx.velocity.y = ctx.stats.GroundingForce;
             } else {

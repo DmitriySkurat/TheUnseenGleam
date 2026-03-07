@@ -14990,6 +14990,9 @@ GameObject:
   - component: {fileID: 5129314685511044294}
   - component: {fileID: 8001036264613941276}
   - component: {fileID: 5994029651322914346}
+  - component: {fileID: 3591886000825315008}
+  - component: {fileID: 669612337890271470}
+  - component: {fileID: -8977762195206441254}
   - component: {fileID: 7516272934157095564}
   m_Layer: 8
   m_Name: Player
@@ -15171,37 +15174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd12aa311d04bd394a0b6e112d2466f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HSM.PlayerStateDriver
-  ctx:
-    stats: {fileID: 0}
-    currentSpeedMultiplier: 1
-    jumpToConsume: 0
-    timeInteractWasPressed: 0
-    movementGraceTimer: 0
-    isCrouching: 0
-    isInteracting: 0
-    stamina: 100
-    ceilingAbove: 0
-    velocity: {x: 0, y: 0}
-    grounded: 0
-    moveSpeed: 6
-    accel: 40
-    jumpSpeed: 7
-    bufferedJumpUsable: 0
-    endedJumpEarly: 0
-    coyoteUsable: 0
-    timeJumpWasPressed: 0
-    frameLeftGrounded: -3.4028235e+38
-    timeLastInteraction: 0
-    time: 0
-    anim: {fileID: 4340659176693707203}
-    rb: {fileID: 4923245662171321035}
-    renderer: {fileID: 2500165665986416515}
-    coll: {fileID: 6038518855904689802}
-    audio: {fileID: 0}
-    inventory: {fileID: 0}
-  _stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
-  _inputManager: {fileID: 0}
-  _logger: {fileID: 0}
+  _logger: {fileID: 1837411843657378475, guid: d81e4435169b4624f998cdd1d4252c8c, type: 3}
 --- !u!114 &8001036264613941276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15273,6 +15246,42 @@ MonoBehaviour:
     - rid: 3371253893363662917
       type: {class: ShadowShape2DProvider_SpriteRenderer, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
+--- !u!114 &3591886000825315008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474e91fb7e9ee5841aa6f2261522fa68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HSM.PlayerInputHandler
+--- !u!114 &669612337890271470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 696fc522c211ff04eb1cea47ed069ce9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollisionSensor
+--- !u!114 &-8977762195206441254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85cdf1b372e59e1409de20b5772443b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementMotor
 --- !u!114 &7516272934157095564
 MonoBehaviour:
   m_ObjectHideFlags: 0

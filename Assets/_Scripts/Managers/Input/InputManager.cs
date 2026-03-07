@@ -46,21 +46,6 @@ public class InputManager : MonoBehaviour, IService
             UnregisterInputs();
     }
     
-    // private void Awake()
-    // {
-    //     _playerInput = GetComponent<PlayerInput>();
-    // }
-    //
-    // private void OnEnable()
-    // {
-    //     RegisterInputs();
-    // }
-
-    // private void OnDisable()
-    // {
-    //     UnregisterInputs();
-    // }
-    
     private void RegisterInputs()
     {
         var actions = _playerInput.actions;

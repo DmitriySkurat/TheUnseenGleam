@@ -36,13 +36,14 @@ namespace HSM {
         }
         
         protected override void OnExit() {
-            base.OnExit();
             ctx.isCrouching = false;
 
             if (col != null) {
                 col.size = originalColliderSize;
                 col.offset = originalColliderOffset;
             }
+            
+            base.OnExit();
         }
 
         protected override State GetTransition() {

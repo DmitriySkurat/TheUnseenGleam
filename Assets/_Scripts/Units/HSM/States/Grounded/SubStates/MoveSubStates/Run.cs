@@ -14,6 +14,9 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.currentSpeedMultiplier = ctx.stats.RunSpeedMultiplier;
+            
+            ctx.timeRunStarted = Time.time;
+            
             base.OnEnter();
         }
 

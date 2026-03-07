@@ -4,59 +4,57 @@ using UnityEngine.Rendering;
 using HSM;
 
 [Serializable]
-public class PlayerContext {
-    
+public class PlayerContext 
+{
+    // ===== INPUT & STATS =====
     public FrameInput input;
-    public ScriptableStats stats;
+    public PlayerScriptableStats stats;
     
-    public float currentSpeedMultiplier = 1f;
-    
-    
-    public bool jumpToConsume;
-    public float timeInteractWasPressed;
-    
-    
-    public float movementGraceTimer;
-
-    public bool isCrouching;
-    
-    
-    // for Complex interactables (may be in future)
-    public bool isInteracting;
-    
-    
-    public float stamina = 100f;
-    
-    public bool ceilingAbove;
-
-    public Vector2 velocity;
-    public bool grounded;
-    public float moveSpeed = 6f;
-    public float accel = 40f;
-    public float jumpSpeed = 7f;
-    public bool bufferedJumpUsable;
-    public bool endedJumpEarly;
-    public bool coyoteUsable;
-    public float timeJumpWasPressed;
-    public float frameLeftGrounded = float.MinValue;
-    public float timeLastInteraction;
-    public float time;
+    // ===== COMPONENTS =====
     public Animator anim;
-    public Rigidbody2D rb;
+    //public Rigidbody2D rb;
     public Renderer renderer;
     public Collider2D coll;
-    public AudioSource audio;
+    //public AudioSource audio;
+    public PlayerInventory inventory; // ???
     
-    public PlayerInventory inventory;
+    // ===== MOVEMENT =====
+    public Vector2 velocity;
+    public float currentSpeedMultiplier = 1f;
+    public float stamina = 100f;
+    
+    public bool isCrouching;
+    public bool ceilingAbove;
+    public bool isInteracting; // for Complex interactables (may be in future)
+    
+    public bool bufferedJumpUsable;
+    public bool endedJumpEarly;
+    public bool jumpToConsume;
+    public bool coyoteUsable;
+    
+    // ===== LADDER =====
+    public bool onLadder;
+    public bool isClimbing;
+    public Collider2D ladder;
 
-    public bool HasBufferedJump => bufferedJumpUsable && stats != null && time < timeJumpWasPressed + stats.JumpBuffer;
-    public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && time < frameLeftGrounded + stats.CoyoteTime;
     
-    public bool CanInteract => time > timeLastInteraction + stats.InteractionCooldown;
+    // ===== TIMERS =====
+    public float timeInteractWasPressed;
+    public float timeJumpWasPressed;
+    public float timeLastInteraction;
+    public float frameLeftGrounded = float.MinValue;
+    public float movementGraceTimer;
+    public float timeRunStarted;
     
+    // ===== PHYSICS =====
+    public bool grounded;
+     
+    // ===== DERIVED PROPERTIES =====
+    public bool HasBufferedJump => bufferedJumpUsable && stats != null && Time.time < timeJumpWasPressed + stats.JumpBuffer;
+    public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && Time.time < frameLeftGrounded + stats.CoyoteTime;
+    
+    // Запрет на взаимодействие в воздухе
+    public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown && grounded;
     public bool CanRun => stamina > stats.MinStaminaToRun;
-    
     public bool HasMovementIntent => movementGraceTimer > 0f;
-    
 }
-

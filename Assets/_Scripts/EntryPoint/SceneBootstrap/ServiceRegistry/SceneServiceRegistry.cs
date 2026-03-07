@@ -1,14 +1,19 @@
+using System;
 using UnityEngine;
 
 public class SceneServiceRegistry : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.SceneServices; 
+    
+    [SerializeField] private PlayerScriptableStats stats;
 
     public void Initialize()
     {
         Debug.Log("SceneServicesRegistrar Initialize()");
     
         var playerContext = new PlayerContext();
+        playerContext.stats = stats;
+        
         Services.Register(playerContext);
         
         // Здесь же можно зарегистрировать другие сценовые сервисы

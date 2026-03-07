@@ -19,25 +19,17 @@ public class PlayerInteractor : Interactor, IInitializable {
     public TextMeshProUGUI promptText;
 
     private PlayerContext _ctx;
-    //private PlayerStateDriver _driver;
-    
     public PlayerContext Context => _ctx;
     
     public void Initialize() {
         _ctx = Services.Get<PlayerContext>();
-        //_driver = driver;
         
         if (interactOrigin == null) 
             interactOrigin = transform;
     }
 
-    // void Awake() {
-    //     if (interactOrigin == null) 
-    //         interactOrigin = transform;
-    // }
-
     void Update() {
-        if (_ctx == null) //|| _driver == null)
+        if (_ctx == null)
         {
             Debug.LogError("Придурок забыл инициализировать PlayerInteractor");
             return;
@@ -86,7 +78,7 @@ public class PlayerInteractor : Interactor, IInitializable {
     
         PerformInteraction();
             
-        _ctx.timeLastInteraction = _ctx.time;
+        _ctx.timeLastInteraction = Time.time;
         
         
         

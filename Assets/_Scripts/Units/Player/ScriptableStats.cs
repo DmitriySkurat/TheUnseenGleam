@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ScriptableStats : ScriptableObject
+public class PlayerScriptableStats : ScriptableObject
 {
     [Header("LAYERS")]
     [Tooltip("Set this to the layer your player is on")]
@@ -101,5 +101,18 @@ public class ScriptableStats : ScriptableObject
     [Range(0f, 1f)]
     public float CrouchNoiseMultiplier = 0.3f;
     
-
+    // [Header("SLIDE")]
+    // [Tooltip("Duration of the slide movement in seconds")]
+    // public float SlideDuration = 2f;
+    
+    // [Tooltip("Multiplier applied to MaxSpeed while sliding")]
+    // public float SlideSpeedMultiplier = 1.8f;
+    
+    // [Tooltip("Time window after running during which slide input is accepted")]
+    // [Range(0f, 0.5f)]
+    // public float SlideInputWindow = 3f;
+    
+    // [Tooltip("Height multiplier for CapsuleCollider while sliding")]
+    // [Range(0.2f, 1f)]
+    // public float SlideHeightMultiplier = 0.3f;
 }
