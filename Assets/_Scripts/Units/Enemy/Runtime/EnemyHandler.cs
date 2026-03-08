@@ -9,9 +9,9 @@ using Pathfinding;
 namespace Entity.Enemy
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(PathfinderHandler))]
-    public class EnemyHandler : MonoBehaviour//, IInitializable
+    public class EnemyHandler : MonoBehaviour, IInitializable
     {
-        //public InitializationOrder Order => InitializationOrder.GameplayCore; // Или добавить Enemy = 250 в enum
+        public InitializationOrder Order => InitializationOrder.Enemy; 
 
         [Header("References")]
         public EnemyData enemyData;
@@ -29,21 +29,23 @@ namespace Entity.Enemy
             set => RB.linearVelocity = new Vector2(value, RB.linearVelocity.y); 
         }
         
-        public void Awake()
+
+        public void Initialize()
         {
             RB = GetComponent<Rigidbody2D>();
             _pathfinder = GetComponent<PathfinderHandler>();
-        }
-
-        // public void Initialize()
-        // {
-        //     RB = GetComponent<Rigidbody2D>();
-        //     _pathfinder = GetComponent<PathfinderHandler>();
             
-        //     // Если у врага есть таргет (например, игрок), можно задать его здесь
-        //     // var player = Services.Get<PlayerContext>();
-        //     // if (player != null) _pathfinder.SetTarget(player.renderer.transform);
-        // }
+            if (_pathfinder != null)
+            {
+                _pathfinder.InitPathfinder(this); 
+            }
+            
+            Debug.Log("<color=green>Enemy Initialized!</color>");
+            
+            // Если у врага есть таргет (например, игрок), можно задать его здесь
+            // var player = Services.Get<PlayerContext>();
+            // if (player != null) _pathfinder.SetTarget(player.renderer.transform);
+        }
 
         private void FixedUpdate()
         {

@@ -20,7 +20,6 @@ namespace Pathfinding
         #region Variables
         [Header("Needed components")]
         [SerializeField] private Tilemap wallsTileMap;
-        [SerializeField] private Tilemap gravityTileMap;
         [SerializeField] private PathfindingGraph graph;
 
         [Header("Pathfinding parameters")]
@@ -35,7 +34,6 @@ namespace Pathfinding
         [SerializeField] private bool drawFailJumpTrajectory = false;
         [SerializeField, Range(0f, 1f)] private float ShowedTrajectoryHeight = 0f;
         [SerializeField] private bool drawFailFallTrajectories = false;
-        [SerializeField] private bool drawFailMultiGravTrajectories = false;
         [SerializeField] private bool drawRemovedTrajectories = false;
 
         [Header("Entity Debug")]
@@ -55,8 +53,6 @@ namespace Pathfinding
         private List<Pathfinding.Tile> trnsitionDebug = new List<Pathfinding.Tile>();
         private List<List<Waypoint>> JumpTrajectoriesDebug = new List<List<Waypoint>>();
         private List<Waypoint> FallTrajectoriesDebug = new List<Waypoint>();
-        private List<Waypoint> MultiGravTrajectoriesDebug = new List<Waypoint>();
-        private List<Waypoint> MultiGravTrajectoriesValidDebug = new List<Waypoint>();
         private List<Waypoint> RemovedTrajectoriesDebug = new List<Waypoint>();
         private List<Vector3> debugCollisionPoints = new List<Vector3>();
         private List<Vector3> fitsPointsDebug = new List<Vector3>();
@@ -106,8 +102,6 @@ namespace Pathfinding
             trnsitionDebug = new List<Pathfinding.Tile>();
 
             FallTrajectoriesDebug = new List<Waypoint>();
-            MultiGravTrajectoriesDebug = new List<Waypoint>();
-            MultiGravTrajectoriesValidDebug = new List<Waypoint>();
             RemovedTrajectoriesDebug = new List<Waypoint>();
             debugCollisionPoints = new List<Vector3>();
             fitsPointsDebug = new List<Vector3>();
@@ -129,9 +123,9 @@ namespace Pathfinding
 
         void OnValidate()
         {
-            if (gravityTileMap != null)
+            if (wallsTileMap != null)
             {
-                var bounds = gravityTileMap.cellBounds;
+                var bounds = wallsTileMap.cellBounds;
                 if (EnemyDrawPosition.x < 0)
                 {
                     EnemyDrawPosition.x = 0;
@@ -149,13 +143,13 @@ namespace Pathfinding
                     EnemyDrawPosition.y = bounds.max.y - bounds.min.y - 1;
                 }
 
-                bounds = gravityTileMap.cellBounds;
+                bounds = wallsTileMap.cellBounds;
             }
         }
 
         public void CreateGraph()
         {
-            bounds = gravityTileMap.cellBounds;
+            bounds = wallsTileMap.cellBounds;
 
             InitGrid();
             Debug.Log("grid initialized");
@@ -168,9 +162,6 @@ namespace Pathfinding
 
             CreateJumpingConnections();
             Debug.Log("jumping connections created");
-
-            CreateInterGravityConnections();
-            Debug.Log("inter-gravity connections created");
 
             int removed = 0;
             removed += RemoveUnnecessaryConnections();
@@ -217,11 +208,6 @@ namespace Pathfinding
                 Debug.LogError("maxJumpVelocity in EnemyData is not correct");
                 return false;
             }
-            if (parameters.enemyData.gravityMult <= 0)
-            {
-                Debug.LogError("gravityMult in EnemyData is not correct");
-                return false;
-            }
             if (parameters.enemyData.entitySize.x < 1 || parameters.enemyData.entitySize.y < 1)
             {
                 Debug.LogError("entity size in EnemyData uncorrect");
@@ -230,11 +216,6 @@ namespace Pathfinding
             if (parameters.enemyData.colliderSize == Vector2.zero)
             {
                 Debug.LogWarning("collider size in EnemyData zero");
-            }
-            if (gravityTileMap == null)
-            {
-                Debug.LogError("gravityTileMap is null");
-                return false;
             }
             if (wallsTileMap == null)
             {
@@ -251,51 +232,19 @@ namespace Pathfinding
 
         private void InitGrid()
         {
-            var wallsBounds = wallsTileMap.cellBounds;
             grid = new Pathfinding.Tile[bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y];
+            Vector2Int gravDirection = Vector2Int.down;
             for (int x = bounds.min.x; x < bounds.max.x; x++)
             {
                 for (int y = bounds.min.y; y < bounds.max.y; y++)
                 {
                     int indexX = x - bounds.min.x;
                     int indexY = y - bounds.min.y;
-                    Vector3Int gravCellPosition = new Vector3Int(x, y, 0);
-                    TileBase gravTile = gravityTileMap.GetTile(gravCellPosition);
+                    Vector3Int cellPosition = new Vector3Int(x, y, 0);
+                    TileBase wallTile = wallsTileMap.GetTile(cellPosition);
 
-                    if (gravTile != null)
-                    {
-                        Vector3 WorldPos = gravityTileMap.GetCellCenterWorld(gravCellPosition);
-                        Vector3Int worldCellPos = gravityTileMap.WorldToCell(WorldPos);
-                        TileBase wallTile = wallsTileMap.GetTile(worldCellPos);
-
-                        // if (!GravityManager.tileGravity.ContainsKey(gravTile))
-                        // {
-                        //     Debug.LogError(gravTile.name + " gravTile not in tileGravity");
-                        //     return;
-                        // }
-
-                        // Vector2Int gravDirection = Vector2Int.RoundToInt(GravityManager.tileGravity[gravTile]);
-                        Vector2Int gravDirection = new Vector2Int(0, -1);
-                        if (gravDirection == null)
-                        {
-                            Debug.LogError("gravDirection null, this should not happend");
-                            return;
-                        }
-                        grid[indexX, indexY] = new Pathfinding.Tile((Vector2Int)gravCellPosition, gravDirection);
-                        if (wallTile == null)
-                        {
-                            grid[indexX, indexY].type = TileType.Void;
-                        }
-                        else
-                        {
-                            grid[indexX, indexY].type = TileType.Obstacle;
-                        }
-                    }
-                    else
-                    {
-                        grid[indexX, indexY] = new Pathfinding.Tile((Vector2Int)gravCellPosition, Vector2Int.zero);
-                        grid[indexX, indexY].type = TileType.Empty;
-                    }
+                    grid[indexX, indexY] = new Pathfinding.Tile((Vector2Int)cellPosition, gravDirection);
+                    grid[indexX, indexY].type = wallTile == null ? TileType.Void : TileType.Obstacle;
                 }
             }
         }
@@ -394,7 +343,7 @@ namespace Pathfinding
                                             for (int j = 0; j < parameters.NumberOfVelocitiesTested && found == false; j++)
                                             {
                                                 Vector2 currentVelocity = Vector2.Lerp(initialSpeed, Vector2.zero, ((float)j) / parameters.NumberOfVelocitiesTested);
-                                                var targetPos = GetCenterPosition(gravityTileMap.GetCellCenterWorld(new Vector3Int(target.position.x, target.position.y, 0)));
+                                                var targetPos = GetCenterPosition(wallsTileMap.GetCellCenterWorld(new Vector3Int(target.position.x, target.position.y, 0)));
                                                 float time = ComputeFallTrajectoryTime(launch, targetPos, gravDirection, currentVelocity);
                                                 Vector2 acc = GetAccelerationFromFall(launch, targetPos, gravDirection, currentVelocity, time);
                                                 if (time > 0 && acc.magnitude < parameters.enemyData.maxAcceleration)
@@ -442,10 +391,10 @@ namespace Pathfinding
                         {
                             if (target.position != grid[x, y].position && target.gravityDirection == gravDirection)
                             {
-                                Vector3 launch = gravityTileMap.GetCellCenterWorld((Vector3Int)grid[x, y].position);
+                                Vector3 launch = wallsTileMap.GetCellCenterWorld((Vector3Int)grid[x, y].position);
                                 launch = GetCenterPosition(launch);
-                                Vector3 targetPos = GetCenterPosition(gravityTileMap.GetCellCenterWorld((Vector3Int)target.position));
-                                Vector3 a = new Vector3(gravDirection.x, gravDirection.y, 0f) * parameters.enemyData.gravityMult * 10f;
+                                Vector3 targetPos = GetCenterPosition(wallsTileMap.GetCellCenterWorld((Vector3Int)target.position));
+                                Vector3 a = new Vector3(gravDirection.x, gravDirection.y, 0f) * 10f;
                                 List<float> times = ComputeJumpTrajectoryTimes(launch, targetPos, a);
 
                                 bool foundOne = false;
@@ -476,149 +425,6 @@ namespace Pathfinding
                     }
                 }
             }
-        }
-
-        private void CreateInterGravityConnections()
-        {
-            int count = 0;
-            Vector2 collider = new Vector2(parameters.enemyData.colliderSize.x + parameters.colliderSizeBuffer, parameters.enemyData.colliderSize.y + parameters.colliderSizeBuffer / 2); ;
-            Vector2Int entitySize = parameters.enemyData.entitySize;
-            for (int x = 0; x < grid.GetLength(0); x++)
-            {
-                for (int y = 0; y < grid.GetLength(1); y++)
-                {
-                    if (grid[x, y].type == TileType.Walkable)
-                    {
-                        Vector2Int gravDirection = grid[x, y].gravityDirection;
-                        Vector2Int corner1 = new Vector2Int(x - parameters.JumpConnectionMaxRange, y + parameters.JumpConnectionMaxRange);
-                        Vector2Int corner2 = new Vector2Int(x + parameters.JumpConnectionMaxRange, y - parameters.JumpConnectionMaxRange);
-
-
-                        Vector2Int[] tempCorners = GenerateBounds(corner1, corner2, gravDirection);
-                        corner1 = tempCorners[0];
-                        corner2 = tempCorners[1];
-                        List<Vector2Int> exploredCorners = new List<Vector2Int>();
-
-                        List<Edge> currentEdges = new List<Edge>();
-
-                        //from a jump
-                        List<List<Pathfinding.Tile>> InitTransitArea = GetTransitionTilesInBox(corner1, corner2, gravDirection, exploredCorners);
-                        foreach (List<Pathfinding.Tile> transitArea in InitTransitArea)
-                        {
-                            currentEdges.Clear();
-                            currentEdges.AddRange(FindBestJumpEdge(grid[x, y], transitArea, gravDirection));
-                        }
-                        //from a fall
-                        for (int i = 0; i < 2; i++)
-                        {
-                            int side = i == 0 ? -1 : 1;
-                            var Pos = new Vector2Int(x + gravDirection.y * side, y + gravDirection.x * side);
-                            if (grid[Pos.x, Pos.y].type == TileType.Void && GetTileSelection(Pos.x, Pos.y, true).Count == parameters.enemyData.entitySize.x * parameters.enemyData.entitySize.y)
-                            {
-                                if (grid[Pos.x, Pos.y].gravityDirection == gravDirection)
-                                {
-                                    Vector2Int[] fallCorners = GenerateBounds(Pos, Pos, gravDirection);
-                                    InitTransitArea = GetTransitionTilesInBox(fallCorners[0], fallCorners[1], gravDirection, exploredCorners);
-                                    Vector3 launch = GetFallPosition(Pos.x, Pos.y, side, gravDirection);
-                                    Vector2 initialSpeed = new Vector2(gravDirection.y * side * parameters.enemyData.awareSpeed / 1.5f, gravDirection.x * side * parameters.enemyData.awareSpeed / 1.5f);
-                                    foreach (List<Pathfinding.Tile> transitArea in InitTransitArea)
-                                    {
-                                        currentEdges.AddRange(FindBestFallEdge(launch, transitArea, gravDirection, initialSpeed, grid[x, y].position));
-                                    }
-                                }
-                            }
-                        }
-                        exploredCorners.Add(corner1);
-                        exploredCorners.Add(corner2);
-
-
-                        while (currentEdges.Count > 0)
-                        {
-                            if (currentEdges[0].waypoints.Count > 5)
-                            {
-                                currentEdges.RemoveAt(0);
-                                Debug.Log("reached waypoints count limit");
-                                continue;
-                            }
-                            Vector3 launch = currentEdges[0].temp;
-                            if (launch == Vector3.zero)
-                            {
-                                currentEdges.RemoveAt(0);
-                                Debug.Log(currentEdges[0].targetPos + " is not a valid as a target");
-                                continue;
-                            }
-                            Pathfinding.Tile newOrigin = GetTileAtWorldPos(launch);
-
-                            Vector2Int originCell = currentEdges[0].targetPos;
-                            originCell -= new Vector2Int(bounds.min.x, bounds.min.y);
-                            if (newOrigin.gravityDirection != grid[originCell.x, originCell.y].gravityDirection)
-                            {
-                                Debug.Log("oulaCestlaMerde cestpasnormal aled");
-                            }
-
-                            Vector2Int[] newCorners = GenerateBounds(new List<Pathfinding.Tile>() { newOrigin }, newOrigin.gravityDirection);
-                            Vector2 initialVelocity = ComputeInitialVelocity(currentEdges[0].waypoints[currentEdges[0].waypoints.Count - 1]);
-
-                            List<Pathfinding.Tile> potentialTarget = GetTilesInBox(newCorners[0], newCorners[1], TileType.Walkable, newOrigin.gravityDirection, grid[x, y].platformIndex);
-                            foreach (Pathfinding.Tile target in potentialTarget)
-                            {
-                                var targetPos = GetCenterPosition(gravityTileMap.GetCellCenterWorld(new Vector3Int(target.position.x, target.position.y, 0)));
-                                bool found = false;
-                                for (int i = 0; i < parameters.NumberOfVelocitiesTested && found == false; i++)
-                                {
-
-                                    Vector2 currentVelocity = Vector2.Lerp(initialVelocity, Vector2.zero, ((float)i) / parameters.NumberOfVelocitiesTested);
-                                    float time = ComputeFallTrajectoryTime(launch, targetPos, newOrigin.gravityDirection, currentVelocity);
-                                    Vector2 acc = GetAccelerationFromFall(launch, targetPos, newOrigin.gravityDirection, currentVelocity, time);
-                                    if (time > 0 && acc.magnitude < parameters.enemyData.maxAcceleration)
-                                    {
-                                        if (CheckTrajectory(launch, newOrigin.gravityDirection, acc, currentVelocity, time))
-                                        {
-                                            Edge edge = grid[x, y].AddPremadeEdge(currentEdges[0]);
-                                            edge.waypoints.Add(new Waypoint(launch, currentVelocity, acc, time, newOrigin.gravityDirection));
-                                            edge.targetPos = target.position;
-                                            edge.cost += (time + acc.magnitude) * parameters.fallCostMultiplier;
-                                            found = true;
-                                            count++;
-                                        }
-                                        else
-                                        {
-                                            foreach (var waypoint in currentEdges[0].waypoints)
-                                            {
-                                                MultiGravTrajectoriesValidDebug.Add(waypoint);
-                                            }
-                                            MultiGravTrajectoriesDebug.Add(new Waypoint(launch, currentVelocity, acc, time, newOrigin.gravityDirection));
-                                        }
-                                    }
-                                }
-                            }
-
-                            List<List<Pathfinding.Tile>> secondTransitArea = GetTransitionTilesInBox(newCorners[0], newCorners[1], newOrigin.gravityDirection, exploredCorners);
-                            exploredCorners.Add(newCorners[0]);
-                            exploredCorners.Add(newCorners[1]);
-                            foreach (List<Pathfinding.Tile> transitArea2 in secondTransitArea)
-                            {
-                                List<Edge> potentialEdges = FindBestFallEdge(launch, transitArea2, newOrigin.gravityDirection, initialVelocity, newOrigin.position);
-                                foreach (Edge potentialEdge in potentialEdges)
-                                {
-                                    Edge edgeToAdd = currentEdges[0].Clone();
-                                    edgeToAdd.waypoints.Add(potentialEdge.waypoints[0]);
-                                    edgeToAdd.cost += potentialEdge.cost;
-                                    edgeToAdd.targetPos = potentialEdge.targetPos;
-                                    edgeToAdd.temp = potentialEdge.temp;
-                                    currentEdges.Add(edgeToAdd);
-                                }
-                            }
-                            foreach (var waypoint in currentEdges[0].waypoints)
-                            {
-                                MultiGravTrajectoriesValidDebug.Add(waypoint);
-                            }
-                            currentEdges.RemoveAt(0);
-                        }
-                    }
-                }
-            }
-            Debug.Log("created " + count + " interGravity edges");
         }
 
         private int RemoveUnnecessaryConnections()
@@ -737,7 +543,6 @@ namespace Pathfinding
         private void SetScriptableObjectParameters()
         {
             graph.parameters = parameters.Clone();
-            graph.gravityTilemapName = gravityTileMap.gameObject.name;
             graph.wallsTilemapName = wallsTileMap.gameObject.name;
         }
 
@@ -761,21 +566,13 @@ namespace Pathfinding
                 parameters = graph.parameters.Clone();
                 GenerateGridFromList();
                 Debug.Log("graph loaded");
-                if (gravityTileMap == null || wallsTileMap == null)
+                if (wallsTileMap == null)
                 {
                     Debug.Log("tilemaps must be loaded manually");
-                    if (gravityTileMap == null)
-                    {
-                        Debug.Log("gravityTileMap should be " + graph.gravityTilemapName);
-                    }
                     if (wallsTileMap == null)
                     {
                         Debug.Log("wallsTileMap should be " + graph.wallsTilemapName);
                     }
-                }
-                if (gravityTileMap != null && gravityTileMap.gameObject.name != graph.gravityTilemapName)
-                {
-                    Debug.LogWarning("gravityTileMap should be " + graph.gravityTilemapName + " but is " + gravityTileMap.gameObject.name);
                 }
                 if (wallsTileMap != null && wallsTileMap.gameObject.name != graph.wallsTilemapName)
                 {
@@ -852,7 +649,7 @@ namespace Pathfinding
             for (float time = 0f; time < T - 0.01f; time += parameters.trajectoriesCheckInterval)
             {
                 pos = launch + (Vector3)initialVelocity * time + 0.5f * a * time * time;
-                Vector3Int cellPos = gravityTileMap.WorldToCell(pos);
+                Vector3Int cellPos = wallsTileMap.WorldToCell(pos);
                 if (grid[cellPos.x - bounds.min.x, cellPos.y - bounds.min.y].gravityDirection != gravityDirection)
                 {
                     if (!interGrav)
@@ -875,7 +672,7 @@ namespace Pathfinding
         private Vector3 SearchCollisionPoint(Vector3 launch, Vector2Int gravityDirection, Vector2 additionalAcc, Vector2 initialVelocity, float T, out float deltaT)
         {
             // Dichotomy to find the point where the gravity is no longer gravityDirection
-            Vector3Int cellPos = gravityTileMap.WorldToCell(launch);
+            Vector3Int cellPos = wallsTileMap.WorldToCell(launch);
             if (grid[cellPos.x - bounds.min.x, cellPos.y - bounds.min.y].gravityDirection != gravityDirection)
             {
                 deltaT = 0f;
@@ -892,7 +689,7 @@ namespace Pathfinding
             {
                 time = (t1 + t2) / 2f;
                 pos = launch + (Vector3)initialVelocity * time + 0.5f * a * time * time;
-                cellPos = gravityTileMap.WorldToCell(pos);
+                cellPos = wallsTileMap.WorldToCell(pos);
                 if (grid[cellPos.x - bounds.min.x, cellPos.y - bounds.min.y].gravityDirection != gravityDirection)
                 {
                     t2 = time;
@@ -915,12 +712,12 @@ namespace Pathfinding
                 Debug.Log("no target");
                 return currentsEdge;
             }
-            Vector3 launch = gravityTileMap.GetCellCenterWorld((Vector3Int)origin.position);
+            Vector3 launch = wallsTileMap.GetCellCenterWorld((Vector3Int)origin.position);
             launch = GetCenterPosition(launch);
             foreach (Pathfinding.Tile target in targets)
             {
-                Vector3 targetPos = gravityTileMap.GetCellCenterWorld((Vector3Int)target.position);
-                Vector3 a = new Vector3(gravDirection.x, gravDirection.y, 0f) * parameters.enemyData.gravityMult * 10f;
+                Vector3 targetPos = wallsTileMap.GetCellCenterWorld((Vector3Int)target.position);
+                Vector3 a = new Vector3(gravDirection.x, gravDirection.y, 0f) * 10f;
                 List<float> times = ComputeJumpTrajectoryTimes(launch, targetPos, a);
                 bool found = false;
                 for (int i = 0; i < parameters.NumberOfTestedTrajectories; i++)
@@ -973,7 +770,7 @@ namespace Pathfinding
             foreach (Pathfinding.Tile target in targets)
             {
                 //TODO mettre les feet pos si c est la derniere destination
-                var targetPos = gravityTileMap.GetCellCenterWorld(new Vector3Int(target.position.x, target.position.y, 0));
+                var targetPos = wallsTileMap.GetCellCenterWorld(new Vector3Int(target.position.x, target.position.y, 0));
                 if (toCenter)
                 {
                     targetPos = GetCenterPosition(targetPos);
@@ -1064,7 +861,7 @@ namespace Pathfinding
         #region TilesGetterFunctions
         private Pathfinding.Tile GetTileAtWorldPos(Vector3 worldPos)
         {
-            Vector3Int cellPos = gravityTileMap.WorldToCell(worldPos);
+            Vector3Int cellPos = wallsTileMap.WorldToCell(worldPos);
 
             cellPos = new Vector3Int(cellPos.x - bounds.xMin, cellPos.y - bounds.yMin, 0);
             if (CheckGrid(cellPos.x, cellPos.y))
@@ -1214,7 +1011,7 @@ namespace Pathfinding
             {
                 var gravDirection = grid[x, y].gravityDirection;
                 var offsetx = ((parameters.enemyData.entitySize.x - 1) / 2) * side;
-                var offsety = Mathf.FloorToInt((parameters.enemyData.colliderSize.y / 2) / gravityTileMap.cellSize.y);
+                var offsety = Mathf.FloorToInt((parameters.enemyData.colliderSize.y / 2) / wallsTileMap.cellSize.y);
                 return grid[x + gravDirection.x * offsety + gravDirection.y * offsetx, y + gravDirection.y * offsety - gravDirection.x * offsetx];
             }
         }
@@ -1308,7 +1105,7 @@ namespace Pathfinding
 
         private Vector3 GetFeetPosition(Vector3 worldPos)
         {
-            Vector3Int cellPos = gravityTileMap.WorldToCell(worldPos);
+            Vector3Int cellPos = wallsTileMap.WorldToCell(worldPos);
             cellPos = new Vector3Int(cellPos.x - bounds.xMin, cellPos.y - bounds.yMin, 0);
             if (!CheckGrid(cellPos.x, cellPos.y))
             {
@@ -1322,7 +1119,7 @@ namespace Pathfinding
 
         private Vector3 GetCenterPosition(Vector3 worldPos)
         {
-            Vector3Int cellPos = gravityTileMap.WorldToCell(worldPos);
+            Vector3Int cellPos = wallsTileMap.WorldToCell(worldPos);
             cellPos = new Vector3Int(cellPos.x - bounds.xMin, cellPos.y - bounds.yMin, 0);
             if (!CheckGrid(cellPos.x, cellPos.y))
             {
@@ -1333,11 +1130,11 @@ namespace Pathfinding
             // If parameters.enemyData.entitySize is pair, we need to add half the size of a tile to the world pos to get the center of the tile
             if (parameters.enemyData.entitySize.x % 2 == 0)
             {
-                worldPos += new Vector3(0.5f * gravityTileMap.cellSize.x * (-gravDir.y), 0.5f * gravityTileMap.cellSize.y * (gravDir.x), 0);
+                worldPos += new Vector3(0.5f * wallsTileMap.cellSize.x * (-gravDir.y), 0.5f * wallsTileMap.cellSize.y * (gravDir.x), 0);
             }
 
             // Add to world pos the offset of half the size of a tile in the direction of the gravity
-            float offset = (gravityTileMap.cellSize.y / 2 - ((parameters.enemyData.colliderSize.y / 2) % gravityTileMap.cellSize.y) * 1.01f);
+            float offset = (wallsTileMap.cellSize.y / 2 - ((parameters.enemyData.colliderSize.y / 2) % wallsTileMap.cellSize.y) * 1.01f);
             return worldPos + new Vector3(offset * gravDir.x, offset * gravDir.y, 0);
         }
 
@@ -1357,11 +1154,11 @@ namespace Pathfinding
 
         private Vector3 GetFallPosition(int x, int y, int side, Vector2Int gravDirection)
         {
-            var feetPos = GetFeetPosition(gravityTileMap.GetCellCenterWorld(new Vector3Int(x + bounds.min.x, y + bounds.min.y, 0)));
+            var feetPos = GetFeetPosition(wallsTileMap.GetCellCenterWorld(new Vector3Int(x + bounds.min.x, y + bounds.min.y, 0)));
             Vector2Int corner = GetTileAtCorner(x, y, gravDirection.y == 0 ? side : -side).position;
-            var cornerPos = gravityTileMap.GetCellCenterWorld(new Vector3Int(corner.x, corner.y, 0));
-            cornerPos -= new Vector3(gravDirection.y * side * gravityTileMap.cellSize.x / 2, gravDirection.x * side * gravityTileMap.cellSize.y / 2);
-            cornerPos += new Vector3(gravDirection.x * gravityTileMap.cellSize.x / 2, gravDirection.y * gravityTileMap.cellSize.y / 2);
+            var cornerPos = wallsTileMap.GetCellCenterWorld(new Vector3Int(corner.x, corner.y, 0));
+            cornerPos -= new Vector3(gravDirection.y * side * wallsTileMap.cellSize.x / 2, gravDirection.x * side * wallsTileMap.cellSize.y / 2);
+            cornerPos += new Vector3(gravDirection.x * wallsTileMap.cellSize.x / 2, gravDirection.y * wallsTileMap.cellSize.y / 2);
             cornerDebug.Add(cornerPos);
             return GetCenterFromFeets(cornerPos + ((feetPos - cornerPos).normalized * 1.05f) * (parameters.enemyData.colliderSize.x + parameters.colliderSizeBuffer) / 2, gravDirection);
         }
@@ -1549,17 +1346,16 @@ namespace Pathfinding
 
         void OnDrawGizmos()
         {
-            if ((drawFailJumpTrajectory || drawFailFallTrajectories || drawFailMultiGravTrajectories || DrawEdges) && parameters.trajectoriesCheckInterval == 0f)
+            if ((drawFailJumpTrajectory || drawFailFallTrajectories || DrawEdges) && parameters.trajectoriesCheckInterval == 0f)
             {
                 Debug.LogError("Trajectories check interval is 0, can't draw trajectories");
                 return;
             }
-            if ((drawFailJumpTrajectory || drawFailFallTrajectories || drawFailMultiGravTrajectories) && hasBeenLoaded)
+            if ((drawFailJumpTrajectory || drawFailFallTrajectories) && hasBeenLoaded)
             {
                 Debug.Log("Can only show trajectories calcul when the graph is created, not when it is loaded");
                 drawFailJumpTrajectory = false;
                 drawFailFallTrajectories = false;
-                drawFailMultiGravTrajectories = false;
             }
             else
             {
@@ -1605,30 +1401,6 @@ namespace Pathfinding
                         Gizmos.DrawSphere(point, 0.03f);
                     }
                 }
-                if (MultiGravTrajectoriesDebug != null && drawFailMultiGravTrajectories)
-                {
-                    Gizmos.color = Color.red;
-                    foreach (var waypoint in MultiGravTrajectoriesDebug)
-                    {
-                        DrawTrajectory(waypoint.position, waypoint.gravityDirection, waypoint.acceleration, waypoint.initialSpeed, waypoint.time);
-                    }
-                }
-                if (MultiGravTrajectoriesValidDebug != null && drawFailMultiGravTrajectories)
-                {
-                    Gizmos.color = new Color(1f, 0.8f, 0f, 1f);
-                    foreach (var waypoint in MultiGravTrajectoriesValidDebug)
-                    {
-                        DrawTrajectory(waypoint.position, waypoint.gravityDirection, waypoint.acceleration, waypoint.initialSpeed, waypoint.time);
-                    }
-                }
-                if (debugCollisionPoints != null && drawFailMultiGravTrajectories)
-                {
-                    Gizmos.color = Color.red;
-                    foreach (var point in debugCollisionPoints)
-                    {
-                        Gizmos.DrawSphere(point, 0.01f);
-                    }
-                }
             }
 
             if (cornerDebug != null && DrawGizmos)
@@ -1645,13 +1417,13 @@ namespace Pathfinding
                 Gizmos.color = Color.blue;
                 foreach (var point in trnsitionDebug)
                 {
-                    Gizmos.DrawSphere(gravityTileMap.GetCellCenterWorld(new Vector3Int(point.position.x, point.position.y, 0)), 0.3f);
+                    Gizmos.DrawSphere(wallsTileMap.GetCellCenterWorld(new Vector3Int(point.position.x, point.position.y, 0)), 0.3f);
                 }
             }
             Gizmos.color = Color.green;
             if (graph != null)
             {
-                if (graph.tiles != null && gravityTileMap != null)
+                if (graph.tiles != null && wallsTileMap != null)
                 {
                     Color voidColor = new Color(0.5f, 0.5f, 0.5f, 0.1f);
                     Color obstacleColor = new Color(1f, 0f, 0f, 0.03f);
@@ -1670,11 +1442,11 @@ namespace Pathfinding
                                         break;
                                     case TileType.Obstacle:
                                         Gizmos.color = obstacleColor;
-                                        Gizmos.DrawWireCube(gravityTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
+                                        Gizmos.DrawWireCube(wallsTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
                                         break;
                                     case TileType.Walkable:
                                         Gizmos.color = walkableColor;
-                                        Gizmos.DrawWireCube(gravityTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
+                                        Gizmos.DrawWireCube(wallsTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
                                         break;
                                     case TileType.Empty:
                                         Gizmos.color = emptyColor;
@@ -1686,7 +1458,7 @@ namespace Pathfinding
                                 }
                                 if (tile.platformIndex != -1)
                                 {
-                                    Handles.Label(gravityTileMap.GetCellCenterWorld((Vector3Int)tile.position), tile.platformIndex.ToString());
+                                    Handles.Label(wallsTileMap.GetCellCenterWorld((Vector3Int)tile.position), tile.platformIndex.ToString());
                                 }
                             }
 
@@ -1718,8 +1490,8 @@ namespace Pathfinding
                                         else
                                         {
                                             Gizmos.color = new Color(0f, 1f, 0f, 1f);
-                                            Vector3 pos1 = GetCenterPosition(gravityTileMap.GetCellCenterWorld((Vector3Int)tile.position));
-                                            Vector3 pos2 = GetCenterPosition(gravityTileMap.GetCellCenterWorld((Vector3Int)edge.targetPos));
+                                            Vector3 pos1 = GetCenterPosition(wallsTileMap.GetCellCenterWorld((Vector3Int)tile.position));
+                                            Vector3 pos2 = GetCenterPosition(wallsTileMap.GetCellCenterWorld((Vector3Int)edge.targetPos));
 
                                             Gizmos.DrawLine(pos1, pos2);
                                         }
@@ -1738,23 +1510,23 @@ namespace Pathfinding
                                 Gizmos.color = Color.red;
                                 foreach (var tile in agentSizeTileDebug)
                                 {
-                                    Gizmos.DrawWireCube(gravityTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
+                                    Gizmos.DrawWireCube(wallsTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
                                 }
                                 Gizmos.color = Color.green;
-                                Gizmos.DrawWireCube(gravityTileMap.GetCellCenterWorld(new Vector3Int(EnemyDrawPosition.x + bounds.min.x, EnemyDrawPosition.y + bounds.min.y, 0)), new Vector3(0.98f, 0.98f, 1));
+                                Gizmos.DrawWireCube(wallsTileMap.GetCellCenterWorld(new Vector3Int(EnemyDrawPosition.x + bounds.min.x, EnemyDrawPosition.y + bounds.min.y, 0)), new Vector3(0.98f, 0.98f, 1));
                             }
                             if (agentGroundTilesDebug != null)
                             {
                                 Gizmos.color = Color.blue;
                                 foreach (var tile in agentGroundTilesDebug)
                                 {
-                                    Gizmos.DrawWireCube(gravityTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
+                                    Gizmos.DrawWireCube(wallsTileMap.GetCellCenterWorld((Vector3Int)tile.position), new Vector3(0.98f, 0.98f, 1));
                                 }
                             }
-                            Vector2 gravDirection = (Vector2)grid[EnemyDrawPosition.x, EnemyDrawPosition.y].gravityDirection;
+                            Vector2 gravDirection = Vector2Int.up;
                             Vector2 collider = parameters.enemyData.colliderSize;
                             Gizmos.color = Color.yellow;
-                            Vector2 centerPos = GetCenterPosition(gravityTileMap.GetCellCenterWorld((Vector3Int)grid[EnemyDrawPosition.x, EnemyDrawPosition.y].position));
+                            Vector2 centerPos = GetCenterPosition(wallsTileMap.GetCellCenterWorld((Vector3Int)grid[EnemyDrawPosition.x, EnemyDrawPosition.y].position));
                             Gizmos.DrawWireCube((Vector3)centerPos, new Vector3(Mathf.Abs(collider.x * gravDirection.y + collider.y * gravDirection.x), Mathf.Abs(collider.y * gravDirection.y + collider.x * gravDirection.x), 1));
 
                             Gizmos.color = new Color(1f, 0.5f, 0f, 1f);
@@ -1765,7 +1537,7 @@ namespace Pathfinding
                         else
                         {
                             Gizmos.color = Color.red;
-                            Gizmos.DrawWireCube(gravityTileMap.GetCellCenterWorld((Vector3Int)grid[EnemyDrawPosition.x, EnemyDrawPosition.y].position), new Vector3(0.98f, 0.98f, 1));
+                            Gizmos.DrawWireCube(wallsTileMap.GetCellCenterWorld((Vector3Int)grid[EnemyDrawPosition.x, EnemyDrawPosition.y].position), new Vector3(0.98f, 0.98f, 1));
                         }
                     }
                 }

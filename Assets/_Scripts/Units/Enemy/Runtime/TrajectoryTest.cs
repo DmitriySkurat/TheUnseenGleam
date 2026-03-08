@@ -3,14 +3,12 @@
 /// </summary>
 
 using System.Collections.Generic;
-//using Gravity;
 using UnityEngine;
 
 namespace Pathfinding
 {
     public class TrajectoryTest : MonoBehaviour
     {
-        //public GravityHandler GravityHandler;
         public Rigidbody2D rb;
         public Transform lauch;
         public Transform target;
@@ -55,7 +53,6 @@ namespace Pathfinding
             {
                 if (showJumpTrajectory)
                 {
-                    //GravityHandler.SetGravityMult(gravity / 10);
                     transform.position = lauch.position;
                     rb.linearVelocity = (target.position - lauch.position) / T[currentIndex] - a * T[currentIndex] / 2.0f;
                     currentIndex += 1;

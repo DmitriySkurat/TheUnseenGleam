@@ -17,9 +17,7 @@ namespace Pathfinding
         [SerializeReference]
         public List<Tile> tiles;
         public int numberOfEdges;
-        public string gravityTilemapName;
         public string wallsTilemapName;
 
     }
 }
-

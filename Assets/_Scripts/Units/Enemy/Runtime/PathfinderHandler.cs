@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Linq;
 using Entity.Enemy;
+using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,7 +25,8 @@ namespace Pathfinding
     {
         [Header("Needed Components")]
         [SerializeField] private PathfindingGraph graph;
-        [SerializeField] private Tilemap gravityTilemap;
+        [FormerlySerializedAs("navigationTilemap")]
+        [SerializeField] private Tilemap navigationTilemap;
         [SerializeField] private Transform agent;
         [SerializeField] private Transform target;
         [SerializeField] private EnemyHandler context;
@@ -61,8 +63,25 @@ namespace Pathfinding
         private bool success = false;
 
         #region Callbacks
-        private void Awake()
+        // private void Awake()
+        // {
+        //     RB = context.RB;
+        //     if (!CheckParam())
+        //     {
+        //         Debug.Log("Cannot find path because components are not correct");
+        //         gameObject.SetActive(false);
+        //     }
+        //     else
+        //     {
+        //         GenerateGridFromList();
+        //     }
+
+        //     ResetPF();
+        // }
+        
+        public void InitPathfinder(EnemyHandler enemyContext)
         {
+            context = enemyContext;
             RB = context.RB;
             if (!CheckParam())
             {
@@ -87,7 +106,7 @@ namespace Pathfinding
             if (tryFindPath)
             {
                 unityTargetCell = GetUnityTargetCell(target.position);
-                unityAgentCell = gravityTilemap.WorldToCell(agent.position);
+                unityAgentCell = navigationTilemap.WorldToCell(agent.position);
                 GetPath();
 
                 if (newPath && path.Count > 0)
@@ -297,13 +316,13 @@ namespace Pathfinding
             Vector3Int pos = unityAgentCell + new Vector3Int(Mathf.RoundToInt(rightDir.x), Mathf.RoundToInt(rightDir.y), 0);
             if (grid[pos.x - bounds.min.x, pos.y - bounds.min.y].type == TileType.Walkable)
             {
-                tasks.Add(new WalkTask(this, gravityTilemap.GetCellCenterWorld(pos), true));
+                tasks.Add(new WalkTask(this, navigationTilemap.GetCellCenterWorld(pos), true));
                 return;
             }
             pos = unityAgentCell - new Vector3Int(Mathf.RoundToInt(rightDir.x), Mathf.RoundToInt(rightDir.y), 0);
             if (grid[pos.x - bounds.min.x, pos.y - bounds.min.y].type == TileType.Walkable)
             {
-                tasks.Add(new WalkTask(this, gravityTilemap.GetCellCenterWorld(pos), true));
+                tasks.Add(new WalkTask(this, navigationTilemap.GetCellCenterWorld(pos), true));
                 return;
             }
 
@@ -312,7 +331,7 @@ namespace Pathfinding
         private Vector3Int GetUnityTargetCell(Vector3 pos)
         {
             Vector2Int gravityDir = Vector2Int.zero;
-            Vector3Int cell = gravityTilemap.WorldToCell(pos);
+            Vector3Int cell = navigationTilemap.WorldToCell(pos);
             Vector3Int currentCell;
             for (int i = 0; i < 3; i++)
             {
@@ -373,7 +392,7 @@ namespace Pathfinding
                 tasks.Clear();
                 if (edge.type == EdgeType.Walk)
                 {
-                    tasks.Add(new WalkTask(this, gravityTilemap.GetCellCenterWorld(new Vector3Int(edge.targetPos.x, edge.targetPos.y, 0)), true));
+                    tasks.Add(new WalkTask(this, navigationTilemap.GetCellCenterWorld(new Vector3Int(edge.targetPos.x, edge.targetPos.y, 0)), true));
                 }
                 else if (edge.type == EdgeType.Jump || edge.type == EdgeType.Fall)
                 {
@@ -382,7 +401,7 @@ namespace Pathfinding
                     {
                         if (i == edge.waypoints.Count - 1)
                         {
-                            tasks.Add(new TrajectoryTask(this, edge.waypoints[i].initialSpeed, edge.waypoints[i].acceleration, edge.waypoints[i].position, gravityTilemap.GetCellCenterWorld(new Vector3Int(edge.targetPos.x, edge.targetPos.y, 0)), edge.waypoints[i].time));
+                            tasks.Add(new TrajectoryTask(this, edge.waypoints[i].initialSpeed, edge.waypoints[i].acceleration, edge.waypoints[i].position, navigationTilemap.GetCellCenterWorld(new Vector3Int(edge.targetPos.x, edge.targetPos.y, 0)), edge.waypoints[i].time));
                         }
                         else
                         {
@@ -396,7 +415,7 @@ namespace Pathfinding
 
         private void GenerateGridFromList()
         {
-            bounds = gravityTilemap.cellBounds;
+            bounds = navigationTilemap.cellBounds;
             if (graph != null && graph.tiles != null)
             {
                 grid = new Pathfinding.Tile[bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y];
@@ -613,7 +632,7 @@ namespace Pathfinding
                 Debug.LogError("Graph tiles is null");
                 return false;
             }
-            if (gravityTilemap == null)
+            if (navigationTilemap == null)
             {
                 Debug.LogError("Gravity tilemap is null");
                 return false;
@@ -666,7 +685,7 @@ namespace Pathfinding
             {
                 GenerateGridFromList();
                 unityTargetCell = GetUnityTargetCell(target.position);
-                unityAgentCell = gravityTilemap.WorldToCell(agent.position);
+                unityAgentCell = navigationTilemap.WorldToCell(agent.position);
                 if (GetPath())
                 {
                     Debug.Log("Path found");
@@ -771,8 +790,8 @@ namespace Pathfinding
                     {
                         Gizmos.color = Color.red;
                     }
-                    Gizmos.DrawWireSphere(gravityTilemap.GetCellCenterWorld(new Vector3Int(unityAgentCell.x, unityAgentCell.y, 0)), 0.5f);
-                    Gizmos.DrawWireSphere(gravityTilemap.GetCellCenterWorld(new Vector3Int(unityTargetCell.x, unityTargetCell.y, 0)), 0.5f);
+                    Gizmos.DrawWireSphere(navigationTilemap.GetCellCenterWorld(new Vector3Int(unityAgentCell.x, unityAgentCell.y, 0)), 0.5f);
+                    Gizmos.DrawWireSphere(navigationTilemap.GetCellCenterWorld(new Vector3Int(unityTargetCell.x, unityTargetCell.y, 0)), 0.5f);
 
                 }
                 if (exploredTilesDebug != null && drawExploredTiles)
@@ -780,9 +799,9 @@ namespace Pathfinding
                     int i = 0;
                     foreach (Vector2Int pos in exploredTilesDebug)
                     {
-                        // Gizmos.DrawWireSphere(gravityTilemap.GetCellCenterWorld((Vector3Int)grid[pos.x, pos.y].position), 0.2f);
+                        // Gizmos.DrawWireSphere(navigationTilemap.GetCellCenterWorld((Vector3Int)grid[pos.x, pos.y].position), 0.2f);
 #if UNITY_EDITOR
-                        Handles.Label(gravityTilemap.GetCellCenterWorld((Vector3Int)grid[pos.x, pos.y].position), i.ToString());
+                        Handles.Label(navigationTilemap.GetCellCenterWorld((Vector3Int)grid[pos.x, pos.y].position), i.ToString());
 #endif
                         i++;
                     }
@@ -792,14 +811,14 @@ namespace Pathfinding
                     Gizmos.color = Color.green;
                     foreach (Edge edge in path)
                     {
-                        if (edge == null || bounds == null || grid == null || gravityTilemap == null)
+                        if (edge == null || bounds == null || grid == null || navigationTilemap == null)
                         {
                             return;
                         }
 
                         if (edge.type == EdgeType.Walk)
                         {
-                            Gizmos.DrawLine(gravityTilemap.GetCellCenterWorld((Vector3Int)grid[edge.sourcePos.x - bounds.min.x, edge.sourcePos.y - bounds.min.y].position), gravityTilemap.GetCellCenterWorld((Vector3Int)grid[edge.targetPos.x - bounds.min.x, edge.targetPos.y - bounds.min.y].position));
+                            Gizmos.DrawLine(navigationTilemap.GetCellCenterWorld((Vector3Int)grid[edge.sourcePos.x - bounds.min.x, edge.sourcePos.y - bounds.min.y].position), navigationTilemap.GetCellCenterWorld((Vector3Int)grid[edge.targetPos.x - bounds.min.x, edge.targetPos.y - bounds.min.y].position));
                         }
                         else
                         {
@@ -827,7 +846,7 @@ namespace Pathfinding
                 {
                     Gizmos.color = Color.red;
                 }
-                Gizmos.DrawWireSphere(gravityTilemap.GetCellCenterWorld(new Vector3Int(unityAgentCell.x, unityAgentCell.y, 0)), 0.5f);
+                Gizmos.DrawWireSphere(navigationTilemap.GetCellCenterWorld(new Vector3Int(unityAgentCell.x, unityAgentCell.y, 0)), 0.5f);
                 if (path != null && GetTileType(unityTargetCell) == TileType.Walkable && IsCellValid(unityTargetCell))
                 {
                     Gizmos.color = Color.green;
@@ -836,7 +855,7 @@ namespace Pathfinding
                 {
                     Gizmos.color = Color.red;
                 }
-                Gizmos.DrawWireSphere(gravityTilemap.GetCellCenterWorld(new Vector3Int(unityTargetCell.x, unityTargetCell.y, 0)), 0.5f);
+                Gizmos.DrawWireSphere(navigationTilemap.GetCellCenterWorld(new Vector3Int(unityTargetCell.x, unityTargetCell.y, 0)), 0.5f);
 #if UNITY_EDITOR
                 if (tasks.Count > 0)
                 {
