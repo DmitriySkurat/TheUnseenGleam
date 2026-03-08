@@ -4,41 +4,61 @@
 /// </summary>
 
 using UnityEngine;
+using Pathfinding;
 
 namespace Entity.Enemy
 {
-    public class EnemyHandler : MonoBehaviour
+    [RequireComponent(typeof(Rigidbody2D), typeof(PathfinderHandler))]
+    public class EnemyHandler : MonoBehaviour//, IInitializable
     {
+        //public InitializationOrder Order => InitializationOrder.GameplayCore; // Или добавить Enemy = 250 в enum
+
         [Header("References")]
-        public Rigidbody2D RB;
         public EnemyData enemyData;
+        public Rigidbody2D RB { get; private set; }
+        private PathfinderHandler _pathfinder;
 
-        [Header("State")]
-        public bool IsGrounded;
+        [Header("Collision")]
+        [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private float groundCheckDistance = 0.1f;
 
-        public float HorizontalVelocity
+        public bool IsGrounded { get; private set; }
+        
+        public float HorizontalVelocity 
+        { 
+            set => RB.linearVelocity = new Vector2(value, RB.linearVelocity.y); 
+        }
+        
+        public void Awake()
         {
-            get
-            {
-                if (RB == null)
-                {
-                    return 0f;
-                }
-                return Vector2.Dot(RB.linearVelocity, transform.right);
-            }
-            set
-            {
-                if (RB == null)
-                {
-                    return;
-                }
+            RB = GetComponent<Rigidbody2D>();
+            _pathfinder = GetComponent<PathfinderHandler>();
+        }
 
-                Vector2 right = transform.right;
-                Vector2 up = transform.up;
-                Vector2 current = RB.linearVelocity;
-                float vertical = Vector2.Dot(current, up);
-                RB.linearVelocity = right * value + up * vertical;
-            }
+        // public void Initialize()
+        // {
+        //     RB = GetComponent<Rigidbody2D>();
+        //     _pathfinder = GetComponent<PathfinderHandler>();
+            
+        //     // Если у врага есть таргет (например, игрок), можно задать его здесь
+        //     // var player = Services.Get<PlayerContext>();
+        //     // if (player != null) _pathfinder.SetTarget(player.renderer.transform);
+        // }
+
+        private void FixedUpdate()
+        {
+            if (RB == null) return;
+            CheckGrounded();
+        }
+
+        private void CheckGrounded()
+        {
+            // Простая проверка земли (адаптируй под свои нужды)
+            Vector2 position = transform.position;
+            Vector2 direction = Vector2.down;
+            
+            RaycastHit2D hit = Physics2D.Raycast(position, direction, groundCheckDistance, groundLayer);
+            IsGrounded = hit.collider != null;
         }
     }
 }

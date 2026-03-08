@@ -268,13 +268,14 @@ namespace Pathfinding
                         Vector3Int worldCellPos = gravityTileMap.WorldToCell(WorldPos);
                         TileBase wallTile = wallsTileMap.GetTile(worldCellPos);
 
-                        if (!GravityManager.tileGravity.ContainsKey(gravTile))
-                        {
-                            Debug.LogError(gravTile.name + " gravTile not in tileGravity");
-                            return;
-                        }
+                        // if (!GravityManager.tileGravity.ContainsKey(gravTile))
+                        // {
+                        //     Debug.LogError(gravTile.name + " gravTile not in tileGravity");
+                        //     return;
+                        // }
 
-                        Vector2Int gravDirection = Vector2Int.RoundToInt(GravityManager.tileGravity[gravTile]);
+                        // Vector2Int gravDirection = Vector2Int.RoundToInt(GravityManager.tileGravity[gravTile]);
+                        Vector2Int gravDirection = new Vector2Int(0, -1);
                         if (gravDirection == null)
                         {
                             Debug.LogError("gravDirection null, this should not happend");

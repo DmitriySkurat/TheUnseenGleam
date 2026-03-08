@@ -13,13 +13,4793 @@ MonoBehaviour:
   m_Name: EnemyPathGraph
   m_EditorClassIdentifier: overthought-games.pathfinding::Pathfinding.PathfindingGraph
   parameters:
-    rid: -2
-  tiles: []
-  numberOfEdges: 0
-  gravityTilemapName: 
-  wallsTilemapName: 
+    rid: 4312538785327874140
+  tiles:
+  - rid: 4312538785327874141
+  - rid: 4312538785327874142
+  - rid: 4312538785327874143
+  - rid: 4312538785327874144
+  - rid: 4312538785327874145
+  - rid: 4312538785327874146
+  - rid: 4312538785327874147
+  - rid: 4312538785327874148
+  - rid: 4312538785327874149
+  - rid: 4312538785327874150
+  - rid: 4312538785327874151
+  - rid: 4312538785327874152
+  - rid: 4312538785327874153
+  - rid: 4312538785327874154
+  - rid: 4312538785327874155
+  - rid: 4312538785327874156
+  - rid: 4312538785327874157
+  - rid: 4312538785327874158
+  - rid: 4312538785327874159
+  - rid: 4312538785327874160
+  - rid: 4312538785327874161
+  - rid: 4312538785327874162
+  - rid: 4312538785327874163
+  - rid: 4312538785327874164
+  - rid: 4312538785327874165
+  - rid: 4312538785327874166
+  - rid: 4312538785327874167
+  - rid: 4312538785327874168
+  - rid: 4312538785327874169
+  - rid: 4312538785327874170
+  - rid: 4312538785327874171
+  - rid: 4312538785327874172
+  - rid: 4312538785327874173
+  - rid: 4312538785327874174
+  - rid: 4312538785327874175
+  - rid: 4312538785327874176
+  - rid: 4312538785327874177
+  - rid: 4312538785327874178
+  - rid: 4312538785327874179
+  - rid: 4312538785327874180
+  - rid: 4312538785327874181
+  - rid: 4312538785327874182
+  - rid: 4312538785327874183
+  - rid: 4312538785327874184
+  - rid: 4312538785327874185
+  - rid: 4312538785327874186
+  - rid: 4312538785327874187
+  - rid: 4312538785327874188
+  - rid: 4312538785327874189
+  - rid: 4312538785327874190
+  - rid: 4312538785327874191
+  - rid: 4312538785327874192
+  - rid: 4312538785327874193
+  - rid: 4312538785327874194
+  - rid: 4312538785327874195
+  - rid: 4312538785327874196
+  - rid: 4312538785327874197
+  - rid: 4312538785327874198
+  - rid: 4312538785327874199
+  - rid: 4312538785327874200
+  - rid: 4312538785327874201
+  - rid: 4312538785327874202
+  - rid: 4312538785327874203
+  - rid: 4312538785327874204
+  - rid: 4312538785327874205
+  - rid: 4312538785327874206
+  - rid: 4312538785327874207
+  - rid: 4312538785327874208
+  - rid: 4312538785327874209
+  - rid: 4312538785327874210
+  - rid: 4312538785327874211
+  - rid: 4312538785327874212
+  - rid: 4312538785327874213
+  - rid: 4312538785327874214
+  - rid: 4312538785327874215
+  - rid: 4312538785327874216
+  - rid: 4312538785327874217
+  - rid: 4312538785327874218
+  - rid: 4312538785327874219
+  - rid: 4312538785327874220
+  - rid: 4312538785327874221
+  - rid: 4312538785327874222
+  - rid: 4312538785327874223
+  - rid: 4312538785327874224
+  - rid: 4312538785327874225
+  - rid: 4312538785327874226
+  - rid: 4312538785327874227
+  - rid: 4312538785327874228
+  - rid: 4312538785327874229
+  - rid: 4312538785327874230
+  - rid: 4312538785327874231
+  - rid: 4312538785327874232
+  - rid: 4312538785327874233
+  - rid: 4312538785327874234
+  - rid: 4312538785327874235
+  - rid: 4312538785327874236
+  - rid: 4312538785327874237
+  - rid: 4312538785327874238
+  - rid: 4312538785327874239
+  - rid: 4312538785327874240
+  - rid: 4312538785327874241
+  - rid: 4312538785327874242
+  - rid: 4312538785327874243
+  - rid: 4312538785327874244
+  - rid: 4312538785327874245
+  - rid: 4312538785327874246
+  - rid: 4312538785327874247
+  - rid: 4312538785327874248
+  - rid: 4312538785327874249
+  - rid: 4312538785327874250
+  - rid: 4312538785327874251
+  - rid: 4312538785327874252
+  - rid: 4312538785327874253
+  - rid: 4312538785327874254
+  - rid: 4312538785327874255
+  - rid: 4312538785327874256
+  - rid: 4312538785327874257
+  - rid: 4312538785327874258
+  - rid: 4312538785327874259
+  - rid: 4312538785327874260
+  - rid: 4312538785327874261
+  - rid: 4312538785327874262
+  - rid: 4312538785327874263
+  - rid: 4312538785327874264
+  - rid: 4312538785327874265
+  - rid: 4312538785327874266
+  - rid: 4312538785327874267
+  - rid: 4312538785327874268
+  - rid: 4312538785327874269
+  - rid: 4312538785327874270
+  - rid: 4312538785327874271
+  - rid: 4312538785327874272
+  - rid: 4312538785327874273
+  - rid: 4312538785327874274
+  - rid: 4312538785327874275
+  - rid: 4312538785327874276
+  - rid: 4312538785327874277
+  - rid: 4312538785327874278
+  - rid: 4312538785327874279
+  - rid: 4312538785327874280
+  - rid: 4312538785327874281
+  - rid: 4312538785327874282
+  - rid: 4312538785327874283
+  - rid: 4312538785327874284
+  - rid: 4312538785327874285
+  - rid: 4312538785327874286
+  - rid: 4312538785327874287
+  - rid: 4312538785327874288
+  - rid: 4312538785327874289
+  - rid: 4312538785327874290
+  - rid: 4312538785327874291
+  - rid: 4312538785327874292
+  - rid: 4312538785327874293
+  - rid: 4312538785327874294
+  - rid: 4312538785327874295
+  - rid: 4312538785327874296
+  - rid: 4312538785327874297
+  - rid: 4312538785327874298
+  - rid: 4312538785327874299
+  - rid: 4312538785327874300
+  - rid: 4312538785327874301
+  - rid: 4312538785327874302
+  - rid: 4312538785327874303
+  - rid: 4312538785327874304
+  - rid: 4312538785327874305
+  - rid: 4312538785327874306
+  - rid: 4312538785327874307
+  - rid: 4312538785327874308
+  - rid: 4312538785327874309
+  - rid: 4312538785327874310
+  - rid: 4312538785327874311
+  - rid: 4312538785327874312
+  - rid: 4312538785327874313
+  - rid: 4312538785327874314
+  - rid: 4312538785327874315
+  - rid: 4312538785327874316
+  - rid: 4312538785327874317
+  - rid: 4312538785327874318
+  - rid: 4312538785327874319
+  - rid: 4312538785327874320
+  - rid: 4312538785327874321
+  - rid: 4312538785327874322
+  - rid: 4312538785327874323
+  - rid: 4312538785327874324
+  - rid: 4312538785327874325
+  - rid: 4312538785327874326
+  - rid: 4312538785327874327
+  - rid: 4312538785327874328
+  - rid: 4312538785327874329
+  - rid: 4312538785327874330
+  - rid: 4312538785327874331
+  - rid: 4312538785327874332
+  - rid: 4312538785327874333
+  - rid: 4312538785327874334
+  - rid: 4312538785327874335
+  - rid: 4312538785327874336
+  - rid: 4312538785327874337
+  - rid: 4312538785327874338
+  - rid: 4312538785327874339
+  - rid: 4312538785327874340
+  - rid: 4312538785327874341
+  - rid: 4312538785327874342
+  - rid: 4312538785327874343
+  - rid: 4312538785327874344
+  - rid: 4312538785327874345
+  - rid: 4312538785327874346
+  - rid: 4312538785327874347
+  - rid: 4312538785327874348
+  - rid: 4312538785327874349
+  - rid: 4312538785327874350
+  - rid: 4312538785327874351
+  - rid: 4312538785327874352
+  - rid: 4312538785327874353
+  - rid: 4312538785327874354
+  - rid: 4312538785327874355
+  - rid: 4312538785327874356
+  - rid: 4312538785327874357
+  - rid: 4312538785327874358
+  - rid: 4312538785327874359
+  - rid: 4312538785327874360
+  - rid: 4312538785327874361
+  - rid: 4312538785327874362
+  - rid: 4312538785327874363
+  - rid: 4312538785327874364
+  - rid: 4312538785327874365
+  - rid: 4312538785327874366
+  - rid: 4312538785327874367
+  - rid: 4312538785327874368
+  - rid: 4312538785327874369
+  - rid: 4312538785327874370
+  - rid: 4312538785327874371
+  - rid: 4312538785327874372
+  - rid: 4312538785327874373
+  - rid: 4312538785327874374
+  - rid: 4312538785327874375
+  - rid: 4312538785327874376
+  - rid: 4312538785327874377
+  - rid: 4312538785327874378
+  - rid: 4312538785327874379
+  - rid: 4312538785327874380
+  - rid: 4312538785327874381
+  - rid: 4312538785327874382
+  - rid: 4312538785327874383
+  - rid: 4312538785327874384
+  - rid: 4312538785327874385
+  - rid: 4312538785327874386
+  - rid: 4312538785327874387
+  - rid: 4312538785327874388
+  - rid: 4312538785327874389
+  - rid: 4312538785327874390
+  - rid: 4312538785327874391
+  - rid: 4312538785327874392
+  - rid: 4312538785327874393
+  - rid: 4312538785327874394
+  - rid: 4312538785327874395
+  - rid: 4312538785327874396
+  - rid: 4312538785327874397
+  - rid: 4312538785327874398
+  - rid: 4312538785327874399
+  - rid: 4312538785327874400
+  - rid: 4312538785327874401
+  - rid: 4312538785327874402
+  - rid: 4312538785327874403
+  - rid: 4312538785327874404
+  - rid: 4312538785327874405
+  - rid: 4312538785327874406
+  - rid: 4312538785327874407
+  - rid: 4312538785327874408
+  - rid: 4312538785327874409
+  - rid: 4312538785327874410
+  - rid: 4312538785327874411
+  - rid: 4312538785327874412
+  - rid: 4312538785327874413
+  - rid: 4312538785327874414
+  - rid: 4312538785327874415
+  - rid: 4312538785327874416
+  - rid: 4312538785327874417
+  - rid: 4312538785327874418
+  - rid: 4312538785327874419
+  - rid: 4312538785327874420
+  - rid: 4312538785327874421
+  - rid: 4312538785327874422
+  - rid: 4312538785327874423
+  - rid: 4312538785327874424
+  - rid: 4312538785327874425
+  - rid: 4312538785327874426
+  - rid: 4312538785327874427
+  - rid: 4312538785327874428
+  - rid: 4312538785327874429
+  - rid: 4312538785327874430
+  - rid: 4312538785327874431
+  - rid: 4312538785327874432
+  - rid: 4312538785327874433
+  - rid: 4312538785327874434
+  - rid: 4312538785327874435
+  - rid: 4312538785327874436
+  - rid: 4312538785327874437
+  - rid: 4312538785327874438
+  - rid: 4312538785327874439
+  - rid: 4312538785327874440
+  - rid: 4312538785327874441
+  - rid: 4312538785327874442
+  - rid: 4312538785327874443
+  - rid: 4312538785327874444
+  - rid: 4312538785327874445
+  - rid: 4312538785327874446
+  - rid: 4312538785327874447
+  - rid: 4312538785327874448
+  - rid: 4312538785327874449
+  - rid: 4312538785327874450
+  - rid: 4312538785327874451
+  - rid: 4312538785327874452
+  - rid: 4312538785327874453
+  - rid: 4312538785327874454
+  - rid: 4312538785327874455
+  - rid: 4312538785327874456
+  - rid: 4312538785327874457
+  - rid: 4312538785327874458
+  - rid: 4312538785327874459
+  - rid: 4312538785327874460
+  - rid: 4312538785327874461
+  - rid: 4312538785327874462
+  - rid: 4312538785327874463
+  - rid: 4312538785327874464
+  - rid: 4312538785327874465
+  - rid: 4312538785327874466
+  - rid: 4312538785327874467
+  - rid: 4312538785327874468
+  - rid: 4312538785327874469
+  - rid: 4312538785327874470
+  - rid: 4312538785327874471
+  - rid: 4312538785327874472
+  - rid: 4312538785327874473
+  - rid: 4312538785327874474
+  - rid: 4312538785327874475
+  - rid: 4312538785327874476
+  - rid: 4312538785327874477
+  - rid: 4312538785327874478
+  - rid: 4312538785327874479
+  - rid: 4312538785327874480
+  - rid: 4312538785327874481
+  - rid: 4312538785327874482
+  - rid: 4312538785327874483
+  - rid: 4312538785327874484
+  - rid: 4312538785327874485
+  - rid: 4312538785327874486
+  - rid: 4312538785327874487
+  - rid: 4312538785327874488
+  - rid: 4312538785327874489
+  - rid: 4312538785327874490
+  - rid: 4312538785327874491
+  - rid: 4312538785327874492
+  - rid: 4312538785327874493
+  - rid: 4312538785327874494
+  - rid: 4312538785327874495
+  - rid: 4312538785327874496
+  - rid: 4312538785327874497
+  - rid: 4312538785327874498
+  - rid: 4312538785327874499
+  - rid: 4312538785327874500
+  - rid: 4312538785327874501
+  - rid: 4312538785327874502
+  - rid: 4312538785327874503
+  - rid: 4312538785327874504
+  - rid: 4312538785327874505
+  - rid: 4312538785327874506
+  - rid: 4312538785327874507
+  - rid: 4312538785327874508
+  - rid: 4312538785327874509
+  - rid: 4312538785327874510
+  - rid: 4312538785327874511
+  - rid: 4312538785327874512
+  - rid: 4312538785327874513
+  - rid: 4312538785327874514
+  - rid: 4312538785327874515
+  - rid: 4312538785327874516
+  - rid: 4312538785327874517
+  - rid: 4312538785327874518
+  - rid: 4312538785327874519
+  - rid: 4312538785327874520
+  - rid: 4312538785327874521
+  - rid: 4312538785327874522
+  - rid: 4312538785327874523
+  - rid: 4312538785327874524
+  - rid: 4312538785327874525
+  - rid: 4312538785327874526
+  - rid: 4312538785327874527
+  - rid: 4312538785327874528
+  - rid: 4312538785327874529
+  - rid: 4312538785327874530
+  - rid: 4312538785327874531
+  - rid: 4312538785327874532
+  - rid: 4312538785327874533
+  - rid: 4312538785327874534
+  - rid: 4312538785327874535
+  - rid: 4312538785327874536
+  - rid: 4312538785327874537
+  - rid: 4312538785327874538
+  - rid: 4312538785327874539
+  - rid: 4312538785327874540
+  - rid: 4312538785327874541
+  - rid: 4312538785327874542
+  - rid: 4312538785327874543
+  - rid: 4312538785327874544
+  - rid: 4312538785327874545
+  - rid: 4312538785327874546
+  - rid: 4312538785327874547
+  - rid: 4312538785327874548
+  - rid: 4312538785327874549
+  - rid: 4312538785327874550
+  - rid: 4312538785327874551
+  - rid: 4312538785327874552
+  - rid: 4312538785327874553
+  - rid: 4312538785327874554
+  - rid: 4312538785327874555
+  - rid: 4312538785327874556
+  - rid: 4312538785327874557
+  - rid: 4312538785327874558
+  - rid: 4312538785327874559
+  - rid: 4312538785327874560
+  - rid: 4312538785327874561
+  - rid: 4312538785327874562
+  - rid: 4312538785327874563
+  - rid: 4312538785327874564
+  - rid: 4312538785327874565
+  - rid: 4312538785327874566
+  - rid: 4312538785327874567
+  - rid: 4312538785327874568
+  - rid: 4312538785327874569
+  - rid: 4312538785327874570
+  - rid: 4312538785327874571
+  - rid: 4312538785327874572
+  - rid: 4312538785327874573
+  - rid: 4312538785327874574
+  - rid: 4312538785327874575
+  - rid: 4312538785327874576
+  - rid: 4312538785327874577
+  - rid: 4312538785327874578
+  - rid: 4312538785327874579
+  - rid: 4312538785327874580
+  - rid: 4312538785327874581
+  - rid: 4312538785327874582
+  - rid: 4312538785327874583
+  - rid: 4312538785327874584
+  - rid: 4312538785327874585
+  - rid: 4312538785327874586
+  - rid: 4312538785327874587
+  - rid: 4312538785327874588
+  - rid: 4312538785327874589
+  - rid: 4312538785327874590
+  - rid: 4312538785327874591
+  - rid: 4312538785327874592
+  - rid: 4312538785327874593
+  - rid: 4312538785327874594
+  - rid: 4312538785327874595
+  - rid: 4312538785327874596
+  - rid: 4312538785327874597
+  - rid: 4312538785327874598
+  - rid: 4312538785327874599
+  - rid: 4312538785327874600
+  - rid: 4312538785327874601
+  - rid: 4312538785327874602
+  - rid: 4312538785327874603
+  - rid: 4312538785327874604
+  - rid: 4312538785327874605
+  - rid: 4312538785327874606
+  - rid: 4312538785327874607
+  - rid: 4312538785327874608
+  - rid: 4312538785327874609
+  - rid: 4312538785327874610
+  - rid: 4312538785327874611
+  - rid: 4312538785327874612
+  - rid: 4312538785327874613
+  - rid: 4312538785327874614
+  - rid: 4312538785327874615
+  - rid: 4312538785327874616
+  - rid: 4312538785327874617
+  - rid: 4312538785327874618
+  - rid: 4312538785327874619
+  - rid: 4312538785327874620
+  - rid: 4312538785327874621
+  - rid: 4312538785327874622
+  - rid: 4312538785327874623
+  - rid: 4312538785327874624
+  - rid: 4312538785327874625
+  - rid: 4312538785327874626
+  - rid: 4312538785327874627
+  - rid: 4312538785327874628
+  - rid: 4312538785327874629
+  - rid: 4312538785327874630
+  - rid: 4312538785327874631
+  - rid: 4312538785327874632
+  - rid: 4312538785327874633
+  - rid: 4312538785327874634
+  - rid: 4312538785327874635
+  - rid: 4312538785327874636
+  - rid: 4312538785327874637
+  - rid: 4312538785327874638
+  - rid: 4312538785327874639
+  - rid: 4312538785327874640
+  - rid: 4312538785327874641
+  - rid: 4312538785327874642
+  - rid: 4312538785327874643
+  - rid: 4312538785327874644
+  - rid: 4312538785327874645
+  - rid: 4312538785327874646
+  - rid: 4312538785327874647
+  - rid: 4312538785327874648
+  - rid: 4312538785327874649
+  - rid: 4312538785327874650
+  - rid: 4312538785327874651
+  - rid: 4312538785327874652
+  - rid: 4312538785327874653
+  - rid: 4312538785327874654
+  - rid: 4312538785327874655
+  - rid: 4312538785327874656
+  - rid: 4312538785327874657
+  - rid: 4312538785327874658
+  - rid: 4312538785327874659
+  - rid: 4312538785327874660
+  - rid: 4312538785327874661
+  - rid: 4312538785327874662
+  numberOfEdges: 11
+  gravityTilemapName: GroundNew
+  wallsTilemapName: Walls
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 4312538785327874140
+      type: {class: PathfindingParameters, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        enemyData: {fileID: 11400000, guid: 54425343d1c6a1448ab50c78a44a01cf, type: 2}
+        JumpConnectionMaxRange: 8
+        NumberOfTestedTrajectories: 3
+        NumberOfVelocitiesTested: 5
+        trajectoriesCheckInterval: 0.002
+        SimilarEdgesRemovalRange: 3
+        jumpCostMultiplier: 20
+        fallCostMultiplier: 4
+        colliderSizeBuffer: 0.2
+        TrajectoriesBoxCheckSize: {x: 7, y: 20}
+    - rid: 4312538785327874141
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: -18, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874142
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: -18, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874143
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: -17, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874144
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: -17, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874145
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -16, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874146
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -16, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874147
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -15, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874148
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -15, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874149
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -15, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874150
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -14, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874151
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -14, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874152
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -14, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874153
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -13, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874154
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -13, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874155
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -13, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874156
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -13, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874157
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -12, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874158
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -12, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874159
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -12, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874160
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -12, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874161
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -12, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874162
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -12, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874163
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -11, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874164
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -11, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874165
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -11, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874166
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -11, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874167
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -11, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874168
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -11, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874169
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -10, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874170
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -10, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874171
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -10, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874172
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -10, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874173
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -10, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874174
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -10, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874175
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -9, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874176
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -9, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874177
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -9, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874178
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -9, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874179
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -9, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874180
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -9, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874181
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -9, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874182
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -8, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874183
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -8, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874184
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -8, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874185
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -8, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874186
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -8, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874187
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -8, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874188
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -8, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874189
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -7, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874190
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -7, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874191
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -7, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874192
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -7, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874193
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -7, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874194
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -7, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874195
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -7, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874196
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -6, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874197
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -6, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874198
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -6, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874199
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -6, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874200
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -6, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874201
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -6, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874202
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -6, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874203
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -5, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874204
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -5, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874205
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -5, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874206
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -5, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874207
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -5, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874208
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -5, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874209
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -5, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874210
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -4, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874211
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -4, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874212
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -4, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874213
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -4, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874214
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -4, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874215
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -4, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874216
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -4, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874217
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874218
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874219
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874220
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -23}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874221
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -22}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874222
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874223
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874224
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -3, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874225
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -2, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874226
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -2, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874227
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -2, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874228
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -2, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874229
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -2, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874230
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -2, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874231
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -2, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874232
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -1, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874233
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -1, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874234
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -1, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874235
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -1, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874236
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -1, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874237
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -1, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874238
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: -1, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874239
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 0, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874240
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 0, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874241
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 0, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874242
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 0, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874243
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 0, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874244
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 0, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874245
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 0, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874246
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 1, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874247
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 1, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874248
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 1, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874249
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 1, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874250
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 1, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874251
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 1, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874252
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 1, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874253
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874254
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874255
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874256
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874257
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874258
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874259
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874260
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 2, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874261
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874262
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874263
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874264
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874265
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874266
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874267
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874268
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 3, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874269
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 4, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874270
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 4, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874271
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 4, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874272
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 4, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874273
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 4, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874274
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 4, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874275
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 5, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874276
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 5, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874277
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 5, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874278
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 5, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874279
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 5, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874280
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 5, y: -15}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874281
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 6, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874282
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 6, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874283
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 6, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874284
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 6, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874285
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 7, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874286
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 7, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874287
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 7, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874288
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 7, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874289
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 7, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874290
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 8, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874291
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 8, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874292
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 8, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874293
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 8, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874294
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 9, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874295
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 9, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874296
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 9, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874297
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 9, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874298
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 9, y: -13}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874299
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 10, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874300
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 10, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874301
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 10, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874302
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 11, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874303
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 11, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874304
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 11, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874305
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 12, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874306
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 12, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874307
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 12, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874308
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 13, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874309
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 13, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874310
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 13, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874311
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 14, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874312
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 14, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874313
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 14, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874314
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 15, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874315
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 15, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874316
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 15, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874317
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 16, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874318
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 16, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874319
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 16, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874320
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 17, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874321
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 17, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874322
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 18, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874323
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 18, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874324
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 19, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874325
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 19, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874326
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 20, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874327
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 20, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874328
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 20, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874329
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 20, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874330
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 21, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874331
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 21, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874332
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 22, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874333
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 22, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874334
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 23, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874335
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 23, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874336
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 24, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874337
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 24, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874338
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 25, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874339
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 25, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874340
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 25, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874341
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 26, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874342
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 26, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874343
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 26, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874344
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 27, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874345
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 27, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874346
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 27, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874347
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 28, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874348
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 28, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874349
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 28, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874350
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 28, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874351
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 28, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874352
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 28, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874353
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 28, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874354
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 28, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874355
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 29, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874356
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 29, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874357
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 29, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874358
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 29, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874359
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 30, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874360
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 30, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874361
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 30, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874362
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 30, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874363
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 31, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874364
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 31, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874365
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 31, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874366
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 31, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874367
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 32, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874368
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 32, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874369
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 32, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874370
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 32, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874371
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 32, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874372
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 33, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874373
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 33, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874374
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 33, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874375
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 33, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874376
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 33, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874377
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 34, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874378
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 34, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874379
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 34, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874380
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 34, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874381
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 34, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874382
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 35, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874383
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 35, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874384
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 35, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874385
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 35, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874386
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 35, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874387
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 36, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874388
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 36, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874389
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 36, y: -25}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874390
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 36, y: -24}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874391
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 36, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874392
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 37, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874393
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 37, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874394
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 37, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874395
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 38, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874396
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 38, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874397
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 38, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874398
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 39, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874399
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 39, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874400
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 39, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874401
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 39, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874402
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 0
+        type: 0
+        position: {x: 39, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 40, y: -32}
+          sourcePos: {x: 39, y: -32}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874403
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 39, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874404
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 39, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874405
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 40, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874406
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 40, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874407
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 40, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874408
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 40, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874409
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 0
+        type: 0
+        position: {x: 40, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 39, y: -32}
+          sourcePos: {x: 40, y: -32}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+        - targetPos: {x: 41, y: -32}
+          sourcePos: {x: 40, y: -32}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874410
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 40, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874411
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 40, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874412
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 41, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874413
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 41, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874414
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 41, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874415
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 41, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874416
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 0
+        type: 0
+        position: {x: 41, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 40, y: -32}
+          sourcePos: {x: 41, y: -32}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+        - targetPos: {x: 42, y: -32}
+          sourcePos: {x: 41, y: -32}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874417
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 41, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874418
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 41, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874419
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 42, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874420
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 42, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874421
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 42, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874422
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 42, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874423
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 0
+        type: 0
+        position: {x: 42, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 41, y: -32}
+          sourcePos: {x: 42, y: -32}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874424
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 42, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874425
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 43, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874426
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 43, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874427
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 43, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874428
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 44, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874429
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 44, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874430
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 44, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874431
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 45, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874432
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 45, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874433
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 45, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874434
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 46, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874435
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 46, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874436
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 46, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874437
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 46, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874438
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 46, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874439
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 47, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874440
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 47, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874441
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 47, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874442
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 47, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874443
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 47, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874444
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 48, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874445
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 48, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874446
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 48, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874447
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 48, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874448
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 48, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874449
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 48, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874450
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 49, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874451
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 49, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874452
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 49, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874453
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 49, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874454
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 49, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874455
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 49, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874456
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 50, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874457
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 50, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874458
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 50, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874459
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 50, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874460
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 50, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874461
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 50, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874462
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 51, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874463
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 51, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874464
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 51, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874465
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 51, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874466
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 51, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874467
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 51, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874468
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 52, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874469
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 52, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874470
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 52, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874471
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 52, y: -26}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874472
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 52, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874473
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 52, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874474
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 53, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874475
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 53, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874476
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 53, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874477
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 53, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874478
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 53, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874479
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 53, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874480
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 54, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874481
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 54, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874482
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 54, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874483
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 54, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874484
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 54, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874485
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 54, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874486
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 55, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874487
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 55, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874488
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 55, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874489
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 55, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874490
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 55, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874491
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 55, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874492
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 56, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874493
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 56, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874494
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 56, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874495
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 56, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874496
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 56, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874497
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 56, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874498
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 56, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874499
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 57, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874500
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 57, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874501
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 57, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874502
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 57, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874503
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 57, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874504
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 57, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874505
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 57, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874506
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 58, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874507
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 58, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874508
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 58, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874509
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 58, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874510
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 58, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874511
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 58, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874512
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 58, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874513
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 59, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874514
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 59, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874515
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 59, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874516
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 59, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874517
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 59, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874518
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 59, y: -17}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874519
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 59, y: -16}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874520
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 60, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874521
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 60, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874522
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 60, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874523
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 60, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874524
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 60, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874525
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 61, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874526
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 61, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874527
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 61, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874528
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 61, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874529
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 61, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874530
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 61, y: -21}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874531
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 62, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874532
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 62, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874533
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 62, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874534
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 62, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874535
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 62, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874536
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 63, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874537
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 63, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874538
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 63, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874539
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 63, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874540
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 63, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874541
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 64, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874542
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 64, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874543
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 64, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874544
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 64, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874545
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 64, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874546
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 64, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874547
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 64, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874548
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 65, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874549
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 65, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874550
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 65, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874551
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 65, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874552
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 65, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874553
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 65, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874554
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 65, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874555
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 66, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874556
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 66, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874557
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 66, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874558
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 66, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874559
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 66, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874560
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 66, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874561
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 66, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874562
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 67, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874563
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 67, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874564
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 67, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874565
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 67, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874566
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 67, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874567
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 67, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874568
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 67, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874569
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 68, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874570
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 68, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874571
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 68, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874572
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 68, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874573
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 68, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874574
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 68, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874575
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 68, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874576
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 69, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874577
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 69, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874578
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 69, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874579
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 69, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874580
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 69, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874581
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 69, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874582
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 69, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874583
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 70, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874584
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 70, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874585
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 70, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874586
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 70, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874587
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 70, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874588
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 70, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874589
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 70, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874590
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 71, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874591
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 71, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874592
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 71, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874593
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 71, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874594
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 71, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874595
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 71, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874596
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 72, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874597
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 72, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874598
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 72, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874599
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 72, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874600
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 72, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874601
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 72, y: -27}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874602
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 72, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874603
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 72, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874604
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 73, y: -37}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874605
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 73, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874606
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 73, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874607
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 73, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874608
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 73, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874609
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 73, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874610
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 73, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874611
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 74, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874612
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 74, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874613
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 74, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874614
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 74, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874615
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 74, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874616
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 74, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874617
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 75, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874618
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 75, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874619
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 75, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874620
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 75, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874621
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 75, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874622
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 75, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874623
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 76, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874624
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 76, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874625
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 76, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874626
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 76, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874627
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 76, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874628
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 1
+        type: 0
+        position: {x: 76, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 78, y: -33}
+          sourcePos: {x: 76, y: -31}
+          type: 1
+          cost: 2.9427428
+          waypoints:
+          - position: {x: -14.940494, y: -52.460068, z: 0}
+            initialSpeed: {x: 1.3333334, y: 0}
+            acceleration: {x: 0.09773098, y: 0}
+            time: 0.6379547
+            gravityDirection: {x: 0, y: -1}
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874629
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 76, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874630
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 76, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874631
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 77, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874632
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 77, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874633
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 77, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874634
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 2
+        type: 0
+        position: {x: 77, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 78, y: -33}
+          sourcePos: {x: 77, y: -33}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874635
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 77, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874636
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 77, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874637
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 77, y: -20}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874638
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 77, y: -19}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874639
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 78, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874640
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 78, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874641
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 78, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874642
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 2
+        type: 0
+        position: {x: 78, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 77, y: -33}
+          sourcePos: {x: 78, y: -33}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+        - targetPos: {x: 79, y: -33}
+          sourcePos: {x: 78, y: -33}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874643
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 78, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874644
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 78, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874645
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 79, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874646
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 79, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874647
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 79, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874648
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: 2
+        type: 0
+        position: {x: 79, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges:
+        - targetPos: {x: 78, y: -33}
+          sourcePos: {x: 79, y: -33}
+          type: 0
+          cost: 1
+          waypoints: []
+          temp: {x: 0, y: 0, z: 0}
+    - rid: 4312538785327874649
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 79, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874650
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 2
+        position: {x: 79, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874651
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 80, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874652
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 80, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874653
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 80, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874654
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 80, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874655
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 80, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874656
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 80, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874657
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 81, y: -36}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874658
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 81, y: -35}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874659
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 81, y: -34}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874660
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 81, y: -33}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874661
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 81, y: -32}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
+    - rid: 4312538785327874662
+      type: {class: Tile, ns: Pathfinding, asm: Assembly-CSharp}
+      data:
+        platformIndex: -1
+        type: 1
+        position: {x: 81, y: -31}
+        gravityDirection: {x: 0, y: -1}
+        edges: []
