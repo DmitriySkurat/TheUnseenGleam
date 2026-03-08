@@ -1,4 +1,6 @@
 ﻿<Solution>
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="overthought-games.pathfinding.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="overthought-games.pathfinding.Editor.csproj" />
 </Solution>
