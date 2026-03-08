@@ -35,6 +35,18 @@ namespace Pathfinding
                 // Debug.Log("ready To Jump");
                 return true;
             }
+            if (stops)
+            {
+                Vector2 toTarget = (Vector2)(targetPos - handler.transform.position);
+                float along = Vector2.Dot(toTarget, handler.transform.right);
+                float vel = handler.GetHorizontalVelocity();
+                if (Mathf.Abs(along) <= handler.GetWalkOvershootTolerance() &&
+                    Mathf.Abs(vel) > 0.01f &&
+                    Mathf.Sign(vel) != Mathf.Sign(along))
+                {
+                    return true;
+                }
+            }
             return false;
         }
     }
@@ -88,10 +100,7 @@ namespace Pathfinding
         }
         public override void OnFixedUpdate()
         {
-            if (accelleration != Vector2.zero)
-            {
-                handler.SetAccelleration(accelleration);
-            }
+            handler.SetAccelleration(accelleration);
         }
         public override bool IsOver()
         {

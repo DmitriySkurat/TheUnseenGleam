@@ -30,7 +30,18 @@ namespace Entity.Enemy
         }
         
 
-        public void Initialize()
+        
+        private void Awake()
+        {
+            if (RB == null)
+            {
+                RB = GetComponent<Rigidbody2D>();
+            }
+            if (_pathfinder == null)
+            {
+                _pathfinder = GetComponent<PathfinderHandler>();
+            }
+        }public void Initialize()
         {
             RB = GetComponent<Rigidbody2D>();
             _pathfinder = GetComponent<PathfinderHandler>();

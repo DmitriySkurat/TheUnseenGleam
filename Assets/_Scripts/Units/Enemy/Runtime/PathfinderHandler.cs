@@ -45,6 +45,13 @@ namespace Pathfinding
         [SerializeField, Min(0)] private int targetSnapDepth = 6;
         [SerializeField, Min(0)] private int agentSnapDepth = 2;
         [SerializeField] private bool ignoreGroundedInPathButton = true;
+        [SerializeField] private bool requireGroundedInPlay = false;
+        [Header("Trajectory")]
+        [SerializeField] private bool useManualGravityInTrajectories = true;
+        [SerializeField, Min(0f)] private float manualGravityScale = 1f;
+        [SerializeField] private bool teleportToTrajectoryOrigin = false;
+        private bool trajectoryManualGravityActive = false;
+        private float trajectoryOriginalGravityScale = 0f;
 
         [Header("RunAway")]
         [SerializeField] private int runAwayDistance;
@@ -86,6 +93,7 @@ namespace Pathfinding
         {
             context = enemyContext;
             RB = context.RB;
+            EnsureThresholds();
             if (!CheckParam())
             {
                 Debug.Log("Cannot find path because components are not correct");
@@ -99,6 +107,27 @@ namespace Pathfinding
             ResetPF();
         }
 
+        public void Configure(PathfindingGraph newGraph, Tilemap newNavigationTilemap, Transform newAgent)
+        {
+            if (newGraph != null)
+            {
+                graph = newGraph;
+            }
+            if (newNavigationTilemap != null)
+            {
+                navigationTilemap = newNavigationTilemap;
+            }
+            if (newAgent != null)
+            {
+                agent = newAgent;
+            }
+        }
+
+        public void SetRequireGroundedInPlay(bool value)
+        {
+            requireGroundedInPlay = value;
+        }
+
         public void SetTarget(Transform _target)
         {
             target = _target;
@@ -110,7 +139,8 @@ namespace Pathfinding
             {
                 unityTargetCell = GetUnityTargetCell(target.position);
                 unityAgentCell = GetUnityAgentCell(agent.position);
-                GetPath(requireGrounded: true);
+                bool requireGrounded = Application.isPlaying && requireGroundedInPlay;
+                GetPath(requireGrounded);
 
                 if (newPath && path.Count > 0)
                 {
@@ -145,9 +175,58 @@ namespace Pathfinding
             RB.linearVelocity = _velocity;
         }
 
+        public float GetHorizontalVelocity()
+        {
+            if (RB == null)
+            {
+                return 0f;
+            }
+            return Vector2.Dot(RB.linearVelocity, transform.right);
+        }
+
+        public float GetWalkOvershootTolerance()
+        {
+            if (nearWaypointThreshold == Vector2.zero)
+            {
+                return 0.2f;
+            }
+            return nearWaypointThreshold.x * 1.5f;
+        }
+
         public void SetAccelleration(Vector2 _accelleration)
         {
+            if (RB == null)
+            {
+                return;
+            }
+            if (trajectoryManualGravityActive)
+            {
+                float gravityScale = trajectoryOriginalGravityScale > 0f ? trajectoryOriginalGravityScale : manualGravityScale;
+                _accelleration += Physics2D.gravity * gravityScale;
+            }
             RB.AddForce(_accelleration * RB.mass, ForceMode2D.Force);
+        }
+
+        public void BeginTrajectory()
+        {
+            if (!useManualGravityInTrajectories || RB == null)
+            {
+                trajectoryManualGravityActive = false;
+                return;
+            }
+            trajectoryOriginalGravityScale = RB.gravityScale;
+            RB.gravityScale = 0f;
+            trajectoryManualGravityActive = true;
+        }
+
+        public void EndTrajectory()
+        {
+            if (!trajectoryManualGravityActive || RB == null)
+            {
+                return;
+            }
+            RB.gravityScale = trajectoryOriginalGravityScale;
+            trajectoryManualGravityActive = false;
         }
 
         public void Teleport(Vector3 _target)
@@ -176,7 +255,11 @@ namespace Pathfinding
 
         public void OnTrajectoryStart(Vector2 originPos, Vector2 velocity)
         {
-            Teleport(originPos);
+            BeginTrajectory();
+            if (teleportToTrajectoryOrigin || !Application.isPlaying)
+            {
+                Teleport(originPos);
+            }
             if (IsNearX(originPos, true) && IsNearY(originPos, true))
             {
                 Debug.Log("Teleporting to : " + originPos + " and set velocity : " + velocity);
@@ -186,6 +269,7 @@ namespace Pathfinding
 
         public void OnTrajectoryEnd()
         {
+            EndTrajectory();
         }
 
         #endregion
@@ -631,6 +715,18 @@ namespace Pathfinding
 
         #region Utility
 
+        private void EnsureThresholds()
+        {
+            if (nearWaypointThreshold == Vector2.zero)
+            {
+                nearWaypointThreshold = new Vector2(0.5f, 0.2f);
+            }
+            if (nearWaypointAirThreshold == Vector2.zero)
+            {
+                nearWaypointAirThreshold = new Vector2(0.35f, 0.25f);
+            }
+        }
+
         private bool CheckParam()
         {
             if (graph == null)
@@ -650,7 +746,7 @@ namespace Pathfinding
             }
             if (navigationTilemap == null)
             {
-                Debug.LogError("Gravity tilemap is null");
+                Debug.LogError("Navigation tilemap is null");
                 return false;
             }
             if (agent == null)
@@ -677,6 +773,10 @@ namespace Pathfinding
             {
                 Debug.LogWarning("Near waypoint treshold has a 0 value");
             }
+            if (nearWaypointAirThreshold.x == 0 || nearWaypointAirThreshold.y == 0)
+            {
+                Debug.LogWarning("Near waypoint air treshold has a 0 value");
+            }
             // check if application is playing, if so check the runtime parameters
 
             if (Application.isPlaying)
@@ -699,6 +799,7 @@ namespace Pathfinding
         {
             if (CheckParam())
             {
+                EnsureThresholds();
                 GenerateGridFromList();
                 if (!string.IsNullOrEmpty(graph.wallsTilemapName) && navigationTilemap.name != graph.wallsTilemapName)
                 {
@@ -711,7 +812,7 @@ namespace Pathfinding
                     Debug.Log("Agent tile: " + GetTileType(unityAgentCell) + " at " + unityAgentCell +
                               ", Target tile: " + GetTileType(unityTargetCell) + " at " + unityTargetCell);
                 }
-                bool requireGrounded = Application.isPlaying && !ignoreGroundedInPathButton;
+                bool requireGrounded = Application.isPlaying && requireGroundedInPlay && !ignoreGroundedInPathButton;
                 if (GetPath(requireGrounded))
                 {
                     Debug.Log("Path found");
@@ -913,3 +1014,5 @@ namespace Pathfinding
 #endif
 
 }
+
+
