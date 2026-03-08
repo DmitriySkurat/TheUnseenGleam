@@ -39,6 +39,7 @@ namespace Pathfinding
         [Header("Entity Debug")]
         [SerializeField] private bool drawEnemyBoxes = false;
         [SerializeField] private Vector2Int EnemyDrawPosition;
+        [SerializeField, Min(0f)] private float fitEpsilon = 0.01f;
         [HideInInspector] public bool buttonVerif = false;
         private bool hasBeenLoaded = false;
         private BoundsInt bounds;
@@ -375,7 +376,7 @@ namespace Pathfinding
         private void CreateJumpingConnections()
         {
             int count = 0;
-            Vector2 collider = new Vector2(parameters.enemyData.colliderSize.x + parameters.colliderSizeBuffer, parameters.enemyData.colliderSize.y + parameters.colliderSizeBuffer / 2); ;
+            Vector2 collider = GetBufferedCollider();
             Vector2Int entitySize = parameters.enemyData.entitySize;
             for (int x = 0; x < grid.GetLength(0); x++)
             {
@@ -593,7 +594,7 @@ namespace Pathfinding
 
         private bool fitsFromFeets(Vector3 pos, Vector2Int gravDirection)
         {
-            Vector2 collider = new Vector2(parameters.enemyData.colliderSize.x + parameters.colliderSizeBuffer, parameters.enemyData.colliderSize.y + parameters.colliderSizeBuffer / 2); ;
+            Vector2 collider = GetBufferedCollider();
             Vector2Int entitySize = parameters.enemyData.entitySize;
             Vector3 leftBot = pos + new Vector3((collider.x / 2f) * gravDirection.y, (-collider.x / 2f) * gravDirection.x, 0f);
             Vector3 xOffset = new Vector3(-collider.x * gravDirection.y, collider.x * gravDirection.x, 0f);
@@ -618,7 +619,7 @@ namespace Pathfinding
         private bool fitsFromCenter(Vector3 pos, Vector2Int gravDirection, bool debug = false)
         {
             Vector2 rawCollider = parameters.enemyData.colliderSize;
-            Vector2 collider = new Vector2(parameters.enemyData.colliderSize.x + parameters.colliderSizeBuffer, parameters.enemyData.colliderSize.y + parameters.colliderSizeBuffer / 2); ;
+            Vector2 collider = GetBufferedCollider();
             Vector2Int entitySize = parameters.enemyData.entitySize;
             Vector3 leftBot = pos + new Vector3((collider.x / 2f) * gravDirection.y + (rawCollider.y / 2f) * gravDirection.x, (-collider.x / 2f) * gravDirection.x + (rawCollider.y / 2f) * gravDirection.y, 0f);
             Vector3 xOffset = new Vector3(-collider.x * gravDirection.y, collider.x * gravDirection.x, 0f);
@@ -1103,6 +1104,45 @@ namespace Pathfinding
 
         #region OtherHelpersFunctions
 
+        private Vector2 GetBufferedCollider()
+        {
+            if (parameters == null || parameters.enemyData == null)
+            {
+                return Vector2.zero;
+            }
+
+            float bufferX = parameters.colliderSizeBuffer;
+            float bufferY = parameters.colliderSizeBuffer / 2f;
+
+            if (wallsTileMap != null)
+            {
+                float maxBufferX = wallsTileMap.cellSize.x * parameters.enemyData.entitySize.x - parameters.enemyData.colliderSize.x;
+                float maxBufferY = wallsTileMap.cellSize.y * parameters.enemyData.entitySize.y - parameters.enemyData.colliderSize.y;
+                bufferX = Mathf.Clamp(bufferX, 0f, maxBufferX);
+                bufferY = Mathf.Clamp(bufferY, 0f, maxBufferY);
+            }
+
+            float baseX = Mathf.Max(0f, parameters.enemyData.colliderSize.x - fitEpsilon);
+            float baseY = Mathf.Max(0f, parameters.enemyData.colliderSize.y - fitEpsilon);
+            return new Vector2(baseX + bufferX, baseY + bufferY);
+        }
+
+        private float GetBufferedColliderX()
+        {
+            if (parameters == null || parameters.enemyData == null)
+            {
+                return 0f;
+            }
+            float bufferX = parameters.colliderSizeBuffer;
+            if (wallsTileMap != null)
+            {
+                float maxBufferX = wallsTileMap.cellSize.x * parameters.enemyData.entitySize.x - parameters.enemyData.colliderSize.x;
+                bufferX = Mathf.Clamp(bufferX, 0f, maxBufferX);
+            }
+            float baseX = Mathf.Max(0f, parameters.enemyData.colliderSize.x - fitEpsilon);
+            return baseX + bufferX;
+        }
+
         private Vector3 GetFeetPosition(Vector3 worldPos)
         {
             if (wallsTileMap == null || grid == null)
@@ -1176,7 +1216,7 @@ namespace Pathfinding
             cornerPos -= new Vector3(gravDirection.y * side * wallsTileMap.cellSize.x / 2, gravDirection.x * side * wallsTileMap.cellSize.y / 2);
             cornerPos += new Vector3(gravDirection.x * wallsTileMap.cellSize.x / 2, gravDirection.y * wallsTileMap.cellSize.y / 2);
             cornerDebug.Add(cornerPos);
-            return GetCenterFromFeets(cornerPos + ((feetPos - cornerPos).normalized * 1.05f) * (parameters.enemyData.colliderSize.x + parameters.colliderSizeBuffer) / 2, gravDirection);
+            return GetCenterFromFeets(cornerPos + ((feetPos - cornerPos).normalized * 1.05f) * GetBufferedColliderX() / 2, gravDirection);
         }
 
         private bool IsAlreadyVisisted(int x, int y, List<Vector2Int> corners)
@@ -1547,8 +1587,9 @@ namespace Pathfinding
                             Gizmos.DrawWireCube((Vector3)centerPos, new Vector3(Mathf.Abs(collider.x * gravDirection.y + collider.y * gravDirection.x), Mathf.Abs(collider.y * gravDirection.y + collider.x * gravDirection.x), 1));
 
                             Gizmos.color = new Color(1f, 0.5f, 0f, 1f);
-                            collider = new Vector2(parameters.enemyData.colliderSize.x + parameters.colliderSizeBuffer, parameters.enemyData.colliderSize.y + parameters.colliderSizeBuffer / 2);
-                            centerPos = centerPos - new Vector2(gravDirection.x * parameters.colliderSizeBuffer / 4, gravDirection.y * parameters.colliderSizeBuffer / 4);
+                            collider = GetBufferedCollider();
+                            float bufferX = GetBufferedColliderX() - parameters.enemyData.colliderSize.x;
+                            centerPos = centerPos - new Vector2(gravDirection.x * bufferX / 4, gravDirection.y * bufferX / 4);
                             Gizmos.DrawWireCube((Vector3)centerPos, new Vector3(Mathf.Abs(collider.x * gravDirection.y + collider.y * gravDirection.x), Mathf.Abs(collider.y * gravDirection.y + collider.x * gravDirection.x), 1));
                         }
                         else

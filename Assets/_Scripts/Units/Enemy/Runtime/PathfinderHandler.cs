@@ -46,6 +46,7 @@ namespace Pathfinding
         [SerializeField, Min(0)] private int agentSnapDepth = 2;
         [SerializeField] private bool ignoreGroundedInPathButton = true;
         [SerializeField] private bool requireGroundedInPlay = false;
+        [SerializeField] private bool lockRepathDuringTrajectory = true;
         [Header("Trajectory")]
         [SerializeField] private bool useManualGravityInTrajectories = true;
         [SerializeField, Min(0f)] private float manualGravityScale = 1f;
@@ -140,7 +141,11 @@ namespace Pathfinding
                 unityTargetCell = GetUnityTargetCell(target.position);
                 unityAgentCell = GetUnityAgentCell(agent.position);
                 bool requireGrounded = Application.isPlaying && requireGroundedInPlay;
-                GetPath(requireGrounded);
+                bool shouldRepath = !(lockRepathDuringTrajectory && IsInTrajectory());
+                if (shouldRepath)
+                {
+                    GetPath(requireGrounded);
+                }
 
                 if (newPath && path.Count > 0)
                 {
@@ -725,6 +730,15 @@ namespace Pathfinding
             {
                 nearWaypointAirThreshold = new Vector2(0.35f, 0.25f);
             }
+        }
+
+        private bool IsInTrajectory()
+        {
+            if (tasks == null || tasks.Count == 0)
+            {
+                return false;
+            }
+            return tasks[0] is TrajectoryTask;
         }
 
         private bool CheckParam()
