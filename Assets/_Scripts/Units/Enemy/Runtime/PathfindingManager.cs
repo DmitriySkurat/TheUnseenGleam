@@ -393,8 +393,7 @@ namespace Pathfinding
                             if (target.position != grid[x, y].position && target.gravityDirection == gravDirection)
                             {
                                 Vector3 launch = wallsTileMap.GetCellCenterWorld((Vector3Int)grid[x, y].position);
-                                launch = GetCenterPosition(launch);
-                                Vector3 targetPos = GetCenterPosition(wallsTileMap.GetCellCenterWorld((Vector3Int)target.position));
+                                Vector3 targetPos = wallsTileMap.GetCellCenterWorld((Vector3Int)target.position);
                                 Vector3 a = new Vector3(gravDirection.x, gravDirection.y, 0f) * 10f;
                                 List<float> times = ComputeJumpTrajectoryTimes(launch, targetPos, a);
 

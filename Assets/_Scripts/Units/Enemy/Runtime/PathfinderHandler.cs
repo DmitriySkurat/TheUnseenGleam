@@ -51,8 +51,19 @@ namespace Pathfinding
         [SerializeField] private bool useManualGravityInTrajectories = true;
         [SerializeField, Min(0f)] private float manualGravityScale = 1f;
         [SerializeField] private bool teleportToTrajectoryOrigin = false;
+        [SerializeField, Min(0f)] private float trajectorySnapDistance = 0.35f;
+        [SerializeField] private bool snapToCellCenterOnTrajectoryStart = true;
+        [SerializeField, Min(0f)] private float trajectoryMaxExtraTime = 0.25f;
+        [SerializeField, Min(0f)] private float trajectoryRetryDelay = 0.35f;
+        [SerializeField, Min(0f)] private float minGroundedBeforeTrajectory = 0.1f;
+        [SerializeField, Min(0f)] private float failedJumpCooldown = 1.0f;
+        [SerializeField, Min(1)] private int failedJumpCacheLimit = 32;
         private bool trajectoryManualGravityActive = false;
         private float trajectoryOriginalGravityScale = 0f;
+        private float nextAllowedTrajectoryTime = 0f;
+        private float groundedSinceTime = -1f;
+        private bool forceRepath = false;
+        private readonly Dictionary<Vector2Int, float> failedJumpUntil = new Dictionary<Vector2Int, float>();
 
         [Header("RunAway")]
         [SerializeField] private int runAwayDistance;
@@ -138,13 +149,15 @@ namespace Pathfinding
         {
             if (tryFindPath)
             {
+                UpdateGroundedTimer();
                 unityTargetCell = GetUnityTargetCell(target.position);
                 unityAgentCell = GetUnityAgentCell(agent.position);
                 bool requireGrounded = Application.isPlaying && requireGroundedInPlay;
                 bool shouldRepath = !(lockRepathDuringTrajectory && IsInTrajectory());
-                if (shouldRepath)
+                if (shouldRepath && !IsRepathBlocked())
                 {
                     GetPath(requireGrounded);
+                    forceRepath = false;
                 }
 
                 if (newPath && path.Count > 0)
@@ -154,6 +167,10 @@ namespace Pathfinding
                 }
 
                 ProcessTask();
+                if (tasks.Count == 0 && (path == null || path.Count == 0))
+                {
+                    forceRepath = true;
+                }
                 lastUnityAgentCell = unityAgentCell;
                 lastUnityTargetCell = unityTargetCell;
             }
@@ -196,6 +213,49 @@ namespace Pathfinding
                 return 0.2f;
             }
             return nearWaypointThreshold.x * 1.5f;
+        }
+
+        public bool IsBlockedTowards(Vector3 targetPos)
+        {
+            if (navigationTilemap == null || grid == null)
+            {
+                return false;
+            }
+
+            Vector2 toTarget = (Vector2)(targetPos - agent.position);
+            float along = Vector2.Dot(toTarget, transform.right);
+            if (Mathf.Abs(along) < 0.01f)
+            {
+                return false;
+            }
+
+            int step = along > 0f ? 1 : -1;
+            Vector3Int rightStep = new Vector3Int(Mathf.RoundToInt(transform.right.x) * step, Mathf.RoundToInt(transform.right.y) * step, 0);
+
+            Collider2D col = agent.GetComponent<Collider2D>();
+            if (col == null)
+            {
+                return GetTileType(navigationTilemap.WorldToCell(agent.position) + rightStep) == TileType.Obstacle;
+            }
+
+            Bounds b = col.bounds;
+            Vector3 sample1 = new Vector3(b.center.x, b.min.y + 0.05f, b.center.z);
+            Vector3 sample2 = new Vector3(b.center.x, b.max.y - 0.05f, b.center.z);
+
+            Vector3Int next1 = navigationTilemap.WorldToCell(sample1 + (Vector3)rightStep * navigationTilemap.cellSize.x);
+            Vector3Int next2 = navigationTilemap.WorldToCell(sample2 + (Vector3)rightStep * navigationTilemap.cellSize.x);
+
+            return GetTileType(next1) == TileType.Obstacle || GetTileType(next2) == TileType.Obstacle;
+        }
+
+        private Vector2 GetCellCenter(Vector2 worldPos)
+        {
+            if (navigationTilemap == null)
+            {
+                return worldPos;
+            }
+            Vector3Int cell = navigationTilemap.WorldToCell(worldPos);
+            return navigationTilemap.GetCellCenterWorld(cell);
         }
 
         public void SetAccelleration(Vector2 _accelleration)
@@ -261,13 +321,19 @@ namespace Pathfinding
         public void OnTrajectoryStart(Vector2 originPos, Vector2 velocity)
         {
             BeginTrajectory();
-            if (teleportToTrajectoryOrigin || !Application.isPlaying)
+            Vector2 targetOrigin = originPos;
+            if (snapToCellCenterOnTrajectoryStart)
             {
-                Teleport(originPos);
+                targetOrigin = GetCellCenter(originPos);
             }
-            if (IsNearX(originPos, true) && IsNearY(originPos, true))
+            if (teleportToTrajectoryOrigin || !Application.isPlaying ||
+                (trajectorySnapDistance > 0f && Vector2.Distance(targetOrigin, agent.position) <= trajectorySnapDistance))
             {
-                Debug.Log("Teleporting to : " + originPos + " and set velocity : " + velocity);
+                Teleport(targetOrigin);
+            }
+            if (IsNearX(targetOrigin, true) && IsNearY(targetOrigin, true))
+            {
+                Debug.Log("Teleporting to : " + targetOrigin + " and set velocity : " + velocity);
             }
             SetVelocity(velocity);
         }
@@ -275,6 +341,148 @@ namespace Pathfinding
         public void OnTrajectoryEnd()
         {
             EndTrajectory();
+        }
+
+        public bool IsGroundedNow()
+        {
+            return context != null && context.IsGrounded;
+        }
+
+        public float GetTrajectoryMaxExtraTime()
+        {
+            return trajectoryMaxExtraTime;
+        }
+
+        public void OnTrajectoryCompleted(bool success)
+        {
+            EndTrajectory();
+            forceRepath = true;
+            if (!success)
+            {
+                if (currentEdge != null && currentEdge.type == EdgeType.Jump)
+                {
+                    AddFailedJumpTarget(currentEdge.targetPos);
+                }
+                OnTrajectoryFailed();
+            }
+        }
+
+        private void OnTrajectoryFailed()
+        {
+            nextAllowedTrajectoryTime = Time.time + trajectoryRetryDelay;
+            forceRepath = true;
+            AbortTaks();
+            if (path != null)
+            {
+                path.Clear();
+            }
+        }
+
+        private void AddFailedJumpTarget(Vector2Int targetPos)
+        {
+            if (failedJumpCooldown <= 0f)
+            {
+                return;
+            }
+            PruneFailedJumpCache();
+            if (failedJumpUntil.Count > failedJumpCacheLimit)
+            {
+                failedJumpUntil.Clear();
+            }
+            failedJumpUntil[targetPos] = Time.time + failedJumpCooldown;
+        }
+
+        private bool IsEdgeTemporarilyBlocked(Edge edge)
+        {
+            if (failedJumpCooldown <= 0f)
+            {
+                return false;
+            }
+            if (edge == null || edge.type != EdgeType.Jump)
+            {
+                return false;
+            }
+            if (failedJumpUntil.TryGetValue(edge.targetPos, out float until))
+            {
+                if (Time.time < until)
+                {
+                    return true;
+                }
+                failedJumpUntil.Remove(edge.targetPos);
+            }
+            return false;
+        }
+
+        private void PruneFailedJumpCache()
+        {
+            if (failedJumpUntil.Count == 0)
+            {
+                return;
+            }
+            List<Vector2Int> toRemove = null;
+            foreach (var kvp in failedJumpUntil)
+            {
+                if (Time.time >= kvp.Value)
+                {
+                    if (toRemove == null)
+                    {
+                        toRemove = new List<Vector2Int>();
+                    }
+                    toRemove.Add(kvp.Key);
+                }
+            }
+            if (toRemove != null)
+            {
+                foreach (var key in toRemove)
+                {
+                    failedJumpUntil.Remove(key);
+                }
+            }
+        }
+
+        private bool CanStartTrajectory()
+        {
+            if (Time.time < nextAllowedTrajectoryTime)
+            {
+                return false;
+            }
+            if (Application.isPlaying && requireGroundedInPlay)
+            {
+                if (!IsGroundedNow())
+                {
+                    return false;
+                }
+                if (groundedSinceTime > 0f && Time.time - groundedSinceTime < minGroundedBeforeTrajectory)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool IsRepathBlocked()
+        {
+            return Time.time < nextAllowedTrajectoryTime && !forceRepath;
+        }
+
+        private void UpdateGroundedTimer()
+        {
+            if (!Application.isPlaying || context == null)
+            {
+                groundedSinceTime = -1f;
+                return;
+            }
+            if (context.IsGrounded)
+            {
+                if (groundedSinceTime < 0f)
+                {
+                    groundedSinceTime = Time.time;
+                }
+            }
+            else
+            {
+                groundedSinceTime = -1f;
+            }
         }
 
         #endregion
@@ -317,8 +525,9 @@ namespace Pathfinding
                 {
                     LastUnityObjective = unityTargetCell;
                     // mustProcessAlone = false;
-                    if (lastUnityAgentCell != unityAgentCell || lastUnityTargetCell != unityTargetCell)
+                    if (forceRepath || lastUnityAgentCell != unityAgentCell || lastUnityTargetCell != unityTargetCell)
                     {
+                        forceRepath = false;
                         return SetPath(PathToTarget());
                     }
                     return false;
@@ -364,8 +573,9 @@ namespace Pathfinding
                 if (grid[unityTargetCell.x - bounds.min.x, unityTargetCell.y - bounds.min.y].type == TileType.Walkable)
                 {
                     LastUnityObjective = unityTargetCell;
-                    if (lastUnityAgentCell != unityAgentCell || lastUnityTargetCell != unityTargetCell)
+                    if (forceRepath || lastUnityAgentCell != unityAgentCell || lastUnityTargetCell != unityTargetCell)
                     {
+                        forceRepath = false;
                         return SetPath(PathAwayFromTarget());
                     }
                 }
@@ -496,6 +706,16 @@ namespace Pathfinding
                 }
                 else if (edge.type == EdgeType.Jump || edge.type == EdgeType.Fall)
                 {
+                    if (IsEdgeTemporarilyBlocked(edge))
+                    {
+                        newPath = true;
+                        return;
+                    }
+                    if (!CanStartTrajectory())
+                    {
+                        newPath = true;
+                        return;
+                    }
                     tasks.Add(new WalkTask(this, edge.waypoints[0].position, true));
                     for (int i = 0; i < edge.waypoints.Count; i++)
                     {
@@ -706,6 +926,10 @@ namespace Pathfinding
             {
                 foreach (Edge edge in grid[tile.gridPos.x, tile.gridPos.y].edges)
                 {
+                    if (IsEdgeTemporarilyBlocked(edge))
+                    {
+                        continue;
+                    }
                     Vector2Int pos = UnityToGrid2(edge.targetPos);
                     PathTile newTile = new PathTile(pos, tile.gridPos, tile.cost + edge.cost, edge);
                     newTile.SetDistance((Vector2Int)unityTargetCell);

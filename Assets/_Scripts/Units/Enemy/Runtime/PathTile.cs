@@ -26,6 +26,11 @@ namespace Pathfinding
         private bool stops;
         public override void Execute()
         {
+            if (handler.IsBlockedTowards(targetPos))
+            {
+                handler.SetVelocity(Vector2.zero);
+                return;
+            }
             handler.WalkTo(targetPos);
         }
         public override bool IsOver()
@@ -43,6 +48,10 @@ namespace Pathfinding
                 if (Mathf.Abs(along) <= handler.GetWalkOvershootTolerance() &&
                     Mathf.Abs(vel) > 0.01f &&
                     Mathf.Sign(vel) != Mathf.Sign(along))
+                {
+                    return true;
+                }
+                if (handler.IsBlockedTowards(targetPos))
                 {
                     return true;
                 }
@@ -106,14 +115,22 @@ namespace Pathfinding
         {
             if (handler.IsNearX(targetPos, true) && handler.IsNearY(targetPos, true))
             {
-                handler.OnTrajectoryEnd();
+                handler.OnTrajectoryCompleted(true);
                 return true;
             }
             else if(Time.time - startTime > time)
             {
-                handler.OnTrajectoryEnd();
-                handler.AbortTaks();
-                return true;
+                if (handler.IsGroundedNow())
+                {
+                    handler.OnTrajectoryCompleted(false);
+                    return true;
+                }
+                if (Time.time - startTime > time + handler.GetTrajectoryMaxExtraTime())
+                {
+                    handler.OnTrajectoryCompleted(false);
+                    return true;
+                }
+                return false;
             }
             return false;
         }
