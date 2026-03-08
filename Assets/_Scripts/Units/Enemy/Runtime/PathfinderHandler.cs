@@ -25,7 +25,7 @@ namespace Pathfinding
     {
         [Header("Needed Components")]
         [SerializeField] private PathfindingGraph graph;
-        [FormerlySerializedAs("navigationTilemap")]
+        [FormerlySerializedAs("gravityTilemap")]
         [SerializeField] private Tilemap navigationTilemap;
         [SerializeField] private Transform agent;
         [SerializeField] private Transform target;
@@ -42,6 +42,9 @@ namespace Pathfinding
         private PathTile[,] costGrid;
         [SerializeField] private Vector2 nearWaypointThreshold;
         [SerializeField] private Vector2 nearWaypointAirThreshold;
+        [SerializeField, Min(0)] private int targetSnapDepth = 6;
+        [SerializeField, Min(0)] private int agentSnapDepth = 2;
+        [SerializeField] private bool ignoreGroundedInPathButton = true;
 
         [Header("RunAway")]
         [SerializeField] private int runAwayDistance;
@@ -106,8 +109,8 @@ namespace Pathfinding
             if (tryFindPath)
             {
                 unityTargetCell = GetUnityTargetCell(target.position);
-                unityAgentCell = navigationTilemap.WorldToCell(agent.position);
-                GetPath();
+                unityAgentCell = GetUnityAgentCell(agent.position);
+                GetPath(requireGrounded: true);
 
                 if (newPath && path.Count > 0)
                 {
@@ -188,20 +191,20 @@ namespace Pathfinding
         #endregion
 
         #region Beheviours
-        private bool GetPath()
+        private bool GetPath(bool requireGrounded)
         {
             switch (behaviour)
             {
                 case PTBehaviour.GoToTarget:
-                    return TrySeekFollowPath();
+                    return TrySeekFollowPath(requireGrounded);
                 case PTBehaviour.RunAwayFromTarget:
-                    return TrySeekAwayPath();
+                    return TrySeekAwayPath(requireGrounded);
             }
             return false;
         }
-        private bool TrySeekFollowPath()
+        private bool TrySeekFollowPath(bool requireGrounded)
         {
-            if (context.IsGrounded)
+            if (!requireGrounded || context.IsGrounded)
             {
                 // check if the agent reached the target
                 if (unityAgentCell == unityTargetCell)
@@ -244,15 +247,15 @@ namespace Pathfinding
                     return false;
                 }
             }
-            else
+            else if (debugPathFind)
             {
                 Debug.Log("not grounded");
             }
             return false;
         }
-        private bool TrySeekAwayPath()
+        private bool TrySeekAwayPath(bool requireGrounded)
         {
-            if (context.IsGrounded && (Mathf.Abs(unityAgentCell.x - unityTargetCell.x) + Mathf.Abs(unityAgentCell.y - unityTargetCell.y)) < runAwayTresholdDistance)
+            if ((!requireGrounded || context.IsGrounded) && (Mathf.Abs(unityAgentCell.x - unityTargetCell.x) + Mathf.Abs(unityAgentCell.y - unityTargetCell.y)) < runAwayTresholdDistance)
             {
                 if (unityAgentCell == unityTargetCell)
                 {
@@ -330,20 +333,28 @@ namespace Pathfinding
 
         private Vector3Int GetUnityTargetCell(Vector3 pos)
         {
-            Vector2Int gravityDir = Vector2Int.zero;
             Vector3Int cell = navigationTilemap.WorldToCell(pos);
-            Vector3Int currentCell;
-            for (int i = 0; i < 3; i++)
+            return SnapToWalkableBelow(cell, targetSnapDepth);
+        }
+
+        private Vector3Int GetUnityAgentCell(Vector3 pos)
+        {
+            Vector3Int cell = navigationTilemap.WorldToCell(pos);
+            return SnapToWalkableBelow(cell, agentSnapDepth);
+        }
+
+        private Vector3Int SnapToWalkableBelow(Vector3Int cell, int depth)
+        {
+            if (GetTileType(cell) == TileType.Walkable || depth <= 0)
             {
-                if (i == 0)
+                return cell;
+            }
+            for (int i = 1; i <= depth; i++)
+            {
+                Vector3Int snapCell = cell + Vector3Int.down * i;
+                if (GetTileType(snapCell) == TileType.Walkable)
                 {
-                    gravityDir = grid[cell.x - bounds.min.x, cell.y - bounds.min.y].gravityDirection;
-                }
-                currentCell = cell - (Vector3Int)gravityDir * i;
-                Vector3Int gridCell = UnityToGrid(currentCell);
-                if (grid[gridCell.x, gridCell.y].type == TileType.Walkable && grid[gridCell.x, gridCell.y].gravityDirection == gravityDir)
-                {
-                    return currentCell;
+                    return snapCell;
                 }
             }
             return cell;
@@ -632,6 +643,11 @@ namespace Pathfinding
                 Debug.LogError("Graph tiles is null");
                 return false;
             }
+            if (graph.tiles.Count == 0)
+            {
+                Debug.LogWarning("Graph tiles is empty. Generate graph first.");
+                return false;
+            }
             if (navigationTilemap == null)
             {
                 Debug.LogError("Gravity tilemap is null");
@@ -684,9 +700,19 @@ namespace Pathfinding
             if (CheckParam())
             {
                 GenerateGridFromList();
+                if (!string.IsNullOrEmpty(graph.wallsTilemapName) && navigationTilemap.name != graph.wallsTilemapName)
+                {
+                    Debug.LogWarning("navigationTilemap should be " + graph.wallsTilemapName + " but is " + navigationTilemap.name);
+                }
                 unityTargetCell = GetUnityTargetCell(target.position);
-                unityAgentCell = navigationTilemap.WorldToCell(agent.position);
-                if (GetPath())
+                unityAgentCell = GetUnityAgentCell(agent.position);
+                if (GetTileType(unityAgentCell) != TileType.Walkable || GetTileType(unityTargetCell) != TileType.Walkable)
+                {
+                    Debug.Log("Agent tile: " + GetTileType(unityAgentCell) + " at " + unityAgentCell +
+                              ", Target tile: " + GetTileType(unityTargetCell) + " at " + unityTargetCell);
+                }
+                bool requireGrounded = Application.isPlaying && !ignoreGroundedInPathButton;
+                if (GetPath(requireGrounded))
                 {
                     Debug.Log("Path found");
                 }

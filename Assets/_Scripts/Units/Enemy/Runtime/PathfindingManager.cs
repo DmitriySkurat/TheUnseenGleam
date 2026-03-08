@@ -1105,28 +1105,44 @@ namespace Pathfinding
 
         private Vector3 GetFeetPosition(Vector3 worldPos)
         {
+            if (wallsTileMap == null || grid == null)
+            {
+                return worldPos;
+            }
             Vector3Int cellPos = wallsTileMap.WorldToCell(worldPos);
             cellPos = new Vector3Int(cellPos.x - bounds.xMin, cellPos.y - bounds.yMin, 0);
             if (!CheckGrid(cellPos.x, cellPos.y))
             {
-                Debug.Log("cellPos is out of bounds, this should not happen");
-                return Vector3.zero;
+                return worldPos;
             }
-            Vector2Int gravDir = grid[cellPos.x, cellPos.y].gravityDirection;
+            var tile = grid[cellPos.x, cellPos.y];
+            if (tile == null)
+            {
+                return worldPos;
+            }
+            Vector2Int gravDir = tile.gravityDirection;
             Vector3 feets = GetFeetsFromCenter(GetCenterPosition(worldPos), gravDir);
             return worldPos + (feets - worldPos) * 0.98f;
         }
 
         private Vector3 GetCenterPosition(Vector3 worldPos)
         {
+            if (wallsTileMap == null || grid == null)
+            {
+                return worldPos;
+            }
             Vector3Int cellPos = wallsTileMap.WorldToCell(worldPos);
             cellPos = new Vector3Int(cellPos.x - bounds.xMin, cellPos.y - bounds.yMin, 0);
             if (!CheckGrid(cellPos.x, cellPos.y))
             {
-                Debug.Log("cellPos is out of bounds, this should not happen");
-                return Vector3.zero;
+                return worldPos;
             }
-            Vector2Int gravDir = grid[cellPos.x, cellPos.y].gravityDirection;
+            var tile = grid[cellPos.x, cellPos.y];
+            if (tile == null)
+            {
+                return worldPos;
+            }
+            Vector2Int gravDir = tile.gravityDirection;
             // If parameters.enemyData.entitySize is pair, we need to add half the size of a tile to the world pos to get the center of the tile
             if (parameters.enemyData.entitySize.x % 2 == 0)
             {
@@ -1359,9 +1375,10 @@ namespace Pathfinding
             }
             else
             {
-                int trajIndex = (int)(ShowedTrajectoryHeight * (parameters.NumberOfTestedTrajectories - 1));
+                int maxTrajIndex = Mathf.Max(0, parameters.NumberOfTestedTrajectories - 1);
+                int trajIndex = Mathf.Clamp(Mathf.RoundToInt(ShowedTrajectoryHeight * maxTrajIndex), 0, maxTrajIndex);
 
-                if (collidingPointsListDebug != null && drawFailJumpTrajectory && collidingPointsListDebug.Count >= trajIndex - 1)
+                if (collidingPointsListDebug != null && drawFailJumpTrajectory && collidingPointsListDebug.Count > trajIndex)
                 {
                     Gizmos.color = Color.blue;
                     foreach (var point in collidingPointsListDebug[trajIndex])
@@ -1369,7 +1386,7 @@ namespace Pathfinding
                         Gizmos.DrawWireSphere(point, 0.1f);
                     }
                 }
-                if (JumpTrajectoriesDebug != null && drawFailJumpTrajectory && JumpTrajectoriesDebug.Count >= trajIndex - 1)
+                if (JumpTrajectoriesDebug != null && drawFailJumpTrajectory && JumpTrajectoriesDebug.Count > trajIndex)
                 {
                     Gizmos.color = Color.red;
                     foreach (var waypoint in JumpTrajectoriesDebug[trajIndex])
@@ -1501,7 +1518,7 @@ namespace Pathfinding
                             }
                         }
                     }
-                    if (drawEnemyBoxes && grid != null && grid[EnemyDrawPosition.x, EnemyDrawPosition.y].gravityDirection != Vector2Int.zero)
+                    if (drawEnemyBoxes && grid != null && CheckGrid(EnemyDrawPosition.x, EnemyDrawPosition.y) && grid[EnemyDrawPosition.x, EnemyDrawPosition.y].gravityDirection != Vector2Int.zero)
                     {
                         if (grid[EnemyDrawPosition.x, EnemyDrawPosition.y].gravityDirection != Vector2Int.zero)
                         {
