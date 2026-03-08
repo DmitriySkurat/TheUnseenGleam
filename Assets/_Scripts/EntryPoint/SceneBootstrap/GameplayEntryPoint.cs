@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -13,6 +14,25 @@ namespace EntryPoint
         
         private List<IInitializable> _initializables;
         private List<IDisposable> _disposables;
+        
+        
+        // Просто для запуска сцен, после завершения разработки удалить
+        [SerializeField] private GameServiceRegistry serviceRegistry;
+        protected override void Start()
+        {
+            StartCoroutine(InitializeAndBootstrap());
+        }
+
+        private IEnumerator InitializeAndBootstrap()
+        {
+            var task = serviceRegistry.InitializeAsync();
+
+            while (!task.IsCompleted)
+                yield return null;
+
+            Bootstrap();
+        }
+        // КОНЕЦ ---------
 
         protected override void Bootstrap()
         {    

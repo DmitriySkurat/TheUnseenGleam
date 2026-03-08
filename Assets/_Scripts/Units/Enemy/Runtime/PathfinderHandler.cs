@@ -12,7 +12,7 @@ using Entity.Enemy;
 using UnityEditor;
 #endif
 
-namespace Entity.Pathfinding
+namespace Pathfinding
 {
     public enum PTBehaviour
     {

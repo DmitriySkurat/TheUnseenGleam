@@ -1,7 +1,7 @@
 using Entity.Enemy;
 using UnityEngine;
 
-namespace Entity.Pathfinding
+namespace Pathfinding
 {
     [System.Serializable]
     public class PathfindingParameters

@@ -4,10 +4,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Gravity;
+//using Gravity;
 using UnityEditor;
 
-namespace Entity.Pathfinding
+namespace Pathfinding
 {
     [CustomEditor(typeof(PathfindingManager))]
     public class customPathfindingManagerEditor : Editor

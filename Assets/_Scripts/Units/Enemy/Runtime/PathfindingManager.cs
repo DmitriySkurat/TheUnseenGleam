@@ -6,13 +6,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Gravity;
+//using Gravity;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Entity.Pathfinding
+namespace Pathfinding
 {
     public class PathfindingManager : MonoBehaviour
     {

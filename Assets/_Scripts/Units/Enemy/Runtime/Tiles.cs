@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Entity.Pathfinding
+namespace Pathfinding
 {
     public enum TileType
     {

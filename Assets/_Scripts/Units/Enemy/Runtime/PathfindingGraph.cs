@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Entity.Pathfinding
+namespace Pathfinding
 {
     [CreateAssetMenu()]
     [System.Serializable]

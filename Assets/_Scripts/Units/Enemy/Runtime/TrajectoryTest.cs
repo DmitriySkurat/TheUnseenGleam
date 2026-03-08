@@ -3,10 +3,10 @@
 /// </summary>
 
 using System.Collections.Generic;
-using Gravity;
+//using Gravity;
 using UnityEngine;
 
-namespace Entity.Pathfinding
+namespace Pathfinding
 {
     public class TrajectoryTest : MonoBehaviour
     {
