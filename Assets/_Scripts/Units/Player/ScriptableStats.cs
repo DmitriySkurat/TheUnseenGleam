@@ -103,6 +103,39 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Noise multiplier while crouching (for stealth systems)")]
     [Range(0f, 1f)]
     public float CrouchNoiseMultiplier = 0.3f;
+
+    [Header("NOISE")]
+    [Tooltip("Minimum horizontal input required to emit footsteps")]
+    [Range(0.01f, 1f)]
+    public float NoiseMoveThreshold = 0.1f;
+
+    [Tooltip("Footstep interval while walking")]
+    [Min(0.05f)]
+    public float WalkFootstepInterval = 0.5f;
+
+    [Tooltip("Footstep interval while running")]
+    [Min(0.05f)]
+    public float RunFootstepInterval = 0.35f;
+
+    [Tooltip("Footstep interval while crouching")]
+    [Min(0.05f)]
+    public float CrouchFootstepInterval = 0.7f;
+
+    [Tooltip("Noise radius for walking footsteps")]
+    [Min(0f)]
+    public float WalkNoiseRadius = 2f;
+
+    [Tooltip("Noise radius for running footsteps")]
+    [Min(0f)]
+    public float RunNoiseRadius = 4f;
+
+    [Tooltip("Noise radius for crouch footsteps")]
+    [Min(0f)]
+    public float CrouchNoiseRadius = 1f;
+
+    [Tooltip("Noise radius for jumping")]
+    [Min(0f)]
+    public float JumpNoiseRadius = 3f;
     
     [Header("CLIMB")]
     [Tooltip("Multiplier applied to (vertical) MaxSpeed while climbing")]

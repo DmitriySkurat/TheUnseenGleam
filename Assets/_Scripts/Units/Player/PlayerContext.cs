@@ -15,6 +15,7 @@ public class PlayerContext
     //public Rigidbody2D rb;
     public Renderer renderer;
     public Collider2D coll;
+    public Transform self;
     //public AudioSource audio;
     public PlayerInventory inventory; // ???
     
@@ -22,6 +23,8 @@ public class PlayerContext
     public Vector2 velocity;
     public float currentSpeedMultiplier = 1f;
     public float stamina = 100f;
+    public float currentNoiseRadius;
+    public float currentFootstepInterval;
     
     public bool isCrouching;
     public bool ceilingAbove;
@@ -30,7 +33,6 @@ public class PlayerContext
     public bool bufferedJumpUsable;
     public bool endedJumpEarly;
     public bool jumpToConsume;
-    public bool jumpJustExecuted;
     public bool coyoteUsable;
     
     // ===== LADDER =====

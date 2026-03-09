@@ -16,6 +16,8 @@ namespace HSM {
         protected override void OnEnter() {
             ctx.currentSpeedMultiplier = ctx.stats.CrouchSpeedMultiplier;
             ctx.isCrouching = true;
+            ctx.currentNoiseRadius = ctx.stats.CrouchNoiseRadius;
+            ctx.currentFootstepInterval = ctx.stats.CrouchFootstepInterval;
 
             col = ctx.coll as CapsuleCollider2D;
             if (col != null) {
@@ -37,6 +39,8 @@ namespace HSM {
         
         protected override void OnExit() {
             ctx.isCrouching = false;
+            ctx.currentNoiseRadius = 0f;
+            ctx.currentFootstepInterval = 0f;
 
             if (col != null) {
                 col.size = originalColliderSize;

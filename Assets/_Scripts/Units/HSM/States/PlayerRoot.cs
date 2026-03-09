@@ -8,6 +8,10 @@ namespace HSM {
         public readonly Climb Climb;
         
         readonly PlayerContext ctx;
+        private float _footstepTimer;
+        
+        private NoiseSystem _noiseSystem;
+        
 
         public PlayerRoot(StateMachine m, PlayerContext ctx) : base(m, null) {
             this.ctx = ctx;
@@ -15,6 +19,8 @@ namespace HSM {
             Airborne = new Airborne(m, this, ctx);
             Interaction = new Interaction(m, this, ctx);
             Climb = new Climb(m, this, ctx);
+            
+            _noiseSystem = Services.Get<NoiseSystem>();
         }
         
         protected override State GetInitialState() => Grounded;
@@ -30,6 +36,7 @@ namespace HSM {
             if (ctx.stats != null) {
                 HandleJump();
                 StaminaRecovery(deltaTime);
+                HandleFootsteps(deltaTime);
             }
             base.OnUpdate(deltaTime);
         }
@@ -55,8 +62,13 @@ namespace HSM {
             ctx.timeJumpWasPressed = 0;
             ctx.bufferedJumpUsable = false;
             ctx.coyoteUsable = false;
-            ctx.jumpJustExecuted = true;
             ctx.velocity.y = ctx.stats.JumpPower;
+
+            // Emit jump noise from the HSM when the jump is actually executed.
+            if (ctx.self != null)
+            {
+                _noiseSystem.EmitNoise(ctx.self.position, ctx.stats.JumpNoiseRadius, ctx.self.gameObject, NoiseType.Jump);
+            }
         }
 
         
@@ -68,6 +80,33 @@ namespace HSM {
                 ctx.stamina += ctx.stats.StaminaRegenPerSecond * deltaTime;
                 ctx.stamina = Mathf.Min(ctx.stamina, ctx.stats.MaxStamina);
             }
+        }
+
+        void HandleFootsteps(float deltaTime)
+        {
+            if (ctx.self == null || ctx.stats == null)
+            {
+                _footstepTimer = 0f;
+                return;
+            }
+
+            if (!ctx.grounded || ctx.currentNoiseRadius <= 0f || ctx.currentFootstepInterval <= 0f)
+            {
+                _footstepTimer = 0f;
+                return;
+            }
+
+            if (Mathf.Abs(ctx.input.Move.x) < ctx.stats.NoiseMoveThreshold)
+            {
+                _footstepTimer = 0f;
+                return;
+            }
+
+            _footstepTimer += deltaTime;
+            if (_footstepTimer < ctx.currentFootstepInterval) return;
+
+            _footstepTimer = 0f;
+            _noiseSystem.EmitNoise(ctx.self.position, ctx.currentNoiseRadius, ctx.self.gameObject, NoiseType.Footstep);
         }
     }
 }

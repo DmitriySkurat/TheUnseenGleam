@@ -4,7 +4,6 @@ using UnityEngine;
 namespace HSM {
     public class Run : State {
         readonly PlayerContext ctx;
-
         public Run(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
             Add(new AnimatorBoolActivity(ctx.anim, "Running", true, false));
@@ -14,10 +13,19 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.currentSpeedMultiplier = ctx.stats.RunSpeedMultiplier;
+            ctx.currentNoiseRadius = ctx.stats.RunNoiseRadius;
+            ctx.currentFootstepInterval = ctx.stats.RunFootstepInterval;
             
             ctx.timeRunStarted = Time.time;
             
             base.OnEnter();
+        }
+
+        protected override void OnExit()
+        {
+            ctx.currentNoiseRadius = 0f;
+            ctx.currentFootstepInterval = 0f;
+            base.OnExit();
         }
 
         protected override State GetTransition() {
@@ -29,7 +37,6 @@ namespace HSM {
         protected override void OnUpdate(float deltaTime) {        
             ctx.stamina -= ctx.stats.StaminaDrainPerSecond * deltaTime;
             ctx.stamina = Mathf.Max(0, ctx.stamina);
-            
             base.OnUpdate(deltaTime);
         }
     }

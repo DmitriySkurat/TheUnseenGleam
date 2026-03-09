@@ -23,7 +23,7 @@ public readonly struct NoiseEvent
 public class NoiseSystem : MonoBehaviour, IService
 {
     // Centralized event for all noise sources.
-    public static event Action<NoiseEvent> NoiseEmitted;
+    public event Action<NoiseEvent> NoiseEmitted;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;

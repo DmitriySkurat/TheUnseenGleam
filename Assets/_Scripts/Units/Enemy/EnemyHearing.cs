@@ -1,10 +1,13 @@
 using UnityEngine;
 using Entity.Enemy;
 using HSM;
+using UnityEngine.PlayerLoop;
 
 [RequireComponent(typeof(EnemyStateDriver))]
-public class EnemyHearing : MonoBehaviour
+public class EnemyHearing : MonoBehaviour, ISceneLifecycle
 {
+    public InitializationOrder Order => InitializationOrder.Enemy;
+    
     [Header("Hearing")]
     [SerializeField, Min(0f)] private float hearingMultiplier = 1f;
     [SerializeField] private bool ignoreOwnNoise = true;
@@ -15,23 +18,26 @@ public class EnemyHearing : MonoBehaviour
 
     private EnemyStateDriver _driver;
     private Transform _noiseTarget;
-
-    private void Awake()
+    
+    private NoiseSystem _noiseSystem;
+    
+    public void Initialize() 
     {
         _driver = GetComponent<EnemyStateDriver>();
+        
+        _noiseSystem = Services.Get<NoiseSystem>();
+        
+        _noiseSystem.NoiseEmitted += HandleNoise;
+        
         EnsureNoiseTarget();
+        BindContext(_driver != null ? _driver.Context : null);
+    }
+    
+    public void Dispose()
+    {
+        _noiseSystem.NoiseEmitted -= HandleNoise;
     }
 
-    private void OnEnable()
-    {
-        NoiseSystem.NoiseEmitted += HandleNoise;
-        EnsureContext();
-    }
-
-    private void OnDisable()
-    {
-        NoiseSystem.NoiseEmitted -= HandleNoise;
-    }
 
     private void EnsureNoiseTarget()
     {
@@ -51,9 +57,17 @@ public class EnemyHearing : MonoBehaviour
         EnemyContext ctx = _driver.Context;
         if (ctx == null) return;
 
+        BindContext(ctx);
+    }
+
+    public void BindContext(EnemyContext ctx)
+    {
+        if (ctx == null) return;
+        if (_noiseTarget == null) EnsureNoiseTarget();
         ctx.noiseTarget = _noiseTarget;
         ctx.investigateStopDistance = investigateStopDistance;
         ctx.noiseMemoryDuration = noiseMemoryDuration;
+        ctx.hearing = this;
     }
 
     private void HandleNoise(NoiseEvent noiseEvent)
@@ -83,5 +97,9 @@ public class EnemyHearing : MonoBehaviour
         ctx.lastNoiseType = noiseEvent.Type;
         ctx.lastNoiseTime = Time.time;
         ctx.hasNoiseTarget = true;
+
+        ctx.lastKnownPlayerPosition = noiseEvent.Position;
+        ctx.hasLastKnownPlayerPosition = true;
+        ctx.lastKnownPlayerTime = Time.time;
     }
 }
