@@ -55,6 +55,7 @@ namespace HSM {
             ctx.timeJumpWasPressed = 0;
             ctx.bufferedJumpUsable = false;
             ctx.coyoteUsable = false;
+            ctx.jumpJustExecuted = true;
             ctx.velocity.y = ctx.stats.JumpPower;
         }
 

@@ -30,6 +30,7 @@ public class PlayerContext
     public bool bufferedJumpUsable;
     public bool endedJumpEarly;
     public bool jumpToConsume;
+    public bool jumpJustExecuted;
     public bool coyoteUsable;
     
     // ===== LADDER =====

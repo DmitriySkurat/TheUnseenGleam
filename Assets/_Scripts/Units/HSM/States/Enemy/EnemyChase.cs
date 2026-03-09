@@ -50,8 +50,19 @@ namespace HSM
 
         protected override State GetTransition()
         {
-            if (ctx != null && ctx.ShouldStopChase) return Machine != null ? Machine.GetState<EnemyIdle>() : null;
+            if (ShouldStopChase())
+            {
+                if (ctx != null && ctx.hasNoiseTarget) return Machine != null ? Machine.GetState<EnemyInvestigate>() : null;
+                return Machine != null ? Machine.GetState<EnemyIdle>() : null;
+            }
             return null;
+        }
+
+        private bool ShouldStopChase()
+        {
+            if (ctx == null || ctx.target == null || ctx.self == null) return true;
+            float distance = Vector3.Distance(ctx.self.position, ctx.target.position);
+            return distance >= ctx.loseRange;
         }
     }
 }

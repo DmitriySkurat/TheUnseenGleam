@@ -31,8 +31,16 @@ namespace HSM
 
         protected override State GetTransition()
         {
-            if (ctx != null && ctx.CanChase) return Machine != null ? Machine.GetState<EnemyChase>() : null;
+            if (CanChase()) return Machine != null ? Machine.GetState<EnemyChase>() : null;
+            if (ctx != null && ctx.hasNoiseTarget) return Machine != null ? Machine.GetState<EnemyInvestigate>() : null;
             return null;
+        }
+
+        private bool CanChase()
+        {
+            if (ctx == null || ctx.target == null || ctx.self == null) return false;
+            float distance = Vector3.Distance(ctx.self.position, ctx.target.position);
+            return distance <= ctx.detectRange;
         }
     }
 }

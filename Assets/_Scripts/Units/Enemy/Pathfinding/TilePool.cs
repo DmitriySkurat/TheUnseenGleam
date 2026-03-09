@@ -7,7 +7,6 @@ namespace Pathfinding
     public class TilePool
     {
         public List<Tile> targets;
-        public Vector2Int gravityDirection;
         public List<Tile> origins;
         public List<TilePool> children;
 

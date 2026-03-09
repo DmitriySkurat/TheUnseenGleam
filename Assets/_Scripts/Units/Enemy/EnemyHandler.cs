@@ -8,11 +8,10 @@ using Pathfinding;
 
 namespace Entity.Enemy
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(PathfinderHandler))]
     public class EnemyHandler : MonoBehaviour, IInitializable
     {
-        public InitializationOrder Order => InitializationOrder.Enemy; 
-
+        public InitializationOrder Order => InitializationOrder.Enemy;
+    
         [Header("References")]
         public EnemyData enemyData;
         public Rigidbody2D RB { get; private set; }
@@ -28,20 +27,8 @@ namespace Entity.Enemy
         { 
             set => RB.linearVelocity = new Vector2(value, RB.linearVelocity.y); 
         }
-        
 
-        
-        private void Awake()
-        {
-            if (RB == null)
-            {
-                RB = GetComponent<Rigidbody2D>();
-            }
-            if (_pathfinder == null)
-            {
-                _pathfinder = GetComponent<PathfinderHandler>();
-            }
-        }public void Initialize()
+        public void Initialize()
         {
             RB = GetComponent<Rigidbody2D>();
             _pathfinder = GetComponent<PathfinderHandler>();
@@ -56,22 +43,6 @@ namespace Entity.Enemy
             // Если у врага есть таргет (например, игрок), можно задать его здесь
             // var player = Services.Get<PlayerContext>();
             // if (player != null) _pathfinder.SetTarget(player.renderer.transform);
-        }
-
-        private void FixedUpdate()
-        {
-            if (RB == null) return;
-            CheckGrounded();
-        }
-
-        private void CheckGrounded()
-        {
-            // Простая проверка земли (адаптируй под свои нужды)
-            Vector2 position = transform.position;
-            Vector2 direction = Vector2.down;
-            
-            RaycastHit2D hit = Physics2D.Raycast(position, direction, groundCheckDistance, groundLayer);
-            IsGrounded = hit.collider != null;
         }
     }
 }

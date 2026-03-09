@@ -104,7 +104,16 @@ namespace Pathfinding
         public void InitPathfinder(EnemyHandler enemyContext)
         {
             context = enemyContext;
-            RB = context.RB;
+            RB = context != null ? context.RB : null;
+            if (RB == null && context != null)
+            {
+                // Fallback in case RB was not cached yet.
+                RB = context.GetComponent<Rigidbody2D>();
+                if (RB == null)
+                {
+                    RB = context.GetComponentInChildren<Rigidbody2D>();
+                }
+            }
             EnsureThresholds();
             if (!CheckParam())
             {
@@ -1252,5 +1261,3 @@ namespace Pathfinding
 #endif
 
 }
-
-

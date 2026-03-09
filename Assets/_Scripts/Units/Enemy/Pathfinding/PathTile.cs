@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Pathfinding
 {
-
     public abstract class Task
     {
         protected PathfinderHandler handler;
@@ -26,11 +25,6 @@ namespace Pathfinding
         private bool stops;
         public override void Execute()
         {
-            if (handler.IsBlockedTowards(targetPos))
-            {
-                handler.SetVelocity(Vector2.zero);
-                return;
-            }
             handler.WalkTo(targetPos);
         }
         public override bool IsOver()
@@ -39,22 +33,6 @@ namespace Pathfinding
             {
                 // Debug.Log("ready To Jump");
                 return true;
-            }
-            if (stops)
-            {
-                Vector2 toTarget = (Vector2)(targetPos - handler.transform.position);
-                float along = Vector2.Dot(toTarget, handler.transform.right);
-                float vel = handler.GetHorizontalVelocity();
-                if (Mathf.Abs(along) <= handler.GetWalkOvershootTolerance() &&
-                    Mathf.Abs(vel) > 0.01f &&
-                    Mathf.Sign(vel) != Mathf.Sign(along))
-                {
-                    return true;
-                }
-                if (handler.IsBlockedTowards(targetPos))
-                {
-                    return true;
-                }
             }
             return false;
         }
@@ -109,28 +87,23 @@ namespace Pathfinding
         }
         public override void OnFixedUpdate()
         {
-            handler.SetAccelleration(accelleration);
+            if (accelleration != Vector2.zero)
+            {
+                handler.SetAccelleration(accelleration);
+            }
         }
         public override bool IsOver()
         {
             if (handler.IsNearX(targetPos, true) && handler.IsNearY(targetPos, true))
             {
-                handler.OnTrajectoryCompleted(true);
+                handler.OnTrajectoryEnd();
                 return true;
             }
             else if(Time.time - startTime > time)
             {
-                if (handler.IsGroundedNow())
-                {
-                    handler.OnTrajectoryCompleted(false);
-                    return true;
-                }
-                if (Time.time - startTime > time + handler.GetTrajectoryMaxExtraTime())
-                {
-                    handler.OnTrajectoryCompleted(false);
-                    return true;
-                }
-                return false;
+                handler.OnTrajectoryEnd();
+                handler.AbortTaks();
+                return true;
             }
             return false;
         }

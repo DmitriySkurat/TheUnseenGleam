@@ -34,6 +34,8 @@ namespace HSM
         private StateMachine _machine;
         private EnemyRoot _root;
 
+        public EnemyContext Context => _ctx;
+
         public void Initialize()
         {
             if (enemy == null) enemy = GetComponent<EnemyHandler>();
@@ -52,6 +54,8 @@ namespace HSM
 
             if (target != null) pathfinder.SetTarget(target);
 
+            if (loseRange < detectRange) loseRange = detectRange;
+
             _ctx = new EnemyContext
             {
                 enemy = enemy,
@@ -63,7 +67,6 @@ namespace HSM
                 autoFindTargetByTag = autoFindTargetByTag,
                 targetTag = targetTag,
             };
-            _ctx.ClampRanges();
 
             _root = new EnemyRoot(null, _ctx);
             var builder = new StateMachineBuilder(_root);
@@ -75,7 +78,21 @@ namespace HSM
         private void FixedUpdate()
         {
             if (_machine == null) return;
+            RefreshTarget();
             _machine.Tick(Time.fixedDeltaTime);
+        }
+
+        private void RefreshTarget()
+        {
+            if (_ctx == null) return;
+            if (_ctx.target != null) return;
+            if (!_ctx.autoFindTargetByTag || string.IsNullOrEmpty(_ctx.targetTag)) return;
+
+            var go = GameObject.FindGameObjectWithTag(_ctx.targetTag);
+            if (go == null) return;
+
+            _ctx.target = go.transform;
+            if (_ctx.pathfinder != null) _ctx.pathfinder.SetTarget(_ctx.target);
         }
     }
 }
