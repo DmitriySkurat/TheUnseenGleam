@@ -10,6 +10,10 @@ namespace HSM
         private float _waitTimer;
         private bool _waiting;
         private Vector2 _currentPoint;
+        private bool _fallback;
+        private bool _fallbackCached;
+        private Vector2 _fallbackPointA;
+        private Vector2 _fallbackPointB;
 
         public EnemyPatrolState(StateMachine m, State parent, EnemyContext ctx) : base(m, parent)
         {
@@ -21,7 +25,13 @@ namespace HSM
             _waiting = false;
             _waitTimer = 0f;
             _index = ctx != null ? ctx.patrolIndex : 0;
+            _fallback = false;
+            if (!HasPatrolPoints())
+            {
+                _index = 0;
+            }
             MoveToCurrentPoint();
+            if (ctx != null && ctx.debugStateLifecycle) ctx.Log("Patrol: Enter");
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -41,7 +51,7 @@ namespace HSM
                     AdvancePoint();
                 }
             }
-            else if (HasPatrolPoints() && IsAtPoint(_currentPoint))
+            else if ((HasPatrolPoints() || _fallback) && IsAtPoint(_currentPoint))
             {
                 _waiting = true;
                 _waitTimer = ctx.patrolWaitTime;
@@ -51,10 +61,24 @@ namespace HSM
             base.OnUpdate(deltaTime);
         }
 
+        protected override void OnExit()
+        {
+            if (ctx != null && ctx.debugStateLifecycle) ctx.Log("Patrol: Exit");
+            base.OnExit();
+        }
+
         protected override State GetTransition()
         {
-            if (CanSeePlayer()) return Machine != null ? Machine.GetState<EnemyChaseState>() : null;
-            if (ctx != null && ctx.hasNoiseTarget) return Machine != null ? Machine.GetState<EnemyInvestigateState>() : null;
+            if (CanSeePlayer())
+            {
+                if (ctx != null && ctx.debugTransitions) ctx.Log("Patrol -> Chase (vision)");
+                return Machine != null ? Machine.GetState<EnemyChaseState>() : null;
+            }
+            if (ctx != null && ctx.hasNoiseTarget)
+            {
+                if (ctx.debugTransitions) ctx.Log("Patrol -> Investigate (noise)");
+                return Machine != null ? Machine.GetState<EnemyInvestigateState>() : null;
+            }
             return null;
         }
 
@@ -73,7 +97,7 @@ namespace HSM
         {
             if (!HasPatrolPoints())
             {
-                ctx?.movement?.Stop();
+                MoveToFallbackPoint();
                 return;
             }
 
@@ -84,7 +108,13 @@ namespace HSM
                 Transform point = ctx.patrolPoints[_index];
                 if (point != null)
                 {
-                    _currentPoint = point.position;
+                    Vector2 desired = point.position;
+                    Vector2 resolved = desired;
+                    if (ctx.movement is EnemyMotor motor)
+                    {
+                        motor.TryResolveTarget(desired, out resolved);
+                    }
+                    _currentPoint = resolved;
                     ctx.patrolIndex = _index;
                     ctx.movement?.MoveTo(_currentPoint);
                     return;
@@ -99,7 +129,12 @@ namespace HSM
 
         private void AdvancePoint()
         {
-            if (!HasPatrolPoints()) return;
+            if (!HasPatrolPoints())
+            {
+                _index = 1 - _index;
+                MoveToFallbackPoint();
+                return;
+            }
             _index = (_index + 1) % ctx.patrolPoints.Length;
             MoveToCurrentPoint();
         }
@@ -109,6 +144,82 @@ namespace HSM
             if (ctx == null || ctx.self == null) return false;
             float threshold = ctx.patrolPointReachedDistance > 0f ? ctx.patrolPointReachedDistance : 0.25f;
             return Vector2.Distance(ctx.self.position, point) <= threshold;
+        }
+
+        private void MoveToFallbackPoint()
+        {
+            if (ctx == null)
+            {
+                return;
+            }
+            _fallback = true;
+            if (!_fallbackCached)
+            {
+                _fallbackCached = BuildFallbackPoints();
+                _index = 0;
+            }
+            if (!_fallbackCached)
+            {
+                ctx.movement?.Stop();
+                return;
+            }
+
+            if (_index != 0 && _index != 1)
+            {
+                _index = 0;
+            }
+            _currentPoint = _index == 0 ? _fallbackPointA : _fallbackPointB;
+            ctx.movement?.MoveTo(_currentPoint);
+        }
+
+        private bool BuildFallbackPoints()
+        {
+            if (ctx == null) return false;
+            float radius = ctx.fallbackPatrolRadius > 0f ? ctx.fallbackPatrolRadius : 0f;
+            if (radius <= 0f) return false;
+
+            Vector2 center = ctx.spawnPosition;
+            Vector2 desiredA = center + Vector2.right * radius;
+            Vector2 desiredB = center + Vector2.right * -radius;
+            Vector2 resolvedA = desiredA;
+            Vector2 resolvedB = desiredB;
+            bool foundA = false;
+            bool foundB = false;
+
+            if (ctx.pathfinder != null)
+            {
+                int steps = ctx.pathfinder.StepsForDistance(radius);
+                foundA = ctx.pathfinder.TryGetWalkableInDirection(center, 1, steps, out resolvedA);
+                foundB = ctx.pathfinder.TryGetWalkableInDirection(center, -1, steps, out resolvedB);
+                if ((!foundA || !foundB) && radius > 0f)
+                {
+                    int moreSteps = Mathf.Max(steps + 1, ctx.pathfinder.StepsForDistance(radius * 2f));
+                    if (!foundA) foundA = ctx.pathfinder.TryGetWalkableInDirection(center, 1, moreSteps, out resolvedA);
+                    if (!foundB) foundB = ctx.pathfinder.TryGetWalkableInDirection(center, -1, moreSteps, out resolvedB);
+                }
+            }
+
+            if (ctx.movement is EnemyMotor motor)
+            {
+                if (!foundA) motor.TryResolveTarget(desiredA, out resolvedA);
+                if (!foundB) motor.TryResolveTarget(desiredB, out resolvedB);
+            }
+
+            float minSeparation = Mathf.Max(0.35f, ctx.patrolPointReachedDistance);
+            if (Vector2.Distance(resolvedA, resolvedB) < minSeparation)
+            {
+                Vector2 fartherA = center + Vector2.right * radius * 2f;
+                Vector2 fartherB = center + Vector2.right * -radius * 2f;
+                if (ctx.movement is EnemyMotor motorFar)
+                {
+                    motorFar.TryResolveTarget(fartherA, out resolvedA);
+                    motorFar.TryResolveTarget(fartherB, out resolvedB);
+                }
+            }
+
+            _fallbackPointA = resolvedA;
+            _fallbackPointB = resolvedB;
+            return true;
         }
     }
 }

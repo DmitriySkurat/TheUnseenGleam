@@ -15,5 +15,5 @@ public interface IInteractable {
 
 
         // Нужно ли переходить в состояние HSM
-        bool IsComplex { get; }
+        //bool IsComplex { get; }
 }

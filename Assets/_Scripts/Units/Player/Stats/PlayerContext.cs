@@ -35,6 +35,10 @@ public class PlayerContext
     public bool jumpToConsume;
     public bool coyoteUsable;
     
+    // ===== HIDING =====
+    public bool isHiding;
+    public bool isCoverHideout;
+    
     // ===== LADDER =====
     public bool onLadder;
     public bool isClimbing;

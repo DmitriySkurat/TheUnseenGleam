@@ -158,6 +158,11 @@ namespace Pathfinding
         {
             if (tryFindPath)
             {
+                if (target == null || agent == null)
+                {
+                    tryFindPath = false;
+                    return;
+                }
                 UpdateGroundedTimer();
                 unityTargetCell = GetUnityTargetCell(target.position);
                 unityAgentCell = GetUnityAgentCell(agent.position);
@@ -265,6 +270,109 @@ namespace Pathfinding
             }
             Vector3Int cell = navigationTilemap.WorldToCell(worldPos);
             return navigationTilemap.GetCellCenterWorld(cell);
+        }
+
+        public float GetCellSizeX()
+        {
+            if (navigationTilemap == null) return 1f;
+            return Mathf.Max(0.01f, navigationTilemap.cellSize.x);
+        }
+
+        public int StepsForDistance(float distance)
+        {
+            float cell = GetCellSizeX();
+            return Mathf.Max(1, Mathf.RoundToInt(distance / cell));
+        }
+
+        public bool TryGetWalkableInDirection(Vector2 worldPos, int direction, int maxSteps, out Vector2 snapped)
+        {
+            snapped = worldPos;
+            if (navigationTilemap == null || grid == null)
+            {
+                return false;
+            }
+
+            Vector3Int start = navigationTilemap.WorldToCell(worldPos);
+            start = SnapToWalkableBelow(start, targetSnapDepth);
+            int step = direction >= 0 ? 1 : -1;
+            int steps = Mathf.Max(1, maxSteps);
+
+            for (int i = 1; i <= steps; i++)
+            {
+                Vector3Int c = new Vector3Int(start.x + step * i, start.y, start.z);
+                if (!bounds.Contains(c)) break;
+                if (GetTileType(c) == TileType.Walkable)
+                {
+                    snapped = navigationTilemap.GetCellCenterWorld(c);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool TryGetNearestWalkablePosition(Vector2 worldPos, int radius, out Vector2 snapped, float verticalWeight = 2.5f)
+        {
+            snapped = worldPos;
+            if (navigationTilemap == null || grid == null)
+            {
+                return false;
+            }
+
+            Vector3Int cell = navigationTilemap.WorldToCell(worldPos);
+            if (GetTileType(cell) == TileType.Walkable)
+            {
+                snapped = navigationTilemap.GetCellCenterWorld(cell);
+                return true;
+            }
+
+            int r = Mathf.Max(1, radius);
+            float bestSqr = float.MaxValue;
+            bool found = false;
+            Vector3Int bestCell = cell;
+
+            for (int y = -r; y <= r; y++)
+            {
+                for (int x = -r; x <= r; x++)
+                {
+                    Vector3Int c = new Vector3Int(cell.x + x, cell.y + y, cell.z);
+                    if (!bounds.Contains(c))
+                    {
+                        continue;
+                    }
+                    if (GetTileType(c) != TileType.Walkable)
+                    {
+                        continue;
+                    }
+
+                    Vector2 center = navigationTilemap.GetCellCenterWorld(c);
+                    Vector2 delta = center - worldPos;
+                    float sqr = delta.x * delta.x + delta.y * delta.y * verticalWeight * verticalWeight;
+                    if (sqr < bestSqr)
+                    {
+                        bestSqr = sqr;
+                        bestCell = c;
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                Vector3Int baseCell = SnapToWalkableBelow(cell, targetSnapDepth);
+                if (GetTileType(baseCell) == TileType.Walkable)
+                {
+                    snapped = navigationTilemap.GetCellCenterWorld(baseCell);
+                    return true;
+                }
+            }
+
+            if (found)
+            {
+                snapped = navigationTilemap.GetCellCenterWorld(bestCell);
+            }
+
+            return found;
         }
 
         public void SetAccelleration(Vector2 _accelleration)
@@ -1003,8 +1111,7 @@ namespace Pathfinding
             }
             if (target == null)
             {
-                Debug.LogWarning("Target is null");
-                return false;
+                Debug.LogWarning("Target is null (waiting for assignment)");
             }
             if (graph.parameters == null)
             {

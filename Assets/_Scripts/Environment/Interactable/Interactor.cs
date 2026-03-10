@@ -16,7 +16,7 @@ public class Interactor : MonoBehaviour {
 
     protected virtual void PerformInteraction() {
         if (currentInteractable == null) return;
-        if (currentInteractable.IsComplex) return;
+        //if (currentInteractable.IsComplex) return;
         
         currentInteractable.TryInteract(this);
     }

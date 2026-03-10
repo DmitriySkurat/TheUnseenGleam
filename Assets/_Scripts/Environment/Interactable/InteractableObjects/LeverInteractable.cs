@@ -11,10 +11,15 @@ public class LeverInteractable : Interactable {
     
     public UnityEvent<bool> onLeverToggle;
     
-    
-    void Start() {
+    public override void Initialize() {
+        base.Initialize();
+        
         UpdateVisuals();
     }
+    
+    // void Start() {
+    //     UpdateVisuals();
+    // }
     
     public override void OnInteract(Interactor interactor)
     {

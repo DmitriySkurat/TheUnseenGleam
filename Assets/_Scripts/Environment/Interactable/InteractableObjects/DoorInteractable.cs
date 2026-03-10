@@ -14,13 +14,22 @@ public class DoorInteractable : Interactable
 
     private Collider2D _doorCollider;
     
-
-    void Start() {
+    public override void Initialize() {
+        base.Initialize();
+        
         _doorCollider = GetComponent<Collider2D>();
         
         // Для начального состояния
         UpdateDoorVisuals();
     }
+    
+
+    // void Start() {
+    //     _doorCollider = GetComponent<Collider2D>();
+        
+    //     // Для начального состояния
+    //     UpdateDoorVisuals();
+    // }
     
     public void SetOpen(bool state) 
     {

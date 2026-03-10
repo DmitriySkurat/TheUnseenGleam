@@ -23,6 +23,7 @@ namespace HSM
             {
                 ctx.movement?.Stop();
             }
+            if (ctx.debugStateLifecycle) ctx.Log("Chase: Enter");
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -43,6 +44,7 @@ namespace HSM
         protected override void OnExit()
         {
             ctx?.movement?.Stop();
+            if (ctx != null && ctx.debugStateLifecycle) ctx.Log("Chase: Exit");
         }
 
         protected override State GetTransition()
@@ -51,8 +53,13 @@ namespace HSM
             if (ctx.vision != null && ctx.vision.CanSeePlayer) return null;
 
             if (ctx.hasLastKnownPlayerPosition || ctx.hasNoiseTarget)
+            {
+                ctx.usePostChasePatrolDuration = true;
+                if (ctx.debugTransitions) ctx.Log("Chase -> Investigate (lost vision)");
                 return Machine != null ? Machine.GetState<EnemyInvestigateState>() : null;
+            }
 
+            if (ctx.debugTransitions) ctx.Log("Chase -> Patrol (no target)");
             return Machine != null ? Machine.GetState<EnemyPatrolState>() : null;
         }
     }

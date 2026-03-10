@@ -2,6 +2,7 @@ using UnityEngine;
 using Entity.Enemy;
 using HSM;
 using UnityEngine.PlayerLoop;
+using System;
 
 [RequireComponent(typeof(EnemyStateDriver))]
 public class EnemyHearing : MonoBehaviour, ISceneLifecycle
@@ -20,14 +21,13 @@ public class EnemyHearing : MonoBehaviour, ISceneLifecycle
     private Transform _noiseTarget;
     
     private NoiseSystem _noiseSystem;
+    private bool _subscribed;
+    private static Transform _targetsRoot;
     
     public void Initialize() 
     {
         _driver = GetComponent<EnemyStateDriver>();
-        
-        _noiseSystem = Services.Get<NoiseSystem>();
-        
-        _noiseSystem.NoiseEmitted += HandleNoise;
+        TrySubscribeNoise();
         
         EnsureNoiseTarget();
         BindContext(_driver != null ? _driver.Context : null);
@@ -35,7 +35,57 @@ public class EnemyHearing : MonoBehaviour, ISceneLifecycle
     
     public void Dispose()
     {
-        _noiseSystem.NoiseEmitted -= HandleNoise;
+        if (_noiseSystem != null && _subscribed)
+        {
+            _noiseSystem.NoiseEmitted -= HandleNoise;
+            _subscribed = false;
+        }
+    }
+
+    private void Update()
+    {
+        if (_driver != null && _driver.Context != null)
+        {
+            var ctx = _driver.Context;
+            if (ctx.hasNoiseTarget && ctx.noiseMemoryDuration > 0f && Time.time - ctx.lastNoiseTime > ctx.noiseMemoryDuration)
+            {
+                ctx.hasNoiseTarget = false;
+            }
+        }
+
+        if (_subscribed) return;
+        TrySubscribeNoise();
+    }
+
+    private void TrySubscribeNoise()
+    {
+        if (_subscribed) return;
+        try
+        {
+            _noiseSystem = Services.Get<NoiseSystem>();
+        }
+        catch (Exception)
+        {
+            _noiseSystem = null;
+        }
+
+        if (_noiseSystem == null) return;
+        _noiseSystem.NoiseEmitted += HandleNoise;
+        _subscribed = true;
+    }
+
+    private static Transform GetTargetsRoot()
+    {
+        if (_targetsRoot != null) return _targetsRoot;
+        var existing = GameObject.Find("EnemyTargetsRoot");
+        if (existing != null)
+        {
+            _targetsRoot = existing.transform;
+            return _targetsRoot;
+        }
+        var root = new GameObject("EnemyTargetsRoot");
+        _targetsRoot = root.transform;
+        return _targetsRoot;
     }
 
 
@@ -43,8 +93,9 @@ public class EnemyHearing : MonoBehaviour, ISceneLifecycle
     {
         if (_noiseTarget != null) return;
 
+        Transform root = GetTargetsRoot();
         var go = new GameObject("NoiseTarget");
-        go.transform.SetParent(transform);
+        go.transform.SetParent(root, true);
         go.transform.localPosition = Vector3.zero;
         _noiseTarget = go.transform;
     }
@@ -101,5 +152,12 @@ public class EnemyHearing : MonoBehaviour, ISceneLifecycle
         ctx.lastKnownPlayerPosition = noiseEvent.Position;
         ctx.hasLastKnownPlayerPosition = true;
         ctx.lastKnownPlayerTime = Time.time;
+
+        if (ctx.debugConditions)
+        {
+            ctx.Log($"Noise heard: type={noiseEvent.Type}, pos={noiseEvent.Position}, radius={noiseEvent.Radius:F2}, dist={Mathf.Sqrt(sqrDistance):F2}");
+        }
+
+        ctx.movement?.FaceTowards(noiseEvent.Position);
     }
 }

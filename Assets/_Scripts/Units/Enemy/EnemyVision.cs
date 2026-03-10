@@ -98,6 +98,10 @@ public class EnemyVision : MonoBehaviour, IInitializable
     {
         if (CanSeePlayer == value) return;
         CanSeePlayer = value;
+        if (_ctx != null && _ctx.debugConditions)
+        {
+            _ctx.Log($"Vision {(value ? "detected" : "lost")} player");
+        }
         if (value) PlayerDetected?.Invoke(_ctx != null ? _ctx.player : null);
         else PlayerLost?.Invoke();
     }

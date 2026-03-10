@@ -6,7 +6,7 @@ using Entity.Enemy;
 
 namespace HSM
 {
-    [RequireComponent(typeof(EnemyHandler), typeof(PathfinderHandler), typeof(EnemyMotor))]
+    [RequireComponent(typeof(EnemyHandler), typeof(PathfinderHandler))]
     public class EnemyStateDriver : MonoBehaviour, IInitializable
     {
         public InitializationOrder Order => InitializationOrder.Enemy;
@@ -36,14 +36,24 @@ namespace HSM
         [SerializeField] private Transform[] patrolPoints;
         [SerializeField, Min(0f)] private float patrolWaitTime = 1.25f;
         [SerializeField, Min(0f)] private float patrolPointReachedDistance = 0.35f;
+        [SerializeField, Min(0f)] private float fallbackPatrolRadius = 1.5f;
+        [SerializeField] private bool autoCreateSecondPatrolPoint = true;
+        [SerializeField, Min(0f)] private float autoSecondPatrolDistance = 2f;
 
         [Header("Search")]
         [SerializeField, Min(0f)] private float searchRadius = 3f;
         [SerializeField, Min(0f)] private float searchDuration = 4f;
         [SerializeField, Min(0f)] private float searchPointReachedDistance = 0.35f;
+        [SerializeField, Min(0f)] private float postChasePatrolDuration = 10f;
+
+        [Header("Investigate")]
+        [SerializeField, Min(0f)] private float investigateDuration = 3f;
 
         [Header("Debugging")]
         [SerializeField] private Utility.Logger _logger;
+        [SerializeField] private bool debugTransitions = true;
+        [SerializeField] private bool debugStateLifecycle = true;
+        [SerializeField] private bool debugConditions = false;
 
         private EnemyContext _ctx;
         private StateMachine _machine;
@@ -74,6 +84,8 @@ namespace HSM
 
             if (loseRange < detectRange) loseRange = detectRange;
 
+            EnsurePatrolPoints();
+
             _ctx = new EnemyContext
             {
                 enemy = enemy,
@@ -83,6 +95,11 @@ namespace HSM
                 hearing = hearing,
                 self = agent != null ? agent : transform,
                 player = player,
+                logger = _logger,
+                logOwner = this,
+                debugTransitions = debugTransitions,
+                debugStateLifecycle = debugStateLifecycle,
+                debugConditions = debugConditions,
                 detectRange = detectRange,
                 loseRange = loseRange,
                 autoFindTargetByTag = autoFindTargetByTag,
@@ -90,9 +107,12 @@ namespace HSM
                 patrolPoints = patrolPoints,
                 patrolWaitTime = patrolWaitTime,
                 patrolPointReachedDistance = patrolPointReachedDistance,
+                fallbackPatrolRadius = fallbackPatrolRadius,
                 searchRadius = searchRadius,
                 searchDuration = searchDuration,
                 searchPointReachedDistance = searchPointReachedDistance,
+                postChasePatrolDuration = postChasePatrolDuration,
+                investigateDuration = investigateDuration,
             };
 
             if (player != null)
@@ -101,6 +121,7 @@ namespace HSM
                 _ctx.hasLastKnownPlayerPosition = true;
                 _ctx.lastKnownPlayerTime = Time.time;
             }
+            _ctx.spawnPosition = agent != null ? (Vector2)agent.position : (Vector2)transform.position;
 
             if (vision != null) vision.BindContext(_ctx);
             if (hearing != null) hearing.BindContext(_ctx);
@@ -131,6 +152,28 @@ namespace HSM
             _ctx.player = go.transform;
             if (_ctx.pathfinder != null) _ctx.pathfinder.SetTarget(_ctx.player);
             if (_ctx.vision != null && _ctx.vision.Player == null) _ctx.vision.SetPlayer(_ctx.player);
+        }
+
+        private void EnsurePatrolPoints()
+        {
+            if (!autoCreateSecondPatrolPoint) return;
+            if (autoSecondPatrolDistance <= 0f) return;
+            if (patrolPoints == null || patrolPoints.Length == 0) return;
+            if (patrolPoints.Length >= 2) return;
+            if (patrolPoints[0] == null) return;
+
+            Vector2 desired = (Vector2)patrolPoints[0].position + Vector2.right * autoSecondPatrolDistance;
+            Vector2 resolved = desired;
+            if (movement != null)
+            {
+                movement.TryResolveTarget(desired, out resolved);
+            }
+
+            var autoPoint = new GameObject($"{gameObject.name}_PatrolPoint_Auto").transform;
+            autoPoint.position = new Vector3(resolved.x, resolved.y, patrolPoints[0].position.z);
+            autoPoint.SetParent(patrolPoints[0].parent, true);
+
+            patrolPoints = new[] { patrolPoints[0], autoPoint };
         }
 
         private void OnDrawGizmos()

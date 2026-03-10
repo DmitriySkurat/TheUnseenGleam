@@ -2,7 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
-public abstract class Interactable : MonoBehaviour, IInteractable {
+public abstract class Interactable : MonoBehaviour, IInteractable, IInitializable {
+    public InitializationOrder Order => InitializationOrder.Interactable;
+
     // Скорее всего удалю
     [TextArea] public string interactionPrompt = "Press E to interact";
     public virtual string InteractionPrompt => interactionPrompt;
@@ -20,7 +22,7 @@ public abstract class Interactable : MonoBehaviour, IInteractable {
     protected SpriteRenderer _sr;
     protected Color _defaultColor;
 
-    public virtual bool IsComplex => false;
+    //public virtual bool IsComplex => false;
     
     [System.Serializable]
     public struct ItemRequirement {
@@ -31,13 +33,15 @@ public abstract class Interactable : MonoBehaviour, IInteractable {
     
     [Header("Requirements (optional)")]
     public List<ItemRequirement> requiredItems = new List<ItemRequirement>();
-
-
-    void Awake()
+    
+    public void Initialize()
     {
         _sr = GetComponent<SpriteRenderer>();
         
-        if (_sr == null) return;
+        if (_sr == null)
+        {
+            Debug.LogWarning($"No SpriteRenderer found on {gameObject.name}. Highlighting will not work.", this);
+        }
         
         _defaultColor = _sr.color;
     }

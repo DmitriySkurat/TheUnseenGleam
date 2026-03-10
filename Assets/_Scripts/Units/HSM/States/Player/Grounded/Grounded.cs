@@ -7,12 +7,14 @@ namespace HSM {
         public readonly Idle Idle;
         public readonly Crouch Crouch;
         public readonly Move Move;
+        public readonly Hide Hide;
 
         public Grounded(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
             Idle = new Idle(m, this, ctx);
             Crouch = new Crouch(m, this, ctx);
             Move = new Move(m, this, ctx);
+            Hide = new Hide(m, this, ctx);
             
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.yellow,  // runs while Grounded is activating

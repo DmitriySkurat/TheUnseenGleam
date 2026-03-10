@@ -3,9 +3,10 @@ public enum InitializationOrder
     SceneServices = 1,
     GameplayCore = 100,
     Player = 200,
-    Enemy = 250,
-    Camera = 300,
-    PostProcessing = 400,
-    UI = 500,
-    Audio = 600
+    Enemy = 300,
+    Interactable = 400,
+    Camera = 500,
+    PostProcessing = 600,
+    UI = 700,
+    Audio = 800
 }
