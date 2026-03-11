@@ -27,9 +27,7 @@ public class HidingSpotInteractable : Interactable
             
             Debug.Log("Player is now hiding in the spot.");
 
-            // var target = hidePoint != null ? hidePoint : transform;
-            // if (ctx.transform != null)
-            //     ctx.transform.position = target.position;
+            SnapPlayerToHidePoint(player);
 
             return;
         }
@@ -45,6 +43,27 @@ public class HidingSpotInteractable : Interactable
         }
         
         Debug.Log("End of the function");
+    }
+
+    private void SnapPlayerToHidePoint(PlayerInteractor player)
+    {
+        var ctx = player.Context;
+        if (ctx == null || ctx.transform == null) return;
+
+        var target = hidePoint != null ? hidePoint : transform;
+        var rb = player.GetComponent<Rigidbody2D>();
+
+        var currentPos = rb != null ? rb.position : (Vector2)ctx.transform.position;
+        var targetPos = new Vector2(target.position.x, currentPos.y);
+
+        if (rb != null)
+            rb.position = targetPos;
+        else
+            ctx.transform.position = targetPos;
+
+        ctx.velocity = Vector2.zero;
+        ctx.grounded = true;
+        ctx.frameLeftGrounded = Time.time;
     }
 
     private void Reset()
