@@ -49,8 +49,8 @@ public class CameraFollow : MonoBehaviour, IInitializable
 
         if (_isLookingAround)
         {
-            Vector2 lookDelta = _ctx.input.LookPosition; 
-            _currentOffset += new Vector3(lookDelta.x, lookDelta.y, 0f) * lookSensivity;
+            Vector2 positionDelta = _ctx.input.MousePosition; 
+            _currentOffset += new Vector3(positionDelta.x, positionDelta.y, 0f) * lookSensivity;
             _currentOffset = Vector3.ClampMagnitude(_currentOffset, lookRange);
         }
         else

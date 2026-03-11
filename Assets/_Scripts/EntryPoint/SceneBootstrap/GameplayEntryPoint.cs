@@ -37,7 +37,7 @@ namespace EntryPoint
         protected override void Bootstrap()
         {    
             // Скрываем курсор для погружения в игру
-            Cursor.visible = false;
+            //Cursor.visible = false;
             
             FindInializableObjects();
             InitializeSceneObjects();

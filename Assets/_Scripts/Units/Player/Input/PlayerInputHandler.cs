@@ -44,8 +44,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnInteractStarted += HandleInteractStarted;
         _inputManager.OnInteractCanceled += HandleInteractCanceled;
         
-        _inputManager.OnLook += HandleLookInput;
+        _inputManager.OnMousePositionChanged += HandleMousePosition;
         _inputManager.OnLookAroundToggled += HandleLookAroundInput;
+        _inputManager.OnAttackToggled += HandleAttackInput;
     }
 
     void UnsubscribeInput() {
@@ -60,8 +61,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnInteractStarted -= HandleInteractStarted;
         _inputManager.OnInteractCanceled -= HandleInteractCanceled;
         
-        _inputManager.OnLook -= HandleLookInput;
+        _inputManager.OnMousePositionChanged -= HandleMousePosition;
         _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
+        _inputManager.OnAttackToggled -= HandleAttackInput;
     }
     
 
@@ -111,13 +113,18 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.InteractHeld = false;
     }
     
-    void HandleLookInput(Vector2 mousePosition)
+    void HandleMousePosition(Vector2 mousePosition)
     {
-        _frameInput.LookPosition = mousePosition;
+        _frameInput.MousePosition = mousePosition;
     }
     
     void HandleLookAroundInput(bool isLookingAround)
     {
         _frameInput.LookAroundHeld = isLookingAround;
+    }
+    
+    void HandleAttackInput(bool isAttacking)
+    {
+        _frameInput.AttackHeld = isAttacking;
     }
 }

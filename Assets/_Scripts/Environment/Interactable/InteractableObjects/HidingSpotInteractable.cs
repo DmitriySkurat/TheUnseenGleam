@@ -43,6 +43,10 @@ public class HidingSpotInteractable : Interactable
         Debug.Log("End of the function");
     }
 
+    // Перенести в другое место, чтобы можно было снапиться и в других местах (условно к лестнице)
+    // Добавить время для снапа, чтобы не было мгновенного телепорта при взаимодействии
+    // Возможно переместить Hide из Grounded в отдельный стейт
+    
     private void SnapPlayerToHidePoint(PlayerInteractor player)
     {
         var ctx = player.Context;

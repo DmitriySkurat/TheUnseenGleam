@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 public class InputManager : MonoBehaviour, IService
 {
+    // Keyboard
     public event Action<Vector2> OnMove;
     public event Action OnJumpStarted;
     public event Action OnJumpCanceled;
@@ -15,8 +16,11 @@ public class InputManager : MonoBehaviour, IService
     public event Action OnInteractStarted;
     public event Action OnInteractCanceled;
     
-    public event Action<Vector2> OnLook;
+    
+    // Mouse
+    public event Action<Vector2> OnMousePositionChanged;
     public event Action<bool> OnLookAroundToggled;
+    public event Action<bool> OnAttackToggled;
     
     private PlayerInput _playerInput;
     
@@ -65,11 +69,14 @@ public class InputManager : MonoBehaviour, IService
         actions["Interact"].performed += HandleInteractStarted;
         actions["Interact"].canceled += HandleInteractCanceled;
         
-        actions["Look"].performed += HandleLook;
-        actions["Look"].canceled += HandleLook;
+        actions["MousePosition"].performed += HandleMousePosition;
+        actions["MousePosition"].canceled += HandleMousePosition;
         
         actions["LookAround"].performed += HandleLookAround;
         actions["LookAround"].canceled += HandleLookAround;
+        
+        actions["Attack"].performed += HandleAttack;
+        actions["Attack"].canceled += HandleAttack;
     }
     
     private void UnregisterInputs()
@@ -91,11 +98,14 @@ public class InputManager : MonoBehaviour, IService
         actions["Interact"].performed -= HandleInteractStarted;
         actions["Interact"].canceled -= HandleInteractCanceled;
         
-        actions["Look"].performed -= HandleLook;
-        actions["Look"].canceled -= HandleLook;
+        actions["MousePosition"].performed -= HandleMousePosition;
+        actions["MousePosition"].canceled -= HandleMousePosition;
         
         actions["LookAround"].performed -= HandleLookAround;
         actions["LookAround"].canceled -= HandleLookAround;
+        
+        actions["Attack"].performed -= HandleAttack;
+        actions["Attack"].canceled -= HandleAttack;
     }
 
 
@@ -111,6 +121,7 @@ public class InputManager : MonoBehaviour, IService
 
     #region Input Handlers
     
+    // Keyboard
     private void HandleMove(InputAction.CallbackContext ctx) => OnMove?.Invoke(ctx.ReadValue<Vector2>());
     private void HandleJumpStarted(InputAction.CallbackContext ctx) => OnJumpStarted?.Invoke();
     private void HandleJumpCanceled(InputAction.CallbackContext ctx) => OnJumpCanceled?.Invoke();
@@ -120,8 +131,10 @@ public class InputManager : MonoBehaviour, IService
     private void HandleInteractStarted(InputAction.CallbackContext ctx) => OnInteractStarted?.Invoke();
     private void HandleInteractCanceled(InputAction.CallbackContext ctx) => OnInteractCanceled?.Invoke();
     
-    private void HandleLook(InputAction.CallbackContext ctx) => OnLook?.Invoke(ctx.ReadValue<Vector2>());
+    // Mouse
+    private void HandleMousePosition(InputAction.CallbackContext ctx) => OnMousePositionChanged?.Invoke(ctx.ReadValue<Vector2>());
     private void HandleLookAround(InputAction.CallbackContext ctx) => OnLookAroundToggled?.Invoke(ctx.performed);
+    private void HandleAttack(InputAction.CallbackContext ctx) => OnAttackToggled?.Invoke(ctx.performed);
     
     #endregion
 }
