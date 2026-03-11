@@ -64,10 +64,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
             _ctx.onLadder = true;
         }
         
-        if (other.GetComponentInParent<HidingSpotInteractable>())
-        {
-            _ctx.isCoverHideout = true;
-        }
+        
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -77,9 +74,6 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
             _ctx.onLadder = false;
         }
 
-        if (other.GetComponentInParent<HidingSpotInteractable>())
-        {
-            _ctx.isCoverHideout = false;
-        }
+       
     }
 }

@@ -6,6 +6,8 @@ public class HidingSpotInteractable : Interactable
      
     [Header("Hide Settings")]
     [SerializeField] private Transform hidePoint;
+    
+    private HidingSpotInteractable _activeHideSpot;
 
     public override void OnInteract(Interactor interactor)
     {
@@ -14,16 +16,12 @@ public class HidingSpotInteractable : Interactable
         Debug.Log("Interacted with hiding spot!");
 
         var ctx = player.Context;
-        if (ctx == null || !ctx.isCoverHideout) 
-        {
-            Debug.Log("Player is not in a cover hideout.");
-            return;
-        }
+        
 
         if (!ctx.isHiding)
         {
             ctx.isHiding = true;
-            ctx.activeHideSpot = this;
+            _activeHideSpot = this;
             
             Debug.Log("Player is now hiding in the spot.");
 
@@ -32,10 +30,10 @@ public class HidingSpotInteractable : Interactable
             return;
         }
 
-        if (ctx.activeHideSpot == this)
+        if (_activeHideSpot == this)
         {
             ctx.isHiding = false;
-            ctx.activeHideSpot = null;
+            _activeHideSpot = null;
             
             Debug.Log("Player has stopped hiding in the spot.");
             

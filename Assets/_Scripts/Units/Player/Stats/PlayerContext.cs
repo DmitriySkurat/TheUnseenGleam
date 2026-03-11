@@ -37,8 +37,7 @@ public class PlayerContext
     
     // ===== HIDING =====
     public bool isHiding;
-    public bool isCoverHideout;
-    public HidingSpotInteractable activeHideSpot;
+    
     
     // ===== LADDER =====
     public bool onLadder;
