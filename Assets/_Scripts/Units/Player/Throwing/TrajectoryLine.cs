@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class TrajectoryLine : MonoBehaviour
+public class TrajectoryLine : MonoBehaviour, IInitializable
 {
+    public InitializationOrder Order => InitializationOrder.PostProcessing;
+
     [Header("References")]
     [SerializeField] private PlayerAimAndThrow _playerAimAndThrow;
     [SerializeField] private Transform _bulletSpawnPoint;
@@ -20,14 +22,14 @@ public class TrajectoryLine : MonoBehaviour
     
     private const float TIME_CURVE_ADDITION = 0.5f;
     
-    private void Start()
+    public void Initialize()
     {
         _segments = new Vector2[_segmentCount];
         
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.positionCount = _segmentCount;
         
-        _pebbleBehavior = _playerAimAndThrow.GetComponentInChildren<PebbleBehavior>();
+        _pebbleBehavior = _playerAimAndThrow.pebble.GetComponent<PebbleBehavior>();
         _projectileSpeed = _pebbleBehavior.pebbleSpeed;
         _projectileGravity = _pebbleBehavior.pebbleGravity;
     }

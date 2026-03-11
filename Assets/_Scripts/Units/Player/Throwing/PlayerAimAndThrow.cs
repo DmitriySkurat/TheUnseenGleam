@@ -5,8 +5,8 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Player + 1;
     
-    [SerializeField] private GameObject gun;
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject hand;
+    public GameObject pebble;
     [SerializeField] private Transform bulletSpawnPoint;
     
     private GameObject bulletInst;
@@ -37,7 +37,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
     
     private void HandleGunRotation()
     {
-        if (_ctx == null || gun == null) return;
+        if (_ctx == null || hand == null) return;
         
         if (!_ctx.input.AttackHeld) return;
 
@@ -50,10 +50,10 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
 
         var camZ = -camera.transform.position.z;
         worldPosition = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, camZ));
-        direction = (worldPosition - (Vector2)gun.transform.position).normalized;
+        direction = (worldPosition - (Vector2)hand.transform.position).normalized;
 
         if (direction.sqrMagnitude > 0.0001f)
-            gun.transform.right = direction;
+            hand.transform.right = direction;
     }
     
     private void HandleGunShooting()
@@ -62,7 +62,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
         
         if (_ctx.input.AttackHeld)
         {
-            bulletInst = Instantiate(bullet, bulletSpawnPoint.position, gun.transform.rotation);
+            bulletInst = Instantiate(pebble, bulletSpawnPoint.position, hand.transform.rotation);
         }
     }
 }

@@ -14994,6 +14994,7 @@ GameObject:
   - component: {fileID: 669612337890271470}
   - component: {fileID: -8977762195206441254}
   - component: {fileID: 7516272934157095564}
+  - component: {fileID: 8915404737102142867}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -15297,3 +15298,18 @@ MonoBehaviour:
   items:
   - item: {fileID: 11400000, guid: 4d9967dd09504c34e8328ddc0b1a7d8e, type: 2}
     count: 1
+--- !u!114 &8915404737102142867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4a3c58078383c94a8000711a46625a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAimAndThrow
+  hand: {fileID: 0}
+  pebble: {fileID: 3834167482026610211, guid: 2583e439349f38f41862b76c706eb78f, type: 3}
+  bulletSpawnPoint: {fileID: 0}
