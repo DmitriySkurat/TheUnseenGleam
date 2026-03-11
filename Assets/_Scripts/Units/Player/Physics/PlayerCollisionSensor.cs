@@ -64,7 +64,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
             _ctx.onLadder = true;
         }
         
-        if (other.GetComponent<HidingSpotInteractable>())
+        if (other.GetComponentInParent<HidingSpotInteractable>())
         {
             _ctx.isCoverHideout = true;
         }
@@ -77,7 +77,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
             _ctx.onLadder = false;
         }
 
-        if (other.GetComponent<HidingSpotInteractable>())
+        if (other.GetComponentInParent<HidingSpotInteractable>())
         {
             _ctx.isCoverHideout = false;
         }

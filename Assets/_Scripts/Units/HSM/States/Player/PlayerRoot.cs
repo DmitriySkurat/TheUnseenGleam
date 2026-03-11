@@ -42,6 +42,12 @@ namespace HSM {
         }
 
         void HandleJump() {
+            if (ctx.isHiding)
+            {
+                ctx.jumpToConsume = false;
+                return;
+            }
+
             if (!ctx.endedJumpEarly && !ctx.grounded && !ctx.input.JumpHeld && ctx.velocity.y > 0) ctx.endedJumpEarly = true;
             
             if (ctx.ceilingAbove && ctx.isCrouching)
@@ -65,9 +71,9 @@ namespace HSM {
             ctx.velocity.y = ctx.stats.JumpPower;
 
             // Emit jump noise from the HSM when the jump is actually executed.
-            if (ctx.self != null)
+            if (ctx.transform != null)
             {
-                _noiseSystem.EmitNoise(ctx.self.position, ctx.stats.JumpNoiseRadius, ctx.self.gameObject, NoiseType.Jump);
+                _noiseSystem.EmitNoise(ctx.transform.position, ctx.stats.JumpNoiseRadius, ctx.transform.gameObject, NoiseType.Jump);
             }
         }
 
@@ -84,7 +90,7 @@ namespace HSM {
 
         void HandleFootsteps(float deltaTime)
         {
-            if (ctx.self == null || ctx.stats == null)
+            if (ctx.transform == null || ctx.stats == null)
             {
                 _footstepTimer = 0f;
                 return;
@@ -106,7 +112,7 @@ namespace HSM {
             if (_footstepTimer < ctx.currentFootstepInterval) return;
 
             _footstepTimer = 0f;
-            _noiseSystem.EmitNoise(ctx.self.position, ctx.currentNoiseRadius, ctx.self.gameObject, NoiseType.Footstep);
+            _noiseSystem.EmitNoise(ctx.transform.position, ctx.currentNoiseRadius, ctx.transform.gameObject, NoiseType.Footstep);
         }
     }
 }

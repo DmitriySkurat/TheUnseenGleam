@@ -104,6 +104,11 @@ public class PlayerScriptableStats : ScriptableObject
     [Range(0f, 1f)]
     public float CrouchNoiseMultiplier = 0.3f;
 
+    [Header("HIDE")]
+    [Tooltip("Multiplier applied to MaxSpeed while hiding")]
+    [Range(0.1f, 1f)]
+    public float HideSpeedMultiplier = 0.4f;
+
     [Header("NOISE")]
     [Tooltip("Minimum horizontal input required to emit footsteps")]
     [Range(0.01f, 1f)]

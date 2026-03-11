@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// добавить снап к центру лестницы
 [RequireComponent(typeof(Collider2D))]
 public class Ladder : MonoBehaviour
 {

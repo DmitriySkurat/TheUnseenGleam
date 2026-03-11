@@ -10,28 +10,44 @@ namespace HSM
         {
             this.ctx = ctx;
             Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.purple,
+                enterColor = Color.cyan,
             });
-            Add(new AnimatorBoolActivity(ctx.anim, "Climb", true, false));
+            Add(new AnimatorBoolActivity(ctx.anim, "Hide", true, false));
         }
 
         protected override void OnEnter()
         {
-            //ctx.isHiding = true;
+            ctx.isHiding = true;
+            ctx.currentSpeedMultiplier = ctx.stats.HideSpeedMultiplier;
+            ctx.currentNoiseRadius = 0f;
+            ctx.currentFootstepInterval = 0f;
+            ctx.velocity = Vector2.zero;
         }
 
         protected override void OnExit()
         {
             ctx.isHiding = false;
+            ctx.velocity.y = 0f;
+            // ctx.currentNoiseRadius = 0f;
+            // ctx.currentFootstepInterval = 0f;
+            // if (ctx.activeHideSpot != null)
+            //     ctx.activeHideSpot = null;
         }
 
         protected override void OnUpdate(float deltaTime)
         {
-            
+            ctx.velocity = Vector2.zero;
         }
 
         protected override State GetTransition()
         {
+            if (!ctx.isHiding || !ctx.isCoverHideout)
+            {
+                if (ctx.input.CrouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
+                if (ctx.HasMovementIntent) return Machine != null ? Machine.GetState<Move>() : null;
+                return Machine != null ? Machine.GetState<Idle>() : null;
+            }
+
             return null;
         }
     }

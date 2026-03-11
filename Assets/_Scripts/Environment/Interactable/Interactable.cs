@@ -34,7 +34,7 @@ public abstract class Interactable : MonoBehaviour, IInteractable, IInitializabl
     [Header("Requirements (optional)")]
     public List<ItemRequirement> requiredItems = new List<ItemRequirement>();
     
-    public void Initialize()
+    public virtual void Initialize()
     {
         _sr = GetComponent<SpriteRenderer>();
         

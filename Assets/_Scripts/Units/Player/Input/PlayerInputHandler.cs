@@ -29,6 +29,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _ctx.input = _frameInput;
     
         _frameInput.JumpDown = false;
+        _frameInput.InteractDown = false;
     }
 
     void SubscribeInput() {

@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Checkpoint
+  - Ladder
+  - EnemyHead
+  - DroppedItem
+  - LightSource
+  - Enemy
+  - VictoryPoint
   layers:
   - Default
   - TransparentFX
@@ -15,7 +22,7 @@ TagManager:
   - Interactable
   - Player
   - Ladder
-  - 
+  - Hideout
   - 
   - 
   - 

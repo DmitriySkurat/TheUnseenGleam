@@ -22,6 +22,7 @@ namespace HSM {
         protected override State GetInitialState() => Walk;
         
         protected override State GetTransition() {
+            if (ctx.isHiding) return Machine != null ? Machine.GetState<Hide>() : null;
             if (ctx.input.CrouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
             //if (Mathf.Abs(ctx.input.Move.x) <= 0.01f) return Machine != null ? Machine.GetState<Idle>() : null;      
             if (!ctx.HasMovementIntent) return Machine != null ? Machine.GetState<Idle>() : null;      

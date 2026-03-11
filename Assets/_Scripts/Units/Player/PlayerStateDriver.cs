@@ -21,7 +21,7 @@ namespace HSM {
         public void Initialize()
         {
             _ctx = Services.Get<PlayerContext>();
-            _ctx.self = transform;
+            _ctx.transform = transform;
             _ctx.anim = GetComponentInChildren<Animator>();
             _ctx.renderer = GetComponentInChildren<Renderer>();
 

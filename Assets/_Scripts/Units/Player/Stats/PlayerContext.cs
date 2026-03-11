@@ -15,7 +15,7 @@ public class PlayerContext
     //public Rigidbody2D rb;
     public Renderer renderer;
     public Collider2D coll;
-    public Transform self;
+    public Transform transform;
     //public AudioSource audio;
     public PlayerInventory inventory; // ???
     
@@ -38,6 +38,7 @@ public class PlayerContext
     // ===== HIDING =====
     public bool isHiding;
     public bool isCoverHideout;
+    public HidingSpotInteractable activeHideSpot;
     
     // ===== LADDER =====
     public bool onLadder;
