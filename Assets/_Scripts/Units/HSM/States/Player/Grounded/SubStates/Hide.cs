@@ -37,6 +37,7 @@ namespace HSM
         protected override void OnUpdate(float deltaTime)
         {
             ctx.velocity = Vector2.zero;
+            base.OnUpdate(deltaTime);
         }
 
         protected override State GetTransition()
