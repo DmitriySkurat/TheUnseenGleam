@@ -6,6 +6,10 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
     public InitializationOrder Order => InitializationOrder.Player + 1;
     
     [SerializeField] private GameObject gun;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform bulletSpawnPoint;
+    
+    private GameObject bulletInst;
     
     private Vector2 worldPosition;
     private Vector2 direction;
@@ -21,6 +25,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
     private void LateUpdate()
     {
         HandleGunRotation();
+        HandleGunShooting();
     }
     
     // private void HandleGunRotation()
@@ -34,7 +39,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
     {
         if (_ctx == null || gun == null) return;
         
-        if (!_ctx.input.AttackHeld && !_ctx.input.LookAroundHeld) return;
+        if (!_ctx.input.AttackHeld) return;
 
         var camera = Camera.main;
         if (camera == null) return;
@@ -49,5 +54,15 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
 
         if (direction.sqrMagnitude > 0.0001f)
             gun.transform.right = direction;
+    }
+    
+    private void HandleGunShooting()
+    {
+        if (_ctx == null) return;
+        
+        if (_ctx.input.AttackHeld)
+        {
+            bulletInst = Instantiate(bullet, bulletSpawnPoint.position, gun.transform.rotation);
+        }
     }
 }
