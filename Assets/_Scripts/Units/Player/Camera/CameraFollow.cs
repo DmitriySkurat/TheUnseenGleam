@@ -37,9 +37,6 @@ public class CameraFollow : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        // if (PauseMenu.isPaused || !player.isCurrentlyPlayable)
-        //     return;
-
         if (target == null || _ctx == null) 
             return;
         
