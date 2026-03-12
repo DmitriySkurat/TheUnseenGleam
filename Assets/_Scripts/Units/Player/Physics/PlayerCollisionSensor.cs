@@ -32,8 +32,11 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         Physics2D.queriesStartInColliders = false;
 
         bool wasGrounded = _ctx.grounded;
-        bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
-        bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
+        // bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
+        // bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
+
+        bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
+        bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
 
         if (ceilingHit) _ctx.velocity.y = Mathf.Min(0, _ctx.velocity.y);
 

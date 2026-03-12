@@ -44,6 +44,17 @@ public class PebbleBehavior : MonoBehaviour
         _rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
         _rb.gravityScale = pebbleGravity;
     }
+
+    public void SetThrowStats(float speed, float gravity)
+    {
+        pebbleSpeed = speed;
+        pebbleGravity = gravity;
+
+        if (_rb == null) return;
+
+        _rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
+        _rb.gravityScale = pebbleGravity;
+    }
     
     private void SetDestroyTime() 
     {

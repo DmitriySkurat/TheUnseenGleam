@@ -48,6 +48,14 @@ public class TrajectoryLine : MonoBehaviour, IInitializable
             _lineRenderer.positionCount = 0;
             return;
         }
+
+        if (_playerAimAndThrow != null &&
+            _playerAimAndThrow.CurrentAimDistance < _playerAimAndThrow.MinThrowRadius)
+        {
+            _lineRenderer.enabled = false;
+            _lineRenderer.positionCount = 0;
+            return;
+        }
         
         _lineRenderer.enabled = true;
         _lineRenderer.positionCount = _segmentCount;
@@ -57,7 +65,8 @@ public class TrajectoryLine : MonoBehaviour, IInitializable
         _segments[0] = startPos;
         _lineRenderer.SetPosition(0, startPos);
 
-        Vector2 startVelocity = _bulletSpawnPoint.up * _projectileSpeed;
+        var speed = _playerAimAndThrow != null ? _playerAimAndThrow.CurrentProjectileSpeed : _projectileSpeed;
+        Vector2 startVelocity = _bulletSpawnPoint.up * speed;
 
         for (int i = 1; i < _segmentCount; i++)
         {
