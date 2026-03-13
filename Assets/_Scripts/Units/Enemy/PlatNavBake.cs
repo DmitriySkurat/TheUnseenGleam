@@ -140,10 +140,23 @@ namespace Entity.PlatNav
             float left   = worldPos.x - halfW;
             float right  = worldPos.x + halfW;
 
-            int txMin = Mathf.FloorToInt(left);
-            int txMax = Mathf.FloorToInt(right  - 0.001f);
-            int tyMin = Mathf.FloorToInt(bottom);
-            int tyMax = Mathf.FloorToInt(top    - 0.001f);
+            int txMin, txMax, tyMin, tyMax;
+            if (wallTM != null)
+            {
+                // Use tilemap world->cell conversion to respect grid origin/scale
+                var minCell = wallTM.WorldToCell(new Vector3(left, bottom, 0f));
+                var maxCell = wallTM.WorldToCell(new Vector3(right - 0.001f, top - 0.001f, 0f));
+                txMin = minCell.x; txMax = maxCell.x;
+                tyMin = minCell.y; tyMax = maxCell.y;
+            }
+            else
+            {
+                // Fallback: assume 1x1 tiles aligned to world origin
+                txMin = Mathf.FloorToInt(left);
+                txMax = Mathf.FloorToInt(right  - 0.001f);
+                tyMin = Mathf.FloorToInt(bottom);
+                tyMax = Mathf.FloorToInt(top    - 0.001f);
+            }
 
             for (int tx = txMin; tx <= txMax; tx++)
             for (int ty = tyMin; ty <= tyMax; ty++)
@@ -153,19 +166,41 @@ namespace Entity.PlatNav
             return true;
         }
 
+        // private bool HasGround(int wx, int wy, GravityDirection g)
+        // {
+        //     Vector2Int down = GravVec(g);
+        //     Vector2Int perp = PerpVec(g);
+        //     int startW = -(_tileW / 2);
+        //     bool any = false;
+
+        //     for (int w = startW; w < startW + _tileW; w++)
+        //     {
+        //         int gx = wx + down.x + perp.x * w;
+        //         int gy = wy + down.y + perp.y * w;
+        //         if (IsSpike(gx, gy)) return false;  // spike under foot = not walkable
+        //         if (IsSolid(gx, gy)) any = true;
+        //     }
+        //     return any;
+        // }
+        
         private bool HasGround(int wx, int wy, GravityDirection g)
         {
             Vector2Int down = GravVec(g);
             Vector2Int perp = PerpVec(g);
             int startW = -(_tileW / 2);
             bool any = false;
-
+            
             for (int w = startW; w < startW + _tileW; w++)
             {
                 int gx = wx + down.x + perp.x * w;
                 int gy = wy + down.y + perp.y * w;
-                if (IsSpike(gx, gy)) return false;  // spike under foot = not walkable
-                if (IsSolid(gx, gy)) any = true;
+                
+                if (IsSpike(gx, gy)) return false;
+                
+                if (InBounds(gx, gy) && _solid[GX(gx), GY(gy)]) 
+                {
+                    any = true;
+                }
             }
             return any;
         }
