@@ -165,7 +165,10 @@ namespace Entity.PlatNav
 
         private void TryRepath()
         {
-            if (!IsGrounded() && _state != PlatNavState.TraversingLink) return;
+            //if (!IsGrounded() && _state != PlatNavState.TraversingLink) return;
+            
+            if (_state == PlatNavState.TraversingLink) return;
+            if (!IsGrounded()) return;
 
             switch (behaviour)
             {
@@ -304,8 +307,15 @@ namespace Entity.PlatNav
             Vector2 pos = transform.position;
             Vector2 toTarget = _walkTarget - pos;
 
-            // Use full 2D distance to prevent advancing when on a different platform
-            if (toTarget.sqrMagnitude < nearTileDist * nearTileDist)
+            // // Use full 2D distance to prevent advancing when on a different platform
+            // if (toTarget.sqrMagnitude < nearTileDist * nearTileDist)
+            // {
+            //     _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
+            //     AdvanceStep();
+            //     return;
+            // }
+
+            if (Mathf.Abs(toTarget.x) <= nearTileDist)
             {
                 _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
                 AdvanceStep();

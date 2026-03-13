@@ -316,7 +316,6 @@ namespace Entity.PlatNav
                 var seg  = segs[si];
                 var perp = PerpVec(seg.gravity);
 
-                // both ends: -1 = min side, +1 = max side
                 for (int sign = -1; sign <= 1; sign += 2)
                 {
                     int edgeC = sign < 0 ? seg.min - 1 : seg.max + 1;
@@ -324,15 +323,21 @@ namespace Entity.PlatNav
 
                     int ox, oy;
                     if (seg.axis == SurfaceAxis.Horizontal) { ox = edgeC; oy = seg.line; }
-                    else                                     { ox = seg.line; oy = edgeC; }
+                    else                                    { ox = seg.line; oy = edgeC; }
 
-                    if (IsSolid(ox, oy)) continue;   // wall blocks step-off
+                    if (IsSolid(ox, oy)) continue;
 
                     Vector2 startPos = TileCenter(ox, oy);
-                    Vector2 startVel = new Vector2(perp.x, perp.y) * (sign * walkSpeed * 0.5f);
+                    
+                    // Симулируем несколько скоростей падения
+                    float[] speeds = { walkSpeed, walkSpeed * 0.8f, walkSpeed * 0.4f, 0f };
+                    HashSet<int> foundSegs = new HashSet<int>();
 
-                    SimulateFall(startPos, startVel, seg.gravity,
-                                 si, srcC, segs, lut, links);
+                    foreach (float speed in speeds)
+                    {
+                        Vector2 startVel = new Vector2(perp.x, perp.y) * (sign * speed);
+                        SimulateFall(startPos, startVel, seg.gravity, si, srcC, segs, lut, links, foundSegs);
+                    }
                 }
             }
         }
@@ -340,7 +345,7 @@ namespace Entity.PlatNav
         private void SimulateFall(Vector2 pos, Vector2 vel,
             GravityDirection startGrav, int srcSeg, int srcCoord,
             List<WalkSegment> segs, Dictionary<long, int> lut,
-            List<NavLink> links)
+            List<NavLink> links, HashSet<int> foundSegs)
         {
             var acc  = AccelFor(startGrav);
             float dt = trajectoryStep;
@@ -354,25 +359,31 @@ namespace Entity.PlatNav
                 vel += acc * dt;
                 pos += vel * dt;
 
-                // World-space AABB check
                 if (!EntityFitsAtWorld(pos))
                 {
-                    // Entity hit something – try landing at the previous valid position
                     var prevCell = wallTM.WorldToCell(new Vector3(prevPos.x, prevPos.y, 0));
                     int landSeg = SegAt(lut, prevCell.x, prevCell.y);
-                    if (landSeg >= 0 && landSeg != srcSeg)
+                    
+                    // Если нашли новый сегмент для приземления — записываем
+                    if (landSeg >= 0 && landSeg != srcSeg && foundSegs.Add(landSeg))
+                    {
                         EmitFallLink(srcSeg, srcCoord, landSeg, segs[landSeg],
                                      prevCell.x, prevCell.y, t, origPos, origVel, startGrav, links);
-                    return;
+                    }
+                    return; // Врезались в стену или пол — конец этой дуги
                 }
 
                 var cell = wallTM.WorldToCell(new Vector3(pos.x, pos.y, 0));
                 int segHere = SegAt(lut, cell.x, cell.y);
+                
                 if (segHere >= 0 && segHere != srcSeg)
                 {
-                    EmitFallLink(srcSeg, srcCoord, segHere, segs[segHere],
-                                 cell.x, cell.y, t, origPos, origVel, startGrav, links);
-                    return;
+                    if (foundSegs.Add(segHere))
+                    {
+                        EmitFallLink(srcSeg, srcCoord, segHere, segs[segHere],
+                                     cell.x, cell.y, t, origPos, origVel, startGrav, links);
+                    }
+                    return; // Коснулись поверхности
                 }
 
                 prevPos = pos;
