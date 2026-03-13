@@ -45,5 +45,14 @@ MonoBehaviour:
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
   CrouchNoiseMultiplier: 0.3
+  HideSpeedMultiplier: 0.4
+  NoiseMoveThreshold: 0.1
+  WalkFootstepInterval: 0.5
+  RunFootstepInterval: 0.35
+  CrouchFootstepInterval: 0.7
+  WalkNoiseRadius: 2
+  RunNoiseRadius: 4
+  CrouchNoiseRadius: 1
+  JumpNoiseRadius: 3
   ClimbVerticalSpeedMultiplier: 0.5
   ClimbHorizontalSpeedMultiplier: 0.5

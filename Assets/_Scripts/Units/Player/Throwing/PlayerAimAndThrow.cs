@@ -52,7 +52,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
 
         if (attackHeld)
         {
-            HandleGunRotation();
+            HandleHandRotation();
         }
 
         HandleGunShooting(attackHeld);
@@ -72,7 +72,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
     //     gun.transform.right = direction;
     // }
     
-    private void HandleGunRotation()
+    private void HandleHandRotation()
     {
         if (_ctx == null || hand == null) return;
         
@@ -81,9 +81,11 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
         var camera = Camera.main;
         if (camera == null) return;
 
-        var screenPos = Mouse.current != null
-            ? Mouse.current.position.ReadValue()
-            : _ctx.input.MousePosition;
+        // var screenPos = Mouse.current != null
+        //     ? Mouse.current.position.ReadValue()
+        //     : _ctx.input.MousePosition;
+        
+        var screenPos = _ctx.input.MousePosition;
 
         var camZ = -camera.transform.position.z;
         worldPosition = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, camZ));

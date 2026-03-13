@@ -7,13 +7,17 @@ public class PebbleBehavior : MonoBehaviour
     
     [SerializeField] private float destroyTime = 3f;
     [SerializeField] private LayerMask whatDestroysPebble;
+    [SerializeField, Min(0f)] private float impactNoiseRadius = 4f;
+    [SerializeField] private NoiseType impactNoiseType = NoiseType.ObjectImpact;
     
     
     private Rigidbody2D _rb;
+    private NoiseSystem _noiseSystem;
     
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _noiseSystem = Services.Get<NoiseSystem>();
         
         SetDestroyTime();
         
@@ -34,6 +38,11 @@ public class PebbleBehavior : MonoBehaviour
         {
             // spawn particles
             // play fx
+            if (impactNoiseRadius > 0f)
+            {
+                Vector2 point = collision.ClosestPoint(transform.position);
+                _noiseSystem.EmitNoise(point, impactNoiseRadius, gameObject, impactNoiseType);
+            }
             
             Destroy(gameObject);
         }
