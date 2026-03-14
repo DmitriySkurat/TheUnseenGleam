@@ -601,6 +601,13 @@ namespace Entity.PlatNav
                     points = collectPts ? pts.ToArray() : null;
                     return false;
                 }
+                
+                Vector2 vel = v0 + acc * t;
+                if (vel.sqrMagnitude > (maxJumpVelocity + 0.01f) * (maxJumpVelocity + 0.01f))
+                {
+                    points = collectPts ? pts.ToArray() : null;
+                    return false;
+                }
             }
 
             points = null;
