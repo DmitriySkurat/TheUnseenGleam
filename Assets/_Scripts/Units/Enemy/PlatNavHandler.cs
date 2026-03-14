@@ -244,6 +244,7 @@ namespace Entity.PlatNav
             if (_pathIndex >= _path.Count)
             {
                 _state = PlatNavState.Idle;
+                _path.Clear();
                 if (debugLog) Debug.Log("[PlatNav] Path complete");
                 return;
             }
@@ -303,6 +304,11 @@ namespace Entity.PlatNav
         private void UpdateSegmentWalk()
         {
             if (!IsGrounded()) return; // wait for grounding
+            
+            if (_pathIndex == _path.Count - 1 && target != null && behaviour == PlatNavBehaviour.FollowTarget)
+            {
+                _walkTarget = ProjectOntoSegment(_curSegIndex, target.position);
+            }
 
             Vector2 pos = transform.position;
             Vector2 toTarget = _walkTarget - pos;
