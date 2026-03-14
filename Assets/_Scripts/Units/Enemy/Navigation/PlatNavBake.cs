@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 using UnityEditor;
 #endif
 
-namespace Entity.PlatNav
+namespace PlatNav
 {
     public class PlatNavBake : MonoBehaviour
     {

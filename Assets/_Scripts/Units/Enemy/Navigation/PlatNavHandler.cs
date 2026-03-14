@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Entity.PlatNav
+namespace PlatNav
 {
     public enum PlatNavBehaviour
     {

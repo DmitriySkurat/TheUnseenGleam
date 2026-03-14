@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Entity.PlatNav
+namespace PlatNav
 {
     [CreateAssetMenu(fileName = "PlatNavGraph", menuName = "Data/Platformer Nav Graph")]
     public class PlatformNavGraphAsset : ScriptableObject

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
 
-namespace Entity.PlatNav
+namespace PlatNav
 {
     [CustomEditor(typeof(PlatNavBake))]
     public class PlatNavBakeEditor : Editor
