@@ -61,6 +61,7 @@ namespace Entity.PlatNav
         [Header("Thresholds")]
         [SerializeField] private float nearTileDist       = 0.2f;
         [SerializeField] private LayerMask solidMask;
+        [SerializeField] private float rotationThreshold = 0.01f;
 
         [Header("Debug")]
         [SerializeField] private bool  debugLog  = false;
@@ -92,6 +93,17 @@ namespace Entity.PlatNav
 
         public void SetTarget(Transform t) => target = t;
         public void SetBehaviour(PlatNavBehaviour b) => behaviour = b;
+    
+        
+        private void SetFacingFromDirection(float dir)
+        {
+            if (Mathf.Abs(dir) < rotationThreshold) return;
+            
+            Vector3 scale = transform.localScale;
+            scale.x = dir >= 0f ? 1f : -1f;
+            transform.localScale = scale;
+        }
+
 
         public void Abort()
         {
@@ -331,9 +343,7 @@ namespace Entity.PlatNav
             // Walk horizontally
             float dir = Mathf.Sign(toTarget.x);
             _rb.linearVelocity = new Vector2(dir * walkSpeed, _rb.linearVelocity.y);
-            Vector3 scale = transform.localScale;
-            scale.x = dir >= 0f ? 1f : -1f;
-            transform.localScale = scale;
+            SetFacingFromDirection(dir);
         }
 
         [SerializeField] private float maxLaunchSnap = 1.0f;
@@ -369,6 +379,11 @@ namespace Entity.PlatNav
                 _eulerVel = _curLink.launchVelocity;
                 _eulerAcc = _curLink.Acceleration;
             }
+            
+            float faceDir = _curLink.launchVelocity.x;
+            if (Mathf.Abs(faceDir) < 0.01f)
+                faceDir = _curLink.landPos.x - _curLink.launchPos.x;
+            SetFacingFromDirection(faceDir);
 
             if (debugLog) Debug.Log($"[PlatNav] Begin {_curLink.moveType} link: {_curLink.fromSeg}→{_curLink.toSeg}, T={_curLink.flightTime:F2}s");
         }
@@ -407,9 +422,14 @@ namespace Entity.PlatNav
                 return;
             }
 
+            // determine facing based on movement this frame (prev -> next)
+            Vector2 prevPos = _rb.position;
+            SetFacingFromDirection(nextPos.x - prevPos.x);
+
             // Override position
             _rb.position = nextPos;
             _rb.linearVelocity = Vector2.zero;
+
         }
 
         private void LandFromTraversal()
