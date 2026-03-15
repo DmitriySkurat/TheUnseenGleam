@@ -42,8 +42,10 @@ namespace PlatNav
         public int linkIndex;      // NavLink index used to arrive here (-1 for start segment)
     }
 
-    public class PlatNavHandler : MonoBehaviour
+    public class PlatNavHandler : MonoBehaviour, IInitializable
     {
+        public InitializationOrder Order => InitializationOrder.Enemy;
+    
         [Header("PlatNav")]
         [SerializeField] private PlatformNavGraphAsset graph;
         [SerializeField] private Transform target;
@@ -139,7 +141,7 @@ namespace PlatNav
             return MoveTo(rnd, speed);
         }
 
-        private void Awake()
+        public void Initialize()
         {
             _rb  = GetComponent<Rigidbody2D>();
             _col = GetComponent<Collider2D>();

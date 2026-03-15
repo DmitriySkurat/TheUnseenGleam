@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class AgentVision : MonoBehaviour
+public class AgentVision : MonoBehaviour, IInitializable
 {
+    public InitializationOrder Order => InitializationOrder.Enemy;
+
     [Header("Vision Settings")]
     [Range(0f, 360f)]
     [SerializeField] private float _viewAngle = 90f;
@@ -9,7 +11,14 @@ public class AgentVision : MonoBehaviour
     [SerializeField] private float _viewDistance = 5f;
 
     [SerializeField] private Color _gizmoColor = Color.yellow;
+    
+    public void Initialize()
+    {
+        
+    }
 
+
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         DrawVision();
@@ -49,4 +58,5 @@ public class AgentVision : MonoBehaviour
             prevPoint = point;
         }
     }
+#endif
 }
