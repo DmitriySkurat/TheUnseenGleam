@@ -8,15 +8,84 @@ public class AgentVision : MonoBehaviour, IInitializable
     [Range(0f, 360f)]
     [SerializeField] private float _viewAngle = 90f;
 
-    [SerializeField] private float _viewDistance = 5f;
+    [SerializeField, Min(0f)] private float _viewDistance = 5f;
+    [SerializeField, Min(0f)] private float _visibilityMultiplier = 1f;
+    [SerializeField] private LayerMask _occlusionMask;
 
+    [Header("Debug")]
+    [SerializeField] private bool _drawGizmos = true;
     [SerializeField] private Color _gizmoColor = Color.yellow;
+    [SerializeField] private Color _lastSeenColor = new Color(1f, 0.4f, 0.1f, 0.9f);
+    [SerializeField, Min(0f)] private float _lastSeenMarkerRadius = 0.2f;
+
+    private PlayerContext _playerContext;
+    private Transform _playerTransform;
+    private Vector2? _lastSeenPosition;
+    private bool _canSeePlayer;
+
+    public bool CanSeePlayer => _canSeePlayer;
+    public bool HasLastSeenPosition => _lastSeenPosition.HasValue;
+    public Vector2 LastSeenPosition => _lastSeenPosition ?? Vector2.zero;
+    public float VisibilityMultiplier
+    {
+        get => _visibilityMultiplier;
+        set => _visibilityMultiplier = Mathf.Max(0f, value);
+    }
     
     public void Initialize()
     {
-        
+        _playerContext = Services.Get<PlayerContext>();
+        _playerTransform = _playerContext.transform;
     }
 
+    private void Update()
+    {
+        if (_playerTransform == null)
+        {
+            if (_playerContext == null)
+            {
+                _canSeePlayer = false;
+                return;
+            }
+
+            _playerTransform = _playerContext.transform;
+            if (_playerTransform == null)
+            {
+                _canSeePlayer = false;
+                return;
+            }
+        }
+
+        _canSeePlayer = CheckPlayerVisibility(_playerTransform.position);
+        if (_canSeePlayer)
+            _lastSeenPosition = _playerTransform.position;
+    }
+
+    private bool CheckPlayerVisibility(Vector2 targetPosition)
+    {
+        float effectiveViewDistance = _viewDistance * Mathf.Max(0f, _visibilityMultiplier);
+        if (effectiveViewDistance <= 0f)
+            return false;
+
+        Vector2 origin = transform.position;
+        Vector2 toTarget = targetPosition - origin;
+        if (toTarget.sqrMagnitude > effectiveViewDistance * effectiveViewDistance)
+            return false;
+
+        Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
+        float angle = Vector2.Angle(forward, toTarget);
+        if (angle > _viewAngle * 0.5f)
+            return false;
+
+        if (_occlusionMask.value != 0)
+        {
+            var hit = Physics2D.Linecast(origin, targetPosition, _occlusionMask);
+            if (hit.collider != null)
+                return false;
+        }
+
+        return true;
+    }
 
 #if UNITY_EDITOR
     void OnDrawGizmos()
@@ -31,6 +100,9 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     void DrawVision()
     {
+        if (!_drawGizmos)
+            return;
+
         Gizmos.color = _gizmoColor;
 
         Vector3 pos = transform.position;
@@ -42,20 +114,28 @@ public class AgentVision : MonoBehaviour, IInitializable
         Vector3 leftDir = Quaternion.AngleAxis(-halfAngle, Vector3.forward) * forward;
         Vector3 rightDir = Quaternion.AngleAxis(halfAngle, Vector3.forward) * forward;
 
-        Gizmos.DrawLine(pos, pos + leftDir * _viewDistance);
-        Gizmos.DrawLine(pos, pos + rightDir * _viewDistance);
+        float effectiveViewDistance = _viewDistance * Mathf.Max(0f, _visibilityMultiplier);
+
+        Gizmos.DrawLine(pos, pos + leftDir * effectiveViewDistance);
+        Gizmos.DrawLine(pos, pos + rightDir * effectiveViewDistance);
 
         int segments = 30;
-        Vector3 prevPoint = pos + leftDir * _viewDistance;
+        Vector3 prevPoint = pos + leftDir * effectiveViewDistance;
 
         for (int i = 1; i <= segments; i++)
         {
             float angle = Mathf.Lerp(-halfAngle, halfAngle, i / (float)segments);
             Vector3 dir = Quaternion.AngleAxis(angle, Vector3.forward) * forward;
-            Vector3 point = pos + dir * _viewDistance;
+            Vector3 point = pos + dir * effectiveViewDistance;
 
             Gizmos.DrawLine(prevPoint, point);
             prevPoint = point;
+        }
+
+        if (_lastSeenPosition.HasValue)
+        {
+            Gizmos.color = _lastSeenColor;
+            Gizmos.DrawSphere(_lastSeenPosition.Value, _lastSeenMarkerRadius);
         }
     }
 #endif
