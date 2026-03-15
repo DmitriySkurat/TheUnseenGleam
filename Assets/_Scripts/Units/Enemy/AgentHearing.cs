@@ -22,6 +22,7 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
     [SerializeField, Min(0f)] private float lastHeardMarkerRadius = 1.5f;
     [SerializeField] private bool drawOcclusionSamples = true;
     [SerializeField] private Color sampleClearColor = new Color(0.3f, 1f, 0.3f, 0.9f);
+    [SerializeField] private Color sampleTooFarColor = new Color(1f, 0.85f, 0.2f, 0.9f);
     [SerializeField] private Color sampleBlockedColor = new Color(1f, 0.2f, 0.2f, 0.9f);
     [SerializeField, Min(0f)] private float sampleMarkerRadius = 0.08f;
 
@@ -32,6 +33,10 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
     private Vector2? _lastNoisePosition;
     private Vector2? _lastListenerPosition;
     private float _lastSampleRadius;
+    private float _lastEffectiveRadius;
+    private float _lastDistance;
+    private float _lastLoudness;
+    private bool _lastAudibilityFailed;
 
     public void Initialize()
     {
@@ -51,9 +56,6 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
         if (maxHearingDistance > 0f)
             effectiveRadius = Mathf.Min(effectiveRadius, maxHearingDistance);
 
-        if (effectiveRadius <= 0f)
-            return;
-
         Vector2 listenerPos = transform.position;
         Vector2 noisePos = noiseEvent.Position;
 
@@ -68,21 +70,26 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
                 effectiveRadius *= occlusionMultiplier;
         }
 
+        _lastEffectiveRadius = effectiveRadius;
+        _lastDistance = Vector2.Distance(listenerPos, noisePos);
+        _lastLoudness = effectiveRadius > 0f
+            ? Mathf.Clamp01(1f - (_lastDistance / effectiveRadius))
+            : 0f;
+        _lastAudibilityFailed = effectiveRadius <= 0f
+            || _lastDistance > effectiveRadius
+            || _lastLoudness < minLoudness;
+
         if (effectiveRadius <= 0f)
             return;
 
-        float distance = Vector2.Distance(listenerPos, noisePos);
-        if (distance > effectiveRadius)
+        if (_lastDistance > effectiveRadius)
             return;
 
-        float loudness = 1f - (distance / effectiveRadius);
-        loudness = Mathf.Clamp01(loudness);
-
-        if (loudness < minLoudness)
+        if (_lastLoudness < minLoudness)
             return;
 
         _lastHeardPosition = noisePos;
-        OnHeard?.Invoke(noiseEvent, loudness);
+        OnHeard?.Invoke(noiseEvent, _lastLoudness);
     }
 
     private bool IsOccluded(Vector2 listenerPos, Vector2 noisePos, float sampleRadius)
@@ -198,8 +205,18 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
 
     private void DrawSample(Vector2 listenerPos, Vector2 samplePos)
     {
+        if (maxHearingDistance > 0f)
+        {
+            float dist = Vector2.Distance(listenerPos, samplePos);
+            if (dist > maxHearingDistance)
+                return;
+        }
+
         bool blocked = Physics2D.Linecast(listenerPos, samplePos, occlusionMask).collider != null;
-        Gizmos.color = blocked ? sampleBlockedColor : sampleClearColor;
+        if (blocked)
+            Gizmos.color = sampleBlockedColor;
+        else
+            Gizmos.color = _lastAudibilityFailed ? sampleTooFarColor : sampleClearColor;
         Gizmos.DrawLine(listenerPos, samplePos);
         Gizmos.DrawSphere(samplePos, sampleMarkerRadius);
     }
