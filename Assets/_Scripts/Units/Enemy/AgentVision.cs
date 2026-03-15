@@ -6,17 +6,17 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     [Header("Vision Settings")]
     [Range(0f, 360f)]
-    [SerializeField] private float _viewAngle = 90f;
+    [SerializeField] private float viewAngle = 90f;
 
-    [SerializeField, Min(0f)] private float _viewDistance = 5f;
-    [SerializeField, Min(0f)] private float _visibilityMultiplier = 1f;
-    [SerializeField] private LayerMask _occlusionMask;
+    [SerializeField, Min(0f)] private float viewDistance = 5f;
+    [SerializeField, Min(0f)] private float visibilityMultiplier = 1f;
+    [SerializeField] private LayerMask occlusionMask;
 
     [Header("Debug")]
-    [SerializeField] private bool _drawGizmos = true;
-    [SerializeField] private Color _gizmoColor = Color.yellow;
-    [SerializeField] private Color _lastSeenColor = new Color(1f, 0.4f, 0.1f, 0.9f);
-    [SerializeField, Min(0f)] private float _lastSeenMarkerRadius = 0.2f;
+    [SerializeField] private bool drawGizmos = true;
+    [SerializeField] private Color gizmoColor = Color.yellow;
+    [SerializeField] private Color lastSeenColor = new Color(1f, 0.4f, 0.1f, 0.9f);
+    [SerializeField, Min(0f)] private float lastSeenMarkerRadius = 0.2f;
 
     private PlayerContext _playerContext;
     private Transform _playerTransform;
@@ -28,8 +28,8 @@ public class AgentVision : MonoBehaviour, IInitializable
     public Vector2 LastSeenPosition => _lastSeenPosition ?? Vector2.zero;
     public float VisibilityMultiplier
     {
-        get => _visibilityMultiplier;
-        set => _visibilityMultiplier = Mathf.Max(0f, value);
+        get => visibilityMultiplier;
+        set => visibilityMultiplier = Mathf.Max(0f, value);
     }
     
     public void Initialize()
@@ -63,7 +63,7 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     private bool CheckPlayerVisibility(Vector2 targetPosition)
     {
-        float effectiveViewDistance = _viewDistance * Mathf.Max(0f, _visibilityMultiplier);
+        float effectiveViewDistance = viewDistance * Mathf.Max(0f, visibilityMultiplier);
         if (effectiveViewDistance <= 0f)
             return false;
 
@@ -74,12 +74,12 @@ public class AgentVision : MonoBehaviour, IInitializable
 
         Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
         float angle = Vector2.Angle(forward, toTarget);
-        if (angle > _viewAngle * 0.5f)
+        if (angle > viewAngle * 0.5f)
             return false;
 
-        if (_occlusionMask.value != 0)
+        if (occlusionMask.value != 0)
         {
-            var hit = Physics2D.Linecast(origin, targetPosition, _occlusionMask);
+            var hit = Physics2D.Linecast(origin, targetPosition, occlusionMask);
             if (hit.collider != null)
                 return false;
         }
@@ -100,21 +100,21 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     void DrawVision()
     {
-        if (!_drawGizmos)
+        if (!drawGizmos || !isActiveAndEnabled)
             return;
 
-        Gizmos.color = _gizmoColor;
+        Gizmos.color = gizmoColor;
 
         Vector3 pos = transform.position;
 
-        float halfAngle = _viewAngle * 0.5f;
+        float halfAngle = viewAngle * 0.5f;
 
         Vector3 forward = transform.localScale.x >= 0 ? Vector3.right : Vector3.left;
 
         Vector3 leftDir = Quaternion.AngleAxis(-halfAngle, Vector3.forward) * forward;
         Vector3 rightDir = Quaternion.AngleAxis(halfAngle, Vector3.forward) * forward;
 
-        float effectiveViewDistance = _viewDistance * Mathf.Max(0f, _visibilityMultiplier);
+        float effectiveViewDistance = viewDistance * Mathf.Max(0f, visibilityMultiplier);
 
         Gizmos.DrawLine(pos, pos + leftDir * effectiveViewDistance);
         Gizmos.DrawLine(pos, pos + rightDir * effectiveViewDistance);
@@ -134,8 +134,8 @@ public class AgentVision : MonoBehaviour, IInitializable
 
         if (_lastSeenPosition.HasValue)
         {
-            Gizmos.color = _lastSeenColor;
-            Gizmos.DrawSphere(_lastSeenPosition.Value, _lastSeenMarkerRadius);
+            Gizmos.color = lastSeenColor;
+            Gizmos.DrawSphere(_lastSeenPosition.Value, lastSeenMarkerRadius);
         }
     }
 #endif

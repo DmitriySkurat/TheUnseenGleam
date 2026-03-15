@@ -144,7 +144,7 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
 
     private void DrawHearing()
     {
-        if (!drawGizmos)
+        if (!drawGizmos || !isActiveAndEnabled)
             return;
 
         if (maxHearingDistance > 0f)
