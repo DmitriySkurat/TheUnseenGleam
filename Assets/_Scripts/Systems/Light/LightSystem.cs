@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
 
-public class LightSystem : MonoBehaviour, IService
+public class LightSystem : MonoBehaviour, ISceneService
 {
     public InitializationOrder Order => InitializationOrder.SceneServices;
     

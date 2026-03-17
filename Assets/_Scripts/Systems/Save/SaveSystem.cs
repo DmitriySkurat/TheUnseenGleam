@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
 
-public class SaveSystem : MonoBehaviour, IService
+public class SaveSystem : MonoBehaviour, ISceneService
 {
     public async Task InitializeAsync()
     {

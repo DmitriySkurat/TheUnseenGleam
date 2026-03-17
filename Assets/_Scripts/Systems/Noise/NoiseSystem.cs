@@ -20,7 +20,7 @@ public readonly struct NoiseEvent
     }
 }
 
-public class NoiseSystem : MonoBehaviour, IService
+public class NoiseSystem : MonoBehaviour, ISceneService
 {
     public event Action<NoiseEvent> NoiseEmitted;
 

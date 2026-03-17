@@ -15,6 +15,8 @@ namespace EntryPoint
         private List<IInitializable> _initializables;
         private List<IDisposable> _disposables;
         
+        [SerializeField] private GameplaySceneServiceRegistry _serviceRegistry;
+        
         
         // Просто для запуска сцен, после завершения разработки удалить
         [SerializeField] private GameServiceRegistry serviceRegistry;
@@ -30,14 +32,21 @@ namespace EntryPoint
             while (!task.IsCompleted)
                 yield return null;
 
-            Bootstrap();
+            StartCoroutine(Bootstrap());
         }
         // КОНЕЦ ---------
 
-        protected override void Bootstrap()
+        protected override IEnumerator Bootstrap()
         {    
             // Скрываем курсор для погружения в игру
             //Cursor.visible = false;
+            
+            var task = _serviceRegistry.InitializeAsync();
+
+            while (!task.IsCompleted)
+                yield return null;
+            
+            _logger?.Log("Scene services initialized", this);
             
             FindInializableObjects();
             InitializeSceneObjects();

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace EntryPoint
 {
@@ -6,9 +7,9 @@ namespace EntryPoint
     {
         protected virtual void Awake()
         {
-            Bootstrap();
+            StartCoroutine(Bootstrap());
         }
         
-        protected abstract void Bootstrap();
+        protected abstract IEnumerator Bootstrap();
     }
 }
