@@ -22,7 +22,6 @@ public readonly struct NoiseEvent
 
 public class NoiseSystem : MonoBehaviour, IService
 {
-    // Centralized event for all noise sources.
     public event Action<NoiseEvent> NoiseEmitted;
 
     [Header("Debug")]

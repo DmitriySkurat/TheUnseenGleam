@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8201403793990990068
+--- !u!1 &2204820244360231336
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3372469404662309003}
-  - component: {fileID: 5189906547905124718}
+  - component: {fileID: 7246025787013548635}
+  - component: {fileID: 4237522486028986871}
   m_Layer: 0
-  m_Name: SceneServiceRegistry
+  m_Name: LightSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3372469404662309003
+--- !u!4 &7246025787013548635
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8201403793990990068}
+  m_GameObject: {fileID: 2204820244360231336}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 124.57108, y: 0.66674, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5189906547905124718
+--- !u!114 &4237522486028986871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8201403793990990068}
+  m_GameObject: {fileID: 2204820244360231336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e38aa1cb323f5142bdaed65253c74c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d559f27afa7ba04e89fb7b2308f4312, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneServiceRegistry
-  stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
-  noisePrefab: {fileID: 8122682527447328044, guid: 4de5b4bd8f4fb4843b428fd13b5df425, type: 3}
-  lightPrefab: {fileID: 4237522486028986871, guid: 7fab7f9c53cfa37459a8d7c7b8f24aad, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::LightSystem
+  globalLightIntensity: 0.7
+  globalLightColor: {r: 1, g: 1, b: 1, a: 1}
