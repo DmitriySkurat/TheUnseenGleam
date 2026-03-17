@@ -4,7 +4,7 @@ namespace EntryPoint
 {
     public abstract class SceneBootstrap : MonoBehaviour
     {
-        protected virtual void Start()
+        protected virtual void Awake()
         {
             Bootstrap();
         }

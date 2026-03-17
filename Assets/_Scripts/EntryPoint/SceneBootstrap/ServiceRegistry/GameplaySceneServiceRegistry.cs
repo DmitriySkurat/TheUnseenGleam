@@ -33,28 +33,6 @@ public class GameplaySceneServiceRegistry : MonoBehaviour, ISceneLifecycle
         // Services.Register<InventorySystem>(new InventorySystem());
     }
     
-    public async Task InitializeAsync()
-    {
-        DontDestroyOnLoad(gameObject);
-
-        var services = new List<IService>();
-
-        var noiseSystem = Instantiate(noisePrefab);
-        var lightSystem = Instantiate(lightPrefab);
-
-        DontDestroyOnLoad(noiseSystem.gameObject);
-        DontDestroyOnLoad(lightSystem.gameObject);
-
-        Services.Register(noiseSystem);
-        Services.Register(lightSystem);
-
-        services.Add(noiseSystem);
-        services.Add(lightSystem);
-        
-        // Параллельная инициализация
-        await Task.WhenAll(services.Select(s => s.InitializeAsync()));
-    }
-    
     public void Dispose()
     {
         Services.Unregister<PlayerContext>();

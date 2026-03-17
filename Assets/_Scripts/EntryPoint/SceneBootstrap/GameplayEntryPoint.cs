@@ -18,7 +18,7 @@ namespace EntryPoint
         
         // Просто для запуска сцен, после завершения разработки удалить
         [SerializeField] private GameServiceRegistry serviceRegistry;
-        protected override void Start()
+        protected override void Awake()
         {
             StartCoroutine(InitializeAndBootstrap());
         }
