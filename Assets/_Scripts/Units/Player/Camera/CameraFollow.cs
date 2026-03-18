@@ -20,19 +20,14 @@ public class CameraFollow : MonoBehaviour, IInitializable
     private Vector3 _currentOffset;
     private bool _isLookingAround; 
     
-    
-    
     PlayerContext _ctx;
-    //PlayerStateDriver _driver;
 
     public bool IsLookingAround() => _isLookingAround;
 
     public void Initialize() {
         _ctx = Services.Get<PlayerContext>();
-        // _driver = driver;
         
-        // if (target == null)
-        //     target = _driver.transform;
+        target = _ctx.transform;
     }
 
     private void Update()

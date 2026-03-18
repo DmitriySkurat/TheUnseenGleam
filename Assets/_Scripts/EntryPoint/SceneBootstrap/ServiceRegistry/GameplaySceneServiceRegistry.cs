@@ -13,6 +13,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
     
     [SerializeField] private NoiseSystem noisePrefab;
     [SerializeField] private LightSystem lightPrefab;
+    [SerializeField] private CameraFollow cameraPrefab;
 
     public async Task InitializeAsync()
     {
@@ -24,6 +25,10 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         playerContext.stats = stats;
         Services.Register(playerContext);
         
+        
+        Instantiate(cameraPrefab);
+        
+
         var noise = Instantiate(noisePrefab);
         var light = Instantiate(lightPrefab);
         

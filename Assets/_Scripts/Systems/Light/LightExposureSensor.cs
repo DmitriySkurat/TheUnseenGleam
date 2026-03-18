@@ -4,6 +4,8 @@ using UnityEngine.Rendering.Universal;
 public class LightExposureSensor : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.GameplayCore;
+
+    public float CurrentStrength { get; private set; }
     
     [Header("References")]
     [SerializeField] private Utility.Logger _logger;
@@ -58,6 +60,7 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
             _nextSampleTime = Time.time + sampleInterval;
 
             float targetStrength = EvaluateLightStrength(transform.position);
+            CurrentStrength = targetStrength;
         }
     }
 
