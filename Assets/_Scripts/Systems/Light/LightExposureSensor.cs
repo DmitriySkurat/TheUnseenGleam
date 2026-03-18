@@ -9,14 +9,12 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
     [SerializeField] private Utility.Logger _logger;
 
 
-    [Header("Exposure Settings")]
-    [SerializeField, Min(0.01f)] private float maxIntensityForFullLight = 1f;
-    [SerializeField, Min(0f)] private float litThreshold = 0.05f;
-    [SerializeField, Min(0f)] private float smoothSpeed = 8f;
+    [Header("Sampling")]
+    [SerializeField, Min(0f)] private float sampleInterval = 0.05f;
+    [SerializeField, Min(0f)] private float lightsRefreshInterval = 0.5f;
 
     [Header("Evaluation")]
     [SerializeField] private bool useDistanceFalloff = true;
-    [SerializeField] private bool useSpotAngle = true;
     [SerializeField] private bool useOcclusion = true;
     [SerializeField] private LayerMask occlusionMask;
 
@@ -24,10 +22,9 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
 
     private float _lightStrength;
     private float _lightFactor;
+    private float _nextSampleTime;
+    private float _nextRefreshTime;
 
-    public float LightStrength => _lightStrength;
-    public float LightFactor => _lightFactor;
-    public bool IsLit => _lightStrength >= litThreshold;
 
     public void Initialize()
     {
@@ -42,58 +39,43 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        if (_lightSystem == null) return;
+        if (_lightSystem == null)
+            return;
+
+        if (Time.time >= _nextRefreshTime && lightsRefreshInterval > 0f)
+        {
+            _lightSystem.RefreshSpotLightsCache();
+            _nextRefreshTime = Time.time + lightsRefreshInterval;
+        }
+
+        if (Time.time < _nextSampleTime)
+            return;
+
+        _nextSampleTime = Time.time + sampleInterval;
 
         float targetStrength = EvaluateLightStrength(transform.position);
-        float targetFactor = maxIntensityForFullLight > 0f
-            ? Mathf.Clamp01(targetStrength / maxIntensityForFullLight)
-            : 0f;
-
         _lightStrength = targetStrength;
-
-        if (smoothSpeed > 0f)
-        {
-            _lightFactor = Mathf.Lerp(_lightFactor, targetFactor, Time.deltaTime * smoothSpeed);
-        }
-        else
-        {
-            _lightFactor = targetFactor;
-        }
     }
 
-    private float EvaluateLightStrength(Vector2 point)
+    private float EvaluateLightStrength(Vector3 worldPosition)
     {
         float maxStrength = 0f;
-        var lights = _lightSystem.GetSpotLights();
 
-        for (int i = 0; i < lights.Count; i++)
+        foreach (var light in _lightSystem.GetSpotLights())
         {
-            var light = lights[i];
-            if (light == null || light.intensity <= 0f) continue;
+            if (light == null || !light.isActiveAndEnabled)
+                continue;
 
-            Vector2 origin = light.transform.position;
-            Vector2 toPoint = point - origin;
-            float dist = toPoint.magnitude;
-
-            if (dist > light.pointLightOuterRadius) continue;
-            if (useSpotAngle && !IsInsideSpotCone(light, toPoint)) continue;
             if (useOcclusion && occlusionMask.value != 0)
             {
-                var hit = Physics2D.Linecast(origin, point, occlusionMask);
-                if (hit.collider != null) continue;
+                Vector2 origin = light.transform.position;
+                Vector2 target = worldPosition;
+                var hit = Physics2D.Linecast(origin, target, occlusionMask);
+                if (hit.collider != null)
+                    continue;
             }
 
-            float strength = light.intensity;
-
-            if (useDistanceFalloff)
-            {
-                strength *= GetDistanceFactor(light, dist);
-            }
-
-            if (useSpotAngle)
-            {
-                strength *= GetAngleFactor(light, toPoint);
-            }
+            float strength = EvaluatePointLight(light, worldPosition);
 
             if (strength > maxStrength)
             {
@@ -106,31 +88,49 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
         return maxStrength;
     }
 
-    private static float GetDistanceFactor(Light2D light, float distance)
+    private float EvaluatePointLight(Light2D light, Vector3 worldPosition)
     {
-        float inner = light.pointLightInnerRadius;
-        float outer = light.pointLightOuterRadius;
-        if (outer <= inner) return 1f;
+        float outerRadius = Mathf.Max(0f, light.pointLightOuterRadius);
+        if (outerRadius <= 0f)
+            return 0f;
 
-        float t = Mathf.Clamp01((distance - inner) / (outer - inner));
-        float factor = 1f - t;
-        return factor * factor;
-    }
+        Vector2 toTarget = (Vector2)(worldPosition - light.transform.position);
+        float distance = toTarget.magnitude;
+        if (distance > outerRadius)
+            return 0f;
 
-    private static bool IsInsideSpotCone(Light2D light, Vector2 toPoint)
-    {
-        if (light.pointLightOuterAngle >= 360f) return true;
-        Vector2 forward = light.transform.up;
-        float angle = Vector2.Angle(forward, toPoint);
-        return angle <= light.pointLightOuterAngle * 0.5f;
-    }
+        float distanceFactor = 1f;
+        if (useDistanceFalloff)
+        {
+            float innerRadius = Mathf.Max(0f, light.pointLightInnerRadius);
+            distanceFactor = innerRadius >= outerRadius
+                ? 1f
+                : Mathf.Clamp01(
+                    (outerRadius - distance) / Mathf.Max(0.0001f, outerRadius - innerRadius));
+        }
 
-    private static float GetAngleFactor(Light2D light, Vector2 toPoint)
-    {
-        if (light.pointLightOuterAngle >= 360f) return 1f;
-        Vector2 forward = light.transform.up;
-        float angle = Vector2.Angle(forward, toPoint);
-        float half = Mathf.Max(0.001f, light.pointLightOuterAngle * 0.5f);
-        return 1f - Mathf.Clamp01(angle / half);
+        float angleFactor = 1f;
+        
+        float outerAngle = light.pointLightOuterAngle;
+        if (outerAngle < 359.9f)
+        {
+            Vector2 forward = light.transform.up;
+
+            float angleToTarget = Vector2.Angle(forward, toTarget);
+            float halfOuter = outerAngle * 0.5f;
+            if (angleToTarget > halfOuter)
+                return 0f;
+
+            float innerAngle = light.pointLightInnerAngle;
+            float halfInner = innerAngle * 0.5f;
+            if (halfInner < halfOuter)
+            {
+                angleFactor = Mathf.Clamp01(
+                    (halfOuter - angleToTarget) / Mathf.Max(0.0001f, halfOuter - halfInner));
+            }
+        }
+        
+
+        return light.intensity * distanceFactor * angleFactor;
     }
 }
