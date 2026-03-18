@@ -41,26 +41,10 @@ public class VignetteController : MonoBehaviour, IInitializable
         }
     }
 
-    // private void Awake()
-    // {
-    //     _volume = GetComponent<Volume>();
-
-    //     if (!_volume.profile.TryGet(out _vignette))
-    //     {
-    //         Debug.LogError("Vignette effect not found in Volume Profile!");
-    //     }
-    //     else
-    //     {
-    //         currentIntensity = defaultIntensity;
-    //         _vignette.intensity.value = defaultIntensity;
-    //     }
-    // }
-
     private void Update()
     {
         if (_vignette == null || cameraFollow == null) return;
 
-        // Vignette reduces only when camera is looking around
         bool isLooking = cameraFollow.IsLookingAround();
         float targetIntensity = isLooking ? aimIntensity : defaultIntensity;
 

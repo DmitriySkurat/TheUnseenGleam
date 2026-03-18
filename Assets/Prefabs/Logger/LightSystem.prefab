@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2204820244360231336
+--- !u!1 &3616203838054438701
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7246025787013548635}
-  - component: {fileID: 4237522486028986871}
+  - component: {fileID: 4843991530142811846}
+  - component: {fileID: 1837411843657378475}
   m_Layer: 0
   m_Name: LightSystem
   m_TagString: Untagged
@@ -17,35 +17,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7246025787013548635
+--- !u!4 &4843991530142811846
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2204820244360231336}
+  m_GameObject: {fileID: 3616203838054438701}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 124.57108, y: 0.66674, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4237522486028986871
+--- !u!114 &1837411843657378475
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2204820244360231336}
+  m_GameObject: {fileID: 3616203838054438701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d559f27afa7ba04e89fb7b2308f4312, type: 3}
+  m_Script: {fileID: 11500000, guid: d20b203741239b144be2b087ec658d6e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LightSystem
-  globalLightPrefab: {fileID: 6267015935030460569, guid: 1bd094b729de3754da0dfb78e42cd6e3, type: 3}
-  _logger: {fileID: 1837411843657378475, guid: 4c498f62da25e5246ae5b94780ba0166, type: 3}
-  globalLightIntensity: 0.7
-  globalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  includeInactiveSpotLights: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Utility.Logger
+  _showLogs: 1
+  _prefix: LightSystem
+  _prefixColor: {r: 0.8792453, g: 0.8503348, b: 0.27040932, a: 0}

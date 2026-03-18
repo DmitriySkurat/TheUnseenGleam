@@ -23,6 +23,8 @@ namespace EntryPoint
         protected override void Awake()
         {
             StartCoroutine(InitializeAndBootstrap());
+            
+            // StartCoroutine(Bootstrap());
         }
 
         private IEnumerator InitializeAndBootstrap()
