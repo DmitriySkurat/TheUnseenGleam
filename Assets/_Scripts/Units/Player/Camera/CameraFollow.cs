@@ -16,6 +16,11 @@ public class CameraFollow : MonoBehaviour, IInitializable
     [Header("Facing Offset")]
     [SerializeField] private float facingOffset = 1.5f;
     [SerializeField] private float facingOffsetSmooth = 5f;
+
+    [Header("Movement Offset")]
+    [SerializeField] private float moveOffset = 0.5f;
+    [SerializeField] private float runMoveOffsetMultiplier = 1.5f;
+    [SerializeField] private float moveOffsetSmooth = 8f;
     
     [Header("Look Around")]
     [SerializeField] private float lookRange = 3f; 
@@ -24,6 +29,7 @@ public class CameraFollow : MonoBehaviour, IInitializable
 
     private Vector3 _currentOffset;
     private float _currentFacingOffset;
+    private float _currentMoveOffset;
     private float _facingSign = 1f;
     private bool _isLookingAround; 
     
@@ -42,10 +48,12 @@ public class CameraFollow : MonoBehaviour, IInitializable
         if (target == null || _ctx == null) 
             return;
 
-        if (!Mathf.Approximately(_ctx.input.Move.x, 0f))
-            _facingSign = Mathf.Sign(_ctx.input.Move.x);
+        float moveX = _ctx.input.Move.x;
+
+        if (!Mathf.Approximately(moveX, 0f))
+            _facingSign = Mathf.Sign(moveX);
         
-        bool canLookAround = Mathf.Approximately(_ctx.input.Move.x, 0f) && _ctx.grounded;
+        bool canLookAround = Mathf.Approximately(moveX, 0f) && _ctx.grounded;
         
         _isLookingAround = canLookAround && _ctx.input.LookAroundHeld; 
 
@@ -71,13 +79,23 @@ public class CameraFollow : MonoBehaviour, IInitializable
             _currentFacingOffset = targetFacingOffset;
         else
             _currentFacingOffset = Mathf.Lerp(_currentFacingOffset, targetFacingOffset, Time.deltaTime * facingOffsetSmooth);
+
+        float runMultiplier = (_ctx.stats != null && _ctx.input.RunHeld && _ctx.CanRun)
+            ? runMoveOffsetMultiplier
+            : 1f;
+        float targetMoveOffset = Mathf.Clamp(moveX, -1f, 1f) * moveOffset * runMultiplier;
+
+        if (moveOffsetSmooth <= 0f)
+            _currentMoveOffset = targetMoveOffset;
+        else
+            _currentMoveOffset = Mathf.Lerp(_currentMoveOffset, targetMoveOffset, Time.deltaTime * moveOffsetSmooth);
     }
 
     private void LateUpdate()
     {
         if (target == null) return;
 
-        Vector3 targetPos = target.position + offset + new Vector3(_currentFacingOffset, 0f, 0f);
+        Vector3 targetPos = target.position + offset + new Vector3(_currentFacingOffset + _currentMoveOffset, 0f, 0f);
         Vector3 desiredPos = targetPos + _currentOffset;
         transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * chaseSpeed);
     }

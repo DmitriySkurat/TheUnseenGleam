@@ -15,6 +15,7 @@ public class VignetteController : MonoBehaviour, IInitializable
     [SerializeField, Min(0f)] private float maxLightStrength = 1f;
     [SerializeField, Range(0f, 1f)] private float minIntensityInLight = 0.05f;
     [SerializeField, Range(0f, 1f)] private float lightInfluence = 1f;
+    [SerializeField, Range(0f, 5f)] private float lightDecreaseDelay = 0.5f;
     
     [Header("Limits")]
     [SerializeField, Range(0f, 1f)] private float minIntensityClamp = 0.05f;
@@ -32,6 +33,7 @@ public class VignetteController : MonoBehaviour, IInitializable
 
 
     private float currentIntensity;
+    private float _timeInLight;
     
     
     public void Initialize()
@@ -53,6 +55,8 @@ public class VignetteController : MonoBehaviour, IInitializable
             currentIntensity = Mathf.Clamp(defaultIntensity, minIntensityClamp, 1f);
             _vignette.intensity.value = currentIntensity;
         }
+
+        _timeInLight = 0f;
     }
 
     private void Update()
@@ -68,7 +72,18 @@ public class VignetteController : MonoBehaviour, IInitializable
         {
             float normalizedLight = Mathf.Clamp01(_lightExposureSensor.CurrentStrength / maxLightStrength);
             float lightFactor = Mathf.Clamp01(normalizedLight * lightInfluence);
-            targetIntensity = Mathf.Lerp(baseIntensity, minIntensityInLight, lightFactor);
+
+            if (lightFactor > 0f)
+                _timeInLight += Time.deltaTime;
+            else
+                _timeInLight = 0f;
+
+            if (_timeInLight >= lightDecreaseDelay)
+                targetIntensity = Mathf.Lerp(baseIntensity, minIntensityInLight, lightFactor);
+        }
+        else
+        {
+            _timeInLight = 0f;
         }
 
         targetIntensity = Mathf.Clamp(targetIntensity, minIntensityClamp, 1f);

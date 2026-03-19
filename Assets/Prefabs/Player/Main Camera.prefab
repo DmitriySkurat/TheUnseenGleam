@@ -5036,6 +5036,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 0}
   offset: {x: 0, y: 0, z: -10}
+  chaseSpeed: 5
+  facingOffset: 1.5
+  facingOffsetSmooth: 5
+  moveOffset: 2
+  runMoveOffsetMultiplier: 3
+  moveOffsetSmooth: 3
   lookRange: 3
   returnSpeed: 5
   lookSensivity: 0.01

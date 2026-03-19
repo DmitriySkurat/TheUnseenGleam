@@ -80,7 +80,7 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
 
         float strength = EvaluatePointLight(nearestLight, nearestSample);
 
-        _logger.Log($"NearestLightStrength: {strength}", this);
+        //_logger.Log($"NearestLightStrength: {strength}", this);
 
         return strength;
     }
