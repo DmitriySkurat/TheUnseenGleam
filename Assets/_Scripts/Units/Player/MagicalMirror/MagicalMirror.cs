@@ -14,7 +14,7 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     [SerializeField] private bool chargeOnlyWhenGrounded = true;
 
     private PlayerContext _ctx;
-    private LightExposureSensor _lightExposureSensor;
+    private PlayerLightSensor _lightExposureSensor;
 
     private float _currentCharge;
 

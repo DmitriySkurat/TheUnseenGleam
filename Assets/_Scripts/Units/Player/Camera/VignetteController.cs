@@ -24,7 +24,7 @@ public class VignetteController : MonoBehaviour, IInitializable
     [SerializeField] private float smoothSpeed = 5f;
     
     private CameraFollow _cameraFollow;
-    private LightExposureSensor _lightExposureSensor;
+    private PlayerLightSensor _lightExposureSensor;
         
     private Volume _volume;
     private Vignette _vignette;

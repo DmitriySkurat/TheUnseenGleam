@@ -549,7 +549,7 @@ MonoBehaviour:
     m_FlipX: 0
     m_FlipY: 0
     m_InitialTrim: 0
-  m_CastingOption: 2
+  m_CastingOption: 0
   m_PreviousTrimEdge: 0.05
   m_PreviousEdgeProcessing: 1
   m_PreviousShadowCastingSource: 2
@@ -641,7 +641,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f5b77f8e244f03469392b2bb349aa7d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LightExposureSensor
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerLightSensor
   _logger: {fileID: 1837411843657378475, guid: d81e4435169b4624f998cdd1d4252c8c, type: 3}
   sampleInterval: 0.05
   lightsRefreshInterval: 0.5

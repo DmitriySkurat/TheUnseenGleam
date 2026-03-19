@@ -26,6 +26,8 @@ public class AgentVision : MonoBehaviour, IInitializable
     public bool CanSeePlayer => _canSeePlayer;
     public bool HasLastSeenPosition => _lastSeenPosition.HasValue;
     public Vector2 LastSeenPosition => _lastSeenPosition ?? Vector2.zero;
+    public float ViewAngle => viewAngle;
+    public float ViewDistance => viewDistance;
     public float VisibilityMultiplier
     {
         get => visibilityMultiplier;

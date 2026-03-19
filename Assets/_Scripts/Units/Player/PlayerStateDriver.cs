@@ -24,7 +24,7 @@ namespace HSM {
             _ctx.transform = transform;
             _ctx.anim = GetComponentInChildren<Animator>();
             _ctx.renderer = GetComponentInChildren<Renderer>();
-            _ctx.lightSensor = GetComponentInChildren<LightExposureSensor>(); 
+            _ctx.lightSensor = GetComponentInChildren<PlayerLightSensor>(); 
 
 
             _root = new PlayerRoot(null, _ctx);

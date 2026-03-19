@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class LightExposureSensor : MonoBehaviour, IInitializable
+public abstract class LightSensorBase : MonoBehaviour
 {
-    public InitializationOrder Order => InitializationOrder.GameplayCore;
+    public float CurrentStrength { get; protected set; }
 
-    public float CurrentStrength { get; private set; }
-    
     [Header("References")]
     [SerializeField] private Utility.Logger _logger;
 
@@ -20,7 +18,6 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
     [SerializeField] private LayerMask occlusionMask;
 
     private LightSystem _lightSystem;
-
     private float _nextSampleTime;
     private float _nextRefreshTime;
 
@@ -33,10 +30,10 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
         public float AngleToTarget;
     }
 
-    public void Initialize()
+    protected void InitializeSensor()
     {
         _lightSystem = Services.Get<LightSystem>();
-        
+
         if (_lightSystem != null)
         {
             _logger.Log("LightSystem got in LightExposureSenser", this);
@@ -44,7 +41,7 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
         }
     }
 
-    private void Update()
+    protected void TickSensor(Vector2 worldPosition)
     {
         if (_lightSystem == null)
             return;
@@ -58,9 +55,7 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
         if (Time.time >= _nextSampleTime)
         {
             _nextSampleTime = Time.time + sampleInterval;
-
-            float targetStrength = EvaluateLightStrength(transform.position);
-            CurrentStrength = targetStrength;
+            CurrentStrength = EvaluateLightStrength(worldPosition);
         }
     }
 
@@ -151,7 +146,7 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
         }
 
         float angleFactor = 1f;
-        
+
         if (sample.OuterAngle < 359.9f)
         {
             float halfOuter = sample.OuterAngle * 0.5f;
@@ -163,7 +158,7 @@ public class LightExposureSensor : MonoBehaviour, IInitializable
                     (halfOuter - sample.AngleToTarget) / Mathf.Max(0.0001f, halfOuter - halfInner));
             }
         }
-        
+
         return light.intensity * distanceFactor * angleFactor;
     }
 }

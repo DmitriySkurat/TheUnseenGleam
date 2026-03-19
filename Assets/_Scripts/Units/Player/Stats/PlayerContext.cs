@@ -18,7 +18,7 @@ public class PlayerContext
     public Transform transform;
     //public AudioSource audio;
     public PlayerInventory inventory; // ???
-    public LightExposureSensor lightSensor; // ???
+    public PlayerLightSensor lightSensor; // ???
     
     // ===== MOVEMENT =====
     public Vector2 velocity;
