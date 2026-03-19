@@ -26,7 +26,8 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Register(playerContext);
         
         
-        Instantiate(cameraPrefab);
+        var camera = Instantiate(cameraPrefab);
+        Services.Register(camera);
         
 
         var noise = Instantiate(noisePrefab);
@@ -49,5 +50,12 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Unregister<PlayerContext>();
         Services.Unregister<NoiseSystem>();
         Services.Unregister<LightSystem>();
+        Services.Unregister<CameraFollow>();
+    }
+
+    // Временно, потом мб придумаю что-то
+    void OnDestroy()
+    {
+        Dispose();
     }
 }

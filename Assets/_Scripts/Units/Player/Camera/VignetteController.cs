@@ -6,12 +6,6 @@ using UnityEngine.Rendering.Universal;
 public class VignetteController : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.PostProcessing;
-
-
-    [Header("References")]
-    [SerializeField] private CameraFollow cameraFollow;
-    [SerializeField] private LightExposureSensor lightExposureSensor;
-    
     
     [Header("Intensity Settings")]
     [SerializeField] private float defaultIntensity = 0.5f;
@@ -22,11 +16,19 @@ public class VignetteController : MonoBehaviour, IInitializable
     [SerializeField, Range(0f, 1f)] private float minIntensityInLight = 0.05f;
     [SerializeField, Range(0f, 1f)] private float lightInfluence = 1f;
     
+    [Header("Limits")]
+    [SerializeField, Range(0f, 1f)] private float minIntensityClamp = 0.05f;
+    
     [Header("Smoothing")]
     [SerializeField] private float smoothSpeed = 5f;
     
+    private CameraFollow _cameraFollow;
+    private LightExposureSensor _lightExposureSensor;
+        
     private Volume _volume;
     private Vignette _vignette;
+    
+    private PlayerContext _ctx;
 
 
     private float currentIntensity;
@@ -35,6 +37,12 @@ public class VignetteController : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _volume = GetComponent<Volume>();
+        
+        _cameraFollow = Services.Get<CameraFollow>();
+        
+        _lightExposureSensor = Services.Get<PlayerContext>().lightSensor;
+        
+        
 
         if (!_volume.profile.TryGet(out _vignette))
         {
@@ -42,28 +50,28 @@ public class VignetteController : MonoBehaviour, IInitializable
         }
         else
         {
-            currentIntensity = defaultIntensity;
-            _vignette.intensity.value = defaultIntensity;
+            currentIntensity = Mathf.Clamp(defaultIntensity, minIntensityClamp, 1f);
+            _vignette.intensity.value = currentIntensity;
         }
     }
 
     private void Update()
     {
         //Debug.Log($"cameraFollow: {cameraFollow.GetHashCode()} and vignette: {_vignette.GetHashCode()}");
-        if (_vignette == null || cameraFollow == null) return;
+        if (_vignette == null || _cameraFollow == null) return;
 
-        bool isLooking = cameraFollow.IsLookingAround();
+        bool isLooking = _cameraFollow.IsLookingAround();
         float baseIntensity = isLooking ? aimIntensity : defaultIntensity;
         float targetIntensity = baseIntensity;
 
-        if (lightExposureSensor != null && maxLightStrength > 0f && lightInfluence > 0f)
+        if (_lightExposureSensor != null && maxLightStrength > 0f && lightInfluence > 0f)
         {
-            float normalizedLight = Mathf.Clamp01(lightExposureSensor.CurrentStrength / maxLightStrength);
+            float normalizedLight = Mathf.Clamp01(_lightExposureSensor.CurrentStrength / maxLightStrength);
             float lightFactor = Mathf.Clamp01(normalizedLight * lightInfluence);
             targetIntensity = Mathf.Lerp(baseIntensity, minIntensityInLight, lightFactor);
         }
 
-        targetIntensity = Mathf.Clamp01(targetIntensity);
+        targetIntensity = Mathf.Clamp(targetIntensity, minIntensityClamp, 1f);
 
         currentIntensity = Mathf.Lerp(currentIntensity, targetIntensity, Time.deltaTime * smoothSpeed);
         _vignette.intensity.value = currentIntensity;

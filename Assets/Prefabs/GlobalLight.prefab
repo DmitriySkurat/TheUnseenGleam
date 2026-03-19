@@ -115,11 +115,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97343a3081d3e29429f6c486eed05995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VignetteController
-  cameraFollow: {fileID: 5033691198550900098, guid: f5675b51bb12d9f4896fa0e1f43e983d, type: 3}
-  lightExposureSensor: {fileID: 1241069396669314600, guid: 1f0f9151c41c542499fa3fe0c1f65402, type: 3}
   defaultIntensity: 0.5
   aimIntensity: 0.25
-  litIntensity: 0.15
+  maxLightStrength: 1
+  minIntensityInLight: 0.05
+  lightInfluence: 1
+  minIntensityClamp: 0.25
   smoothSpeed: 5
-  debugLogs: 1
-  debugInterval: 1

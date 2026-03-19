@@ -18,6 +18,7 @@ public class PlayerContext
     public Transform transform;
     //public AudioSource audio;
     public PlayerInventory inventory; // ???
+    public LightExposureSensor lightSensor; // ???
     
     // ===== MOVEMENT =====
     public Vector2 velocity;

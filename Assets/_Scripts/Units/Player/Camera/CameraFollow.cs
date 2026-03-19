@@ -11,6 +11,11 @@ public class CameraFollow : MonoBehaviour, IInitializable
     
     [Header("Movement")]
     [SerializeField] private Vector3 offset = new Vector3(0, 0, -10f);
+    [SerializeField] private float chaseSpeed = 5f;
+
+    [Header("Facing Offset")]
+    [SerializeField] private float facingOffset = 1.5f;
+    [SerializeField] private float facingOffsetSmooth = 5f;
     
     [Header("Look Around")]
     [SerializeField] private float lookRange = 3f; 
@@ -18,6 +23,8 @@ public class CameraFollow : MonoBehaviour, IInitializable
     [SerializeField] private float lookSensivity = 0.01f;
 
     private Vector3 _currentOffset;
+    private float _currentFacingOffset;
+    private float _facingSign = 1f;
     private bool _isLookingAround; 
     
     PlayerContext _ctx;
@@ -34,6 +41,9 @@ public class CameraFollow : MonoBehaviour, IInitializable
     {
         if (target == null || _ctx == null) 
             return;
+
+        if (!Mathf.Approximately(_ctx.input.Move.x, 0f))
+            _facingSign = Mathf.Sign(_ctx.input.Move.x);
         
         bool canLookAround = Mathf.Approximately(_ctx.input.Move.x, 0f) && _ctx.grounded;
         
@@ -55,15 +65,21 @@ public class CameraFollow : MonoBehaviour, IInitializable
         {
             _currentOffset = Vector3.Lerp(_currentOffset, Vector3.zero, Time.deltaTime * returnSpeed);
         }
+
+        float targetFacingOffset = _facingSign * facingOffset;
+        if (facingOffsetSmooth <= 0f)
+            _currentFacingOffset = targetFacingOffset;
+        else
+            _currentFacingOffset = Mathf.Lerp(_currentFacingOffset, targetFacingOffset, Time.deltaTime * facingOffsetSmooth);
     }
 
     private void LateUpdate()
     {
         if (target == null) return;
 
-        Vector3 targetPos = target.position + offset;
+        Vector3 targetPos = target.position + offset + new Vector3(_currentFacingOffset, 0f, 0f);
         Vector3 desiredPos = targetPos + _currentOffset;
-        transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * returnSpeed);
+        transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * chaseSpeed);
     }
     
 }
