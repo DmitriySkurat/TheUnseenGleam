@@ -111,7 +111,7 @@ public class AgentVision : MonoBehaviour, IInitializable
         if (angle > effectiveViewAngle * 0.5f)
             return false;
 
-        float effectiveViewDistance = GetEffectiveViewDistance(targetPosition);
+        float effectiveViewDistance = GetEffectiveViewDistanceWithGlare();
         if (toTarget.sqrMagnitude > effectiveViewDistance * effectiveViewDistance)
             return false;
 
@@ -133,13 +133,16 @@ public class AgentVision : MonoBehaviour, IInitializable
         return effective;
     }
 
-    private float GetEffectiveViewDistance(Vector2 targetPosition)
+    private float GetEffectiveViewDistanceWithGlare()
     {
         float effective = GetEffectiveViewDistance();
         if (!reduceVisionFromLight || _lightSystem == null || effective <= 0f)
             return effective;
 
-        float glareStrength = EvaluateGlareStrength(transform.position, targetPosition);
+        Vector2 origin = transform.position;
+        Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
+        float rayDistance = GetGlareRayDistance(effective);
+        float glareStrength = EvaluateGlareStrength(origin, forward, rayDistance);
         float glareMultiplier = GetGlareVisibilityMultiplier(glareStrength);
         return effective * glareMultiplier;
     }
@@ -162,13 +165,11 @@ public class AgentVision : MonoBehaviour, IInitializable
         return Mathf.Lerp(1f, clampedMin, t);
     }
 
-    private float EvaluateGlareStrength(Vector2 origin, Vector2 targetPosition)
+    private float EvaluateGlareStrength(Vector2 origin, Vector2 direction, float distance)
     {
         if (_lightSystem == null)
             return 0f;
 
-        Vector2 toTarget = targetPosition - origin;
-        float distance = toTarget.magnitude;
         if (distance <= 0f)
             return 0f;
 
@@ -178,7 +179,7 @@ public class AgentVision : MonoBehaviour, IInitializable
         steps = Mathf.Max(1, steps);
 
         float step = distance / steps;
-        Vector2 direction = toTarget / distance;
+        direction = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
 
         float maxStrength = 0f;
         var lights = _lightSystem.GetSpotLights();
@@ -283,6 +284,13 @@ public class AgentVision : MonoBehaviour, IInitializable
         return light.intensity * distanceFactor * angleFactor;
     }
 
+    private float GetGlareRayDistance(float baseViewDistance)
+    {
+        if (maxViewDistance > 0f)
+            return maxViewDistance;
+        return baseViewDistance;
+    }
+
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
@@ -306,6 +314,8 @@ public class AgentVision : MonoBehaviour, IInitializable
 
         float effectiveViewAngle = GetEffectiveViewAngle();
         float effectiveViewDistance = GetEffectiveViewDistance();
+        if (Application.isPlaying && _playerTransform != null)
+            effectiveViewDistance = GetEffectiveViewDistanceWithGlare();
         DrawVisionCone(pos, forward, effectiveViewAngle, effectiveViewDistance, gizmoColor);
 
         if (_lastSeenPosition.HasValue)
@@ -347,13 +357,12 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     private void DrawGlareRays()
     {
-        if (!drawGlareRays || !Application.isPlaying || _playerTransform == null)
+        if (!drawGlareRays || !Application.isPlaying)
             return;
 
         Vector2 origin = transform.position;
-        Vector2 target = _playerTransform.position;
-        Vector2 toTarget = target - origin;
-        float distance = toTarget.magnitude;
+        Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
+        float distance = GetGlareRayDistance(GetEffectiveViewDistance());
         if (distance <= 0f)
             return;
 
@@ -363,12 +372,12 @@ public class AgentVision : MonoBehaviour, IInitializable
         steps = Mathf.Max(1, steps);
 
         float step = distance / steps;
-        Vector2 direction = toTarget / distance;
+        Vector2 direction = forward;
 
         IReadOnlyList<Light2D> lights = _lightSystem != null ? _lightSystem.GetSpotLights() : null;
 
         Gizmos.color = glareRayMinColor;
-        Gizmos.DrawLine(origin, target);
+        Gizmos.DrawLine(origin, origin + direction * distance);
 
         for (int i = 0; i <= steps; i++)
         {
