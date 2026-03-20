@@ -24,6 +24,8 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField, Min(0f)] private float maxGlareStrength = 2f;
     [SerializeField, Range(0f, 1f)] private float minGlareVisibilityMultiplier = 0.3f;
     [SerializeField] private bool useLightOcclusion = true;
+    [SerializeField] private bool blindWhenInStrongLight = true;
+    [SerializeField, Min(0f)] private float blindLightStrength = 1.5f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
@@ -99,6 +101,9 @@ public class AgentVision : MonoBehaviour, IInitializable
         float baseViewDistance = GetEffectiveViewDistance();
         float effectiveViewAngle = GetEffectiveViewAngle();
         if (baseViewDistance <= 0f || effectiveViewAngle <= 0f)
+            return false;
+
+        if (IsBlindedByLight())
             return false;
 
         Vector2 origin = transform.position;
@@ -291,6 +296,21 @@ public class AgentVision : MonoBehaviour, IInitializable
         return baseViewDistance;
     }
 
+    private bool IsBlindedByLight()
+    {
+        if (!reduceVisionFromLight || !blindWhenInStrongLight || _lightSystem == null)
+            return false;
+        if (blindLightStrength <= 0f)
+            return false;
+
+        var lights = _lightSystem.GetSpotLights();
+        if (lights.Count == 0)
+            return false;
+
+        float strength = EvaluateLightStrengthAt(transform.position, lights);
+        return strength >= blindLightStrength;
+    }
+
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
@@ -314,8 +334,13 @@ public class AgentVision : MonoBehaviour, IInitializable
 
         float effectiveViewAngle = GetEffectiveViewAngle();
         float effectiveViewDistance = GetEffectiveViewDistance();
-        if (Application.isPlaying && _playerTransform != null)
-            effectiveViewDistance = GetEffectiveViewDistanceWithGlare();
+        if (Application.isPlaying)
+        {
+            if (IsBlindedByLight())
+                effectiveViewDistance = 0f;
+            else
+                effectiveViewDistance = GetEffectiveViewDistanceWithGlare();
+        }
         DrawVisionCone(pos, forward, effectiveViewAngle, effectiveViewDistance, gizmoColor);
 
         if (_lastSeenPosition.HasValue)
