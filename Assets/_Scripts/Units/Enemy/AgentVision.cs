@@ -183,7 +183,7 @@ public class AgentVision : MonoBehaviour, IInitializable
             return 0f;
 
         float totalStrength = 0f;
-        int sampleCount = 0;
+        float totalWeight = 0f;
         var lights = _lightSystem.GetSpotLights();
         if (lights.Count == 0)
             return 0f;
@@ -212,12 +212,13 @@ public class AgentVision : MonoBehaviour, IInitializable
                 float travel = step * i;
                 Vector2 samplePos = origin + direction * travel;
                 float strength = EvaluateLightStrengthAt(samplePos, lights);
-                totalStrength += strength;
-                sampleCount++;
+                float weight = 1f - (travel / rayDistance);
+                totalStrength += strength * weight;
+                totalWeight += weight;
             }
         }
 
-        return sampleCount > 0 ? totalStrength / sampleCount : 0f;
+        return totalWeight > 0f ? totalStrength / totalWeight : 0f;
     }
 
     private float EvaluateLightStrengthAt(Vector2 worldPosition, IReadOnlyList<Light2D> lights)
