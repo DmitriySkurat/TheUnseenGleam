@@ -6,6 +6,11 @@ public class AgentLightSensor : LightSensorBase, IInitializable
     
     public void Initialize()
     {
-        
+        InitializeSensor();
+    }
+
+    private void Update()
+    {
+        TickSensor(transform.position);
     }
 }
