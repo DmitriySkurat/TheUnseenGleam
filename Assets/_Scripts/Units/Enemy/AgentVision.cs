@@ -24,6 +24,7 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField, Min(0f)] private float maxGlareStrength = 2f;
     [SerializeField, Range(0f, 1f)] private float minGlareVisibilityMultiplier = 0.3f;
     [SerializeField, Range(0f, 45f)] private float glareRayAngleOffset = 5f;
+    [SerializeField, Min(0f)] private float glareStrengthEpsilon = 0.01f;
     [SerializeField] private bool useLightOcclusion = true;
     [SerializeField] private bool blindWhenInStrongLight = true;
     [SerializeField, Min(0f)] private float blindStartStrength = 1f;
@@ -206,15 +207,41 @@ public class AgentVision : MonoBehaviour, IInitializable
             steps = Mathf.Max(1, steps);
 
             float step = rayDistance / steps;
+            float lastStrength = 0f;
+            bool hasLastStrength = false;
+            bool reuseNext = false;
 
             for (int i = 0; i <= steps; i++)
             {
                 float travel = step * i;
                 Vector2 samplePos = origin + direction * travel;
-                float strength = EvaluateLightStrengthAt(samplePos, lights);
+                float strength;
+                if (reuseNext)
+                {
+                    strength = lastStrength;
+                    reuseNext = false;
+                }
+                else
+                {
+                    strength = EvaluateLightStrengthAt(samplePos, lights);
+                    if (hasLastStrength && glareStrengthEpsilon > 0f &&
+                        Mathf.Abs(strength - lastStrength) < glareStrengthEpsilon)
+                    {
+                        reuseNext = true;
+                    }
+
+                    lastStrength = strength;
+                    hasLastStrength = true;
+                }
                 float weight = 1f - (travel / rayDistance);
                 totalStrength += strength * weight;
                 totalWeight += weight;
+
+                if (maxGlareStrength > 0f && totalWeight > 0f &&
+                    (totalStrength / totalWeight) >= maxGlareStrength)
+                {
+                    return maxGlareStrength;
+                }
             }
         }
 
