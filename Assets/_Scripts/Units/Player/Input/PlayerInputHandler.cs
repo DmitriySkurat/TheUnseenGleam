@@ -6,15 +6,16 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     public InitializationOrder Order => InitializationOrder.Player;
 
     private InputManager _inputManager;
+    private FrameInput _frameInput;
     private PlayerContext _ctx;
     
-    private FrameInput _frameInput = new FrameInput();
-    public FrameInput FrameInput => _frameInput;
     
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
         _inputManager = Services.Get<InputManager>();
+        
+        _frameInput = new FrameInput();
         
         SubscribeInput();
     }
@@ -32,7 +33,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.InteractDown = false;
     }
 
-    void SubscribeInput() {
+    void SubscribeInput() 
+    {
         if (_inputManager == null) return;
 
         _inputManager.OnMove += HandleMoveInput;
@@ -43,13 +45,20 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         
         _inputManager.OnInteractStarted += HandleInteractStarted;
         _inputManager.OnInteractCanceled += HandleInteractCanceled;
+
+        _inputManager.OnSlot1 += HandleSlot1;
+        _inputManager.OnSlot2 += HandleSlot2;
+        _inputManager.OnSlot3 += HandleSlot3;
+        _inputManager.OnSlot4 += HandleSlot4;
+        _inputManager.OnSlot5 += HandleSlot5;
         
         _inputManager.OnMousePositionChanged += HandleMousePosition;
         _inputManager.OnLookAroundToggled += HandleLookAroundInput;
         _inputManager.OnAttackToggled += HandleAttackInput;
     }
 
-    void UnsubscribeInput() {
+    void UnsubscribeInput() 
+    {
         if (_inputManager == null) return;
 
         _inputManager.OnMove -= HandleMoveInput;
@@ -60,6 +69,12 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         
         _inputManager.OnInteractStarted -= HandleInteractStarted;
         _inputManager.OnInteractCanceled -= HandleInteractCanceled;
+
+        _inputManager.OnSlot1 -= HandleSlot1;
+        _inputManager.OnSlot2 -= HandleSlot2;
+        _inputManager.OnSlot3 -= HandleSlot3;
+        _inputManager.OnSlot4 -= HandleSlot4;
+        _inputManager.OnSlot5 -= HandleSlot5;
         
         _inputManager.OnMousePositionChanged -= HandleMousePosition;
         _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
@@ -67,7 +82,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     }
     
 
-    void HandleMoveInput(Vector2 direction) {
+    void HandleMoveInput(Vector2 direction) 
+    {
         _frameInput.Move = direction;
 
         if (_ctx == null || _ctx.stats == null || !_ctx.stats.SnapInput) return;
@@ -76,7 +92,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _ctx.stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
     }
 
-    void HandleJumpStarted() {
+    void HandleJumpStarted() 
+    {
         _frameInput.JumpDown = true;
         _frameInput.JumpHeld = true;
 
@@ -84,7 +101,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _ctx.timeJumpWasPressed = Time.time;
     }
 
-    void HandleJumpCanceled() {
+    void HandleJumpCanceled() 
+    {
         _frameInput.JumpDown = false;
         _frameInput.JumpHeld = false;
     }
@@ -112,19 +130,18 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.InteractDown = false;
         _frameInput.InteractHeld = false;
     }
+
+    void HandleSlot1(bool isActive) => _frameInput.Slot1Down = isActive;
+    void HandleSlot2(bool isActive) => _frameInput.Slot2Down = isActive;
+    void HandleSlot3(bool isActive) => _frameInput.Slot3Down = isActive;
+    void HandleSlot4(bool isActive) => _frameInput.Slot4Down = isActive;
+    void HandleSlot5(bool isActive) => _frameInput.Slot5Down = isActive;
     
-    void HandleMousePosition(Vector2 mousePosition)
-    {
-        _frameInput.MousePosition = mousePosition;
-    }
     
-    void HandleLookAroundInput(bool isLookingAround)
-    {
-        _frameInput.LookAroundHeld = isLookingAround;
-    }
+    // Mouse
+    void HandleMousePosition(Vector2 mousePosition) => _frameInput.MousePosition = mousePosition;
     
-    void HandleAttackInput(bool isAttacking)
-    {
-        _frameInput.AttackHeld = isAttacking;
-    }
+    void HandleLookAroundInput(bool isLookingAround) => _frameInput.LookAroundHeld = isLookingAround;
+
+    void HandleAttackInput(bool isAttacking) => _frameInput.AttackHeld = isAttacking;
 }
