@@ -21,6 +21,11 @@ public class PlayerInventory : Inventory, IInitializable
             Debug.LogError("Придурок забыл инициализировать PlayerInventory");
             return;
         }
+        
+        // foreach (Entry item in items)
+        // {
+        //     Debug.Log($" item name {item.item.name} {item.count}");
+        // }
     }
     
     public bool TryUse(ItemData item, PlayerContext ctx)

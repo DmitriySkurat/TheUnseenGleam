@@ -306,6 +306,7 @@ GameObject:
   - component: {fileID: 669612337890271470}
   - component: {fileID: -8977762195206441254}
   - component: {fileID: 7516272934157095564}
+  - component: {fileID: 7049304287584125572}
   - component: {fileID: 8915404737102142867}
   - component: {fileID: 5490602481864773789}
   m_Layer: 8
@@ -610,7 +611,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   items:
   - item: {fileID: 11400000, guid: 4d9967dd09504c34e8328ddc0b1a7d8e, type: 2}
+    count: 2
+  - item: {fileID: 11400000, guid: b27357a3cb786cf45aeece9e98a19cc1, type: 2}
+    count: 5
+  - item: {fileID: 11400000, guid: 56004921bcf937740b8c2312e5a0d3ba, type: 2}
     count: 1
+--- !u!114 &7049304287584125572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85fb39f7296783a4e9b4a6d194384300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HotbarController
+  slotCount: 5
+  _slots: []
 --- !u!114 &8915404737102142867
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,22 +1,33 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class HotbarController : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Player + 20;
-
+    
     [SerializeField] private int slotCount = 5;
-
-    private HotbarItem[] _slots;
+    
+    [SerializeField] private List<InventoryEntry> _slots;
     
     private PlayerContext _ctx;
 
     public void Initialize()
     {
+        Debug.Log($"Hotbar Controller Initialized");
         _ctx = Services.Get<PlayerContext>();
 
-        _slots = new HotbarItem[slotCount];
-        for (int i = 0; i < slotCount; i++)
-            _slots[i] = new HotbarItem();
+        _slots = new List<InventoryEntry>(slotCount);
+        
+        var entries = _ctx.inventory.GetEntries();
+        
+        if (entries.Count > 0)
+        {
+            foreach (InventoryEntry cell in entries)
+            {
+                Debug.Log($"item name {cell.item.name} count {cell.count}");
+                //AssignItem(0, entries[0].item);
+            }
+        }
     }
 
     void Update()
@@ -26,7 +37,7 @@ public class HotbarController : MonoBehaviour, IInitializable
 
     private void OnSlotSelected(int index)
     {
-        if (index < 0 || index >= _slots.Length)
+        if (index < 0 || index >= _slots.Count)
             return;
 
         UseSlot(index);
@@ -36,7 +47,7 @@ public class HotbarController : MonoBehaviour, IInitializable
     {
         var slot = _slots[index];
 
-        if (slot.IsEmpty)
+        if (slot == null)
             return;
 
         if (!_ctx.inventory.TryUse(slot.item, _ctx))
@@ -51,7 +62,7 @@ public class HotbarController : MonoBehaviour, IInitializable
 
     public void AssignItem(int index, ItemData item)
     {
-        if (index < 0 || index >= _slots.Length)
+        if (index < 0 || index >= _slots.Count)
             return;
 
         if (item == null || !item.CanUse)

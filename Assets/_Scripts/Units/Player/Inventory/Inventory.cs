@@ -4,13 +4,7 @@ using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
-    [System.Serializable]
-    public class Entry {
-        public ItemData item;
-        public int count;
-    }
-    
-    [SerializeField] private List<Entry> items = new List<Entry>();
+    [SerializeField] protected List<InventoryEntry> items = new List<InventoryEntry>();
     
     public bool Has(ItemData item, int count = 1) {
         if (item == null) return false;
@@ -21,7 +15,7 @@ public class Inventory : MonoBehaviour
     public void Add(ItemData item, int count = 1) {
         if (item == null || count <= 0) return;
         var e = items.Find(x => x.item == item);
-        if (e == null) items.Add(new Entry { item = item, count = count });
+        if (e == null) items.Add(new InventoryEntry { item = item, count = count });
         else e.count += count;
         // OnInventoryChanged мб добавить
     } 
@@ -36,6 +30,5 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
-    public IReadOnlyList<Entry> GetEntries() => items;
-    
+    public IReadOnlyList<InventoryEntry> GetEntries() => items;
 }
