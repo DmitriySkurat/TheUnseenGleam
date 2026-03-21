@@ -26,7 +26,6 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField, Range(0f, 45f)] private float glareRayAngleOffset = 5f;
     [SerializeField, Min(0f)] private float glareStrengthEpsilon = 0.01f;
     [SerializeField, Range(-1f, 1f)] private float glareRelevantDotThreshold = 0.3f;
-    [SerializeField] private bool useLightOcclusion = true;
     [SerializeField] private bool blindWhenInStrongLight = true;
     [SerializeField, Min(0f)] private float blindStartStrength = 1f;
     [SerializeField, Min(0f)] private float blindFullStrength = 2f;
@@ -274,14 +273,6 @@ public class AgentVision : MonoBehaviour, IInitializable
 
             if (!TrySampleLight(light, worldPosition, out LightSample sample))
                 continue;
-
-            if (useLightOcclusion && occlusionMask.value != 0)
-            {
-                Vector2 origin = light.transform.position;
-                var hit = Physics2D.Linecast(origin, worldPosition, occlusionMask);
-                if (hit.collider != null)
-                    continue;
-            }
 
             float strength = EvaluatePointLight(light, sample);
             if (strength > maxStrength)
