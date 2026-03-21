@@ -6,6 +6,10 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Enemy;
 
+    private const float FullAngle = 359.9f;
+    private const float MinSampleStep = 0.01f;
+    private const float MinEpsilon = 0.0001f;
+
     [Header("Light Glare")]
     [SerializeField] private bool reduceVisionFromLight = true;
     [SerializeField, Min(0.01f)] private float glareSampleStep = 0.25f;
@@ -88,11 +92,7 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
             FillRelevantLights(origin, direction, rayDistance, _relevantLights);
             IReadOnlyList<Light2D> lights = _relevantLights;
 
-            int steps = Mathf.CeilToInt(rayDistance / Mathf.Max(0.01f, glareSampleStep));
-            if (glareMaxSamples > 0)
-                steps = Mathf.Min(steps, glareMaxSamples);
-            steps = Mathf.Max(1, steps);
-
+            int steps = GetSampleCount(rayDistance);
             float step = rayDistance / steps;
 
             Gizmos.color = glareRayMinColor;
@@ -160,11 +160,7 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
             if (_relevantLights.Count == 0)
                 continue;
 
-            int steps = Mathf.CeilToInt(rayDistance / Mathf.Max(0.01f, glareSampleStep));
-            if (glareMaxSamples > 0)
-                steps = Mathf.Min(steps, glareMaxSamples);
-            steps = Mathf.Max(1, steps);
-
+            int steps = GetSampleCount(rayDistance);
             float step = rayDistance / steps;
             float lastStrength = 0f;
             bool hasLastStrength = false;
@@ -242,7 +238,7 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
             return false;
 
         sample.OuterAngle = light.pointLightOuterAngle;
-        if (sample.OuterAngle >= 359.9f)
+        if (sample.OuterAngle >= FullAngle)
             return true;
 
         Vector2 forward = light.transform.up;
@@ -270,11 +266,11 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
         if (innerRadius < sample.OuterRadius)
         {
             distanceFactor = Mathf.Clamp01(
-                (sample.OuterRadius - sample.Distance) / Mathf.Max(0.0001f, sample.OuterRadius - innerRadius));
+                (sample.OuterRadius - sample.Distance) / Mathf.Max(MinEpsilon, sample.OuterRadius - innerRadius));
         }
 
         float angleFactor = 1f;
-        if (sample.OuterAngle < 359.9f)
+        if (sample.OuterAngle < FullAngle)
         {
             float halfOuter = sample.OuterAngle * 0.5f;
             float innerAngle = light.pointLightInnerAngle;
@@ -282,7 +278,7 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
             if (halfInner < halfOuter)
             {
                 angleFactor = Mathf.Clamp01(
-                    (halfOuter - sample.AngleToTarget) / Mathf.Max(0.0001f, halfOuter - halfInner));
+                    (halfOuter - sample.AngleToTarget) / Mathf.Max(MinEpsilon, halfOuter - halfInner));
             }
         }
 
@@ -349,7 +345,7 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
 
             Vector2 toLight = (Vector2)light.transform.position - origin;
             float toLightSqr = toLight.sqrMagnitude;
-            if (toLightSqr <= 0.0001f)
+            if (toLightSqr <= MinEpsilon)
             {
                 result.Add(light);
                 continue;
@@ -385,8 +381,16 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
         if (strength >= blindFullStrength)
             return 0f;
 
-        float denom = Mathf.Max(0.0001f, blindFullStrength - blindStartStrength);
+        float denom = Mathf.Max(MinEpsilon, blindFullStrength - blindStartStrength);
         float t = (strength - blindStartStrength) / denom;
         return Mathf.Lerp(1f, 0f, t);
+    }
+
+    private int GetSampleCount(float rayDistance)
+    {
+        int steps = Mathf.CeilToInt(rayDistance / Mathf.Max(MinSampleStep, glareSampleStep));
+        if (glareMaxSamples > 0)
+            steps = Mathf.Min(steps, glareMaxSamples);
+        return Mathf.Max(1, steps);
     }
 }

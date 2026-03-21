@@ -4,6 +4,8 @@ public class AgentVision : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Enemy;
 
+    private const float FullAngle = 359.9f;
+
     [Header("References")]
     [SerializeField] private AgentLightSensor lightSensor;
 
@@ -57,25 +59,33 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        if (_playerTransform == null)
-        {
-            if (_playerContext == null)
-            {
-                _canSeePlayer = false;
-                return;
-            }
-
-            _playerTransform = _playerContext.transform;
-            if (_playerTransform == null)
-            {
-                _canSeePlayer = false;
-                return;
-            }
-        }
+        if (!TryResolvePlayerTransform())
+            return;
 
         _canSeePlayer = CheckPlayerVisibility(_playerTransform.position);
         if (_canSeePlayer)
             _lastSeenPosition = _playerTransform.position;
+    }
+
+    private bool TryResolvePlayerTransform()
+    {
+        if (_playerTransform != null)
+            return true;
+
+        if (_playerContext == null)
+        {
+            _canSeePlayer = false;
+            return false;
+        }
+
+        _playerTransform = _playerContext.transform;
+        if (_playerTransform == null)
+        {
+            _canSeePlayer = false;
+            return false;
+        }
+
+        return true;
     }
 
     private bool CheckPlayerVisibility(Vector2 targetPosition)
@@ -92,7 +102,7 @@ public class AgentVision : MonoBehaviour, IInitializable
             return false;
 
         Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
-        if (effectiveViewAngle < 359.9f)
+        if (effectiveViewAngle < FullAngle)
         {
             float cosHalfAngle = Mathf.Cos(effectiveViewAngle * 0.5f * Mathf.Deg2Rad);
             if (toTargetSqr > 0f)
@@ -104,7 +114,7 @@ public class AgentVision : MonoBehaviour, IInitializable
             }
         }
 
-        float effectiveViewDistance = GetEffectiveViewDistanceWithGlare();
+        float effectiveViewDistance = GetEffectiveViewDistanceWithGlare(baseViewDistance);
         if (toTargetSqr > effectiveViewDistance * effectiveViewDistance)
             return false;
 
@@ -126,18 +136,17 @@ public class AgentVision : MonoBehaviour, IInitializable
         return effective;
     }
 
-    private float GetEffectiveViewDistanceWithGlare()
+    private float GetEffectiveViewDistanceWithGlare(float baseViewDistance)
     {
-        float effective = GetEffectiveViewDistance();
-        if (effective <= 0f)
-            return effective;
+        if (baseViewDistance <= 0f)
+            return baseViewDistance;
 
         Vector2 origin = transform.position;
         Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
-        float rayDistance = GetGlareRayDistance(effective);
+        float rayDistance = GetGlareRayDistance(baseViewDistance);
         float visibilityMultiplier = lightSensor.GetVisibilityMultiplier(origin, forward, rayDistance, occlusionMask);
 
-        return effective * visibilityMultiplier;
+        return baseViewDistance * visibilityMultiplier;
     }
 
     private float GetEffectiveViewAngle()
@@ -179,7 +188,7 @@ public class AgentVision : MonoBehaviour, IInitializable
         float effectiveViewAngle = GetEffectiveViewAngle();
         float effectiveViewDistance = GetEffectiveViewDistance();
         if (Application.isPlaying)
-            effectiveViewDistance = GetEffectiveViewDistanceWithGlare();
+            effectiveViewDistance = GetEffectiveViewDistanceWithGlare(effectiveViewDistance);
         DrawVisionCone(pos, forward, effectiveViewAngle, effectiveViewDistance, gizmoColor);
 
         if (_lastSeenPosition.HasValue)
