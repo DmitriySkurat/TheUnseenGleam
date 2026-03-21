@@ -25,6 +25,7 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField, Range(0f, 1f)] private float minGlareVisibilityMultiplier = 0.3f;
     [SerializeField, Range(0f, 45f)] private float glareRayAngleOffset = 5f;
     [SerializeField, Min(0f)] private float glareStrengthEpsilon = 0.01f;
+    [SerializeField, Range(-1f, 1f)] private float glareRelevantDotThreshold = 0.3f;
     [SerializeField] private bool useLightOcclusion = true;
     [SerializeField] private bool blindWhenInStrongLight = true;
     [SerializeField, Min(0f)] private float blindStartStrength = 1f;
@@ -49,6 +50,7 @@ public class AgentVision : MonoBehaviour, IInitializable
     private bool _canSeePlayer;
     private LightSystem _lightSystem;
     private readonly Vector2[] _glareDirections = new Vector2[3];
+    private readonly List<Light2D> _relevantLights = new List<Light2D>(16);
 
     private struct LightSample
     {
@@ -109,16 +111,25 @@ public class AgentVision : MonoBehaviour, IInitializable
 
         Vector2 origin = transform.position;
         Vector2 toTarget = targetPosition - origin;
-        if (toTarget.sqrMagnitude > baseViewDistance * baseViewDistance)
+        float toTargetSqr = toTarget.sqrMagnitude;
+        if (toTargetSqr > baseViewDistance * baseViewDistance)
             return false;
 
         Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
-        float angle = Vector2.Angle(forward, toTarget);
-        if (angle > effectiveViewAngle * 0.5f)
-            return false;
+        if (effectiveViewAngle < 359.9f)
+        {
+            float cosHalfAngle = Mathf.Cos(effectiveViewAngle * 0.5f * Mathf.Deg2Rad);
+            if (toTargetSqr > 0f)
+            {
+                float invToTargetMag = 1f / Mathf.Sqrt(toTargetSqr);
+                float dot = Vector2.Dot(forward, toTarget) * invToTargetMag;
+                if (dot < cosHalfAngle)
+                    return false;
+            }
+        }
 
         float effectiveViewDistance = GetEffectiveViewDistanceWithGlare();
-        if (toTarget.sqrMagnitude > effectiveViewDistance * effectiveViewDistance)
+        if (toTargetSqr > effectiveViewDistance * effectiveViewDistance)
             return false;
 
         if (occlusionMask.value != 0)
@@ -201,6 +212,10 @@ public class AgentVision : MonoBehaviour, IInitializable
             if (rayDistance <= 0f)
                 continue;
 
+            FillRelevantLights(origin, direction, rayDistance, _relevantLights);
+            if (_relevantLights.Count == 0)
+                continue;
+
             int steps = Mathf.CeilToInt(rayDistance / Mathf.Max(0.01f, glareSampleStep));
             if (glareMaxSamples > 0)
                 steps = Mathf.Min(steps, glareMaxSamples);
@@ -223,7 +238,7 @@ public class AgentVision : MonoBehaviour, IInitializable
                 }
                 else
                 {
-                    strength = EvaluateLightStrengthAt(samplePos, lights);
+                    strength = EvaluateLightStrengthAt(samplePos, _relevantLights);
                     if (hasLastStrength && glareStrengthEpsilon > 0f &&
                         Mathf.Abs(strength - lastStrength) < glareStrengthEpsilon)
                     {
@@ -294,10 +309,17 @@ public class AgentVision : MonoBehaviour, IInitializable
             return true;
 
         Vector2 forward = light.transform.up;
-        sample.AngleToTarget = Vector2.Angle(forward, sample.ToTarget);
-        if (sample.AngleToTarget > sample.OuterAngle * 0.5f)
+        float forwardMag = forward.magnitude;
+        if (forwardMag <= 0f || sample.Distance <= 0f)
             return false;
 
+        float cosHalfAngle = Mathf.Cos(sample.OuterAngle * 0.5f * Mathf.Deg2Rad);
+        float dot = Vector2.Dot(forward, sample.ToTarget) / (forwardMag * sample.Distance);
+        if (dot < cosHalfAngle)
+            return false;
+
+        dot = Mathf.Clamp(dot, -1f, 1f);
+        sample.AngleToTarget = Mathf.Acos(dot) * Mathf.Rad2Deg;
         return true;
     }
 
@@ -374,6 +396,46 @@ public class AgentVision : MonoBehaviour, IInitializable
         }
 
         return maxDistance;
+    }
+
+    private void FillRelevantLights(Vector2 origin, Vector2 direction, float distance, List<Light2D> result)
+    {
+        result.Clear();
+        var lights = _lightSystem.GetSpotLights();
+        if (lights.Count == 0)
+            return;
+
+        float maxDot = Mathf.Clamp(glareRelevantDotThreshold, -1f, 1f);
+
+        for (int i = 0; i < lights.Count; i++)
+        {
+            var light = lights[i];
+            if (light == null || !light.isActiveAndEnabled)
+                continue;
+
+            float maxRange = Mathf.Max(0f, light.pointLightOuterRadius);
+            if (maxRange <= 0f)
+                continue;
+
+            Vector2 toLight = (Vector2)light.transform.position - origin;
+            float toLightSqr = toLight.sqrMagnitude;
+            if (toLightSqr <= 0.0001f)
+            {
+                result.Add(light);
+                continue;
+            }
+
+            float maxReach = distance + maxRange;
+            if (toLightSqr > maxReach * maxReach)
+                continue;
+
+            float toLightMag = Mathf.Sqrt(toLightSqr);
+            float dot = Vector2.Dot(direction, toLight / toLightMag);
+            if (dot < maxDot)
+                continue;
+
+            result.Add(light);
+        }
     }
 
     private float GetBlindVisibilityMultiplier(Vector2 origin)
@@ -475,8 +537,6 @@ public class AgentVision : MonoBehaviour, IInitializable
 
         FillGlareDirections(forward, _glareDirections);
 
-        IReadOnlyList<Light2D> lights = _lightSystem != null ? _lightSystem.GetSpotLights() : null;
-
         for (int dirIndex = 0; dirIndex < _glareDirections.Length; dirIndex++)
         {
             Vector2 direction = _glareDirections[dirIndex];
@@ -488,6 +548,9 @@ public class AgentVision : MonoBehaviour, IInitializable
             float rayDistance = GetRayDistanceWithOcclusion(origin, direction, distance);
             if (rayDistance <= 0f)
                 continue;
+
+            FillRelevantLights(origin, direction, rayDistance, _relevantLights);
+            IReadOnlyList<Light2D> lights = _relevantLights;
 
             int steps = Mathf.CeilToInt(rayDistance / Mathf.Max(0.01f, glareSampleStep));
             if (glareMaxSamples > 0)
@@ -505,7 +568,7 @@ public class AgentVision : MonoBehaviour, IInitializable
                 Vector2 samplePos = origin + direction * travel;
 
                 float strength = 0f;
-                if (lights != null && lights.Count > 0)
+                if (lights.Count > 0)
                     strength = EvaluateLightStrengthAt(samplePos, lights);
 
                 float t = maxGlareStrength > 0f ? Mathf.Clamp01(strength / maxGlareStrength) : 0f;
