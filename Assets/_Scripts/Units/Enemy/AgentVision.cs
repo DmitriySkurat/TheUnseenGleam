@@ -95,6 +95,9 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     private bool CheckPlayerVisibility(Vector2 targetPosition)
     {
+        if (_playerContext != null && _playerContext.isHiding)
+            return false;
+
         float baseViewDistance = GetEffectiveViewDistance();
         float effectiveViewAngle = GetEffectiveViewAngle();
         if (baseViewDistance <= 0f || effectiveViewAngle <= 0f)
