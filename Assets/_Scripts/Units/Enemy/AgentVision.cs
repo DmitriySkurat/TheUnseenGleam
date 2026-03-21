@@ -14,9 +14,13 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField] private float viewAngle = 90f;
 
     [SerializeField, Min(0f)] private float viewDistance = 5f;
+
+    [Header("Vision Limits")]
     [Range(0f, 360f)]
     [SerializeField] private float maxViewAngle = 90f;
     [SerializeField, Min(0f)] private float maxViewDistance = 5f;
+
+    [Header("Vision Modifiers")]
     [SerializeField, Min(0f)] private float visibilityMultiplier = 1f;
     [SerializeField] private LayerMask occlusionMask;
 
@@ -27,6 +31,7 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField] private Color lastSeenColor = new Color(1f, 0.4f, 0.1f, 0.9f);
     [SerializeField, Min(0f)] private float lastSeenMarkerRadius = 0.2f;
     
+    [Header("Debug Logging")]
     [SerializeField] private Utility.Logger _logger;
 
     private PlayerContext _playerContext;
