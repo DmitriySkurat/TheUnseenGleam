@@ -13,10 +13,10 @@ public class HotbarController : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        Debug.Log($"Hotbar Controller Initialized");
         _ctx = Services.Get<PlayerContext>();
 
-        _slots = new List<InventoryEntry>(slotCount);
+        EnsureSlots();
+        RebindSlotsToInventory();
         
         var entries = _ctx.inventory.GetEntries();
         
@@ -25,7 +25,7 @@ public class HotbarController : MonoBehaviour, IInitializable
             foreach (InventoryEntry cell in entries)
             {
                 Debug.Log($"item name {cell.item.name} count {cell.count}");
-                //AssignItem(0, entries[0].item);
+                AssignItem(cell.item);
             }
         }
     }
@@ -52,25 +52,89 @@ public class HotbarController : MonoBehaviour, IInitializable
 
         if (!_ctx.inventory.TryUse(slot.item, _ctx))
         {
-            Debug.Log("Нет предмета в инвентаре");
+            Debug.Log("There is no item in inventory");
 
             // чистим слот если предмет закончился
             if (!_ctx.inventory.Has(slot.item))
-                slot.item = null;
+                _slots[index] = null;
         }
     }
 
-    public void AssignItem(int index, ItemData item)
+    public void AssignItem(ItemData item)
     {
-        if (index < 0 || index >= _slots.Count)
-            return;
-
         if (item == null || !item.CanUse)
         {
-            Debug.Log("Нельзя добавить предмет в хотбар");
+            Debug.Log("Item is non usable or null");
             return;
         }
 
-        _slots[index].item = item;
+        EnsureSlots();
+
+        var freeIndex = _slots.FindIndex(s => s == null);
+        if (freeIndex < 0)
+        {
+            Debug.Log("No free hotbar slot");
+            return;
+        }
+
+        var entry = FindInventoryEntry(item, _ctx.inventory.GetEntries());
+        if (entry == null)
+        {
+            Debug.Log("Item not found in inventory");
+            return;
+        }
+
+        _slots[freeIndex] = entry;
+    }
+
+    private void EnsureSlots()
+    {
+        if (_slots == null)
+            _slots = new List<InventoryEntry>(slotCount);
+
+        if (_slots.Count > slotCount)
+            _slots.RemoveRange(slotCount, _slots.Count - slotCount);
+
+        while (_slots.Count < slotCount)
+            _slots.Add(null);
+    }
+
+    private void RebindSlotsToInventory()
+    {
+        var entries = _ctx.inventory.GetEntries();
+        if (entries == null || entries.Count == 0)
+        {
+            for (int i = 0; i < _slots.Count; i++)
+                _slots[i] = null;
+            return;
+        }
+
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            var slot = _slots[i];
+            if (slot == null || slot.item == null)
+            {
+                _slots[i] = null;
+                continue;
+            }
+
+            var rebinding = FindInventoryEntry(slot.item, entries);
+            _slots[i] = rebinding;
+        }
+    }
+
+    private InventoryEntry FindInventoryEntry(ItemData item, IReadOnlyList<InventoryEntry> entries)
+    {
+        if (item == null || entries == null)
+            return null;
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            var entry = entries[i];
+            if (entry != null && entry.item == item)
+                return entry;
+        }
+
+        return null;
     }
 }
