@@ -31,9 +31,6 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
         _frameInput.JumpDown = false;
         _frameInput.InteractDown = false;
-        
-        
-        Debug.Log($" slot number: {_frameInput.SlotPressed}");
     }
 
     void SubscribeInput() 

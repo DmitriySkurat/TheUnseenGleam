@@ -22,4 +22,20 @@ public class PlayerInventory : Inventory, IInitializable
             return;
         }
     }
+    
+    public bool TryUse(ItemData item, PlayerContext ctx)
+    {
+        if (item == null || !item.CanUse)
+            return false;
+
+        if (!Has(item))
+            return false;
+
+        item.Use(ctx);
+        
+        if (item.type == ItemType.Consumable) 
+            Remove(item, 1);
+
+        return true;
+    }
 }

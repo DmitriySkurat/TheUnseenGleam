@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7229a84754cecb4d8d09b767ff6c4a2, type: 3}
-  m_Name: KeyItem
+  m_Name: Consumable
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  id: 1
-  itemName: Key
+  id: 2
+  itemName: Consumable
   sprite: {fileID: 0}
-  type: 2
+  type: 0
