@@ -16,11 +16,11 @@ public class InputManager : MonoBehaviour, IService
     public event Action OnInteractStarted;
     public event Action OnInteractCanceled;
     
-    public event Action<bool> OnSlot1;
-    public event Action<bool> OnSlot2;
-    public event Action<bool> OnSlot3;
-    public event Action<bool> OnSlot4;
-    public event Action<bool> OnSlot5;
+    public event Action OnSlot1;
+    public event Action OnSlot2;
+    public event Action OnSlot3;
+    public event Action OnSlot4;
+    public event Action OnSlot5;
     
     
     // Mouse
@@ -75,18 +75,11 @@ public class InputManager : MonoBehaviour, IService
         actions["Interact"].performed += HandleInteractStarted;
         actions["Interact"].canceled += HandleInteractCanceled;
 
-
         actions["Slot1"].performed += HandleSlot1;
         actions["Slot2"].performed += HandleSlot2;
         actions["Slot3"].performed += HandleSlot3;
         actions["Slot4"].performed += HandleSlot4;
         actions["Slot5"].performed += HandleSlot5;
-        
-        actions["Slot1"].canceled += HandleSlot1;
-        actions["Slot2"].canceled += HandleSlot2;
-        actions["Slot3"].canceled += HandleSlot3;
-        actions["Slot4"].canceled += HandleSlot4;
-        actions["Slot5"].canceled += HandleSlot5;
         
         
         actions["MousePosition"].performed += HandleMousePosition;
@@ -118,18 +111,11 @@ public class InputManager : MonoBehaviour, IService
         actions["Interact"].performed -= HandleInteractStarted;
         actions["Interact"].canceled -= HandleInteractCanceled;
 
-
         actions["Slot1"].performed -= HandleSlot1;
         actions["Slot2"].performed -= HandleSlot2;
         actions["Slot3"].performed -= HandleSlot3;
         actions["Slot4"].performed -= HandleSlot4;
         actions["Slot5"].performed -= HandleSlot5;
-        
-        actions["Slot1"].canceled -= HandleSlot1;
-        actions["Slot2"].canceled -= HandleSlot2;
-        actions["Slot3"].canceled -= HandleSlot3;
-        actions["Slot4"].canceled -= HandleSlot4;
-        actions["Slot5"].canceled -= HandleSlot5;
         
         
         actions["MousePosition"].performed -= HandleMousePosition;
@@ -165,11 +151,11 @@ public class InputManager : MonoBehaviour, IService
     private void HandleInteractStarted(InputAction.CallbackContext ctx) => OnInteractStarted?.Invoke();
     private void HandleInteractCanceled(InputAction.CallbackContext ctx) => OnInteractCanceled?.Invoke();
 
-    private void HandleSlot1(InputAction.CallbackContext ctx) => OnSlot1?.Invoke(ctx.performed);
-    private void HandleSlot2(InputAction.CallbackContext ctx) => OnSlot2?.Invoke(ctx.performed);
-    private void HandleSlot3(InputAction.CallbackContext ctx) => OnSlot3?.Invoke(ctx.performed);
-    private void HandleSlot4(InputAction.CallbackContext ctx) => OnSlot4?.Invoke(ctx.performed);
-    private void HandleSlot5(InputAction.CallbackContext ctx) => OnSlot5?.Invoke(ctx.performed);
+    private void HandleSlot1(InputAction.CallbackContext ctx) => OnSlot1?.Invoke();
+    private void HandleSlot2(InputAction.CallbackContext ctx) => OnSlot2?.Invoke();
+    private void HandleSlot3(InputAction.CallbackContext ctx) => OnSlot3?.Invoke();
+    private void HandleSlot4(InputAction.CallbackContext ctx) => OnSlot4?.Invoke();
+    private void HandleSlot5(InputAction.CallbackContext ctx) => OnSlot5?.Invoke();
     
     // Mouse
     private void HandleMousePosition(InputAction.CallbackContext ctx) => OnMousePositionChanged?.Invoke(ctx.ReadValue<Vector2>());

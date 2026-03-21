@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: -8977762195206441254}
   - component: {fileID: 7516272934157095564}
   - component: {fileID: 8915404737102142867}
-  - component: {fileID: 1241069396669314600}
+  - component: {fileID: 5490602481864773789}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -520,7 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
   m_ShadowGroup: 0
-  m_Priority: 0
+  m_Priority: 10
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
@@ -630,7 +630,7 @@ MonoBehaviour:
   maxThrowRadius: 4
   maxSpeedMultiplier: 2
   maxDownDistance: 2
---- !u!114 &1241069396669314600
+--- !u!114 &5490602481864773789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -639,7 +639,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9221460439243928467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f5b77f8e244f03469392b2bb349aa7d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a9e7a2b6e1f4d6b9d8c3a7b0f1e2d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLightSensor
   _logger: {fileID: 1837411843657378475, guid: d81e4435169b4624f998cdd1d4252c8c, type: 3}

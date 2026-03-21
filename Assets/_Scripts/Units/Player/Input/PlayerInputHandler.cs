@@ -31,6 +31,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
         _frameInput.JumpDown = false;
         _frameInput.InteractDown = false;
+        
+        
+        Debug.Log($" slot number: {_frameInput.SlotPressed}");
     }
 
     void SubscribeInput() 
@@ -131,11 +134,11 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.InteractHeld = false;
     }
 
-    void HandleSlot1(bool isActive) => _frameInput.Slot1Down = isActive;
-    void HandleSlot2(bool isActive) => _frameInput.Slot2Down = isActive;
-    void HandleSlot3(bool isActive) => _frameInput.Slot3Down = isActive;
-    void HandleSlot4(bool isActive) => _frameInput.Slot4Down = isActive;
-    void HandleSlot5(bool isActive) => _frameInput.Slot5Down = isActive;
+    void HandleSlot1() { _frameInput.SlotPressed = 1; }
+    void HandleSlot2() { _frameInput.SlotPressed = 2; }
+    void HandleSlot3() { _frameInput.SlotPressed = 3; }
+    void HandleSlot4() { _frameInput.SlotPressed = 4; }
+    void HandleSlot5() { _frameInput.SlotPressed = 5; }
     
     
     // Mouse
