@@ -19,6 +19,8 @@ public class PlayerContext
     //public AudioSource audio;
     public PlayerInventory inventory; // ???
     public PlayerLightSensor lightSensor; // ???
+    public int selectedHotbarSlot = -1;
+    public InventoryEntry selectedHotbarEntry;
     
     // ===== MOVEMENT =====
     public Vector2 velocity;
@@ -64,4 +66,5 @@ public class PlayerContext
     public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown && grounded;
     public bool CanRun => stamina > stats.MinStaminaToRun;
     public bool HasMovementIntent => movementGraceTimer > 0f;
+    public ItemData SelectedHotbarItem => selectedHotbarEntry != null ? selectedHotbarEntry.item : null;
 }
