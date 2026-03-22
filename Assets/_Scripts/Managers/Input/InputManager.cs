@@ -26,7 +26,9 @@ public class InputManager : MonoBehaviour, IService
     // Mouse
     public event Action<Vector2> OnMousePositionChanged;
     public event Action<bool> OnLookAroundToggled;
-    public event Action<bool> OnAttackToggled;
+    public event Action OnLMBStarted;
+    public event Action OnLMBPerformed;
+    public event Action OnLMBCanceled;
     
     private PlayerInput _playerInput;
     
@@ -88,8 +90,9 @@ public class InputManager : MonoBehaviour, IService
         actions["LookAround"].performed += HandleLookAround;
         actions["LookAround"].canceled += HandleLookAround;
         
-        actions["Attack"].performed += HandleAttack;
-        actions["Attack"].canceled += HandleAttack;
+        actions["Attack"].started += HandleLMBStarted;
+        actions["Attack"].performed += HandleLMBPerformed;
+        actions["Attack"].canceled += HandleLMBCanceled;
     }
     
     private void UnregisterInputs()
@@ -124,8 +127,9 @@ public class InputManager : MonoBehaviour, IService
         actions["LookAround"].performed -= HandleLookAround;
         actions["LookAround"].canceled -= HandleLookAround;
         
-        actions["Attack"].performed -= HandleAttack;
-        actions["Attack"].canceled -= HandleAttack;
+        actions["Attack"].started -= HandleLMBStarted;
+        actions["Attack"].performed -= HandleLMBPerformed;
+        actions["Attack"].canceled -= HandleLMBCanceled;
     }
 
 
@@ -160,7 +164,10 @@ public class InputManager : MonoBehaviour, IService
     // Mouse
     private void HandleMousePosition(InputAction.CallbackContext ctx) => OnMousePositionChanged?.Invoke(ctx.ReadValue<Vector2>());
     private void HandleLookAround(InputAction.CallbackContext ctx) => OnLookAroundToggled?.Invoke(ctx.performed);
-    private void HandleAttack(InputAction.CallbackContext ctx) => OnAttackToggled?.Invoke(ctx.performed);
+    
+    private void HandleLMBStarted(InputAction.CallbackContext ctx) => OnLMBStarted?.Invoke();
+    private void HandleLMBPerformed(InputAction.CallbackContext ctx) => OnLMBPerformed?.Invoke();
+    private void HandleLMBCanceled(InputAction.CallbackContext ctx) => OnLMBCanceled?.Invoke();
     
     #endregion
 }

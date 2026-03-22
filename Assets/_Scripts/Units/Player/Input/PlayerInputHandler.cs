@@ -31,6 +31,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
         _frameInput.JumpDown = false;
         _frameInput.InteractDown = false;
+        _frameInput.AttackDown = false;
     }
 
     void SubscribeInput() 
@@ -54,7 +55,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         
         _inputManager.OnMousePositionChanged += HandleMousePosition;
         _inputManager.OnLookAroundToggled += HandleLookAroundInput;
-        _inputManager.OnAttackToggled += HandleAttackInput;
+        _inputManager.OnLMBStarted += HandleLMBStarted;
+        _inputManager.OnLMBPerformed += HandleLMBPerformed;
+        _inputManager.OnLMBCanceled += HandleLMBCanceled;
     }
 
     void UnsubscribeInput() 
@@ -78,7 +81,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         
         _inputManager.OnMousePositionChanged -= HandleMousePosition;
         _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
-        _inputManager.OnAttackToggled -= HandleAttackInput;
+        _inputManager.OnLMBStarted -= HandleLMBStarted;
+        _inputManager.OnLMBPerformed -= HandleLMBPerformed;
+        _inputManager.OnLMBCanceled -= HandleLMBCanceled;
     }
     
 
@@ -143,5 +148,18 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
     void HandleLookAroundInput(bool isLookingAround) => _frameInput.LookAroundHeld = isLookingAround;
 
-    void HandleAttackInput(bool isAttacking) => _frameInput.AttackHeld = isAttacking;
+    void HandleLMBStarted()
+    {
+        _frameInput.AttackDown = true;
+    }
+
+    void HandleLMBPerformed()
+    {
+        _frameInput.AttackHeld = true;
+    }
+
+    void HandleLMBCanceled()
+    {
+        _frameInput.AttackHeld = false;
+    }
 }

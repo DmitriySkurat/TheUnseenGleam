@@ -16,4 +16,5 @@ public struct FrameInput
     public Vector2 MousePosition;
     public bool LookAroundHeld;
     public bool AttackHeld;
+    public bool AttackDown;
 }
