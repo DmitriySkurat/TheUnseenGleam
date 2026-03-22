@@ -53,6 +53,7 @@ MonoBehaviour:
   minLightStrengthToCharge: 0.1
   chargeOnlyWhenGrounded: 1
   chargeCostPerSecond: 10
+  flickerCharge: 20
   minLightIntensity: 7
   maxLightIntensity: 20
 --- !u!1 &4801114399454441880

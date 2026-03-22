@@ -33,8 +33,6 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     private Light2D _light2D;
     private PlayerContext _ctx;
     private float _currentCharge;
-
-    private bool _isUsing;
     
     private bool HasEnoughChargeForUse => _currentCharge > 0;
     
@@ -69,14 +67,19 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     private void Update()
     {
         if (_ctx == null || _ctx.lightSensor == null || maxCharge <= 0f)
+        {
+            StopUsingMirror();
             return;
+        }
 
         if (!CanUseSelectedMirror())
+        {
+            StopUsingMirror();
             return;
+        }
 
         if (_ctx.input.AttackHeld && HasEnoughChargeForUse)
         {
-            _isUsing = true;
             SetLightActive(true);
             UpdateLight();
             UpdateLightPower();
@@ -84,9 +87,7 @@ public class MagicalMirror : MonoBehaviour, IInitializable
         }
         else
         {
-            _isUsing = false;
-            
-            SetLightActive(false);
+            StopUsingMirror();
         }    
 
         if (chargeOnlyWhenGrounded && !_ctx.grounded)
@@ -103,6 +104,11 @@ public class MagicalMirror : MonoBehaviour, IInitializable
             return;
 
         _currentCharge = Mathf.Min(maxCharge, _currentCharge + chargePerSecond * Time.deltaTime);
+    }
+
+    private void OnDisable()
+    {
+        StopUsingMirror();
     }
     
     private void UpdateLight()
@@ -148,6 +154,11 @@ public class MagicalMirror : MonoBehaviour, IInitializable
         _currentCharge = Mathf.Max(0f, _currentCharge - cost);
     
         Debug.Log($"Use magical mirror. Current charge: {_currentCharge}/{maxCharge}");
+    }
+
+    private void StopUsingMirror()
+    {
+        SetLightActive(false);
     }
 
     private bool CanUseSelectedMirror()
