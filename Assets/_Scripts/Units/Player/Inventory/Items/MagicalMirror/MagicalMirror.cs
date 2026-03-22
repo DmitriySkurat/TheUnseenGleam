@@ -13,6 +13,9 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     [SerializeField, Min(0f)] private float minLightStrengthToCharge = 0.1f;
     [SerializeField] private bool chargeOnlyWhenGrounded = true;
 
+    [Header("Usage")]
+    [SerializeField, Min(0f)] private float chargeCostPerUse = 25f;
+
     private PlayerContext _ctx;
     private PlayerLightSensor _lightExposureSensor;
 
@@ -33,8 +36,12 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     {
         if (_ctx == null || _lightExposureSensor == null || maxCharge <= 0f)
             return;
-            
-        Debug.Log($"current mirror charge: {_currentCharge}");
+
+        if (!CanUseSelectedMirror())
+            return;
+
+        if (_ctx.input.AttackDown)
+            Use();
 
         if (chargeOnlyWhenGrounded && !_ctx.grounded)
             return;
@@ -54,6 +61,27 @@ public class MagicalMirror : MonoBehaviour, IInitializable
 
     public void Use()
     {
+        if (!HasEnoughChargeForUse())
+        {
+            Debug.Log($"Magical mirror has not enough charge: {_currentCharge}/{maxCharge}");
+            return;
+        }
+
+        //_currentCharge = Mathf.Max(0f, _currentCharge - chargeCostPerUse);
         Debug.Log($"Use magical mirror. Current charge: {_currentCharge}/{maxCharge}");
+    }
+
+    private bool CanUseSelectedMirror()
+    {
+        return _ctx != null
+            && _ctx.SelectedHotbarItem != null
+            && _ctx.SelectedHotbarItem.itemName == ItemName.Mirror
+            && _ctx.inventory != null
+            && _ctx.inventory.Has(_ctx.SelectedHotbarItem);
+    }
+
+    private bool HasEnoughChargeForUse()
+    {
+        return chargeCostPerUse <= 0f || _currentCharge >= chargeCostPerUse;
     }
 }

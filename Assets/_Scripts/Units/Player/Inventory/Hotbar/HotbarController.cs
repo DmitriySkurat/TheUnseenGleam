@@ -7,7 +7,6 @@ public class HotbarController : MonoBehaviour, IInitializable
 
     [SerializeField] private int slotCount = 5;
     [SerializeField] private List<InventoryEntry> _slots;
-    [SerializeField] private MagicalMirror _magicalMirror;
 
     private PlayerContext _ctx;
 
@@ -17,7 +16,6 @@ public class HotbarController : MonoBehaviour, IInitializable
 
         EnsureSlots();
         RebindSlotsToInventory();
-        ResolveActions();
 
         _ctx.selectedHotbarSlot = -1;
         _ctx.selectedHotbarEntry = null;
@@ -69,10 +67,8 @@ public class HotbarController : MonoBehaviour, IInitializable
         switch (selectedItem.itemName)
         {
             case ItemName.Pebble:
-                // Pebble uses the existing hold/release aiming and throw flow.
-                break;
             case ItemName.Mirror:
-                UseMirror();
+                // Pebble and Mirror handle their own input flow.
                 break;
             default:
                 _ctx.inventory.TryUse(selectedItem, _ctx);
@@ -105,26 +101,6 @@ public class HotbarController : MonoBehaviour, IInitializable
         }
 
         _slots[freeIndex] = entry;
-    }
-
-    private void ResolveActions()
-    {
-        if (_magicalMirror == null)
-            _magicalMirror = GetComponentInChildren<MagicalMirror>(true);
-
-        if (_magicalMirror == null)
-            _magicalMirror = FindObjectOfType<MagicalMirror>();
-    }
-
-    private void UseMirror()
-    {
-        if (_magicalMirror == null)
-        {
-            Debug.LogWarning("MagicalMirror action is not configured.");
-            return;
-        }
-
-        _magicalMirror.Use();
     }
 
     private void SyncSelectedSlot()

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: KeyItem
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: 1
-  itemName: Key
+  itemName: 2
   sprite: {fileID: 0}
   type: 2
