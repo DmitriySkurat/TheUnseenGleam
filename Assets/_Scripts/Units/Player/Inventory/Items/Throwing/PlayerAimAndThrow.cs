@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerAimAndThrow : MonoBehaviour, IInitializable
 {
@@ -62,7 +61,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
             HandleHandRotation();
         }
 
-        HandleGunShooting(attackHeld);
+        HandleThrowing(attackHeld);
 
         if (!attackHeld)
         {
@@ -70,13 +69,6 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
         }
         _wasAttackHeld = attackHeld;
     }
-    
-    // private void HandleGunRotation()
-    // {
-    //     worldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-    //     direction = (worldPosition - (Vector2)gun.transform.position).normalized;
-    //     gun.transform.right = direction;
-    // }
     
     private void HandleHandRotation()
     {
@@ -86,10 +78,6 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
 
         var camera = Camera.main;
         if (camera == null) return;
-
-        // var screenPos = Mouse.current != null
-        //     ? Mouse.current.position.ReadValue()
-        //     : _ctx.input.MousePosition;
         
         var screenPos = _ctx.input.MousePosition;
 
@@ -111,7 +99,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
         _currentSpeed = _baseSpeed * Mathf.Lerp(1f, maxSpeedMultiplier, t);
     }
     
-    private void HandleGunShooting(bool attackHeld)
+    private void HandleThrowing(bool attackHeld)
     {
         if (_ctx == null) return;
         
