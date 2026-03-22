@@ -42,7 +42,10 @@ public class TrajectoryLine : MonoBehaviour, IInitializable
     {
         if (_lineRenderer == null) return;
         
-        if (_ctx == null || !_ctx.input.AttackHeld)
+        if (_ctx == null
+            || _ctx.SelectedHotbarItem == null
+            || _ctx.SelectedHotbarItem.itemName != ItemName.Pebble
+            || !_ctx.input.AttackHeld)
         {
             _lineRenderer.enabled = false;
             _lineRenderer.positionCount = 0;

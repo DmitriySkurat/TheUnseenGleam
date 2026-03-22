@@ -48,7 +48,14 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
     
     private void LateUpdate()
     {
-        var attackHeld = _ctx != null && _ctx.input.AttackHeld;
+        if (!CanUseSelectedPebble())
+        {
+            ResetAimState();
+            _wasAttackHeld = false;
+            return;
+        }
+
+        var attackHeld = _ctx.input.AttackHeld;
 
         if (attackHeld)
         {
@@ -59,8 +66,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
 
         if (!attackHeld)
         {
-            _currentAimDistance = 0f;
-            _currentSpeed = _baseSpeed;
+            ResetAimState();
         }
         _wasAttackHeld = attackHeld;
     }
@@ -112,6 +118,7 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
         if (_wasAttackHeld && !attackHeld)
         {
             if (_currentAimDistance < minThrowRadius) return;
+            if (!_ctx.inventory.TryUse(_ctx.SelectedHotbarItem, _ctx)) return;
 
             bulletInst = Instantiate(pebble, bulletSpawnPoint.position, hand.transform.rotation);
 
@@ -121,5 +128,20 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
                 pebbleBehavior.SetThrowStats(_currentSpeed, _baseGravity);
             }
         }
+    }
+
+    private bool CanUseSelectedPebble()
+    {
+        return _ctx != null
+            && _ctx.SelectedHotbarItem != null
+            && _ctx.SelectedHotbarItem.itemName == ItemName.Pebble
+            && _ctx.inventory != null
+            && _ctx.inventory.Has(_ctx.SelectedHotbarItem);
+    }
+
+    private void ResetAimState()
+    {
+        _currentAimDistance = 0f;
+        _currentSpeed = _baseSpeed;
     }
 }

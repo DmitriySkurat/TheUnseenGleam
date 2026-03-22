@@ -1,14 +1,14 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class HotbarController : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Player + 20;
-    
+
     [SerializeField] private int slotCount = 5;
-    
     [SerializeField] private List<InventoryEntry> _slots;
-    
+    [SerializeField] private MagicalMirror _magicalMirror;
+
     private PlayerContext _ctx;
 
     public void Initialize()
@@ -17,9 +17,13 @@ public class HotbarController : MonoBehaviour, IInitializable
 
         EnsureSlots();
         RebindSlotsToInventory();
-        
+        ResolveActions();
+
+        _ctx.selectedHotbarSlot = -1;
+        _ctx.selectedHotbarEntry = null;
+
         var entries = _ctx.inventory.GetEntries();
-        
+
         if (entries.Count > 0)
         {
             foreach (InventoryEntry cell in entries)
@@ -30,33 +34,49 @@ public class HotbarController : MonoBehaviour, IInitializable
         }
     }
 
-    void Update()
+    private void Update()
     {
+        if (_ctx == null)
+            return;
+
         OnSlotSelected(_ctx.input.SlotPressed);
+        SyncSelectedSlot();
+        HandlePrimaryAction();
     }
 
-    private void OnSlotSelected(int index)
+    private void OnSlotSelected(int pressedSlot)
     {
-        if (index < 0 || index >= _slots.Count)
+        if (pressedSlot <= 0)
             return;
 
-        UseSlot(index);
+        int slotIndex = pressedSlot - 1;
+        if (slotIndex < 0 || slotIndex >= _slots.Count)
+            return;
+
+        _ctx.selectedHotbarSlot = slotIndex;
+        _ctx.selectedHotbarEntry = RebindSlot(slotIndex);
     }
 
-    private void UseSlot(int index)
+    private void HandlePrimaryAction()
     {
-        var slot = _slots[index];
-
-        if (slot == null)
+        if (!_ctx.input.AttackDown)
             return;
 
-        if (!_ctx.inventory.TryUse(slot.item, _ctx))
+        var selectedItem = _ctx.SelectedHotbarItem;
+        if (selectedItem == null)
+            return;
+
+        switch (selectedItem.itemName)
         {
-            Debug.Log("There is no item in inventory");
-
-            // чистим слот если предмет закончился
-            if (!_ctx.inventory.Has(slot.item))
-                _slots[index] = null;
+            case ItemName.Pebble:
+                // Pebble uses the existing hold/release aiming and throw flow.
+                break;
+            case ItemName.Mirror:
+                UseMirror();
+                break;
+            default:
+                _ctx.inventory.TryUse(selectedItem, _ctx);
+                break;
         }
     }
 
@@ -87,6 +107,37 @@ public class HotbarController : MonoBehaviour, IInitializable
         _slots[freeIndex] = entry;
     }
 
+    private void ResolveActions()
+    {
+        if (_magicalMirror == null)
+            _magicalMirror = GetComponentInChildren<MagicalMirror>(true);
+
+        if (_magicalMirror == null)
+            _magicalMirror = FindObjectOfType<MagicalMirror>();
+    }
+
+    private void UseMirror()
+    {
+        if (_magicalMirror == null)
+        {
+            Debug.LogWarning("MagicalMirror action is not configured.");
+            return;
+        }
+
+        _magicalMirror.Use();
+    }
+
+    private void SyncSelectedSlot()
+    {
+        if (_ctx.selectedHotbarSlot < 0 || _ctx.selectedHotbarSlot >= _slots.Count)
+        {
+            _ctx.selectedHotbarEntry = null;
+            return;
+        }
+
+        _ctx.selectedHotbarEntry = RebindSlot(_ctx.selectedHotbarSlot);
+    }
+
     private void EnsureSlots()
     {
         if (_slots == null)
@@ -110,17 +161,21 @@ public class HotbarController : MonoBehaviour, IInitializable
         }
 
         for (int i = 0; i < _slots.Count; i++)
-        {
-            var slot = _slots[i];
-            if (slot == null || slot.item == null)
-            {
-                _slots[i] = null;
-                continue;
-            }
+            _slots[i] = RebindSlot(i);
+    }
 
-            var rebinding = FindInventoryEntry(slot.item, entries);
-            _slots[i] = rebinding;
+    private InventoryEntry RebindSlot(int index)
+    {
+        var slot = _slots[index];
+        if (slot == null || slot.item == null)
+        {
+            _slots[index] = null;
+            return null;
         }
+
+        var rebinding = FindInventoryEntry(slot.item, _ctx.inventory.GetEntries());
+        _slots[index] = rebinding;
+        return rebinding;
     }
 
     private InventoryEntry FindInventoryEntry(ItemData item, IReadOnlyList<InventoryEntry> entries)

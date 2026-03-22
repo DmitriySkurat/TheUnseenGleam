@@ -51,4 +51,9 @@ public class MagicalMirror : MonoBehaviour, IInitializable
 
         _currentCharge = Mathf.Min(maxCharge, _currentCharge + chargePerSecond * Time.deltaTime);
     }
+
+    public void Use()
+    {
+        Debug.Log($"Use magical mirror. Current charge: {_currentCharge}/{maxCharge}");
+    }
 }
