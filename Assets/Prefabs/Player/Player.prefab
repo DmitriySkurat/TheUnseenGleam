@@ -1,5 +1,60 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4502494994360253980
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6237396993407162830}
+  - component: {fileID: 7901497728446373927}
+  m_Layer: 8
+  m_Name: Mirror
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6237396993407162830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4502494994360253980}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9208377014202925448}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7901497728446373927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4502494994360253980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7492470a1b920804889c642c3d09fc65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MagicalMirror
+  hand: {fileID: 9208377014202925448}
+  lightSpawnPoint: {fileID: 7762092777318196455}
+  mirrorLightPrefab: {fileID: 3001410656907869080, guid: 1c99589f4e4acb646920d154da8ba4dd, type: 3}
+  maxCharge: 100
+  initialCharge: 0
+  chargePerSecond: 10
+  minLightStrengthToCharge: 0.1
+  chargeOnlyWhenGrounded: 1
+  chargeCostPerSecond: 10
+  minLightIntensity: 7
+  maxLightIntensity: 20
 --- !u!1 &4801114399454441880
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +280,7 @@ Transform:
   m_Children:
   - {fileID: 7762092777318196455}
   - {fileID: 5304274441437318728}
+  - {fileID: 6237396993407162830}
   m_Father: {fileID: 4059880455369286371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!212 &5656099302880776329

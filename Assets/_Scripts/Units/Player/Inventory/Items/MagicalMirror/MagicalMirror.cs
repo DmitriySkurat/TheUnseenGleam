@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class MagicalMirror : MonoBehaviour, IInitializable
 {
@@ -20,14 +21,19 @@ public class MagicalMirror : MonoBehaviour, IInitializable
 
     [Header("Usage")]
     [SerializeField, Min(0f)] private float chargeCostPerSecond = 10f;
+    [SerializeField] private float flickerCharge = 20f;
+
+    
+    [Header("Light Power")]
+    [SerializeField] private float minLightIntensity = 7f;
+    [SerializeField] private float maxLightIntensity = 20f;
     
     
     private GameObject _lightInstance;
-
+    private Light2D _light2D;
     private PlayerContext _ctx;
-
     private float _currentCharge;
-    
+
     private bool _isUsing;
     
     private bool HasEnoughChargeForUse => _currentCharge > 0;
@@ -51,6 +57,7 @@ public class MagicalMirror : MonoBehaviour, IInitializable
             return;
 
         _lightInstance = Instantiate(mirrorLightPrefab, lightSpawnPoint.position, lightSpawnPoint.rotation, lightSpawnPoint);
+        _light2D = _lightInstance.GetComponent<Light2D>();
     }
     
     private void SetLightActive(bool active)
@@ -72,6 +79,7 @@ public class MagicalMirror : MonoBehaviour, IInitializable
             _isUsing = true;
             SetLightActive(true);
             UpdateLight();
+            UpdateLightPower();
             Use();
         }
         else
@@ -98,23 +106,41 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     }
     
     private void UpdateLight()
-{
-    if (hand == null) return;
+    {
+        if (hand == null) return;
 
-    var camera = Camera.main;
-    if (camera == null) return;
+        var camera = Camera.main;
+        if (camera == null) return;
 
-    var screenPos = _ctx.input.MousePosition;
+        var screenPos = _ctx.input.MousePosition;
 
-    var camZ = -camera.transform.position.z;
-    var worldPosition = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, camZ));
+        var camZ = -camera.transform.position.z;
+        var worldPosition = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, camZ));
 
-    var handPos = (Vector2)hand.position;
-    var direction = ((Vector2)worldPosition - (Vector2)handPos).normalized;
+        var handPos = (Vector2)hand.position;
+        var direction = ((Vector2)worldPosition - (Vector2)handPos).normalized;
 
-    if (direction.sqrMagnitude > 0.0001f)
-        hand.up = direction;
-}
+        if (direction.sqrMagnitude > 0.0001f)
+            hand.up = direction;
+    }
+    
+    private void UpdateLightPower()
+    {
+        if (_light2D == null || _ctx.lightSensor == null)
+            return;
+
+        float strength = _ctx.lightSensor.CurrentStrength;
+        strength = Mathf.Clamp01(strength);
+
+        float intensity = Mathf.Lerp(minLightIntensity, maxLightIntensity, strength);
+
+        if (_currentCharge < flickerCharge)
+        {
+            intensity *= Random.Range(0.8f, 1f);
+        }
+
+        _light2D.intensity = intensity;
+    }
 
     public void Use()
     {

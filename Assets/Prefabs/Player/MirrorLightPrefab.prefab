@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5178092067882499128}
   - component: {fileID: 65441543128860994}
   m_Layer: 3
-  m_Name: Light 2D (7)
+  m_Name: MirrorLightPrefab
   m_TagString: LightSource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
