@@ -112,7 +112,12 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         if (canSeePlayer)
         {
             UpdateKnownPlayerPosition(_playerTransform.position);
-            if (_state != EnemyState.Chasing || !_usingVisualChase)
+            if (IsTraversingLink())
+            {
+                _state = EnemyState.Chasing;
+                ResetWait();
+            }
+            else if (_state != EnemyState.Chasing || !_usingVisualChase)
                 EnterChasing(useVisualContact: true);
         }
         else if (_state == EnemyState.Chasing && _hasDetectedPlayer && _playerContext != null && _playerContext.isHiding && _playerTransform != null)
@@ -121,6 +126,9 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         }
 
         _wasSeeingPlayerLastFrame = canSeePlayer;
+
+        if (IsTraversingLink())
+            return;
 
         switch (_state)
         {
@@ -155,11 +163,21 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         if (isPlayerNoise && _hasDetectedPlayer)
         {
             UpdateKnownPlayerPosition(noiseEvent.Position);
+            if (IsTraversingLink())
+            {
+                _state = EnemyState.Chasing;
+                ResetWait();
+                return;
+            }
+
             EnterChasing(useVisualContact: false);
             return;
         }
 
         if (_state == EnemyState.Chasing && !isPlayerNoise)
+            return;
+
+        if (IsTraversingLink())
             return;
 
         EnterInvestigating(noiseEvent.Position);
@@ -522,6 +540,11 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
 
         if (_playerContext != null)
             _playerTransform = _playerContext.transform;
+    }
+
+    private bool IsTraversingLink()
+    {
+        return enemy != null && enemy.State == PlatNavState.TraversingLink;
     }
 
     private bool IsPlayerNoise(GameObject source)
