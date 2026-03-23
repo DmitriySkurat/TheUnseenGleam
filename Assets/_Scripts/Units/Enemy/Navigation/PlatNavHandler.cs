@@ -89,11 +89,18 @@ namespace PlatNav
         // Repath timer
         private float _repathTimer;
         private int   _lastTargetSeg = -1;
+        private bool _hasManualDestination;
+        private Vector2 _manualDestination;
 
         public PlatNavState State => _state;
         public bool HasPath => _path.Count > 0;
 
-        public void SetTarget(Transform t) => target = t;
+        public void SetTarget(Transform t)
+        {
+            target = t;
+            if (t != null)
+                _hasManualDestination = false;
+        }
         public void SetBehaviour(PlatNavBehaviour b) => behaviour = b;
     
         
@@ -111,6 +118,7 @@ namespace PlatNav
         {
             _path.Clear();
             _pathIndex = 0;
+            _hasManualDestination = false;
             if (_state == PlatNavState.TraversingLink)
                 EndTraversal();
             _state = PlatNavState.Idle;
@@ -119,6 +127,8 @@ namespace PlatNav
         public bool MoveTo(Vector2 targetPosition, float speed)
         {
             walkSpeed = speed;
+            _hasManualDestination = true;
+            _manualDestination = targetPosition;
             if (target == null)
                 _walkTarget = targetPosition;
 
@@ -309,7 +319,9 @@ namespace PlatNav
             }
 
             // Fallback: walk toward target position projected onto this segment
-            if (target != null)
+            if (_hasManualDestination)
+                _walkTarget = ProjectOntoSegment(_curSegIndex, _manualDestination);
+            else if (target != null)
                 _walkTarget = ProjectOntoSegment(_curSegIndex, target.position);
             else
                 _walkTarget = SegmentCenter(_curSegIndex);
@@ -319,7 +331,11 @@ namespace PlatNav
         {
             if (!IsGrounded()) return; // wait for grounding
             
-            if (_pathIndex == _path.Count - 1 && target != null && behaviour == PlatNavBehaviour.FollowTarget)
+            if (_pathIndex == _path.Count - 1 && _hasManualDestination)
+            {
+                _walkTarget = ProjectOntoSegment(_curSegIndex, _manualDestination);
+            }
+            else if (_pathIndex == _path.Count - 1 && target != null && behaviour == PlatNavBehaviour.FollowTarget)
             {
                 _walkTarget = ProjectOntoSegment(_curSegIndex, target.position);
             }
