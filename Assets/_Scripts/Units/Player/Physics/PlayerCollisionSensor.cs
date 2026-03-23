@@ -60,6 +60,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
             _ctx.frameLeftGrounded = Time.time;
             _ctx.airbornePeakY = currentY;
             _ctx.landingRollEndTime = float.MinValue;
+            _ctx.landingRollDirection = 0f;
         } else {
             _ctx.grounded = groundHit;
             if (groundHit)
@@ -85,6 +86,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         _ctx.landingRollEndTime = didRoll
             ? Time.time + _ctx.stats.LandingRollDuration
             : float.MinValue;
+        _ctx.landingRollDirection = didRoll ? Mathf.Sign(_ctx.velocity.x != 0f ? _ctx.velocity.x : _ctx.input.Move.x) : 0f;
 
         EmitLandingNoise(fallHeight, didRoll);
         _ctx.airbornePeakY = landingY;

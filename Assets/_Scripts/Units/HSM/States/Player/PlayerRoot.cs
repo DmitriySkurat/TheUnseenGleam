@@ -69,6 +69,7 @@ namespace HSM {
             ctx.bufferedJumpUsable = false;
             ctx.coyoteUsable = false;
             ctx.landingRollEndTime = float.MinValue;
+            ctx.landingRollDirection = 0f;
             ctx.velocity.y = ctx.stats.JumpPower;
 
             // Emit jump noise from the HSM when the jump is actually executed.

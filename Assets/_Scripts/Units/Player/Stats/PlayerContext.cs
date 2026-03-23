@@ -30,6 +30,7 @@ public class PlayerContext
     public float currentFootstepInterval;
     public float airbornePeakY;
     public float lastFallHeight;
+    public float landingRollDirection;
     
     public bool isCrouching;
     public bool ceilingAbove;

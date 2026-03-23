@@ -44,7 +44,9 @@ namespace HSM {
 
             if (ctx.IsLandingRollActive)
             {
-                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0f, ctx.stats.LandingRollDeceleration * deltaTime);
+                float direction = ctx.landingRollDirection != 0f ? Mathf.Sign(ctx.landingRollDirection) : Mathf.Sign(ctx.velocity.x);
+                float speed = Mathf.Max(0f, Mathf.Abs(ctx.velocity.x) - ctx.stats.LandingRollDeceleration * deltaTime);
+                ctx.velocity.x = speed * direction;
                 return;
             }
 
