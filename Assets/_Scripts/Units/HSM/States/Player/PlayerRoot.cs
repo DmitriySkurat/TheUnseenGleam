@@ -68,6 +68,7 @@ namespace HSM {
             ctx.timeJumpWasPressed = 0;
             ctx.bufferedJumpUsable = false;
             ctx.coyoteUsable = false;
+            ctx.landingRollEndTime = float.MinValue;
             ctx.velocity.y = ctx.stats.JumpPower;
 
             // Emit jump noise from the HSM when the jump is actually executed.
@@ -91,6 +92,12 @@ namespace HSM {
         void HandleFootsteps(float deltaTime)
         {
             if (ctx.transform == null || ctx.stats == null)
+            {
+                _footstepTimer = 0f;
+                return;
+            }
+
+            if (ctx.IsLandingRollActive)
             {
                 _footstepTimer = 0f;
                 return;

@@ -53,7 +53,7 @@ namespace HSM {
         protected override State GetTransition() {
             if (ctx.isHiding) return Machine != null ? Machine.GetState<Hide>() : null;
             if (ctx.ceilingAbove) return null;
-            if (!ctx.input.CrouchHeld) 
+            if (!ctx.WantsCrouch) 
             {
                 //if (Mathf.Abs(ctx.input.Move.x) > 0.01f) return Machine != null ? Machine.GetState<Move>() : null;
                 if (ctx.HasMovementIntent) return Machine != null ? Machine.GetState<Move>() : null;

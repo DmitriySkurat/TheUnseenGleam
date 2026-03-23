@@ -28,6 +28,8 @@ public class PlayerContext
     public float stamina = 100f;
     public float currentNoiseRadius;
     public float currentFootstepInterval;
+    public float airbornePeakY;
+    public float lastFallHeight;
     
     public bool isCrouching;
     public bool ceilingAbove;
@@ -54,6 +56,8 @@ public class PlayerContext
     public float frameLeftGrounded = float.MinValue;
     public float movementGraceTimer;
     public float timeRunStarted;
+    public float timeCrouchWasPressed = float.MinValue;
+    public float landingRollEndTime = float.MinValue;
     
     // ===== PHYSICS =====
     public bool grounded;
@@ -66,5 +70,8 @@ public class PlayerContext
     public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown && grounded;
     public bool CanRun => stamina > stats.MinStaminaToRun;
     public bool HasMovementIntent => movementGraceTimer > 0f;
+    public bool HasLandingRollBuffered => stats != null && Time.time < timeCrouchWasPressed + stats.LandingRollBuffer;
+    public bool IsLandingRollActive => Time.time < landingRollEndTime;
+    public bool WantsCrouch => input.CrouchHeld || IsLandingRollActive;
     public ItemData SelectedHotbarItem => selectedHotbarEntry != null ? selectedHotbarEntry.item : null;
 }

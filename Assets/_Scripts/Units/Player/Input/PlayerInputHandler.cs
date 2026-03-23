@@ -114,6 +114,11 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
     void HandleCrouchInput(bool isCrouching)
     {
+        if (isCrouching && !_frameInput.CrouchHeld)
+        {
+            _ctx.timeCrouchWasPressed = Time.time;
+        }
+
         _frameInput.CrouchHeld = isCrouching;
     }
     

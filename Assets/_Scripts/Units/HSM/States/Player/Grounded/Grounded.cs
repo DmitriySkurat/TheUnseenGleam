@@ -42,6 +42,12 @@ namespace HSM {
         {
             if (ctx.stats == null) return;
 
+            if (ctx.IsLandingRollActive)
+            {
+                ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, 0f, ctx.stats.LandingRollDeceleration * deltaTime);
+                return;
+            }
+
             float targetSpeed = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.currentSpeedMultiplier;
 
             float accel = Mathf.Abs(ctx.input.Move.x) > 0.01f

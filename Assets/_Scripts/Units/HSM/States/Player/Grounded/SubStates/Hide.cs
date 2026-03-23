@@ -44,7 +44,7 @@ namespace HSM
         {
             if (!ctx.isHiding)
             {
-                if (ctx.input.CrouchHeld) return Machine != null ? Machine.GetState<Crouch>() : null;
+                if (ctx.WantsCrouch) return Machine != null ? Machine.GetState<Crouch>() : null;
                 if (ctx.HasMovementIntent) return Machine != null ? Machine.GetState<Move>() : null;
                 return Machine != null ? Machine.GetState<Idle>() : null;
             }

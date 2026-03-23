@@ -141,6 +141,43 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Noise radius for jumping")]
     [Min(0f)]
     public float JumpNoiseRadius = 3f;
+
+    [Header("LANDING")]
+    [Tooltip("Minimum fall height required before landing noise is emitted")]
+    [Min(0f)]
+    public float LandingNoiseMinFallHeight = 0.75f;
+
+    [Tooltip("Fall height that maps to the maximum landing noise radius")]
+    [Min(0.01f)]
+    public float LandingNoiseMaxFallHeight = 6f;
+
+    [Tooltip("Landing noise radius at the minimum configured fall height")]
+    [Min(0f)]
+    public float LandingNoiseMinRadius = 1.5f;
+
+    [Tooltip("Landing noise radius at the maximum configured fall height")]
+    [Min(0f)]
+    public float LandingNoiseMaxRadius = 6f;
+
+    [Tooltip("How long before touching the ground a crouch input can still trigger a landing roll")]
+    [Range(0f, 0.5f)]
+    public float LandingRollBuffer = 0.2f;
+
+    [Tooltip("Minimum fall height required to convert a landing into a roll")]
+    [Min(0f)]
+    public float LandingRollMinFallHeight = 1.5f;
+
+    [Tooltip("How long horizontal momentum is preserved during a landing roll")]
+    [Range(0.05f, 1f)]
+    public float LandingRollDuration = 0.35f;
+
+    [Tooltip("Horizontal deceleration applied while the landing roll is active")]
+    [Min(0f)]
+    public float LandingRollDeceleration = 45f;
+
+    [Tooltip("Multiplier applied to landing noise radius when the player rolls on landing")]
+    [Range(0f, 1f)]
+    public float LandingRollNoiseMultiplier = 0.45f;
     
     [Header("CLIMB")]
     [Tooltip("Multiplier applied to (vertical) MaxSpeed while climbing")]

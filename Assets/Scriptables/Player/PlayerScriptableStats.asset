@@ -54,5 +54,14 @@ MonoBehaviour:
   RunNoiseRadius: 4
   CrouchNoiseRadius: 1
   JumpNoiseRadius: 3
+  LandingNoiseMinFallHeight: 0.75
+  LandingNoiseMaxFallHeight: 6
+  LandingNoiseMinRadius: 1.5
+  LandingNoiseMaxRadius: 6
+  LandingRollBuffer: 0.2
+  LandingRollMinFallHeight: 1.5
+  LandingRollDuration: 0.35
+  LandingRollDeceleration: 45
+  LandingRollNoiseMultiplier: 0.45
   ClimbVerticalSpeedMultiplier: 0.5
   ClimbHorizontalSpeedMultiplier: 0.5
