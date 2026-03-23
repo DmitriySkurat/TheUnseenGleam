@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using PlatNav;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(PlatNavHandler))]
 [RequireComponent(typeof(AgentVision))]
@@ -22,6 +23,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField] private PlatNavHandler enemy;
     [SerializeField] private AgentVision vision;
     [SerializeField] private AgentHearing hearing;
+    [SerializeField] private AgentLightSensor lightSensor;
 
     [Header("Patrol")]
     [SerializeField] private Transform[] patrolPoints;
@@ -45,6 +47,10 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
 
     [Header("Return")]
     [SerializeField, Min(0f)] private float returnSpeed = 3f;
+
+    [Header("Patrol Under Light")]
+    [SerializeField, Min(0f)] private float lightEscapeDistance = 4f;
+    [SerializeField, Min(0f)] private float lightEscapeSpeed = 4.5f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
@@ -86,6 +92,8 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
             vision = GetComponent<AgentVision>();
         if (hearing == null)
             hearing = GetComponent<AgentHearing>();
+        if (lightSensor == null)
+            lightSensor = GetComponent<AgentLightSensor>();
 
         _playerContext = Services.Get<PlayerContext>();
         _playerTransform = _playerContext != null ? _playerContext.transform : null;
@@ -186,6 +194,9 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private void UpdatePatrol()
     {
         if (_patrolRoute == null || _patrolRoute.Length == 0)
+            return;
+
+        if (TryHandlePatrolLightResponse())
             return;
 
         if (_isWaiting)
@@ -560,6 +571,37 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         _lastKnownPlayerPosition = position;
         _hasKnownPlayerPosition = true;
         _hasDetectedPlayer = true;
+    }
+
+    private bool TryHandlePatrolLightResponse()
+    {
+        if (lightSensor == null)
+            return false;
+
+        if (!lightSensor.IsBlinded(out Light2D strongestLight, out _))
+            return false;
+
+        bool isMirrorLight = strongestLight != null && strongestLight.GetComponent<MirrorLightSource>() != null;
+        bool isStandingStill = _isWaiting || (enemy != null && enemy.State == PlatNavState.Idle && !enemy.HasPath);
+
+        if (isMirrorLight && isStandingStill)
+        {
+            ResetManualCommand();
+            return true;
+        }
+
+        if (isMirrorLight)
+            return false;
+
+        ResetWait();
+        Vector2 escapeTarget = (Vector2)transform.position + GetFacingDirection() * lightEscapeDistance;
+        TryMoveTo(escapeTarget, lightEscapeSpeed);
+        return true;
+    }
+
+    private Vector2 GetFacingDirection()
+    {
+        return transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
     }
 
     private static int GetClosestIndex(IReadOnlyList<Vector2> points, Vector2 worldPosition)

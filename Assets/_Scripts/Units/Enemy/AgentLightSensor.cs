@@ -54,6 +54,29 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
         _lightSystem = Services.Get<LightSystem>();
     }
 
+    public bool IsBlinded(out Light2D strongestLight, out float strength)
+    {
+        return IsBlindedAt(transform.position, out strongestLight, out strength);
+    }
+
+    public bool IsBlindedAt(Vector2 worldPosition, out Light2D strongestLight, out float strength)
+    {
+        strongestLight = null;
+        strength = 0f;
+
+        if (!reduceVisionFromLight || !blindWhenInStrongLight)
+            return false;
+
+        EnsureLightSystem();
+        if (_lightSystem == null)
+            return false;
+
+        if (!TryGetStrongestLightAt(worldPosition, out strongestLight, out strength))
+            return false;
+
+        return strength >= blindStartStrength;
+    }
+
     public float GetVisibilityMultiplier(Vector2 origin, Vector2 forward, float rayDistance, LayerMask occlusionMask)
     {
         if (!reduceVisionFromLight || rayDistance <= 0f)
@@ -229,6 +252,38 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
         }
 
         return maxStrength;
+    }
+
+    private bool TryGetStrongestLightAt(Vector2 worldPosition, out Light2D strongestLight, out float strongestStrength)
+    {
+        strongestLight = null;
+        strongestStrength = 0f;
+
+        if (_lightSystem == null)
+            return false;
+
+        var lights = _lightSystem.GetSpotLights();
+        if (lights.Count == 0)
+            return false;
+
+        for (int i = 0; i < lights.Count; i++)
+        {
+            var light = lights[i];
+            if (light == null || !light.isActiveAndEnabled)
+                continue;
+
+            if (!TrySampleLight(light, worldPosition, out LightSample sample))
+                continue;
+
+            float strength = EvaluatePointLight(light, sample);
+            if (strength <= strongestStrength)
+                continue;
+
+            strongestStrength = strength;
+            strongestLight = light;
+        }
+
+        return strongestLight != null;
     }
 
     private bool TrySampleLight(Light2D light, Vector2 worldPosition, out LightSample sample)

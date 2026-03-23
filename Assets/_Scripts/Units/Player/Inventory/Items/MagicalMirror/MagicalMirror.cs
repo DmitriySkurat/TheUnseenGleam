@@ -31,6 +31,7 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     
     private GameObject _lightInstance;
     private Light2D _light2D;
+    private LightSystem _lightSystem;
     private PlayerContext _ctx;
     private float _currentCharge;
     
@@ -42,6 +43,7 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
+        _lightSystem = Services.Get<LightSystem>();
 
         _currentCharge = maxCharge <= 0f ? 0f : Mathf.Clamp01(initialCharge) * maxCharge;
         
@@ -56,6 +58,11 @@ public class MagicalMirror : MonoBehaviour, IInitializable
 
         _lightInstance = Instantiate(mirrorLightPrefab, lightSpawnPoint.position, lightSpawnPoint.rotation, lightSpawnPoint);
         _light2D = _lightInstance.GetComponent<Light2D>();
+        if (_lightInstance != null && _lightInstance.GetComponent<MirrorLightSource>() == null)
+            _lightInstance.AddComponent<MirrorLightSource>();
+
+        if (_light2D != null)
+            _lightSystem?.RegisterSpotLight(_light2D);
     }
     
     private void SetLightActive(bool active)
@@ -109,6 +116,12 @@ public class MagicalMirror : MonoBehaviour, IInitializable
     private void OnDisable()
     {
         StopUsingMirror();
+    }
+
+    private void OnDestroy()
+    {
+        if (_light2D != null)
+            _lightSystem?.UnregisterSpotLight(_light2D);
     }
     
     private void UpdateLight()

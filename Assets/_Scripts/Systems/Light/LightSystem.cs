@@ -99,3 +99,7 @@ public class LightSystem : MonoBehaviour, ISceneService
         return light.lightType == Light2D.LightType.Point;
     }
 }
+
+public class MirrorLightSource : MonoBehaviour
+{
+}
