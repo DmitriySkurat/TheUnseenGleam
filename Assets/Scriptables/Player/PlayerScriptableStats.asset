@@ -60,6 +60,7 @@ MonoBehaviour:
   LandingNoiseMaxRadius: 6
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 1.5
+  LandingRollMinHorizontalSpeed: 8
   LandingRollDuration: 0.35
   LandingRollDeceleration: 45
   LandingRollNoiseMultiplier: 0.45

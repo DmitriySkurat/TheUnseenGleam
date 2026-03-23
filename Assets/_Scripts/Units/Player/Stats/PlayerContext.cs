@@ -28,7 +28,7 @@ public class PlayerContext
     public float stamina = 100f;
     public float currentNoiseRadius;
     public float currentFootstepInterval;
-    public float airbornePeakY;
+    public float airborneStartY;
     public float lastFallHeight;
     public float landingRollDirection;
     

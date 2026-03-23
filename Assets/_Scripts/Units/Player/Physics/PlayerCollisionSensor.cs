@@ -18,7 +18,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         
         _col = GetComponent<CapsuleCollider2D>();
         _ctx.coll = _col;
-        _ctx.airbornePeakY = transform.position.y;
+        _ctx.airborneStartY = transform.position.y;
         
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
     }
@@ -42,11 +42,6 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
         bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
 
-        if (!wasGrounded)
-        {
-            _ctx.airbornePeakY = Mathf.Max(_ctx.airbornePeakY, currentY);
-        }
-
         if (ceilingHit) _ctx.velocity.y = Mathf.Min(0, _ctx.velocity.y);
 
         if (!wasGrounded && groundHit) {
@@ -58,14 +53,14 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         } else if (wasGrounded && !groundHit) {
             _ctx.grounded = false;
             _ctx.frameLeftGrounded = Time.time;
-            _ctx.airbornePeakY = currentY;
+            _ctx.airborneStartY = currentY;
             _ctx.landingRollEndTime = float.MinValue;
             _ctx.landingRollDirection = 0f;
         } else {
             _ctx.grounded = groundHit;
             if (groundHit)
             {
-                _ctx.airbornePeakY = currentY;
+                _ctx.airborneStartY = currentY;
             }
         }
         
@@ -79,7 +74,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
 
     void HandleLanding(float landingY)
     {
-        float fallHeight = Mathf.Max(0f, _ctx.airbornePeakY - landingY);
+        float fallHeight = Mathf.Max(0f, _ctx.airborneStartY - landingY);
         _ctx.lastFallHeight = fallHeight;
 
         bool didRoll = ShouldStartLandingRoll(fallHeight);
@@ -89,7 +84,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         _ctx.landingRollDirection = didRoll ? Mathf.Sign(_ctx.velocity.x != 0f ? _ctx.velocity.x : _ctx.input.Move.x) : 0f;
 
         EmitLandingNoise(fallHeight, didRoll);
-        _ctx.airbornePeakY = landingY;
+        _ctx.airborneStartY = landingY;
     }
 
     bool ShouldStartLandingRoll(float fallHeight)
@@ -97,8 +92,9 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         if (_ctx.stats == null) return false;
         if (fallHeight < _ctx.stats.LandingRollMinFallHeight) return false;
         if (!_ctx.input.CrouchHeld && !_ctx.HasLandingRollBuffered) return false;
+        if (Mathf.Abs(_ctx.velocity.x) < _ctx.stats.LandingRollMinHorizontalSpeed) return false;
 
-        return Mathf.Abs(_ctx.velocity.x) > 0.1f || Mathf.Abs(_ctx.input.Move.x) > 0.1f;
+        return true;
     }
 
     void EmitLandingNoise(float fallHeight, bool didRoll)

@@ -140,7 +140,7 @@ public class PlayerScriptableStats : ScriptableObject
 
     [Tooltip("Noise radius for jumping")]
     [Min(0f)]
-    public float JumpNoiseRadius = 3f;
+    public float JumpStartNoiseRadius = 1.5f;
 
     [Header("LANDING")]
     [Tooltip("Minimum fall height required before landing noise is emitted")]
@@ -166,6 +166,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Minimum fall height required to convert a landing into a roll")]
     [Min(0f)]
     public float LandingRollMinFallHeight = 1.5f;
+
+    [Tooltip("Minimum horizontal speed required for a landing roll to start")]
+    [Min(0f)]
+    public float LandingRollMinHorizontalSpeed = 8f;
 
     [Tooltip("How long horizontal momentum is preserved during a landing roll")]
     [Range(0.05f, 1f)]

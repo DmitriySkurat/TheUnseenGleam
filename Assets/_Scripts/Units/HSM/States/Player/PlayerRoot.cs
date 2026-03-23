@@ -75,7 +75,7 @@ namespace HSM {
             // Emit jump noise from the HSM when the jump is actually executed.
             if (ctx.transform != null)
             {
-                _noiseSystem.EmitNoise(ctx.transform.position, ctx.stats.JumpNoiseRadius, ctx.transform.gameObject, NoiseType.Jump);
+                _noiseSystem.EmitNoise(ctx.transform.position, ctx.stats.JumpStartNoiseRadius, ctx.transform.gameObject, NoiseType.Jump);
             }
         }
 
