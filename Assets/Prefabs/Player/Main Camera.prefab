@@ -5042,6 +5042,12 @@ MonoBehaviour:
   moveOffset: 2
   runMoveOffsetMultiplier: 3
   moveOffsetSmooth: 3
+  edgeCheckForwardDistance: 0.75
+  edgeCheckDepth: 4
+  edgePeekMinDrop: 0.75
+  edgePeekDownOffset: 1
+  edgePeekSmooth: 4
+  edgeCheckHeightPadding: 0.05
   lookRange: 3
   returnSpeed: 5
   lookSensivity: 0.01
