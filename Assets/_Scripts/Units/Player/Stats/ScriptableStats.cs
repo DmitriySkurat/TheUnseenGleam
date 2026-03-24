@@ -19,6 +19,11 @@ public class PlayerScriptableStats : ScriptableObject
 
     [Tooltip("Minimum input required before a left or right is recognized. Avoids drifting with sticky controllers"), Range(0.01f, 0.99f)]
     public float HorizontalDeadZoneThreshold = 0.1f;
+    
+    [Header("HEALTH")]
+    [Tooltip("Max player Health")]
+    [Min(0)]
+    public int MaxPlayerHealth = 100;
 
     [Header("MOVEMENT")]
     [Tooltip("The top horizontal movement speed")]

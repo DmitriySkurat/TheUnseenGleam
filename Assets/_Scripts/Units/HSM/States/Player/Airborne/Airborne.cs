@@ -20,13 +20,22 @@ namespace HSM {
             return null;
         } 
 
-        protected override void OnEnter() {
+        protected override void OnEnter()
+        {
+            ctx.isFalling = true;
+            base.OnEnter();
             // TODO: Update Animator through ctx.anim
         }
 
         protected override void OnUpdate(float deltaTime) {
             if (ctx.stats != null) HandleHorizontal(deltaTime);
             base.OnUpdate(deltaTime);
+        }
+
+        protected override void OnExit()
+        {
+            ctx.isFalling = false;
+            base.OnExit();
         }
 
         void HandleHorizontal(float deltaTime) {

@@ -12,11 +12,11 @@ public class PlayerContext
     
     // ===== COMPONENTS =====
     public Animator anim;
-    //public Rigidbody2D rb;
     public Renderer renderer;
     public Collider2D coll;
     public Transform transform;
     //public AudioSource audio;
+    public Rigidbody2D rb; // ???
     public PlayerInventory inventory; // ???
     public PlayerLightSensor lightSensor; // ???
     public int selectedHotbarSlot = -1;
@@ -32,6 +32,7 @@ public class PlayerContext
     public float lastFallHeight;
     public float landingRollDirection;
     
+    public bool isFalling;
     public bool isCrouching;
     public bool ceilingAbove;
     public bool isInteracting; // for Complex interactables (may be in future)
@@ -48,7 +49,10 @@ public class PlayerContext
     // ===== LADDER =====
     public bool onLadder;
     public bool isClimbing;
+    
+    // ===== HEALTH =====
 
+    public PlayerHealth health;
     
     // ===== TIMERS =====
     public float timeInteractWasPressed;

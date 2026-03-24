@@ -22,6 +22,7 @@ namespace HSM {
         {
             _ctx = Services.Get<PlayerContext>();
             _ctx.transform = transform;
+            _ctx.rb = GetComponentInChildren<Rigidbody2D>();
             _ctx.anim = GetComponentInChildren<Animator>();
             _ctx.renderer = GetComponentInChildren<Renderer>();
             _ctx.lightSensor = GetComponentInChildren<PlayerLightSensor>(); 
