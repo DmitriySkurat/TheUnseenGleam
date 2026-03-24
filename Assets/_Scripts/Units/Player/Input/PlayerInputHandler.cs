@@ -16,6 +16,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager = Services.Get<InputManager>();
         
         _frameInput = new FrameInput();
+        SyncContextInput();
         
         SubscribeInput();
     }
@@ -25,13 +26,25 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         UnsubscribeInput();
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
-        _ctx.input = _frameInput;
-    
+        if (_ctx == null)
+            return;
+
         _frameInput.JumpDown = false;
         _frameInput.InteractDown = false;
         _frameInput.AttackDown = false;
+        _frameInput.SlotPressed = 0;
+
+        SyncContextInput();
+    }
+
+    void SyncContextInput()
+    {
+        if (_ctx == null)
+            return;
+
+        _ctx.input = _frameInput;
     }
 
     void SubscribeInput() 
@@ -91,10 +104,13 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     {
         _frameInput.Move = direction;
 
-        if (_ctx == null || _ctx.stats == null || !_ctx.stats.SnapInput) return;
+        if (_ctx != null && _ctx.stats != null && _ctx.stats.SnapInput)
+        {
+            _frameInput.Move.x = Mathf.Abs(_frameInput.Move.x) < _ctx.stats.HorizontalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.x);
+            _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _ctx.stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
+        }
 
-        _frameInput.Move.x = Mathf.Abs(_frameInput.Move.x) < _ctx.stats.HorizontalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.x);
-        _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _ctx.stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
+        SyncContextInput();
     }
 
     void HandleJumpStarted() 
@@ -104,12 +120,14 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
 
         _ctx.jumpToConsume = true;
         _ctx.timeJumpWasPressed = Time.time;
+        SyncContextInput();
     }
 
     void HandleJumpCanceled() 
     {
         _frameInput.JumpDown = false;
         _frameInput.JumpHeld = false;
+        SyncContextInput();
     }
     
     void HandleCrouchInput(bool isCrouching)
@@ -120,11 +138,13 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         }
 
         _frameInput.CrouchHeld = isCrouching;
+        SyncContextInput();
     }
     
     void HandleRunInput(bool isRunning)
     {
         _frameInput.RunHeld = isRunning;
+        SyncContextInput();
     }
     
     void HandleInteractStarted()
@@ -133,38 +153,51 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.InteractHeld = true;
         
         _ctx.timeInteractWasPressed = Time.time;
+        SyncContextInput();
     }
     
     void HandleInteractCanceled()
     {
         _frameInput.InteractDown = false;
         _frameInput.InteractHeld = false;
+        SyncContextInput();
     }
 
-    void HandleSlot1() { _frameInput.SlotPressed = 1; }
-    void HandleSlot2() { _frameInput.SlotPressed = 2; }
-    void HandleSlot3() { _frameInput.SlotPressed = 3; }
-    void HandleSlot4() { _frameInput.SlotPressed = 4; }
-    void HandleSlot5() { _frameInput.SlotPressed = 5; }
+    void HandleSlot1() { _frameInput.SlotPressed = 1; SyncContextInput(); }
+    void HandleSlot2() { _frameInput.SlotPressed = 2; SyncContextInput(); }
+    void HandleSlot3() { _frameInput.SlotPressed = 3; SyncContextInput(); }
+    void HandleSlot4() { _frameInput.SlotPressed = 4; SyncContextInput(); }
+    void HandleSlot5() { _frameInput.SlotPressed = 5; SyncContextInput(); }
     
     
     // Mouse
-    void HandleMousePosition(Vector2 mousePosition) => _frameInput.MousePosition = mousePosition;
+    void HandleMousePosition(Vector2 mousePosition)
+    {
+        _frameInput.MousePosition = mousePosition;
+        SyncContextInput();
+    }
     
-    void HandleLookAroundInput(bool isLookingAround) => _frameInput.LookAroundHeld = isLookingAround;
+    void HandleLookAroundInput(bool isLookingAround)
+    {
+        _frameInput.LookAroundHeld = isLookingAround;
+        SyncContextInput();
+    }
 
     void HandleLMBStarted()
     {
         _frameInput.AttackDown = true;
+        SyncContextInput();
     }
 
     void HandleLMBPerformed()
     {
         _frameInput.AttackHeld = true;
+        SyncContextInput();
     }
 
     void HandleLMBCanceled()
     {
         _frameInput.AttackHeld = false;
+        SyncContextInput();
     }
 }
