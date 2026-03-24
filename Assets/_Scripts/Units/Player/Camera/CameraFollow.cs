@@ -31,6 +31,11 @@ public class CameraFollow : MonoBehaviour, IInitializable
     [SerializeField] private float edgePeekSmooth = 4f;
     [SerializeField] private float edgeCheckHeightPadding = 0.05f;
 
+    [Header("Falling")]
+    [SerializeField] private float minFallingSpeed = 5f;
+    [SerializeField] private float fallingDownOffset = 0.5f;
+    [SerializeField] private float fallingOffsetSmooth = 6f;
+
     [Header("Look Around")]
     [SerializeField] private float lookRange = 3f;
     [SerializeField] private float returnSpeed = 5f;
@@ -40,6 +45,7 @@ public class CameraFollow : MonoBehaviour, IInitializable
     private float _currentFacingOffset;
     private float _currentMoveOffset;
     private float _currentEdgePeekOffsetY;
+    private float _currentFallingOffsetY;
     private float _facingSign = 1f;
     private bool _isLookingAround;
     private bool _wasLookingAround;
@@ -102,7 +108,13 @@ public class CameraFollow : MonoBehaviour, IInitializable
         else
             _currentEdgePeekOffsetY = Mathf.Lerp(_currentEdgePeekOffsetY, targetEdgePeekOffsetY, Time.deltaTime * edgePeekSmooth);
 
-        Vector3 followOffset = new Vector3(_currentFacingOffset + _currentMoveOffset, _currentEdgePeekOffsetY, 0f);
+        float targetFallingOffsetY = EvaluateFallingOffsetY();
+        if (fallingOffsetSmooth <= 0f)
+            _currentFallingOffsetY = targetFallingOffsetY;
+        else
+            _currentFallingOffsetY = Mathf.Lerp(_currentFallingOffsetY, targetFallingOffsetY, Time.deltaTime * fallingOffsetSmooth);
+
+        Vector3 followOffset = new Vector3(_currentFacingOffset + _currentMoveOffset, _currentEdgePeekOffsetY + _currentFallingOffsetY, 0f);
 
         if (_isLookingAround)
         {
@@ -136,7 +148,7 @@ public class CameraFollow : MonoBehaviour, IInitializable
     {
         if (target == null) return;
 
-        Vector3 followOffset = new Vector3(_currentFacingOffset + _currentMoveOffset, _currentEdgePeekOffsetY, 0f);
+        Vector3 followOffset = new Vector3(_currentFacingOffset + _currentMoveOffset, _currentEdgePeekOffsetY + _currentFallingOffsetY, 0f);
         Vector3 desiredPos = target.position + offset + followOffset + _currentOffset;
         transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * chaseSpeed);
     }
@@ -163,6 +175,24 @@ public class CameraFollow : MonoBehaviour, IInitializable
 
         float peekStrength = Mathf.InverseLerp(edgePeekMinDrop, edgeCheckDepth, dropDepth);
         return -edgePeekDownOffset * peekStrength;
+    }
+
+    private float EvaluateFallingOffsetY()
+    {
+        if (_ctx == null || target == null)
+            return 0f;
+
+        // Смещение камеры вниз только при значительном падении
+        if (!_ctx.grounded && _targetRb != null)
+        {
+            float fallSpeed = Mathf.Abs(_targetRb.linearVelocity.y);
+            if (fallSpeed >= minFallingSpeed)
+            {
+                return -fallingDownOffset;
+            }
+        }
+
+        return 0f;
     }
 
     private Vector2 GetCenteredLookInput()

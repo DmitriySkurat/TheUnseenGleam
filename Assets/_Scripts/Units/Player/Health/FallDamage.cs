@@ -5,14 +5,16 @@ public class FallDamage : MonoBehaviour, IInitializable
     public InitializationOrder Order => InitializationOrder.Player + 20;
     
     [Header("Settings")]
-    [SerializeField] private float minFallHeight = 3f;
-    [SerializeField] private float damageMultiplier = 10f;
-    
+    [SerializeField] private float minImpactSpeed = 10f;   // безопасная скорость
+    [SerializeField] private float damageMultiplier = 2f;  // множитель урона
+    [SerializeField] private float lethalSpeed = 25f;      // мгновенная смерть (опционально)
+
     private PlayerContext _ctx;
     private Rigidbody2D _rb;
-    
-    private float _fallStartY;
-    
+
+    private float _maxFallSpeed;
+    private bool _wasGrounded;
+
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
@@ -21,25 +23,42 @@ public class FallDamage : MonoBehaviour, IInitializable
 
     private void Update()
     {
-        // Начало падения
-        if (_rb.linearVelocity.y < -0.1f && !_ctx.isFalling)
+        bool grounded = _ctx.grounded;
+        float yVel = _rb.linearVelocity.y;
+
+        // 📉 В воздухе — накапливаем максимальную скорость падения
+        if (!grounded && yVel < -0.1f)
         {
-            _ctx.isFalling = true;
-            _fallStartY = transform.position.y;
+            _maxFallSpeed = Mathf.Max(_maxFallSpeed, Mathf.Abs(yVel));
         }
 
-        // Приземление
-        if (_ctx.isFalling && Mathf.Abs(_rb.linearVelocity.y) < 0.01f)
+        // 🟢 МОМЕНТ ПРИЗЕМЛЕНИЯ (было в воздухе → стало на земле)
+        if (!_wasGrounded && grounded)
         {
-            float fallDistance = _fallStartY - transform.position.y;
-
-            if (fallDistance > minFallHeight)
-            {
-                float damage = (fallDistance - minFallHeight) * damageMultiplier;
-                _ctx.health.TakeDamage(damage);
-            }
-
-            _ctx.isFalling = false;
+            ApplyFallDamage();
+            _maxFallSpeed = 0f;
         }
+
+        _wasGrounded = grounded;
+    }
+
+    private void ApplyFallDamage()
+    {
+        // мгновенная смерть
+        if (_maxFallSpeed >= lethalSpeed)
+        {
+            _ctx.health.TakeDamage(9999f);
+            Debug.Log($"💀 Lethal fall! Speed: {_maxFallSpeed:F1}");
+            return;
+        }
+
+        // обычный урон
+        if (_maxFallSpeed < minImpactSpeed) return;
+
+        float damage = (_maxFallSpeed - minImpactSpeed) * damageMultiplier;
+
+        _ctx.health.TakeDamage(damage);
+
+        Debug.Log($"Fall damage: {damage:F1}, impact speed: {_maxFallSpeed:F1}");
     }
 }

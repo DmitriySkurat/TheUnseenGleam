@@ -32,7 +32,6 @@ public class PlayerContext
     public float lastFallHeight;
     public float landingRollDirection;
     
-    public bool isFalling;
     public bool isCrouching;
     public bool ceilingAbove;
     public bool isInteracting; // for Complex interactables (may be in future)

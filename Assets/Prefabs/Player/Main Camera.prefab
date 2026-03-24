@@ -5048,6 +5048,9 @@ MonoBehaviour:
   edgePeekDownOffset: 1
   edgePeekSmooth: 4
   edgeCheckHeightPadding: 0.05
+  minFallingSpeed: 32
+  fallingDownOffset: 8
+  fallingOffsetSmooth: 6
   lookRange: 3
   returnSpeed: 5
   lookSensivity: 0.01

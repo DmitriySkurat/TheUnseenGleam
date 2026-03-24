@@ -22,7 +22,6 @@ namespace HSM {
 
         protected override void OnEnter()
         {
-            ctx.isFalling = true;
             base.OnEnter();
             // TODO: Update Animator through ctx.anim
         }
@@ -34,7 +33,6 @@ namespace HSM {
 
         protected override void OnExit()
         {
-            ctx.isFalling = false;
             base.OnExit();
         }
 
