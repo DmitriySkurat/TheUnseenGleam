@@ -25,7 +25,7 @@ namespace HSM {
 
         protected override State GetTransition() 
         {
-            if (ctx.onLadder && ctx.input.Move.y > 0.1f) return Machine.GetState<Climb>();
+            if (ctx.OnClimbable && ctx.input.Move.y > 0.1f) return Machine.GetState<Climb>();
             if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
             
             return null;

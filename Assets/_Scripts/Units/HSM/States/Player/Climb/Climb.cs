@@ -39,7 +39,7 @@ namespace HSM
             if (ctx.grounded && ctx.input.Move.y <= 0)
                 return Machine.GetState<Grounded>();
 
-            if (!ctx.onLadder)
+            if (!ctx.OnClimbable)
                 return Machine.GetState<Airborne>();
 
             return null;

@@ -30,7 +30,7 @@ namespace HSM {
         {
             if(!ctx.isAlive) return Machine != null ? Machine.GetState<Death>() : null;
             
-            if (ctx.onLadder) return null;
+            if (ctx.OnClimbable) return null;
             if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
             
             return null;
