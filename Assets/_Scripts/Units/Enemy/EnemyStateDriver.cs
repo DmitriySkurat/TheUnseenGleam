@@ -128,10 +128,6 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
             else if (_state != EnemyState.Chasing || !_usingVisualChase)
                 EnterChasing(useVisualContact: true);
         }
-        else if (_state == EnemyState.Chasing && _hasDetectedPlayer && _playerContext != null && _playerContext.isHiding && _playerTransform != null)
-        {
-            UpdateKnownPlayerPosition(_playerTransform.position);
-        }
 
         _wasSeeingPlayerLastFrame = canSeePlayer;
 
