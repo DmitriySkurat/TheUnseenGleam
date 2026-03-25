@@ -187,6 +187,23 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Multiplier applied to landing noise radius when the player rolls on landing")]
     [Range(0f, 1f)]
     public float LandingRollNoiseMultiplier = 0.45f;
+
+    [Header("FALL DAMAGE")]
+    [Tooltip("Minimum fall height before taking damage")]
+    [Min(0f)]
+    public float FallDamageMinHeight = 1.5f;
+
+    [Tooltip("Damage taken per unit of fall height")]
+    [Min(0f)]
+    public float FallDamagePerUnit = 5f;
+
+    [Tooltip("Fall height that causes instant death")]
+    [Min(0f)]
+    public float FallDamageLethalHeight = 10f;
+
+    [Tooltip("Damage multiplier when successfully rolling on landing (0-1, where 1 is no reduction)")]
+    [Range(0f, 1f)]
+    public float FallDamageRollMultiplier = 0.35f;
     
     [Header("CLIMB")]
     [Tooltip("Multiplier applied to (vertical) MaxSpeed while climbing")]

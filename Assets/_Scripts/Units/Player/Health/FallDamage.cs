@@ -3,62 +3,96 @@ using UnityEngine;
 public class FallDamage : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Player + 20;
-    
-    [Header("Settings")]
-    [SerializeField] private float minImpactSpeed = 10f;   // безопасная скорость
-    [SerializeField] private float damageMultiplier = 2f;  // множитель урона
-    [SerializeField] private float lethalSpeed = 25f;      // мгновенная смерть (опционально)
 
     private PlayerContext _ctx;
     private Rigidbody2D _rb;
 
-    private float _maxFallSpeed;
+    private float _maxHeightY;      // максимальная высота достигнутая во время падения
+    private float _airborneStartY;  // высота в начале полета
     private bool _wasGrounded;
+    private bool _isTracking;       // след ли мы активно за падением
 
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
         _rb = _ctx.rb;
+        
+        if (_ctx != null && _ctx.transform != null)
+        {
+            _maxHeightY = _ctx.transform.position.y;
+        }
     }
 
     private void Update()
     {
-        bool grounded = _ctx.grounded;
-        float yVel = _rb.linearVelocity.y;
+        if (_ctx == null || _ctx.transform == null) return;
 
-        // 📉 В воздухе — накапливаем максимальную скорость падения
-        if (!grounded && yVel < -0.1f)
+        bool grounded = _ctx.grounded;
+        float currentY = _ctx.transform.position.y;
+
+        // 🟠 ВЗЛЕТ (было на земле → забыл на земле)
+        if (_wasGrounded && !grounded)
         {
-            _maxFallSpeed = Mathf.Max(_maxFallSpeed, Mathf.Abs(yVel));
+            _airborneStartY = currentY;
+            _maxHeightY = currentY;
+            _isTracking = true;
+        }
+
+        // 📈 В воздухе — отслеживаем максимальную высоту
+        if (_isTracking && !grounded && currentY > _maxHeightY)
+        {
+            _maxHeightY = currentY;
         }
 
         // 🟢 МОМЕНТ ПРИЗЕМЛЕНИЯ (было в воздухе → стало на земле)
-        if (!_wasGrounded && grounded)
+        if (!_wasGrounded && grounded && _isTracking)
         {
-            ApplyFallDamage();
-            _maxFallSpeed = 0f;
+            ApplyFallDamage(currentY);
+            _isTracking = false;
         }
 
         _wasGrounded = grounded;
     }
 
-    private void ApplyFallDamage()
+    private void ApplyFallDamage(float landingY)
     {
-        // мгновенная смерть
-        if (_maxFallSpeed >= lethalSpeed)
+        if (_ctx == null || _ctx.stats == null)
+            return;
+
+        float fallHeight = Mathf.Max(0f, _maxHeightY - landingY);
+
+        // Игнорируем малые падения
+        if (fallHeight < _ctx.stats.FallDamageMinHeight)
         {
-            _ctx.health.TakeDamage(9999f);
-            Debug.Log($"💀 Lethal fall! Speed: {_maxFallSpeed:F1}");
+            Debug.Log($"Fall too short: {fallHeight:F2}м (требуется {_ctx.stats.FallDamageMinHeight:F2}м)");
             return;
         }
 
-        // обычный урон
-        if (_maxFallSpeed < minImpactSpeed) return;
+        // Проверяем, выполнил ли игрок кувырок при приземлении
+        bool didPerformRoll = _ctx.IsLandingRollActive;
 
-        float damage = (_maxFallSpeed - minImpactSpeed) * damageMultiplier;
+        // Мгновенная смерть при очень высоком падении
+        if (fallHeight >= _ctx.stats.FallDamageLethalHeight)
+        {
+            _ctx.health.TakeDamage(9999f);
+            Debug.Log($"💀 Летальное падение! Высота: {fallHeight:F2}м");
+            return;
+        }
+
+        // Вычисляем базовый урон
+        float damage = (fallHeight - _ctx.stats.FallDamageMinHeight) * _ctx.stats.FallDamagePerUnit;
+
+        // Если игрок выполнил кувырок, урон значительно меньше
+        if (didPerformRoll)
+        {
+            damage *= _ctx.stats.FallDamageRollMultiplier;
+            Debug.Log($"✅ Кувырок выполнен! Урон падения: {damage:F1} (высота {fallHeight:F2}м, урон без кувырка был бы {damage / _ctx.stats.FallDamageRollMultiplier:F1})");
+        }
+        else
+        {
+            Debug.Log($"❌ Кувырок НЕ выполнен! Урон падения: {damage:F1} (высота {fallHeight:F2}м)");
+        }
 
         _ctx.health.TakeDamage(damage);
-
-        Debug.Log($"Fall damage: {damage:F1}, impact speed: {_maxFallSpeed:F1}");
     }
 }
