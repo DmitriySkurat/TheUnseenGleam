@@ -21,6 +21,7 @@ MonoBehaviour:
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
+  MaxPlayerHealth: 100
   MaxSpeed: 14
   Acceleration: 120
   GroundDeceleration: 50
@@ -64,5 +65,9 @@ MonoBehaviour:
   LandingRollDuration: 0.35
   LandingRollDeceleration: 45
   LandingRollNoiseMultiplier: 0.45
+  FallDamageMinHeight: 10
+  FallDamagePerUnit: 5
+  FallDamageLethalHeight: 40
+  FallDamageRollMultiplier: 0.35
   ClimbVerticalSpeedMultiplier: 0.5
   ClimbHorizontalSpeedMultiplier: 0.5

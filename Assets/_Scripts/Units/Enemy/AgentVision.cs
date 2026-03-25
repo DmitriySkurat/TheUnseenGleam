@@ -15,7 +15,7 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     [SerializeField, Min(0f)] private float viewDistance = 5f;
     
-    [SerializeField, Min(0f)] private float detectionRadius = 1f;
+    [SerializeField, Min(0f)] private float detectionRadius = 2f;
 
     [Header("Vision Limits")]
     [Range(0f, 360f)]

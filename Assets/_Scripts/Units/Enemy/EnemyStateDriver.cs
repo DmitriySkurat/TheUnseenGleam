@@ -79,6 +79,9 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private bool _hasDetectedPlayer;
     private bool _usingVisualChase;
     private bool _wasSeeingPlayerLastFrame;
+    private bool _blindRunLocked;
+    private Vector2 _blindRunDirection;
+    private Vector2 _blindRunTarget;
     private bool _isWaiting;
     private float _waitTimer;
     private Vector2 _manualDestination;
@@ -89,6 +92,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private int _searchDirection = 1;
     private float _searchTimer;
     private Collider2D _selfCollider;
+    private Rigidbody2D _rb;
     private float _nextContactDamageTime;
 
     public void Initialize()
@@ -102,6 +106,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         if (lightSensor == null)
             lightSensor = GetComponent<AgentLightSensor>();
         _selfCollider = GetComponent<Collider2D>();
+        _rb = GetComponent<Rigidbody2D>();
 
         _playerContext = Services.Get<PlayerContext>();
         _playerTransform = _playerContext != null ? _playerContext.transform : null;
@@ -124,6 +129,12 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     {
         ResolvePlayerTransform();
         TryApplyContactDamage();
+
+        if (TryHandleBlindRun())
+        {
+            _wasSeeingPlayerLastFrame = false;
+            return;
+        }
 
         bool canSeePlayer = vision != null && vision.CanSeePlayer && _playerTransform != null;
         if (canSeePlayer)
@@ -573,6 +584,9 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
 
     private void UpdateKnownPlayerPosition(Vector2 position)
     {
+        if (lightSensor != null && lightSensor.IsBlindedAt(position, out _, out _))
+            return;
+
         _lastKnownPlayerPosition = position;
         _hasKnownPlayerPosition = true;
         _hasDetectedPlayer = true;
@@ -581,6 +595,9 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private void TryApplyContactDamage()
     {
         if (contactDamage <= 0f)
+            return;
+
+        if (lightSensor != null && lightSensor.IsBlinded(out _, out _))
             return;
 
         if (Time.time < _nextContactDamageTime)
@@ -628,6 +645,42 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         ResetWait();
         Vector2 escapeTarget = (Vector2)transform.position + GetFacingDirection() * lightEscapeDistance;
         TryMoveTo(escapeTarget, lightEscapeSpeed);
+        return true;
+    }
+
+    private bool TryHandleBlindRun()
+    {
+        if (lightSensor == null)
+        {
+            _blindRunLocked = false;
+            return false;
+        }
+
+        if (!lightSensor.IsBlinded(out _, out _))
+        {
+            _blindRunLocked = false;
+            return false;
+        }
+
+        if (!_blindRunLocked)
+        {
+            _blindRunDirection = GetFacingDirection();
+            _blindRunLocked = true;
+            ResetWait();
+            StopVisualChase();
+            ResetManualCommand();
+            if (enemy != null)
+                enemy.Abort();
+            _hasKnownPlayerPosition = false;
+        }
+
+        if (_rb != null)
+        {
+            _rb.linearVelocity = new Vector2(_blindRunDirection.x * lightEscapeSpeed, _rb.linearVelocity.y);
+            Vector3 scale = transform.localScale;
+            scale.x = _blindRunDirection.x >= 0f ? 1f : -1f;
+            transform.localScale = scale;
+        }
         return true;
     }
 
