@@ -27,7 +27,14 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
     void HandleGravity(float deltaTime) 
     {
         if (_ctx.isClimbing)
+        {
+            if (_ctx.onLian)
+            {
+                float target = -_ctx.stats.LianSlipSpeed;
+                _ctx.velocity.y = Mathf.MoveTowards(_ctx.velocity.y, target, _ctx.stats.LianSlipAcceleration * deltaTime);
+            }
             return;
+        }
 
         if (_ctx.grounded && _ctx.velocity.y <= 0f) {
             _ctx.velocity.y = _ctx.stats.GroundingForce;

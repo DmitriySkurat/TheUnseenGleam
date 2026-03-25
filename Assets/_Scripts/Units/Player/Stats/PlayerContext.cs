@@ -48,6 +48,7 @@ public class PlayerContext
     // ===== LADDER =====
     public bool onLadder;
     public bool isClimbing;
+    public bool onLian;
     
     // ===== HEALTH =====
     public PlayerHealth health;

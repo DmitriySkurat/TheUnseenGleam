@@ -213,6 +213,15 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Multiplier applied to (horizontal) MaxSpeed while climbing")]
     [Range(0f, 2f)]
     public float ClimbHorizontalSpeedMultiplier = 0.5f;
+
+    [Header("LIAN")]
+    [Tooltip("Target downward speed while climbing on lianas")]
+    [Min(0f)]
+    public float LianSlipSpeed = 2f;
+
+    [Tooltip("How quickly the player slides down to the target liana slip speed")]
+    [Min(0f)]
+    public float LianSlipAcceleration = 12f;
     
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]
