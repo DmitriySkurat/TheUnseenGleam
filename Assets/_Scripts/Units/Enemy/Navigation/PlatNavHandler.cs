@@ -127,10 +127,19 @@ namespace PlatNav
         public bool MoveTo(Vector2 targetPosition, float speed)
         {
             walkSpeed = speed;
-            _hasManualDestination = true;
-            _manualDestination = targetPosition;
+            
+            // Keep a fixed destination only when there is no tracked target.
+            // When target is assigned, segment walking should follow live target position.
             if (target == null)
+            {
+                _hasManualDestination = true;
+                _manualDestination = targetPosition;
                 _walkTarget = targetPosition;
+            }
+            else
+            {
+                _hasManualDestination = false;
+            }
 
             int goalSeg = FindNearestSegment(targetPosition);
             if (goalSeg >= 0 && RequestPath(goalSeg)) return true;
