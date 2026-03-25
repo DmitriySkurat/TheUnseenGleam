@@ -366,6 +366,8 @@ GameObject:
   - component: {fileID: 7049304287584125572}
   - component: {fileID: 8915404737102142867}
   - component: {fileID: 5490602481864773789}
+  - component: {fileID: 1124396798477559947}
+  - component: {fileID: 3687784705825962857}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -726,3 +728,27 @@ MonoBehaviour:
   occlusionMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1124396798477559947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1f0955c92426da469e504ec7e87160e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+--- !u!114 &3687784705825962857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bad0de632c5cb46bf98d20a06b2f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FallDamage

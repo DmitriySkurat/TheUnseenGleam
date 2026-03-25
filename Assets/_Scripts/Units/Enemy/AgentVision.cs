@@ -14,6 +14,8 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField] private float viewAngle = 90f;
 
     [SerializeField, Min(0f)] private float viewDistance = 5f;
+    
+    [SerializeField, Min(0f)] private float detectionRadius = 1f;
 
     [Header("Vision Limits")]
     [Range(0f, 360f)]
@@ -28,6 +30,7 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private Color gizmoColor = Color.yellow;
     [SerializeField] private Color maxGizmoColor = new Color(0.2f, 0.8f, 1f, 0.6f);
+    [SerializeField] private Color detectionRadiusColor = new Color(0.0f, 1f, 0.5f, 0.3f);
     [SerializeField] private Color lastSeenColor = new Color(1f, 0.4f, 0.1f, 0.9f);
     [SerializeField, Min(0f)] private float lastSeenMarkerRadius = 0.2f;
     
@@ -98,13 +101,18 @@ public class AgentVision : MonoBehaviour, IInitializable
         if (_playerContext != null && _playerContext.isHiding)
             return false;
 
+        Vector2 origin = transform.position;
+        Vector2 toTarget = targetPosition - origin;
+        
+        // Check if player is within detection radius
+        if (detectionRadius > 0f && toTarget.sqrMagnitude <= detectionRadius * detectionRadius)
+            return true;
+
         float baseViewDistance = GetEffectiveViewDistance();
         float effectiveViewAngle = GetEffectiveViewAngle();
         if (baseViewDistance <= 0f || effectiveViewAngle <= 0f)
             return false;
 
-        Vector2 origin = transform.position;
-        Vector2 toTarget = targetPosition - origin;
         float toTargetSqr = toTarget.sqrMagnitude;
         if (toTargetSqr > baseViewDistance * baseViewDistance)
             return false;
@@ -199,6 +207,13 @@ public class AgentVision : MonoBehaviour, IInitializable
             effectiveViewDistance = GetEffectiveViewDistanceWithGlare(effectiveViewDistance);
         DrawVisionCone(pos, forward, effectiveViewAngle, effectiveViewDistance, gizmoColor);
 
+        // Draw detection radius
+        if (detectionRadius > 0f)
+        {
+            Gizmos.color = detectionRadiusColor;
+            DrawCircle(pos, detectionRadius, 32);
+        }
+
         if (_lastSeenPosition.HasValue)
         {
             Gizmos.color = lastSeenColor;
@@ -242,6 +257,20 @@ public class AgentVision : MonoBehaviour, IInitializable
         Vector2 forward = transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
         float distance = GetGlareRayDistance(GetEffectiveViewDistance());
         lightSensor.DrawGlareRays(origin, forward, distance, occlusionMask);
+    }
+
+    private void DrawCircle(Vector3 pos, float radius, int segments)
+    {
+        float angleStep = 360f / segments;
+        Vector3 prevPoint = pos + new Vector3(radius, 0, 0);
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = i * angleStep * Mathf.Deg2Rad;
+            Vector3 point = pos + new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, 0);
+            Gizmos.DrawLine(prevPoint, point);
+            prevPoint = point;
+        }
     }
 #endif
 }

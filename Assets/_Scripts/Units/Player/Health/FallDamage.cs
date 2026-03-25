@@ -30,7 +30,6 @@ public class FallDamage : MonoBehaviour, IInitializable
         bool grounded = _ctx.grounded;
         float currentY = _ctx.transform.position.y;
 
-        // 🟠 ВЗЛЕТ (было на земле → забыл на земле)
         if (_wasGrounded && !grounded)
         {
             _airborneStartY = currentY;
@@ -38,7 +37,6 @@ public class FallDamage : MonoBehaviour, IInitializable
             _isTracking = true;
         }
 
-        // 📈 В воздухе — отслеживаем максимальную высоту
         if (_isTracking && !grounded && currentY > _maxHeightY)
         {
             _maxHeightY = currentY;

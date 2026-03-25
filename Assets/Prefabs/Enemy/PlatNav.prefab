@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1134080694818778519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4842013235046784284}
+  - component: {fileID: 9218059644277398423}
+  m_Layer: 0
+  m_Name: PlatNav
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4842013235046784284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134080694818778519}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -173.081, y: 7.11367, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9218059644277398423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134080694818778519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2e3a86969863744184b5939aba972f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Entity.PlatNav.PlatNavBake
+  wallTM: {fileID: 0}
+  spikesTM: {fileID: 0}
+  graph: {fileID: 11400000, guid: b4c07c71735b62a49925cf0f2a088562, type: 2}
+  entitySize: {x: 1, y: 1}
+  minPos: {x: -20, y: -35}
+  maxPos: {x: 230, y: 0}
+  maxJumpVelocity: 15
+  gravityStrength: 10
+  walkSpeed: 5
+  jumpSearchRadius: 8
+  numTrajectoriesToTest: 5
+  trajectoryStep: 0.02
+  maxFallTime: 5
+  jumpCostMultiplier: 20
+  fallCostMultiplier: 4
+  showBakeBounds: 0
+  showSegments: 1
+  showJumpLinks: 1
+  showFallLinks: 0
+  showRejectedTrajectories: 0
+  bakeBoundsColor: {r: 1, g: 0.92, b: 0.016, a: 0.8}
+  segmentColor: {r: 0.2, g: 0.9, b: 0.3, a: 0.9}
+  jumpLinkColor: {r: 0.3, g: 0.8, b: 1, a: 0.8}
+  fallLinkColor: {r: 1, g: 0.85, b: 0.2, a: 0.8}
+  rejectedArcColor: {r: 1, g: 0.25, b: 0.25, a: 0.3}
