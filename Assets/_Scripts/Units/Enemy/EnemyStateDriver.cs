@@ -586,7 +586,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         if (Time.time < _nextContactDamageTime)
             return;
 
-        if (_playerContext == null || _playerContext.health == null || _playerContext.health.IsDead || _playerTransform == null)
+        if (_playerContext == null || _playerContext.health == null || !_playerContext.isAlive || _playerTransform == null)
             return;
 
         if (!IsPlayerInContactRange())

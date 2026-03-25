@@ -50,8 +50,8 @@ public class PlayerContext
     public bool isClimbing;
     
     // ===== HEALTH =====
-
     public PlayerHealth health;
+    public bool isAlive;
     
     // ===== TIMERS =====
     public float timeInteractWasPressed;

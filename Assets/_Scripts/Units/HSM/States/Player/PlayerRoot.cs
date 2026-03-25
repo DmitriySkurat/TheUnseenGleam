@@ -6,6 +6,7 @@ namespace HSM {
         public readonly Airborne Airborne;
         public readonly Interaction Interaction;
         public readonly Climb Climb;
+        public readonly Death Death;
         
         readonly PlayerContext ctx;
         private float _footstepTimer;
@@ -19,6 +20,7 @@ namespace HSM {
             Airborne = new Airborne(m, this, ctx);
             Interaction = new Interaction(m, this, ctx);
             Climb = new Climb(m, this, ctx);
+            Death = new Death(m, this, ctx);
             
             _noiseSystem = Services.Get<NoiseSystem>();
         }
@@ -26,14 +28,24 @@ namespace HSM {
         protected override State GetInitialState() => Grounded;
         protected override State GetTransition()
         {
+            if(!ctx.isAlive) return Machine != null ? Machine.GetState<Death>() : null;
+            
             if (ctx.onLadder) return null;
             if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
             
             return null;
         } 
 
-        protected override void OnUpdate(float deltaTime) {
-            if (ctx.stats != null) {
+        protected override void OnUpdate(float deltaTime) 
+        {
+            if (!ctx.isAlive)
+            {
+                base.OnUpdate(deltaTime);
+                return;
+            }
+            
+            if (ctx.stats != null) 
+            {
                 HandleJump();
                 StaminaRecovery(deltaTime);
                 HandleFootsteps(deltaTime);
@@ -41,7 +53,8 @@ namespace HSM {
             base.OnUpdate(deltaTime);
         }
 
-        void HandleJump() {
+        void HandleJump() 
+        {
             if (ctx.isHiding)
             {
                 ctx.jumpToConsume = false;

@@ -191,7 +191,7 @@ public class PlayerScriptableStats : ScriptableObject
     [Header("FALL DAMAGE")]
     [Tooltip("Minimum fall height before taking damage")]
     [Min(0f)]
-    public float FallDamageMinHeight = 7f;
+    public float FallDamageMinHeight = 10f;
 
     [Tooltip("Damage taken per unit of fall height")]
     [Min(0f)]

@@ -5,22 +5,20 @@ public class PlayerHealth : MonoBehaviour, IInitializable
     public InitializationOrder Order => InitializationOrder.Player + 10;
     private PlayerContext _ctx;
     private float _currentHealth;
-
-    public bool IsDead { get; private set; }
     
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
         
         _currentHealth = _ctx.stats.MaxPlayerHealth;
-        IsDead = false;
+        _ctx.isAlive = true;
         
         _ctx.health = this;
     }
     
     public void TakeDamage(float damage)
     {
-        if (IsDead || damage <= 0f)
+        if (!_ctx.isAlive || damage <= 0f)
             return;
 
         _currentHealth = Mathf.Max(0f, _currentHealth - damage);
@@ -33,10 +31,10 @@ public class PlayerHealth : MonoBehaviour, IInitializable
     
     public void Die()
     {
-        if (IsDead)
+        if (!_ctx.isAlive)
             return;
 
-        IsDead = true;
+        _ctx.isAlive = false;
         Debug.Log("Player died");
     }
 }
