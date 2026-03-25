@@ -41,6 +41,8 @@ public class AgentVision : MonoBehaviour, IInitializable
     private Transform _playerTransform;
     private Vector2? _lastSeenPosition;
     private bool _canSeePlayer;
+    private bool _wasPlayerHiding;
+    private bool _canSeeWhilePlayerHidden = true;
 
     public bool CanSeePlayer => _canSeePlayer;
     public bool HasLastSeenPosition => _lastSeenPosition.HasValue;
@@ -70,6 +72,13 @@ public class AgentVision : MonoBehaviour, IInitializable
         if (!TryResolvePlayerTransform())
             return;
 
+        bool isHidingNow = _playerContext != null && _playerContext.isHiding;
+        if (isHidingNow && !_wasPlayerHiding)
+            _canSeeWhilePlayerHidden = CheckPlayerVisibilityGeometry(_playerTransform.position);
+        else if (!isHidingNow)
+            _canSeeWhilePlayerHidden = true;
+
+        _wasPlayerHiding = isHidingNow;
         _canSeePlayer = CheckPlayerVisibility(_playerTransform.position);
         if (_canSeePlayer)
             _lastSeenPosition = _playerTransform.position;
@@ -98,9 +107,14 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     private bool CheckPlayerVisibility(Vector2 targetPosition)
     {
-        if (_playerContext != null && _playerContext.isHiding)
+        if (_playerContext != null && _playerContext.isHiding && !_canSeeWhilePlayerHidden)
             return false;
 
+        return CheckPlayerVisibilityGeometry(targetPosition);
+    }
+
+    private bool CheckPlayerVisibilityGeometry(Vector2 targetPosition)
+    {
         Vector2 origin = transform.position;
         Vector2 toTarget = targetPosition - origin;
         
