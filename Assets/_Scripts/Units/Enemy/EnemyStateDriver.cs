@@ -39,6 +39,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField, Min(0f)] private float contactDamage = 40f;
     [SerializeField, Min(0f)] private float contactDamageCooldown = 2f;
     [SerializeField, Min(0f)] private float contactDamageRangeFallback = 0.75f;
+    [SerializeField, Min(0f)] private float contactAttackWindup = 0.35f;
 
     [Header("Investigate")]
     [SerializeField, Min(0f)] private float investigateSpeed = 3f;
@@ -94,6 +95,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private Collider2D _selfCollider;
     private Rigidbody2D _rb;
     private float _nextContactDamageTime;
+    private float _contactAttackTimer;
 
     public void Initialize()
     {
@@ -598,19 +600,39 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
             return;
 
         if (lightSensor != null && lightSensor.IsBlinded(out _, out _))
+        {
+            _contactAttackTimer = 0f;
             return;
+        }
 
         if (Time.time < _nextContactDamageTime)
+        {
+            _contactAttackTimer = 0f;
             return;
+        }
 
         if (_playerContext == null || _playerContext.health == null || !_playerContext.isAlive || _playerTransform == null)
+        {
+            _contactAttackTimer = 0f;
             return;
+        }
 
         if (!IsPlayerInContactRange())
+        {
+            _contactAttackTimer = 0f;
             return;
+        }
+
+        if (contactAttackWindup > 0f)
+        {
+            _contactAttackTimer += Time.deltaTime;
+            if (_contactAttackTimer < contactAttackWindup)
+                return;
+        }
 
         _playerContext.health.TakeDamage(contactDamage);
         _nextContactDamageTime = Time.time + contactDamageCooldown;
+        _contactAttackTimer = 0f;
     }
 
     private bool IsPlayerInContactRange()
