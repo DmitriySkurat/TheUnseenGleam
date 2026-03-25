@@ -2,21 +2,13 @@ using System.Collections.Generic;
 using PlatNav;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using HSM;
 
 [RequireComponent(typeof(PlatNavHandler))]
 [RequireComponent(typeof(AgentVision))]
 [RequireComponent(typeof(AgentHearing))]
-public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
+public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle, IInitializable
 {
-    public enum EnemyState
-    {
-        Patrol,
-        Chasing,
-        Investigating,
-        Searching,
-        ReturningToPatrol,
-    }
-
     public InitializationOrder Order => InitializationOrder.Enemy + 10;
 
     [Header("References")]
@@ -58,444 +50,81 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField] private Color searchColor = new Color(1f, 0.65f, 0.2f, 0.9f);
     [SerializeField] private Color targetColor = new Color(1f, 0.2f, 0.2f, 0.9f);
 
-    public EnemyState CurrentState => _state;
-
     private PlayerContext _playerContext;
-    private Transform _playerTransform;
-    private EnemyState _state;
-    private Vector2 _patrolOrigin;
-    private Vector2[] _patrolRoute;
-    private int _patrolIndex;
-    private int _patrolDirection = 1;
-    private Vector2 _investigationTarget;
-    private Vector2 _returnTarget;
-    private Vector2 _lastKnownPlayerPosition;
-    private bool _hasKnownPlayerPosition;
-    private bool _hasDetectedPlayer;
-    private bool _usingVisualChase;
-    private bool _wasSeeingPlayerLastFrame;
-    private bool _isWaiting;
-    private float _waitTimer;
-    private Vector2 _manualDestination;
-    private bool _manualCommandActive;
-    private bool _manualCommandFailed;
-    private readonly Vector2[] _searchRoute = new Vector2[2];
-    private int _searchIndex;
-    private int _searchDirection = 1;
-    private float _searchTimer;
+    private EnemyContext _ctx;
+    private StateMachine _machine;
+    private EnemyRoot _root;
 
     public void Initialize()
     {
-        if (enemy == null)
-            enemy = GetComponent<PlatNavHandler>();
-        if (vision == null)
-            vision = GetComponent<AgentVision>();
-        if (hearing == null)
-            hearing = GetComponent<AgentHearing>();
-        if (lightSensor == null)
-            lightSensor = GetComponent<AgentLightSensor>();
+        // Create context
+        _ctx = new EnemyContext
+        {
+            navHandler = GetComponent<PlatNavHandler>(),
+            vision = GetComponent<AgentVision>(),
+            hearing = GetComponent<AgentHearing>(),
+            lightSensor = GetComponent<AgentLightSensor>(),
+            transform = transform,
+            animator = GetComponentInChildren<Animator>(),
+            rb = GetComponentInChildren<Rigidbody2D>(),
+            
+            // Initialize patrol settings
+            patrolSpeed = patrolSpeed,
+            patrolHalfWidth = patrolHalfWidth,
+            patrolWaitTime = patrolWaitTime,
+            
+            // Initialize chase settings
+            chaseSpeed = chaseSpeed,
+            retargetDistance = retargetDistance,
+            
+            // Initialize investigate settings
+            investigateSpeed = investigateSpeed,
+            investigateWaitTime = investigateWaitTime,
+            
+            // Initialize search settings
+            searchDuration = searchDuration,
+            searchSpeed = searchSpeed,
+            searchHalfWidth = searchHalfWidth,
+            searchWaitTime = searchWaitTime,
+            
+            // Initialize return settings
+            returnSpeed = returnSpeed,
+            
+            // Initialize light response settings
+            lightEscapeDistance = lightEscapeDistance,
+            lightEscapeSpeed = lightEscapeSpeed,
+        };
 
+        // Get player context
         _playerContext = Services.Get<PlayerContext>();
-        _playerTransform = _playerContext != null ? _playerContext.transform : null;
+        _ctx.playerContext = _playerContext;
 
+        // Build patrol route
         BuildPatrolRoute();
 
-        if (hearing != null)
-            hearing.OnHeard += HandleHeard;
+        // Initialize HSM
+        _root = new EnemyRoot(null, _ctx);
+        var builder = new StateMachineBuilder(_root);
+        _machine = builder.Build();
 
-        EnterPatrol(true);
+        // Setup hearing listener
+        if (_ctx.hearing != null)
+        {
+            _ctx.hearing.OnHeard += HandleHeard;
+        }
     }
 
     public void Dispose()
     {
-        if (hearing != null)
-            hearing.OnHeard -= HandleHeard;
-    }
-
-    private void LateUpdate()
-    {
-        ResolvePlayerTransform();
-
-        bool canSeePlayer = vision != null && vision.CanSeePlayer && _playerTransform != null;
-        if (canSeePlayer)
+        if (_ctx.hearing != null)
         {
-            UpdateKnownPlayerPosition(_playerTransform.position);
-            if (IsTraversingLink())
-            {
-                _state = EnemyState.Chasing;
-                ResetWait();
-            }
-            else if (_state != EnemyState.Chasing || !_usingVisualChase)
-                EnterChasing(useVisualContact: true);
+            _ctx.hearing.OnHeard -= HandleHeard;
         }
-
-        _wasSeeingPlayerLastFrame = canSeePlayer;
-
-        if (IsTraversingLink())
-            return;
-
-        switch (_state)
-        {
-            case EnemyState.Patrol:
-                UpdatePatrol();
-                break;
-            case EnemyState.Chasing:
-                UpdateChasing(canSeePlayer);
-                break;
-            case EnemyState.Investigating:
-                UpdateInvestigating();
-                break;
-            case EnemyState.Searching:
-                UpdateSearching();
-                break;
-            case EnemyState.ReturningToPatrol:
-                UpdateReturnToPatrol();
-                break;
-        }
-    }
-
-    private void HandleHeard(NoiseEvent noiseEvent, float loudness)
-    {
-        if (!isActiveAndEnabled)
-            return;
-
-        if (noiseEvent.Source == null || noiseEvent.Source == gameObject)
-            return;
-
-        bool isPlayerNoise = IsPlayerNoise(noiseEvent.Source);
-
-        if (isPlayerNoise && _hasDetectedPlayer)
-        {
-            UpdateKnownPlayerPosition(noiseEvent.Position);
-            if (IsTraversingLink())
-            {
-                _state = EnemyState.Chasing;
-                ResetWait();
-                return;
-            }
-
-            EnterChasing(useVisualContact: false);
-            return;
-        }
-
-        if (_state == EnemyState.Chasing && !isPlayerNoise)
-            return;
-
-        if (IsTraversingLink())
-            return;
-
-        EnterInvestigating(noiseEvent.Position);
-    }
-
-    private void UpdatePatrol()
-    {
-        if (_patrolRoute == null || _patrolRoute.Length == 0)
-            return;
-
-        if (TryHandlePatrolLightResponse())
-            return;
-
-        if (_isWaiting)
-        {
-            if (!UpdateWaitTimer())
-                return;
-
-            TryMoveTo(_patrolRoute[_patrolIndex], patrolSpeed);
-        }
-
-        if (!TryMoveTo(_patrolRoute[_patrolIndex], patrolSpeed))
-        {
-            AdvancePatrolIndex();
-            BeginWait(patrolWaitTime);
-            return;
-        }
-
-        if (HasCompletedManualMove())
-        {
-            AdvancePatrolIndex();
-            BeginWait(patrolWaitTime);
-        }
-    }
-
-    private void UpdateChasing(bool canSeePlayer)
-    {
-        if (canSeePlayer && _playerTransform != null)
-        {
-            BeginVisualChase();
-            return;
-        }
-
-        if (!_hasKnownPlayerPosition)
-        {
-            StartSearchFrom(transform.position);
-            return;
-        }
-
-        if (!TryMoveTo(_lastKnownPlayerPosition, chaseSpeed))
-        {
-            StartSearchFrom(_lastKnownPlayerPosition);
-            return;
-        }
-
-        if (HasCompletedManualMove())
-            StartSearchFrom(_lastKnownPlayerPosition);
-    }
-
-    private void UpdateInvestigating()
-    {
-        if (_isWaiting)
-        {
-            if (!UpdateWaitTimer())
-                return;
-
-            EnterReturningToPatrol();
-            return;
-        }
-
-        if (!TryMoveTo(_investigationTarget, investigateSpeed))
-        {
-            EnterReturningToPatrol();
-            return;
-        }
-
-        if (HasCompletedManualMove())
-            BeginWait(investigateWaitTime);
-    }
-
-    private void UpdateSearching()
-    {
-        _searchTimer -= Time.deltaTime;
-        if (_searchTimer <= 0f)
-        {
-            EnterReturningToPatrol();
-            return;
-        }
-
-        if (_isWaiting)
-        {
-            if (!UpdateWaitTimer())
-                return;
-
-            TryMoveTo(_searchRoute[_searchIndex], searchSpeed);
-        }
-
-        if (!TryMoveTo(_searchRoute[_searchIndex], searchSpeed))
-        {
-            EnterReturningToPatrol();
-            return;
-        }
-
-        if (HasCompletedManualMove())
-        {
-            AdvanceSearchIndex();
-            BeginWait(searchWaitTime);
-        }
-    }
-
-    private void UpdateReturnToPatrol()
-    {
-        if (!TryMoveTo(_returnTarget, returnSpeed))
-        {
-            EnterPatrol(true);
-            return;
-        }
-
-        if (!HasCompletedManualMove())
-            return;
-
-        _patrolDirection = 1;
-        _patrolIndex = _patrolRoute != null && _patrolRoute.Length > 1 ? 1 : 0;
-        BeginWait(patrolWaitTime);
-        _state = EnemyState.Patrol;
-    }
-
-    private void EnterPatrol(bool resetRoute)
-    {
-        StopVisualChase();
-        if (resetRoute)
-        {
-            _patrolDirection = 1;
-            _patrolIndex = GetInitialPatrolIndex();
-        }
-
-        _state = EnemyState.Patrol;
-        ResetWait();
-        ResetManualCommand();
-    }
-
-    private void EnterInvestigating(Vector2 targetPosition)
-    {
-        StopVisualChase();
-        _state = EnemyState.Investigating;
-        _investigationTarget = targetPosition;
-        ResetWait();
-        ForceMoveTo(_investigationTarget, investigateSpeed);
-    }
-
-    private void EnterChasing(bool useVisualContact)
-    {
-        _state = EnemyState.Chasing;
-        ResetWait();
-
-        if (useVisualContact)
-        {
-            BeginVisualChase();
-            return;
-        }
-
-        StopVisualChase();
-        ForceMoveTo(_lastKnownPlayerPosition, chaseSpeed);
-    }
-
-    private void StartSearchFrom(Vector2 center)
-    {
-        StopVisualChase();
-        _state = EnemyState.Searching;
-        _searchTimer = searchDuration;
-        ResetWait();
-
-        Vector2 offset = Vector2.right * searchHalfWidth;
-        _searchRoute[0] = center - offset;
-        _searchRoute[1] = center + offset;
-        _searchDirection = 1;
-        _searchIndex = GetClosestIndex(_searchRoute, transform.position);
-
-        ForceMoveTo(_searchRoute[_searchIndex], searchSpeed);
-    }
-
-    private void EnterReturningToPatrol()
-    {
-        StopVisualChase();
-        _state = EnemyState.ReturningToPatrol;
-        ResetWait();
-        _returnTarget = GetPatrolReturnPoint();
-        ForceMoveTo(_returnTarget, returnSpeed);
-    }
-
-    private void BeginVisualChase()
-    {
-        if (enemy == null || _playerTransform == null)
-            return;
-
-        if (_usingVisualChase)
-            return;
-
-        enemy.Abort();
-        enemy.SetBehaviour(PlatNavBehaviour.FollowTarget);
-        enemy.SetTarget(_playerTransform);
-        enemy.MoveTo(_playerTransform.position, chaseSpeed);
-        _usingVisualChase = true;
-        ResetManualCommand();
-    }
-
-    private void StopVisualChase()
-    {
-        if (enemy == null)
-            return;
-
-        enemy.SetTarget(null);
-        if (_usingVisualChase)
-            enemy.Abort();
-
-        _usingVisualChase = false;
-    }
-
-    private bool TryMoveTo(Vector2 targetPosition, float speed)
-    {
-        if (enemy == null)
-            return false;
-
-        float minRetargetDistance = Mathf.Max(0.01f, retargetDistance);
-        bool needsNewCommand = !_manualCommandActive
-            || _manualCommandFailed
-            || (_manualDestination - targetPosition).sqrMagnitude > minRetargetDistance * minRetargetDistance;
-
-        if (!needsNewCommand)
-            return !_manualCommandFailed;
-
-        ForceMoveTo(targetPosition, speed);
-        return !_manualCommandFailed;
-    }
-
-    private void ForceMoveTo(Vector2 targetPosition, float speed)
-    {
-        if (enemy == null)
-            return;
-
-        enemy.SetBehaviour(PlatNavBehaviour.FollowTarget);
-        enemy.SetTarget(null);
-        enemy.Abort();
-        _usingVisualChase = false;
-
-        _manualDestination = targetPosition;
-        _manualCommandFailed = !enemy.MoveTo(targetPosition, speed);
-        _manualCommandActive = !_manualCommandFailed;
-    }
-
-    private bool HasCompletedManualMove()
-    {
-        if (!_manualCommandActive || enemy == null)
-            return false;
-
-        if (enemy.HasPath || enemy.State != PlatNavState.Idle)
-            return false;
-
-        ResetManualCommand();
-        return true;
-    }
-
-    private bool UpdateWaitTimer()
-    {
-        if (!_isWaiting)
-            return false;
-
-        _waitTimer -= Time.deltaTime;
-        if (_waitTimer > 0f)
-            return false;
-
-        _isWaiting = false;
-        _waitTimer = 0f;
-        return true;
-    }
-
-    private void BeginWait(float duration)
-    {
-        _isWaiting = duration > 0f;
-        _waitTimer = duration;
-        ResetManualCommand();
-    }
-
-    private void ResetWait()
-    {
-        _isWaiting = false;
-        _waitTimer = 0f;
-    }
-
-    private void ResetManualCommand()
-    {
-        _manualCommandActive = false;
-        _manualCommandFailed = false;
-    }
-
-    private void AdvancePatrolIndex()
-    {
-        if (_patrolRoute == null || _patrolRoute.Length <= 1)
-        {
-            _patrolIndex = 0;
-            return;
-        }
-
-        _patrolIndex = GetNextBounceIndex(_patrolIndex, ref _patrolDirection, _patrolRoute.Length);
-    }
-
-    private void AdvanceSearchIndex()
-    {
-        _searchIndex = GetNextBounceIndex(_searchIndex, ref _searchDirection, _searchRoute.Length);
     }
 
     private void BuildPatrolRoute()
     {
-        _patrolOrigin = transform.position;
+        _ctx.patrolOrigin = transform.position;
 
         var points = new List<Vector2>();
         if (patrolPoints != null)
@@ -509,158 +138,166 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
 
         if (points.Count >= 2)
         {
-            _patrolRoute = points.ToArray();
+            _ctx.patrolRoute = points.ToArray();
             return;
         }
 
         Vector2 offset = Vector2.right * patrolHalfWidth;
-        _patrolRoute = new[]
+        _ctx.patrolRoute = new[]
         {
-            _patrolOrigin - offset,
-            _patrolOrigin + offset,
+            _ctx.patrolOrigin - offset,
+            _ctx.patrolOrigin + offset,
         };
     }
 
-    private int GetInitialPatrolIndex()
+    private void HandleHeard(NoiseEvent noiseEvent, float loudness)
     {
-        if (_patrolRoute == null || _patrolRoute.Length == 0)
-            return 0;
-
-        return GetClosestIndex(_patrolRoute, transform.position);
-    }
-
-    private Vector2 GetPatrolReturnPoint()
-    {
-        if (patrolPoints != null && patrolPoints.Length > 0 && patrolPoints[0] != null)
-            return patrolPoints[0].position;
-
-        return _patrolOrigin;
-    }
-
-    private void ResolvePlayerTransform()
-    {
-        if (_playerTransform != null)
+        if (!isActiveAndEnabled)
             return;
 
-        if (_playerContext == null)
-            _playerContext = Services.Get<PlayerContext>();
+        bool isPlayerNoise = IsPlayerNoise(noiseEvent.Source);
 
-        if (_playerContext != null)
-            _playerTransform = _playerContext.transform;
+        if (isPlayerNoise && _ctx.hasDetectedPlayer)
+        {
+            UpdateKnownPlayerPosition(noiseEvent.Position);
+            if (IsTraversingLink())
+            {
+                _machine.Sequencer.RequestTransition(_machine.Root.Leaf(), _root.Chasing);
+                return;
+            }
+
+            EnterChasing(useVisualContact: false);
+            return;
+        }
+
+        if (_machine.Root.Leaf() is EnemyChasing && !isPlayerNoise)
+            return;
+
+        if (IsTraversingLink())
+            return;
+
+        EnterInvestigating(noiseEvent.Position);
     }
 
-    private bool IsTraversingLink()
+    private void EnterChasing(bool useVisualContact)
     {
-        return enemy != null && enemy.State == PlatNavState.TraversingLink;
+        _machine.Sequencer.RequestTransition(_machine.Root.Leaf(), _root.Chasing);
+        
+        if (!useVisualContact && _ctx.lastKnownPlayerPosition != Vector2.zero)
+        {
+            _ctx.usingVisualChase = false;
+        }
     }
 
-    private bool IsPlayerNoise(GameObject source)
+    private void EnterInvestigating(Vector2 targetPosition)
     {
-        if (_playerTransform == null || source == null)
-            return false;
-
-        return source == _playerTransform.gameObject;
+        _ctx.investigationTarget = targetPosition;
+        _machine.Sequencer.RequestTransition(_machine.Root.Leaf(), _root.Investigating);
     }
 
     private void UpdateKnownPlayerPosition(Vector2 position)
     {
-        _lastKnownPlayerPosition = position;
-        _hasKnownPlayerPosition = true;
-        _hasDetectedPlayer = true;
+        _ctx.lastKnownPlayerPosition = position;
+        _ctx.hasKnownPlayerPosition = true;
+        _ctx.hasDetectedPlayer = true;
     }
 
-    private bool TryHandlePatrolLightResponse()
+    private bool IsTraversingLink()
     {
-        if (lightSensor == null)
+        return _ctx.navHandler != null && _ctx.navHandler.State == PlatNavState.TraversingLink;
+    }
+
+    private bool IsPlayerNoise(GameObject source)
+    {
+        if (_ctx.playerTransform == null || source == null)
             return false;
 
-        if (!lightSensor.IsBlinded(out Light2D strongestLight, out _))
-            return false;
-
-        bool isMirrorLight = strongestLight != null && strongestLight.GetComponent<MirrorLightSource>() != null;
-        bool isStandingStill = _isWaiting || (enemy != null && enemy.State == PlatNavState.Idle && !enemy.HasPath);
-
-        if (isMirrorLight && isStandingStill)
-        {
-            ResetManualCommand();
-            return true;
-        }
-
-        if (isMirrorLight)
-            return false;
-
-        ResetWait();
-        Vector2 escapeTarget = (Vector2)transform.position + GetFacingDirection() * lightEscapeDistance;
-        TryMoveTo(escapeTarget, lightEscapeSpeed);
-        return true;
+        return source == _ctx.playerTransform.gameObject;
     }
 
-    private Vector2 GetFacingDirection()
+    private void FixedUpdate()
     {
-        return transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
-    }
-
-    private static int GetClosestIndex(IReadOnlyList<Vector2> points, Vector2 worldPosition)
-    {
-        int bestIndex = 0;
-        float bestDistance = float.MaxValue;
-
-        for (int i = 0; i < points.Count; i++)
-        {
-            float sqrDistance = (points[i] - worldPosition).sqrMagnitude;
-            if (sqrDistance >= bestDistance)
-                continue;
-
-            bestDistance = sqrDistance;
-            bestIndex = i;
-        }
-
-        return bestIndex;
-    }
-
-    private static int GetNextBounceIndex(int currentIndex, ref int direction, int length)
-    {
-        if (length <= 1)
-            return 0;
-
-        int nextIndex = currentIndex + direction;
-        if (nextIndex >= length || nextIndex < 0)
-        {
-            direction *= -1;
-            nextIndex = currentIndex + direction;
-        }
-
-        return Mathf.Clamp(nextIndex, 0, length - 1);
-    }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        if (!drawGizmos)
+        if (_machine == null)
             return;
 
-        DrawRoute(_patrolRoute, patrolColor);
-        DrawRoute(_searchRoute, searchColor);
+        _machine.Tick(Time.fixedDeltaTime);
 
-        if (_manualCommandActive)
+        #if UNITY_EDITOR
+        PrintStatePath();
+        #endif
+    }
+
+    #region Debugging
+
+    private string _lastPath;
+
+    void PrintStatePath()
+    {
+        if (_machine == null || _machine.Root == null)
+            return;
+
+        var path = StatePath(_machine.Root.Leaf());
+        if (path != _lastPath)
         {
-            Gizmos.color = targetColor;
-            Gizmos.DrawSphere(_manualDestination, 0.2f);
+            Debug.Log("Enemy State: " + path, gameObject);
+            _lastPath = path;
         }
     }
 
-    private static void DrawRoute(IReadOnlyList<Vector2> route, Color color)
+    static string StatePath(State s)
     {
-        if (route == null || route.Count == 0)
+        if (s == null)
+            return "None";
+
+        var names = new List<string>();
+        State current = s;
+        while (current != null)
+        {
+            names.Add(current.GetType().Name);
+            var parentField = current.GetType().BaseType?.GetField("Parent", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            
+            if (parentField != null)
+                current = parentField.GetValue(current) as State;
+            else
+                break;
+        }
+
+        names.Reverse();
+        return string.Join(" > ", names);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!drawGizmos || _ctx == null)
+            return;
+
+        DrawRoute(_ctx.patrolRoute, patrolColor);
+        DrawRoute(_ctx.searchRoute, searchColor);
+
+        if (_ctx.manualCommandActive)
+        {
+            Gizmos.color = targetColor;
+            Gizmos.DrawSphere(_ctx.manualDestination, 0.2f);
+        }
+    }
+
+    private void DrawRoute(Vector2[] route, Color color)
+    {
+        if (route == null || route.Length < 2)
             return;
 
         Gizmos.color = color;
-        for (int i = 0; i < route.Count; i++)
+        for (int i = 0; i < route.Length - 1; i++)
         {
-            Gizmos.DrawSphere(route[i], 0.12f);
-            if (i + 1 < route.Count)
-                Gizmos.DrawLine(route[i], route[i + 1]);
+            Gizmos.DrawLine(route[i], route[i + 1]);
+        }
+
+        foreach (var point in route)
+        {
+            Gizmos.DrawSphere((Vector3)point, 0.15f);
         }
     }
-#endif
+
+    #endregion
 }
