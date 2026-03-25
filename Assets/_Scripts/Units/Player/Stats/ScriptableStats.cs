@@ -191,7 +191,7 @@ public class PlayerScriptableStats : ScriptableObject
     [Header("FALL DAMAGE")]
     [Tooltip("Minimum fall height before taking damage")]
     [Min(0f)]
-    public float FallDamageMinHeight = 1.5f;
+    public float FallDamageMinHeight = 7f;
 
     [Tooltip("Damage taken per unit of fall height")]
     [Min(0f)]
@@ -199,7 +199,7 @@ public class PlayerScriptableStats : ScriptableObject
 
     [Tooltip("Fall height that causes instant death")]
     [Min(0f)]
-    public float FallDamageLethalHeight = 10f;
+    public float FallDamageLethalHeight = 40f;
 
     [Tooltip("Damage multiplier when successfully rolling on landing (0-1, where 1 is no reduction)")]
     [Range(0f, 1f)]

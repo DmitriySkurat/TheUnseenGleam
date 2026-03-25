@@ -42,7 +42,7 @@ public class FallDamage : MonoBehaviour, IInitializable
             _maxHeightY = currentY;
         }
 
-        // 🟢 МОМЕНТ ПРИЗЕМЛЕНИЯ (было в воздухе → стало на земле)
+        // Момент приземления
         if (!_wasGrounded && grounded && _isTracking)
         {
             ApplyFallDamage(currentY);
@@ -73,7 +73,7 @@ public class FallDamage : MonoBehaviour, IInitializable
         if (fallHeight >= _ctx.stats.FallDamageLethalHeight)
         {
             _ctx.health.TakeDamage(9999f);
-            Debug.Log($"💀 Летальное падение! Высота: {fallHeight:F2}м");
+            Debug.Log($"Летальное падение! Высота: {fallHeight:F2}м");
             return;
         }
 
@@ -84,11 +84,11 @@ public class FallDamage : MonoBehaviour, IInitializable
         if (didPerformRoll)
         {
             damage *= _ctx.stats.FallDamageRollMultiplier;
-            Debug.Log($"✅ Кувырок выполнен! Урон падения: {damage:F1} (высота {fallHeight:F2}м, урон без кувырка был бы {damage / _ctx.stats.FallDamageRollMultiplier:F1})");
+            Debug.Log($"Кувырок выполнен! Урон падения: {damage:F1} (высота {fallHeight:F2}м, урон без кувырка был бы {damage / _ctx.stats.FallDamageRollMultiplier:F1})");
         }
         else
         {
-            Debug.Log($"❌ Кувырок НЕ выполнен! Урон падения: {damage:F1} (высота {fallHeight:F2}м)");
+            Debug.Log($"Кувырок НЕ выполнен! Урон падения: {damage:F1} (высота {fallHeight:F2}м)");
         }
 
         _ctx.health.TakeDamage(damage);

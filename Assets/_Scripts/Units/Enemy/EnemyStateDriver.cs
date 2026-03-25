@@ -35,6 +35,11 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField, Min(0f)] private float chaseSpeed = 4.5f;
     [SerializeField, Min(0f)] private float retargetDistance = 0.35f;
 
+    [Header("Contact Attack")]
+    [SerializeField, Min(0f)] private float contactDamage = 40f;
+    [SerializeField, Min(0f)] private float contactDamageCooldown = 2f;
+    [SerializeField, Min(0f)] private float contactDamageRangeFallback = 0.75f;
+
     [Header("Investigate")]
     [SerializeField, Min(0f)] private float investigateSpeed = 3f;
     [SerializeField, Min(0f)] private float investigateWaitTime = 0.75f;
@@ -83,6 +88,8 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private int _searchIndex;
     private int _searchDirection = 1;
     private float _searchTimer;
+    private Collider2D _selfCollider;
+    private float _nextContactDamageTime;
 
     public void Initialize()
     {
@@ -94,6 +101,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
             hearing = GetComponent<AgentHearing>();
         if (lightSensor == null)
             lightSensor = GetComponent<AgentLightSensor>();
+        _selfCollider = GetComponent<Collider2D>();
 
         _playerContext = Services.Get<PlayerContext>();
         _playerTransform = _playerContext != null ? _playerContext.transform : null;
@@ -115,6 +123,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private void LateUpdate()
     {
         ResolvePlayerTransform();
+        TryApplyContactDamage();
 
         bool canSeePlayer = vision != null && vision.CanSeePlayer && _playerTransform != null;
         if (canSeePlayer)
@@ -567,6 +576,33 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         _lastKnownPlayerPosition = position;
         _hasKnownPlayerPosition = true;
         _hasDetectedPlayer = true;
+    }
+
+    private void TryApplyContactDamage()
+    {
+        if (contactDamage <= 0f)
+            return;
+
+        if (Time.time < _nextContactDamageTime)
+            return;
+
+        if (_playerContext == null || _playerContext.health == null || _playerContext.health.IsDead || _playerTransform == null)
+            return;
+
+        if (!IsPlayerInContactRange())
+            return;
+
+        _playerContext.health.TakeDamage(contactDamage);
+        _nextContactDamageTime = Time.time + contactDamageCooldown;
+    }
+
+    private bool IsPlayerInContactRange()
+    {
+        if (_selfCollider != null && _playerContext != null && _playerContext.coll != null)
+            return _selfCollider.Distance(_playerContext.coll).isOverlapped;
+
+        float sqrDistance = ((Vector2)transform.position - (Vector2)_playerTransform.position).sqrMagnitude;
+        return sqrDistance <= contactDamageRangeFallback * contactDamageRangeFallback;
     }
 
     private bool TryHandlePatrolLightResponse()
