@@ -28,7 +28,7 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
     {
         if (_ctx.isClimbing)
         {
-            if (_ctx.onLian)
+            if (_ctx.onVines)
             {
                 float target = -_ctx.stats.LianSlipSpeed;
                 _ctx.velocity.y = Mathf.MoveTowards(_ctx.velocity.y, target, _ctx.stats.LianSlipAcceleration * deltaTime);

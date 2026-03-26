@@ -48,9 +48,9 @@ public class PlayerContext
     // ===== LADDER =====
     public bool onLadder;
     public bool isClimbing;
-    public bool onLian;
+    public bool onVines;
 
-    public bool OnClimbable => onLadder || onLian;
+    public bool OnClimbable => onLadder || onVines;
     
     // ===== HEALTH =====
     public PlayerHealth health;

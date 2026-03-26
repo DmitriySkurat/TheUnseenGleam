@@ -123,16 +123,16 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
     private void OnTriggerEnter2D(Collider2D other)
     {
         var ladder = other.GetComponent<Ladder>();
-        var lian = other.GetComponent<Lian>();
+        var vines = other.GetComponent<Vines>();
 
-        if (ladder != null || lian != null)
+        if (ladder != null || vines != null)
         {
             _ctx.onLadder = true;
         }
         
-        if (lian != null)
+        if (vines != null)
         {
-            _ctx.onLian = true;
+            _ctx.onVines = true;
         }
         
         
@@ -141,16 +141,16 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
     private void OnTriggerExit2D(Collider2D other)
     {
         var ladder = other.GetComponent<Ladder>();
-        var lian = other.GetComponent<Lian>();
+        var vines = other.GetComponent<Vines>();
 
-        if (ladder != null || lian != null)
+        if (ladder != null || vines != null)
         {
             _ctx.onLadder = false;
         }
         
-        if (lian != null)
+        if (vines != null)
         {
-            _ctx.onLian = false;
+            _ctx.onVines = false;
         }
 
        

@@ -19,6 +19,8 @@ public abstract class Interactable : MonoBehaviour, IInteractable, IInitializabl
     
     [SerializeField] private bool consumeRequiredItems = true;
     
+    [SerializeField] protected bool wasItemsConsumed = false;
+    
     protected SpriteRenderer _sr;
     protected Color _defaultColor;
 
@@ -59,6 +61,7 @@ public abstract class Interactable : MonoBehaviour, IInteractable, IInitializabl
     // Может ли Interactor взаимодействовать (наличие предметов)
     public virtual bool CanBeInteractedBy(Interactor interactor) {
         if (requiredItems == null || requiredItems.Count == 0) return true;
+        if (wasItemsConsumed) return true;
         if (!(interactor is PlayerInteractor player)) return canEnemyInteract;
         
         return HasAllRequiredItems(player);
@@ -124,6 +127,8 @@ public abstract class Interactable : MonoBehaviour, IInteractable, IInitializabl
             if (req.item == null) continue;
             inv.Remove(req.item, req.count);
         }
+        
+        wasItemsConsumed = true;
     }
     
     public void TryInteract(Interactor interactor)
@@ -133,9 +138,6 @@ public abstract class Interactable : MonoBehaviour, IInteractable, IInitializabl
 
         if (interactor is PlayerInteractor player)
         {
-            if (!HasAllRequiredItems(player))
-                return;
-
             OnBeforeInteraction(player); 
             OnInteract(interactor);     
             OnAfterInteraction(player);   

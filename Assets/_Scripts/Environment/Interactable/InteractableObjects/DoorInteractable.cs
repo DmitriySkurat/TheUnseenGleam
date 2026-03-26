@@ -4,7 +4,6 @@ public class DoorInteractable : Interactable
 {
     [Header("Door Settings")]
     [SerializeField] private bool isOpen = false;
-    [SerializeField] private bool isUnlocked = false;
     
     [SerializeField] private Sprite openDoorSprite;
     [SerializeField] private Sprite closedDoorSprite;
@@ -22,15 +21,6 @@ public class DoorInteractable : Interactable
         // Для начального состояния
         UpdateDoorVisuals();
     }
-    
-
-    // void Start() {
-    //     _doorCollider = GetComponent<Collider2D>();
-        
-    //     // Для начального состояния
-    //     UpdateDoorVisuals();
-    // }
-    
     public void SetOpen(bool state) 
     {
         if (isOpen == state) return;
@@ -53,8 +43,6 @@ public class DoorInteractable : Interactable
 
     public override void OnInteract(Interactor interactor)
     {
-        isUnlocked = true;
-    
         isOpen = !isOpen;
         UpdateDoorVisuals();
         Debug.Log(isOpen ? "Door Opened" : "Door Closed");
@@ -62,7 +50,7 @@ public class DoorInteractable : Interactable
 
     protected override void OnAfterInteraction(PlayerInteractor player)
     {
-        if (isUnlocked) return;
+        if (wasItemsConsumed) return;
 
         base.OnAfterInteraction(player);
     }

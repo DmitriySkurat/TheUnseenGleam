@@ -17,10 +17,6 @@ public class LeverInteractable : Interactable {
         UpdateVisuals();
     }
     
-    // void Start() {
-    //     UpdateVisuals();
-    // }
-    
     public override void OnInteract(Interactor interactor)
     {
         isOn = !isOn;

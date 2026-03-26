@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class Lian : MonoBehaviour
+public class Vines : MonoBehaviour
 {
     private void Reset()
     {
