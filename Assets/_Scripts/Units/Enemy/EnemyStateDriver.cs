@@ -377,8 +377,8 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         ResetWait();
 
         Vector2 offset = Vector2.right * searchHalfWidth;
-        _searchRoute[0] = center - offset;
-        _searchRoute[1] = center + offset;
+        _searchRoute[0] = AdjustPositionAwayFromLight(center - offset);
+        _searchRoute[1] = AdjustPositionAwayFromLight(center + offset);
         _searchDirection = 1;
         _searchIndex = GetClosestIndex(_searchRoute, transform.position);
 
@@ -709,6 +709,28 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     private Vector2 GetFacingDirection()
     {
         return transform.localScale.x >= 0f ? Vector2.right : Vector2.left;
+    }
+
+    private Vector2 AdjustPositionAwayFromLight(Vector2 position)
+    {
+        if (lightSensor == null || !lightSensor.IsBlindedAt(position, out _, out _))
+            return position;
+
+        // Если точка под светом, смещаем её в направлении от центра поиска
+        Vector2 directionAwayFromCenter = (position - (Vector2)transform.position).normalized;
+        if (directionAwayFromCenter.sqrMagnitude < 0.01f)
+            directionAwayFromCenter = Vector2.right;
+
+        Vector2 adjustedPosition = position + directionAwayFromCenter * lightEscapeDistance;
+
+        // Проверяем, улучшилась ли ситуация, если нет - пробуем перпендикулярное направление
+        if (lightSensor.IsBlindedAt(adjustedPosition, out _, out _))
+        {
+            Vector2 perpendicular = new Vector2(-directionAwayFromCenter.y, directionAwayFromCenter.x);
+            adjustedPosition = position + perpendicular * lightEscapeDistance;
+        }
+
+        return adjustedPosition;
     }
 
     private static int GetClosestIndex(IReadOnlyList<Vector2> points, Vector2 worldPosition)
