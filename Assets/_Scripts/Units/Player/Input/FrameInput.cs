@@ -7,6 +7,7 @@ public struct FrameInput
     public bool JumpHeld;
     public bool CrouchHeld;
     public bool RunHeld;
+    public bool HoldBreathHeld;
     
     public bool InteractDown;
     public bool InteractHeld;

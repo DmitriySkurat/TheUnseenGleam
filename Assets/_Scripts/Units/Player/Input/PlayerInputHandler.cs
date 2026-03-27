@@ -57,6 +57,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnCrouchToggled += HandleCrouchInput;
         _inputManager.OnRunToggled += HandleRunInput;
         
+        _inputManager.OnHoldBreathToggled += HandleHoldBreathInput;
+        
         _inputManager.OnInteractStarted += HandleInteractStarted;
         _inputManager.OnInteractCanceled += HandleInteractCanceled;
 
@@ -82,6 +84,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnJumpCanceled -= HandleJumpCanceled;
         _inputManager.OnCrouchToggled -= HandleCrouchInput;
         _inputManager.OnRunToggled -= HandleRunInput;
+        
+        _inputManager.OnHoldBreathToggled -= HandleHoldBreathInput;
         
         _inputManager.OnInteractStarted -= HandleInteractStarted;
         _inputManager.OnInteractCanceled -= HandleInteractCanceled;
@@ -144,6 +148,12 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     void HandleRunInput(bool isRunning)
     {
         _frameInput.RunHeld = isRunning;
+        SyncContextInput();
+    }
+    
+    void HandleHoldBreathInput(bool isHoldingBreath)
+    {
+        _frameInput.HoldBreathHeld = isHoldingBreath;
         SyncContextInput();
     }
     

@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour, IService
     public event Action OnJumpCanceled;
     public event Action<bool> OnRunToggled;
     public event Action<bool> OnCrouchToggled;
+    public event Action<bool> OnHoldBreathToggled;
     
     public event Action OnInteractStarted;
     public event Action OnInteractCanceled;
@@ -74,6 +75,9 @@ public class InputManager : MonoBehaviour, IService
         actions["Crouch"].performed += HandleCrouch;
         actions["Crouch"].canceled += HandleCrouch;
         
+        actions["HoldBreath"].performed += HandleHoldBreath;
+        actions["HoldBreath"].canceled += HandleHoldBreath;
+        
         actions["Interact"].performed += HandleInteractStarted;
         actions["Interact"].canceled += HandleInteractCanceled;
 
@@ -113,6 +117,9 @@ public class InputManager : MonoBehaviour, IService
         
         actions["Interact"].performed -= HandleInteractStarted;
         actions["Interact"].canceled -= HandleInteractCanceled;
+        
+        actions["HoldBreath"].performed -= HandleHoldBreath;
+        actions["HoldBreath"].canceled -= HandleHoldBreath;
 
         actions["Slot1"].performed -= HandleSlot1;
         actions["Slot2"].performed -= HandleSlot2;
@@ -151,6 +158,8 @@ public class InputManager : MonoBehaviour, IService
     private void HandleJumpCanceled(InputAction.CallbackContext ctx) => OnJumpCanceled?.Invoke();
     private void HandleRun(InputAction.CallbackContext ctx) => OnRunToggled?.Invoke(ctx.performed);
     private void HandleCrouch(InputAction.CallbackContext ctx) => OnCrouchToggled?.Invoke(ctx.performed);
+    
+    private void HandleHoldBreath(InputAction.CallbackContext ctx) => OnHoldBreathToggled?.Invoke(ctx.performed);
     
     private void HandleInteractStarted(InputAction.CallbackContext ctx) => OnInteractStarted?.Invoke();
     private void HandleInteractCanceled(InputAction.CallbackContext ctx) => OnInteractCanceled?.Invoke();
