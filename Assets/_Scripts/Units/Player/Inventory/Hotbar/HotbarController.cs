@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HotbarController : MonoBehaviour, IInitializable
+public class HotbarController : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 20;
 
@@ -15,21 +15,17 @@ public class HotbarController : MonoBehaviour, IInitializable
         _ctx = Services.Get<PlayerContext>();
 
         EnsureSlots();
-        RebindSlotsToInventory();
+        _ctx.inventory.OnInventoryChanged += HandleInventoryChanged;
+        SyncHotbarWithInventory();
 
         _ctx.selectedHotbarSlot = -1;
         _ctx.selectedHotbarEntry = null;
+        
+    }
 
-        var entries = _ctx.inventory.GetEntries();
-
-        if (entries.Count > 0)
-        {
-            foreach (InventoryEntry cell in entries)
-            {
-                Debug.Log($"item name {cell.item.name} count {cell.count}");
-                AssignItem(cell.item);
-            }
-        }
+    public void Dispose()
+    {
+        _ctx.inventory.OnInventoryChanged -= HandleInventoryChanged;
     }
 
     private void Update()
@@ -78,13 +74,13 @@ public class HotbarController : MonoBehaviour, IInitializable
 
     public void AssignItem(ItemData item)
     {
-        if (item == null || !item.CanUse)
-        {
-            Debug.Log("Item is non usable or null");
+        if (item == null || !item.CanUse || _ctx?.inventory == null)
             return;
-        }
 
         EnsureSlots();
+
+        if (IsAssigned(item))
+            return;
 
         var freeIndex = _slots.FindIndex(s => s == null);
         if (freeIndex < 0)
@@ -101,6 +97,11 @@ public class HotbarController : MonoBehaviour, IInitializable
         }
 
         _slots[freeIndex] = entry;
+    }
+
+    private void HandleInventoryChanged()
+    {
+        SyncHotbarWithInventory();
     }
 
     private void SyncSelectedSlot()
@@ -124,6 +125,26 @@ public class HotbarController : MonoBehaviour, IInitializable
 
         while (_slots.Count < slotCount)
             _slots.Add(null);
+    }
+
+    private void SyncHotbarWithInventory()
+    {
+        if (_ctx?.inventory == null)
+            return;
+
+        RebindSlotsToInventory();
+
+        var entries = _ctx.inventory.GetEntries();
+        for (int i = 0; i < entries.Count; i++)
+        {
+            var entry = entries[i];
+            if (entry?.item == null || !entry.item.CanUse)
+                continue;
+
+            AssignItem(entry.item);
+        }
+
+        SyncSelectedSlot();
     }
 
     private void RebindSlotsToInventory()
@@ -167,5 +188,20 @@ public class HotbarController : MonoBehaviour, IInitializable
         }
 
         return null;
+    }
+
+    private bool IsAssigned(ItemData item)
+    {
+        if (item == null)
+            return false;
+
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            var slot = _slots[i];
+            if (slot != null && slot.item == item)
+                return true;
+        }
+
+        return false;
     }
 }
