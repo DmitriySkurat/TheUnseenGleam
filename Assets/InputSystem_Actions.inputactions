@@ -88,6 +88,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "HoldBreath",
+                    "type": "Button",
+                    "id": "72cc8cf1-2e82-4472-9430-16fb531ca14a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Slot1",
                     "type": "Button",
                     "id": "48c2605e-583d-4d5e-baff-698766f81b6f",
@@ -483,6 +492,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1de5a4d4-1f05-42b0-bd24-e8b5077395cf",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "HoldBreath",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -26,6 +26,7 @@ public class PlayerContext
     public Vector2 velocity;
     public float currentSpeedMultiplier = 1f;
     public float stamina = 100f;
+    public float currentBreath;
     public float currentNoiseRadius;
     public float currentFootstepInterval;
     public float airborneStartY;
@@ -33,6 +34,8 @@ public class PlayerContext
     public float landingRollDirection;
     
     public bool isCrouching;
+    public bool isHoldingBreath;
+    public bool isOutOfBreath;
     public bool ceilingAbove;
     public bool isInteracting; // for Complex interactables (may be in future)
     

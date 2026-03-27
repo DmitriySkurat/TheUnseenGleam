@@ -91,6 +91,27 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Delay between interactions")]
     [Range(0f, 0.5f)]
     public float InteractionCooldown = 0.25f;
+
+    [Header("BREATH")]
+    [Tooltip("How long the player can hold breath, in seconds")]
+    [Min(0.1f)]
+    public float MaxBreathCapacity = 100f;
+
+    [Tooltip("How quickly breath is drained while holding it")]
+    [Min(0f)]
+    public float BreathDrainPerSecond = 25f;
+
+    [Tooltip("How quickly breath recovers after the key is released")]
+    [Min(0f)]
+    public float BreathRecoveryPerSecond = 35f;
+
+    [Tooltip("Interval between passive breathing noise pulses")]
+    [Min(0.05f)]
+    public float BreathingNoiseInterval = 0.75f;
+
+    [Tooltip("Noise radius emitted by normal breathing")]
+    [Min(0f)]
+    public float BreathingNoiseRadius = 1.2f;
     
     [Header("CROUCH")]
     [Tooltip("Multiplier applied to MaxSpeed while crouching")]

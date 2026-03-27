@@ -42,6 +42,11 @@ MonoBehaviour:
   CoyoteTime: 0.15
   JumpBuffer: 0.2
   InteractionCooldown: 0.25
+  MaxBreathCapacity: 4
+  BreathDrainPerSecond: 1
+  BreathRecoveryPerSecond: 1.5
+  BreathingNoiseInterval: 0.75
+  BreathingNoiseRadius: 0.6
   CrouchSpeedMultiplier: 0.5
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524

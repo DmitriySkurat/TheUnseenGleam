@@ -4,5 +4,6 @@ public enum NoiseType
     Jump,
     Landing,
     ObjectImpact,
-    LoudNoise
+    LoudNoise,
+    Breathing
 }
