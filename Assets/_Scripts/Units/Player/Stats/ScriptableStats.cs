@@ -125,14 +125,6 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float HideBreathConsumeMultiplier = 0.5f;
 
-    [Tooltip("Breath drain multiplier while airborne")]
-    [Min(0f)]
-    public float AirborneBreathConsumeMultiplier = 1.3f;
-
-    [Tooltip("Breath drain multiplier while climbing")]
-    [Min(0f)]
-    public float ClimbBreathConsumeMultiplier = 1.4f;
-
     [Tooltip("Interval between passive breathing noise pulses")]
     [Min(0.05f)]
     public float BreathingNoiseInterval = 0.75f;
