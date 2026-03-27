@@ -105,6 +105,34 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float BreathRecoveryPerSecond = 35f;
 
+    [Tooltip("Breath drain multiplier while idle")]
+    [Min(0f)]
+    public float IdleBreathConsumeMultiplier = 1f;
+
+    [Tooltip("Breath drain multiplier while walking")]
+    [Min(0f)]
+    public float WalkBreathConsumeMultiplier = 1.15f;
+
+    [Tooltip("Breath drain multiplier while running")]
+    [Min(0f)]
+    public float RunBreathConsumeMultiplier = 1.6f;
+
+    [Tooltip("Breath drain multiplier while crouching")]
+    [Min(0f)]
+    public float CrouchBreathConsumeMultiplier = 0.8f;
+
+    [Tooltip("Breath drain multiplier while hiding")]
+    [Min(0f)]
+    public float HideBreathConsumeMultiplier = 0.5f;
+
+    [Tooltip("Breath drain multiplier while airborne")]
+    [Min(0f)]
+    public float AirborneBreathConsumeMultiplier = 1.3f;
+
+    [Tooltip("Breath drain multiplier while climbing")]
+    [Min(0f)]
+    public float ClimbBreathConsumeMultiplier = 1.4f;
+
     [Tooltip("Interval between passive breathing noise pulses")]
     [Min(0.05f)]
     public float BreathingNoiseInterval = 0.75f;

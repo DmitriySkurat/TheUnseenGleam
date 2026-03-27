@@ -21,6 +21,7 @@ namespace HSM
             ctx.currentSpeedMultiplier = ctx.stats.HideSpeedMultiplier;
             ctx.currentNoiseRadius = 0f;
             ctx.currentFootstepInterval = 0f;
+            ctx.currentBreathConsumeMultiplier = ctx.stats.HideBreathConsumeMultiplier;
             ctx.velocity = Vector2.zero;
         }
 
@@ -28,6 +29,7 @@ namespace HSM
         {
             ctx.isHiding = false;
             ctx.velocity.y = 0f;
+            ctx.currentBreathConsumeMultiplier = 1f;
             // ctx.currentNoiseRadius = 0f;
             // ctx.currentFootstepInterval = 0f;
             // if (ctx.activeHideSpot != null)

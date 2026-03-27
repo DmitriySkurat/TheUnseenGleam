@@ -34,8 +34,7 @@ public class PlayerContext
     public float landingRollDirection;
     
     public bool isCrouching;
-    public bool isHoldingBreath;
-    public bool isOutOfBreath;
+
     public bool ceilingAbove;
     public bool isInteracting; // for Complex interactables (may be in future)
     
@@ -47,6 +46,10 @@ public class PlayerContext
     // ===== HIDING =====
     public bool isHiding;
     
+    // ===== BREATH =====
+    public float currentBreathConsumeMultiplier;
+    public bool isHoldingBreath; // Эти 2 (1) переменные в целом не нужны, но пусть пока будут
+    public bool isOutOfBreath; // (2)
     
     // ===== LADDER =====
     public bool onLadder;

@@ -45,6 +45,13 @@ MonoBehaviour:
   MaxBreathCapacity: 4
   BreathDrainPerSecond: 1
   BreathRecoveryPerSecond: 1.5
+  IdleBreathConsumeMultiplier: 1
+  WalkBreathConsumeMultiplier: 1.15
+  RunBreathConsumeMultiplier: 1.6
+  CrouchBreathConsumeMultiplier: 0.8
+  HideBreathConsumeMultiplier: 0.5
+  AirborneBreathConsumeMultiplier: 1.3
+  ClimbBreathConsumeMultiplier: 1.4
   BreathingNoiseInterval: 0.75
   BreathingNoiseRadius: 0.6
   CrouchSpeedMultiplier: 0.5

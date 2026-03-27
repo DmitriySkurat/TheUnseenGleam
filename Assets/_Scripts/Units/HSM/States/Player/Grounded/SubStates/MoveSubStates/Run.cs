@@ -15,6 +15,7 @@ namespace HSM {
             ctx.currentSpeedMultiplier = ctx.stats.RunSpeedMultiplier;
             ctx.currentNoiseRadius = ctx.stats.RunNoiseRadius;
             ctx.currentFootstepInterval = ctx.stats.RunFootstepInterval;
+            ctx.currentBreathConsumeMultiplier = ctx.stats.RunBreathConsumeMultiplier;
             
             ctx.timeRunStarted = Time.time;
             
@@ -25,6 +26,7 @@ namespace HSM {
         {
             ctx.currentNoiseRadius = 0f;
             ctx.currentFootstepInterval = 0f;
+            ctx.currentBreathConsumeMultiplier = 1f;
             base.OnExit();
         }
 

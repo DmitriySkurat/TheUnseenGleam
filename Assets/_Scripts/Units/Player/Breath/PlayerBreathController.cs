@@ -17,6 +17,7 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
             return;
 
         _ctx.currentBreath = _ctx.stats.MaxBreathCapacity;
+        _ctx.currentBreathConsumeMultiplier = _ctx.stats.IdleBreathConsumeMultiplier;
         _ctx.isHoldingBreath = false;
         _ctx.isOutOfBreath = false;
         _breathingNoiseTimer = 0f;
@@ -43,7 +44,8 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
 
         if (_ctx.isHoldingBreath)
         {
-            _ctx.currentBreath = Mathf.Max(0f, _ctx.currentBreath - _ctx.stats.BreathDrainPerSecond * deltaTime);
+            float breathDrain = _ctx.stats.BreathDrainPerSecond * Mathf.Max(0f, _ctx.currentBreathConsumeMultiplier);
+            _ctx.currentBreath = Mathf.Max(0f, _ctx.currentBreath - breathDrain * deltaTime);
             if (_ctx.currentBreath <= 0f)
             {
                 _ctx.currentBreath = 0f;

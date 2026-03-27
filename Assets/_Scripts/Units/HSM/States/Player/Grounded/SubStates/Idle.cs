@@ -9,6 +9,18 @@ namespace HSM {
             Add(new AnimatorBoolActivity(ctx.anim, "Idle", true, false));
         }
 
+        protected override void OnEnter()
+        {
+            ctx.currentBreathConsumeMultiplier = ctx.stats.IdleBreathConsumeMultiplier;
+            base.OnEnter();
+        }
+
+        protected override void OnExit()
+        {
+            ctx.currentBreathConsumeMultiplier = 1f;
+            base.OnExit();
+        }
+
         protected override State GetTransition() {
             if (ctx.isHiding) return Machine != null ? Machine.GetState<Hide>() : null;
             if (ctx.WantsCrouch) return Machine != null ? Machine.GetState<Crouch>() : null;
