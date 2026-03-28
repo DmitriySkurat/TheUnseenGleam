@@ -35,6 +35,13 @@ MonoBehaviour:
   StaminaDrainPerSecond: 20
   StaminaRegenPerSecond: 15
   MinStaminaToRun: 35
+  RunStaminaDrainMultiplier: 1
+  StaminaHoldBreathDrainPerSecond: 20
+  IdleStaminaBreathDrainMultiplier: 1
+  CrouchStaminaBreathDrainMultiplier: 0.8
+  HideStaminaBreathDrainMultiplier: 0.5
+  BreathingNoiseInterval: 0.75
+  BreathingNoiseRadius: 2.3
   JumpPower: 36
   MaxFallSpeed: 40
   FallAcceleration: 110
@@ -42,16 +49,6 @@ MonoBehaviour:
   CoyoteTime: 0.15
   JumpBuffer: 0.2
   InteractionCooldown: 0.25
-  MaxBreathCapacity: 4
-  BreathDrainPerSecond: 1
-  BreathRecoveryPerSecond: 1.5
-  IdleBreathConsumeMultiplier: 1
-  WalkBreathConsumeMultiplier: 1.15
-  RunBreathConsumeMultiplier: 1.6
-  CrouchBreathConsumeMultiplier: 0.8
-  HideBreathConsumeMultiplier: 0.5
-  BreathingNoiseInterval: 0.75
-  BreathingNoiseRadius: 2.3
   CrouchSpeedMultiplier: 0.5
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
@@ -81,5 +78,5 @@ MonoBehaviour:
   FallDamageRollMultiplier: 0.35
   ClimbVerticalSpeedMultiplier: 0.5
   ClimbHorizontalSpeedMultiplier: 0.5
-  LianSlipSpeed: 2
-  LianSlipAcceleration: 12
+  VinesSlipSpeed: 2
+  VinesSlipAcceleration: 12

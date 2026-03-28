@@ -69,7 +69,7 @@ public class PlayerScriptableStats : ScriptableObject
     public float MinStaminaToRun = 35f;
     
     [Tooltip("Drain multiplier while running")]
-    public float RunStaminaDrainMultiplier = 20f;
+    public float RunStaminaDrainMultiplier = 1f;
     
     [Header("BREATHE (STAMINA)")]
     [Tooltip("Stamina drained per second while not breathing")]
@@ -87,6 +87,7 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float HideStaminaBreathDrainMultiplier = 0.5f;
 
+    [Header("BREATHE (NOISE)")]
     [Tooltip("Interval between passive breathing noise pulses")]
     [Min(0.05f)]
     public float BreathingNoiseInterval = 0.75f;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerStaminaBreathController : MonoBehaviour, IInitializable
+public class PlayerBreathController : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Player + 5;
 
@@ -25,12 +25,13 @@ public class PlayerStaminaBreathController : MonoBehaviour, IInitializable
     {
         if (_ctx == null || _ctx.stats == null || _ctx.transform == null || !_ctx.isAlive)
         {
+            _ctx.isHoldingBreath = false;
             _breathingNoiseTimer = 0f;
             return;
         }
 
-        UpdateBreath(Time.deltaTime);
-        EmitBreathingNoise(Time.deltaTime);
+        UpdateBreath(Time.fixedDeltaTime);
+        EmitBreathingNoise(Time.fixedDeltaTime);
     }
 
     private void UpdateBreath(float deltaTime)

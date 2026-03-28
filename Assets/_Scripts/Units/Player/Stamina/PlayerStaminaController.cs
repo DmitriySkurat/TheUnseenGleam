@@ -14,20 +14,23 @@ public class PlayerStaminaController : MonoBehaviour, IInitializable
             return;
 
         _ctx.stamina = _ctx.stats.MaxStamina;
-        _ctx.currentStaminaDrainMultiplier = 0;
+        _ctx.currentStaminaDrainMultiplier = 0f;
     }
 
     private void FixedUpdate()
     {
-        Debug.Log($"currentStaminaDrainMultiplier: {_ctx.stamina:0F}");
+        Debug.Log($"Current stamina: {_ctx.stamina:0F}");
         Debug.Log($"currentStaminaDrainMultiplier: {_ctx.currentStaminaDrainMultiplier}");
         Debug.Log($"currentStaminaBreathDrainMultiplier: {_ctx.currentStaminaBreathDrainMultiplier}");
-        UpdateStamina();
+        
+        UpdateStamina(Time.fixedDeltaTime);
     }
     
-    private void UpdateStamina()
+    private void UpdateStamina(float deltaTime)
     {
-        float consumption = _ctx.stats.StaminaDrainPerSecond * _ctx.currentStaminaDrainMultiplier * Time.deltaTime;
+        if (_ctx.isHoldingBreath) return;
+        
+        float consumption = _ctx.stats.StaminaDrainPerSecond * _ctx.currentStaminaDrainMultiplier * deltaTime;
 
         if (consumption > 0f)
         {
@@ -35,9 +38,14 @@ public class PlayerStaminaController : MonoBehaviour, IInitializable
         }
         else
         {
-            float regeneration = _ctx.stats.StaminaRegenPerSecond * Time.deltaTime;
-            
-            _ctx.stamina = Mathf.Min(_ctx.stats.MaxStamina, _ctx.stamina + regeneration);
+            RegenStamina(deltaTime);
         }
+    }
+    
+    private void RegenStamina(float deltaTime)
+    {
+        float regeneration = _ctx.stats.StaminaRegenPerSecond * deltaTime;
+            
+        _ctx.stamina = Mathf.Min(_ctx.stats.MaxStamina, _ctx.stamina + regeneration);
     }
 }
