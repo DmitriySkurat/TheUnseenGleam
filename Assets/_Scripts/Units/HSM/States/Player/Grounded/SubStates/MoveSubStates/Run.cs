@@ -15,7 +15,8 @@ namespace HSM {
             ctx.currentSpeedMultiplier = ctx.stats.RunSpeedMultiplier;
             ctx.currentNoiseRadius = ctx.stats.RunNoiseRadius;
             ctx.currentFootstepInterval = ctx.stats.RunFootstepInterval;
-            ctx.currentBreathConsumeMultiplier = ctx.stats.RunBreathConsumeMultiplier;
+            ctx.currentStaminaDrainMultiplier = ctx.stats.RunStaminaDrainMultiplier;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
             
             ctx.timeRunStarted = Time.time;
             
@@ -26,7 +27,9 @@ namespace HSM {
         {
             ctx.currentNoiseRadius = 0f;
             ctx.currentFootstepInterval = 0f;
-            ctx.currentBreathConsumeMultiplier = 1f;
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
             base.OnExit();
         }
 
@@ -34,12 +37,6 @@ namespace HSM {
             if (!ctx.input.RunHeld || ctx.stamina <= 0.01f) return Machine != null ? Machine.GetState<Walk>() : null;
             
             return null;
-        }
-        
-        protected override void OnUpdate(float deltaTime) {        
-            ctx.stamina -= ctx.stats.StaminaDrainPerSecond * deltaTime;
-            ctx.stamina = Mathf.Max(0, ctx.stamina);
-            base.OnUpdate(deltaTime);
         }
     }
 }

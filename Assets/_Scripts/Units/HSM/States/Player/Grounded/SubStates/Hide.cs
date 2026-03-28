@@ -21,7 +21,8 @@ namespace HSM
             ctx.currentSpeedMultiplier = ctx.stats.HideSpeedMultiplier;
             ctx.currentNoiseRadius = 0f;
             ctx.currentFootstepInterval = 0f;
-            ctx.currentBreathConsumeMultiplier = ctx.stats.HideBreathConsumeMultiplier;
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = ctx.stats.HideStaminaBreathDrainMultiplier;
             ctx.velocity = Vector2.zero;
         }
 
@@ -29,11 +30,11 @@ namespace HSM
         {
             ctx.isHiding = false;
             ctx.velocity.y = 0f;
-            ctx.currentBreathConsumeMultiplier = 1f;
-            // ctx.currentNoiseRadius = 0f;
-            // ctx.currentFootstepInterval = 0f;
-            // if (ctx.activeHideSpot != null)
-            //     ctx.activeHideSpot = null;
+            ctx.currentStaminaDrainMultiplier = 1f;
+            ctx.currentNoiseRadius = 0f;
+            ctx.currentFootstepInterval = 0f;
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
         }
 
         protected override void OnUpdate(float deltaTime)

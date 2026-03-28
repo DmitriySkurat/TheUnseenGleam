@@ -19,11 +19,21 @@ namespace HSM
         {
             ctx.isClimbing = true;
             ctx.velocity = Vector2.zero;
+            
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
+            base.OnEnter();
         }
 
         protected override void OnExit()
         {
             ctx.isClimbing = false;
+            
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
+            base.OnExit();
         }
 
         protected override void OnUpdate(float deltaTime)

@@ -47,7 +47,6 @@ namespace HSM {
             if (ctx.stats != null) 
             {
                 HandleJump();
-                StaminaRecovery(deltaTime);
                 HandleFootsteps(deltaTime);
             }
             base.OnUpdate(deltaTime);
@@ -92,16 +91,6 @@ namespace HSM {
             }
         }
 
-        
-        
-        void StaminaRecovery(float deltaTime)
-        {
-            if (!(Machine.Root.Leaf() is Run))
-            {
-                ctx.stamina += ctx.stats.StaminaRegenPerSecond * deltaTime;
-                ctx.stamina = Mathf.Min(ctx.stamina, ctx.stats.MaxStamina);
-            }
-        }
 
         void HandleFootsteps(float deltaTime)
         {

@@ -67,6 +67,33 @@ public class PlayerScriptableStats : ScriptableObject
     
     [Tooltip("Minimum stamina required to START running")]
     public float MinStaminaToRun = 35f;
+    
+    [Tooltip("Drain multiplier while running")]
+    public float RunStaminaDrainMultiplier = 20f;
+    
+    [Header("BREATHE (STAMINA)")]
+    [Tooltip("Stamina drained per second while not breathing")]
+    public float StaminaHoldBreathDrainPerSecond = 20f;
+    
+    [Tooltip("Breath drain multiplier while idle")]
+    [Min(0f)]
+    public float IdleStaminaBreathDrainMultiplier = 1f;
+
+    [Tooltip("Breath drain multiplier while crouching")]
+    [Min(0f)]
+    public float CrouchStaminaBreathDrainMultiplier = 0.8f;
+
+    [Tooltip("Breath drain multiplier while hiding")]
+    [Min(0f)]
+    public float HideStaminaBreathDrainMultiplier = 0.5f;
+
+    [Tooltip("Interval between passive breathing noise pulses")]
+    [Min(0.05f)]
+    public float BreathingNoiseInterval = 0.75f;
+
+    [Tooltip("Noise radius emitted by normal breathing")]
+    [Min(0f)]
+    public float BreathingNoiseRadius = 1.2f;
 
     [Header("JUMP")]
     [Tooltip("The immediate velocity applied when jumping")]
@@ -91,47 +118,6 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Delay between interactions")]
     [Range(0f, 0.5f)]
     public float InteractionCooldown = 0.25f;
-
-    [Header("BREATH")]
-    [Tooltip("How long the player can hold breath, in seconds")]
-    [Min(0.1f)]
-    public float MaxBreathCapacity = 100f;
-
-    [Tooltip("How quickly breath is drained while holding it")]
-    [Min(0f)]
-    public float BreathDrainPerSecond = 25f;
-
-    [Tooltip("How quickly breath recovers after the key is released")]
-    [Min(0f)]
-    public float BreathRecoveryPerSecond = 35f;
-
-    [Tooltip("Breath drain multiplier while idle")]
-    [Min(0f)]
-    public float IdleBreathConsumeMultiplier = 1f;
-
-    [Tooltip("Breath drain multiplier while walking")]
-    [Min(0f)]
-    public float WalkBreathConsumeMultiplier = 1.15f;
-
-    [Tooltip("Breath drain multiplier while running")]
-    [Min(0f)]
-    public float RunBreathConsumeMultiplier = 1.6f;
-
-    [Tooltip("Breath drain multiplier while crouching")]
-    [Min(0f)]
-    public float CrouchBreathConsumeMultiplier = 0.8f;
-
-    [Tooltip("Breath drain multiplier while hiding")]
-    [Min(0f)]
-    public float HideBreathConsumeMultiplier = 0.5f;
-
-    [Tooltip("Interval between passive breathing noise pulses")]
-    [Min(0.05f)]
-    public float BreathingNoiseInterval = 0.75f;
-
-    [Tooltip("Noise radius emitted by normal breathing")]
-    [Min(0f)]
-    public float BreathingNoiseRadius = 1.2f;
     
     [Header("CROUCH")]
     [Tooltip("Multiplier applied to MaxSpeed while crouching")]
@@ -258,11 +244,11 @@ public class PlayerScriptableStats : ScriptableObject
     [Header("LIAN")]
     [Tooltip("Target downward speed while climbing on lianas")]
     [Min(0f)]
-    public float LianSlipSpeed = 2f;
+    public float VinesSlipSpeed = 2f;
 
     [Tooltip("How quickly the player slides down to the target liana slip speed")]
     [Min(0f)]
-    public float LianSlipAcceleration = 12f;
+    public float VinesSlipAcceleration = 12f;
     
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]

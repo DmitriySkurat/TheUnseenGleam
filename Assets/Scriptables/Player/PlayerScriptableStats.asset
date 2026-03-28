@@ -50,10 +50,8 @@ MonoBehaviour:
   RunBreathConsumeMultiplier: 1.6
   CrouchBreathConsumeMultiplier: 0.8
   HideBreathConsumeMultiplier: 0.5
-  AirborneBreathConsumeMultiplier: 1.3
-  ClimbBreathConsumeMultiplier: 1.4
   BreathingNoiseInterval: 0.75
-  BreathingNoiseRadius: 0.6
+  BreathingNoiseRadius: 2.3
   CrouchSpeedMultiplier: 0.5
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
@@ -83,3 +81,5 @@ MonoBehaviour:
   FallDamageRollMultiplier: 0.35
   ClimbVerticalSpeedMultiplier: 0.5
   ClimbHorizontalSpeedMultiplier: 0.5
+  LianSlipSpeed: 2
+  LianSlipAcceleration: 12

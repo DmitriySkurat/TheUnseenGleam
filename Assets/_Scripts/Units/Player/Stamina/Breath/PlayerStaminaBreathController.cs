@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerBreathController : MonoBehaviour, IInitializable
+public class PlayerStaminaBreathController : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Player + 5;
 
@@ -16,14 +16,12 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
         if (_ctx == null || _ctx.stats == null)
             return;
 
-        _ctx.currentBreath = _ctx.stats.MaxBreathCapacity;
-        _ctx.currentBreathConsumeMultiplier = _ctx.stats.IdleBreathConsumeMultiplier;
         _ctx.isHoldingBreath = false;
-        _ctx.isOutOfBreath = false;
+        _ctx.currentStaminaBreathDrainMultiplier = 0f;
         _breathingNoiseTimer = 0f;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_ctx == null || _ctx.stats == null || _ctx.transform == null || !_ctx.isAlive)
         {
@@ -37,30 +35,19 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
 
     private void UpdateBreath(float deltaTime)
     {
-        bool wantsHoldBreath = _ctx.input.HoldBreathHeld;
-        bool canHoldBreath = _ctx.currentBreath > 0f;
-
-        _ctx.isHoldingBreath = wantsHoldBreath && canHoldBreath;
+        _ctx.isHoldingBreath = _ctx.input.HoldBreathHeld && _ctx.CanHoldBreath;
 
         if (_ctx.isHoldingBreath)
         {
-            float breathDrain = _ctx.stats.BreathDrainPerSecond * Mathf.Max(0f, _ctx.currentBreathConsumeMultiplier);
-            _ctx.currentBreath = Mathf.Max(0f, _ctx.currentBreath - breathDrain * deltaTime);
-            if (_ctx.currentBreath <= 0f)
+            float breathDrain = _ctx.stats.StaminaHoldBreathDrainPerSecond * Mathf.Max(0f, _ctx.currentStaminaBreathDrainMultiplier);
+            
+            _ctx.stamina = Mathf.Max(0f, _ctx.stamina - breathDrain * deltaTime);
+            
+            if (_ctx.stamina <= 0f)
             {
-                _ctx.currentBreath = 0f;
                 _ctx.isHoldingBreath = false;
             }
         }
-        else if (!wantsHoldBreath)
-        {
-            _ctx.currentBreath = Mathf.Min(
-                _ctx.stats.MaxBreathCapacity,
-                _ctx.currentBreath + _ctx.stats.BreathRecoveryPerSecond * deltaTime
-            );
-        }
-
-        _ctx.isOutOfBreath = _ctx.currentBreath <= 0f;
     }
 
     private void EmitBreathingNoise(float deltaTime)

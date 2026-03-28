@@ -23,10 +23,9 @@ public class PlayerContext
     public InventoryEntry selectedHotbarEntry;
     
     // ===== MOVEMENT =====
+    public bool grounded;
     public Vector2 velocity;
     public float currentSpeedMultiplier = 1f;
-    public float stamina = 100f;
-    public float currentBreath;
     public float currentNoiseRadius;
     public float currentFootstepInterval;
     public float airborneStartY;
@@ -46,10 +45,11 @@ public class PlayerContext
     // ===== HIDING =====
     public bool isHiding;
     
-    // ===== BREATH =====
-    public float currentBreathConsumeMultiplier;
-    public bool isHoldingBreath; // Эти 2 (1) переменные в целом не нужны, но пусть пока будут
-    public bool isOutOfBreath; // (2)
+    // ===== STAMINA =====
+    public float stamina;
+    public float currentStaminaDrainMultiplier;
+    public float currentStaminaBreathDrainMultiplier;
+    public bool isHoldingBreath;
     
     // ===== LADDER =====
     public bool onLadder;
@@ -71,17 +71,13 @@ public class PlayerContext
     public float timeRunStarted;
     public float timeCrouchWasPressed = float.MinValue;
     public float landingRollEndTime = float.MinValue;
-    
-    // ===== PHYSICS =====
-    public bool grounded;
      
     // ===== DERIVED PROPERTIES =====
     public bool HasBufferedJump => bufferedJumpUsable && stats != null && Time.time < timeJumpWasPressed + stats.JumpBuffer;
     public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && Time.time < frameLeftGrounded + stats.CoyoteTime;
-    
-    // Запрет на взаимодействие в воздухе
-    public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown && grounded;
+    public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown && grounded; // Запрет на взаимодействие в воздухе
     public bool CanRun => stamina > stats.MinStaminaToRun;
+    public bool CanHoldBreath => stamina > 0f;
     public bool HasMovementIntent => movementGraceTimer > 0f;
     public bool HasLandingRollBuffered => stats != null && Time.time < timeCrouchWasPressed + stats.LandingRollBuffer;
     public bool IsLandingRollActive => Time.time < landingRollEndTime;

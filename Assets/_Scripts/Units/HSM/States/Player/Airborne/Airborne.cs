@@ -22,8 +22,10 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
             base.OnEnter();
-            // TODO: Update Animator through ctx.anim
         }
 
         protected override void OnUpdate(float deltaTime) {
@@ -33,6 +35,9 @@ namespace HSM {
 
         protected override void OnExit()
         {
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
             base.OnExit();
         }
 

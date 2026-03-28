@@ -18,7 +18,9 @@ namespace HSM {
             ctx.isCrouching = true;
             ctx.currentNoiseRadius = ctx.stats.CrouchNoiseRadius;
             ctx.currentFootstepInterval = ctx.stats.CrouchFootstepInterval;
-            ctx.currentBreathConsumeMultiplier = ctx.stats.CrouchBreathConsumeMultiplier;
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = ctx.stats.CrouchStaminaBreathDrainMultiplier;
+            
 
             col = ctx.coll as CapsuleCollider2D;
             if (col != null) {
@@ -42,7 +44,9 @@ namespace HSM {
             ctx.isCrouching = false;
             ctx.currentNoiseRadius = 0f;
             ctx.currentFootstepInterval = 0f;
-            ctx.currentBreathConsumeMultiplier = 1f;
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
 
             if (col != null) {
                 col.size = originalColliderSize;

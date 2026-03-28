@@ -11,13 +11,15 @@ namespace HSM {
 
         protected override void OnEnter()
         {
-            ctx.currentBreathConsumeMultiplier = ctx.stats.IdleBreathConsumeMultiplier;
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = ctx.stats.IdleStaminaBreathDrainMultiplier;
             base.OnEnter();
         }
 
         protected override void OnExit()
         {
-            ctx.currentBreathConsumeMultiplier = 1f;
+            ctx.currentStaminaDrainMultiplier = 0f;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
             base.OnExit();
         }
 

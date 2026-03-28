@@ -30,8 +30,8 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
         {
             if (_ctx.onVines)
             {
-                float target = -_ctx.stats.LianSlipSpeed;
-                _ctx.velocity.y = Mathf.MoveTowards(_ctx.velocity.y, target, _ctx.stats.LianSlipAcceleration * deltaTime);
+                float target = -_ctx.stats.VinesSlipSpeed;
+                _ctx.velocity.y = Mathf.MoveTowards(_ctx.velocity.y, target, _ctx.stats.VinesSlipAcceleration * deltaTime);
             }
             return;
         }

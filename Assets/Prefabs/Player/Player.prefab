@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 1124396798477559947}
   - component: {fileID: 3687784705825962857}
   - component: {fileID: 2419083475612345678}
+  - component: {fileID: 1723518907424848559}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -765,3 +766,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f86e837f8204ed1bcbaf5926fb4e463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBreathController
+--- !u!114 &1723518907424848559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7227d60e438eeb54fa6ab09d116137dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStaminaBreathController
