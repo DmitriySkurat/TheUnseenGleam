@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/HSM -type f -name *.cs)"
+    ]
+  }
+}
