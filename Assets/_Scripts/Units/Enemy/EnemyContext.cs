@@ -29,6 +29,7 @@ public class EnemyContext
     public AgentVision vision;
     public AgentHearing hearing;
     public AgentLightSensor lightSensor;
+    public Renderer renderer;
     public Transform selfTransform;
     public Transform playerTransform;
     public Collider2D selfCollider;

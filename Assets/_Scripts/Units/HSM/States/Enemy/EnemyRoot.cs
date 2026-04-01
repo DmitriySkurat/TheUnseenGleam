@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace HSM
 {
     public class EnemyRoot : State

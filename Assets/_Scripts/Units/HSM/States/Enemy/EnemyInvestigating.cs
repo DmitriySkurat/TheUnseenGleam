@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace HSM
 {
     public class EnemyInvestigating : State
@@ -7,6 +9,9 @@ namespace HSM
         public EnemyInvestigating(StateMachine m, State parent, EnemyContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            Add(new ColorPhaseActivity(ctx.renderer){
+                enterColor = Color.orange, 
+            });
         }
 
         protected override void OnEnter()

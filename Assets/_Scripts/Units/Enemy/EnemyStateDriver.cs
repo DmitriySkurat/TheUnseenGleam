@@ -14,6 +14,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField] private AgentVision vision;
     [SerializeField] private AgentHearing hearing;
     [SerializeField] private AgentLightSensor lightSensor;
+    [SerializeField] private Renderer enemyRenderer;
 
     [Header("Patrol")]
     [SerializeField] private Transform[] patrolPoints;
@@ -63,6 +64,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         if (vision == null) vision = GetComponent<AgentVision>();
         if (hearing == null) hearing = GetComponent<AgentHearing>();
         if (lightSensor == null) lightSensor = GetComponent<AgentLightSensor>();
+        if (enemyRenderer == null) enemyRenderer = GetComponentInChildren<Renderer>();
 
         _ctx = new EnemyContext
         {
@@ -70,6 +72,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
             vision = vision,
             hearing = hearing,
             lightSensor = lightSensor,
+            renderer = enemyRenderer,
             selfTransform = transform,
             selfCollider = GetComponent<Collider2D>(),
             rb = GetComponent<Rigidbody2D>(),

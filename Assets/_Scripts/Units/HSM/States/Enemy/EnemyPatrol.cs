@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace HSM
 {
     public class EnemyPatrol : State
@@ -7,6 +9,9 @@ namespace HSM
         public EnemyPatrol(StateMachine m, State parent, EnemyContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            Add(new ColorPhaseActivity(ctx.renderer){
+                enterColor = Color.blue,  
+            });
         }
 
         protected override void OnEnter()
