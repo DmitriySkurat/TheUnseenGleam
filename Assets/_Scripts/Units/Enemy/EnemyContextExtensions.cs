@@ -197,7 +197,7 @@ public static class EnemyContextExtensions
             return false;
 
         ctx.ResetWait();
-        Vector2 escapeTarget = (Vector2)ctx.selfTransform.position + ctx.GetFacingDirection() * ctx.lightEscapeDistance;
+        Vector2 escapeTarget = (Vector2)ctx.selfTransform.position + ctx.GetFacingDirection() * ctx.lightOverrunDistance;
         ctx.TryMoveTo(escapeTarget, ctx.lightEscapeSpeed);
         return true;
     }
@@ -267,12 +267,12 @@ public static class EnemyContextExtensions
         if (dir.sqrMagnitude < 0.01f)
             dir = Vector2.right;
 
-        Vector2 adjusted = position + dir * ctx.lightEscapeDistance;
+        Vector2 adjusted = position + dir * ctx.lightOverrunDistance;
 
         if (ctx.lightSensor.IsBlindedAt(adjusted, out _, out _))
         {
             Vector2 perp = new Vector2(-dir.y, dir.x);
-            adjusted = position + perp * ctx.lightEscapeDistance;
+            adjusted = position + perp * ctx.lightOverrunDistance;
         }
 
         return adjusted;

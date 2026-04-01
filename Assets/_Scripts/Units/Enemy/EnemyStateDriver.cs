@@ -46,7 +46,6 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField, Min(0f)] private float returnSpeed = 3f;
 
     [Header("Patrol Under Light")]
-    [SerializeField, Min(0f)] private float lightEscapeDistance = 4f;
     [SerializeField, Min(0f)] private float lightEscapeSpeed = 4.5f;
     [SerializeField, Min(0f)] private float lightOverrunDistance = 2f;
 
@@ -92,7 +91,6 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
             searchDuration = searchDuration,
             searchWaitTime = searchWaitTime,
             returnSpeed = returnSpeed,
-            lightEscapeDistance = lightEscapeDistance,
             lightEscapeSpeed = lightEscapeSpeed,
             lightOverrunDistance = lightOverrunDistance,
             contactDamage = contactDamage,

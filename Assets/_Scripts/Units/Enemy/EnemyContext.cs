@@ -17,7 +17,6 @@ public class EnemyContext
     public float searchDuration;
     public float searchWaitTime;
     public float returnSpeed;
-    public float lightEscapeDistance;
     public float lightEscapeSpeed;
     public float lightOverrunDistance;
     public float contactDamage;
