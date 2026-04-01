@@ -36,7 +36,7 @@ namespace HSM
 
         protected override void OnUpdate(float deltaTime)
         {
-            if (ctx.IsTraversingLink())
+            if (ctx.IsTraversingLink)
             {
                 if (ctx.vision != null && ctx.vision.CanSeePlayer && ctx.playerTransform != null)
                     ctx.UpdateKnownPlayerPosition(ctx.playerTransform.position);
@@ -75,7 +75,7 @@ namespace HSM
             {
                 ctx.UpdateKnownPlayerPosition(noiseEvent.Position);
 
-                if (ctx.IsTraversingLink())
+                if (ctx.IsTraversingLink)
                     return;
 
                 Machine.Sequencer.RequestTransition(
@@ -87,7 +87,7 @@ namespace HSM
             if (Machine.Root.Leaf() is EnemyChasing && !isPlayerNoise)
                 return;
 
-            if (ctx.IsTraversingLink())
+            if (ctx.IsTraversingLink)
                 return;
 
             ctx.investigationTarget = noiseEvent.Position;

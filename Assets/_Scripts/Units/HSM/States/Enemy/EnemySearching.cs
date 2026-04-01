@@ -21,7 +21,7 @@ namespace HSM
             ctx.searchRoute[0] = ctx.AdjustPositionAwayFromLight(ctx.searchCenter - offset);
             ctx.searchRoute[1] = ctx.AdjustPositionAwayFromLight(ctx.searchCenter + offset);
             ctx.searchDirection = 1;
-            ctx.searchIndex = EnemyContext.GetClosestIndex(ctx.searchRoute, ctx.selfTransform.position);
+            ctx.searchIndex = EnemyContextExtensions.GetClosestIndex(ctx.searchRoute, ctx.selfTransform.position);
 
             ctx.ForceMoveTo(ctx.searchRoute[ctx.searchIndex], ctx.searchSpeed);
         }
