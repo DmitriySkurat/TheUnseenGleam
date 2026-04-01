@@ -9,6 +9,7 @@ namespace HSM
         public readonly EnemyInvestigating Investigating;
         public readonly EnemySearching Searching;
         public readonly EnemyReturningToPatrol ReturningToPatrol;
+        public readonly EnemyLightEscape LightEscape;
 
         private readonly EnemyContext ctx;
 
@@ -20,6 +21,7 @@ namespace HSM
             Investigating = new EnemyInvestigating(m, this, ctx);
             Searching = new EnemySearching(m, this, ctx);
             ReturningToPatrol = new EnemyReturningToPatrol(m, this, ctx);
+            LightEscape = new EnemyLightEscape(m, this, ctx);
         }
 
         protected override State GetInitialState() => Patrol;
@@ -49,6 +51,19 @@ namespace HSM
                 ActiveChild.Update(deltaTime);
 
             if (Machine?.Sequencer == null || Machine.Sequencer.IsTransitioning)
+                return;
+
+            // Light escape has highest priority; only trigger if not already in that state
+            var lightEscape = Machine.GetState<EnemyLightEscape>();
+            bool isEscaping = Machine.Root.Leaf() == lightEscape;
+            if (!isEscaping && ctx.lightSensor != null && ctx.lightSensor.IsBlinded(out _, out _))
+            {
+                Machine.Sequencer.RequestTransition(Machine.Root.Leaf(), lightEscape);
+                return;
+            }
+
+            // Suppress chase logic while escaping light
+            if (isEscaping)
                 return;
 
             bool canSeePlayer = ctx.vision != null && ctx.vision.CanSeePlayer && ctx.playerTransform != null;

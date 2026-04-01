@@ -19,6 +19,7 @@ public class EnemyContext
     public float returnSpeed;
     public float lightEscapeDistance;
     public float lightEscapeSpeed;
+    public float lightOverrunDistance;
     public float contactDamage;
     public float contactDamageCooldown;
     public float contactDamageRangeFallback;

@@ -202,43 +202,6 @@ public static class EnemyContextExtensions
         return true;
     }
 
-    public static bool TryHandleBlindRun(this EnemyContext ctx)
-    {
-        if (ctx.lightSensor == null)
-        {
-            ctx.blindRunLocked = false;
-            return false;
-        }
-
-        if (!ctx.lightSensor.IsBlinded(out _, out _))
-        {
-            ctx.blindRunLocked = false;
-            return false;
-        }
-
-        if (!ctx.blindRunLocked)
-        {
-            ctx.blindRunDirection = ctx.GetFacingDirection();
-            ctx.blindRunLocked = true;
-            ctx.ResetWait();
-            ctx.StopVisualChase();
-            ctx.ResetManualCommand();
-            if (ctx.nav != null)
-                ctx.nav.Abort();
-            ctx.hasKnownPlayerPosition = false;
-        }
-
-        if (ctx.rb != null)
-        {
-            ctx.rb.linearVelocity = new Vector2(ctx.blindRunDirection.x * ctx.lightEscapeSpeed, ctx.rb.linearVelocity.y);
-            Vector3 scale = ctx.selfTransform.localScale;
-            scale.x = ctx.blindRunDirection.x >= 0f ? 1f : -1f;
-            ctx.selfTransform.localScale = scale;
-        }
-
-        return true;
-    }
-
     public static void TryApplyContactDamage(this EnemyContext ctx)
     {
         if (ctx.contactDamage <= 0f)

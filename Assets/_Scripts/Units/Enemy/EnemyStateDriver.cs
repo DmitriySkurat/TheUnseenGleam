@@ -14,7 +14,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField] private AgentVision vision;
     [SerializeField] private AgentHearing hearing;
     [SerializeField] private AgentLightSensor lightSensor;
-    [SerializeField] private Renderer enemyRenderer;
+    private Renderer enemyRenderer;
 
     [Header("Patrol")]
     [SerializeField] private Transform[] patrolPoints;
@@ -48,6 +48,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [Header("Patrol Under Light")]
     [SerializeField, Min(0f)] private float lightEscapeDistance = 4f;
     [SerializeField, Min(0f)] private float lightEscapeSpeed = 4.5f;
+    [SerializeField, Min(0f)] private float lightOverrunDistance = 2f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
@@ -93,6 +94,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
             returnSpeed = returnSpeed,
             lightEscapeDistance = lightEscapeDistance,
             lightEscapeSpeed = lightEscapeSpeed,
+            lightOverrunDistance = lightOverrunDistance,
             contactDamage = contactDamage,
             contactDamageCooldown = contactDamageCooldown,
             contactDamageRangeFallback = contactDamageRangeFallback,
@@ -116,10 +118,6 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     {
         _ctx.ResolvePlayerTransform();
         _ctx.TryApplyContactDamage();
-
-        if (_ctx.TryHandleBlindRun())
-            return;
-
         _machine.Tick(Time.deltaTime);
     }
 
