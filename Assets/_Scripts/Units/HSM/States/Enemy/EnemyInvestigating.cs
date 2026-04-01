@@ -4,42 +4,44 @@ namespace HSM
 {
     public class EnemyInvestigating : State
     {
+        private readonly EnemyRoot root;
         private readonly EnemyContext ctx;
 
-        public EnemyInvestigating(StateMachine m, State parent, EnemyContext ctx) : base(m, parent)
+        public EnemyInvestigating(StateMachine m, EnemyRoot root) : base(m, root)
         {
-            this.ctx = ctx;
+            this.root = root;
+            this.ctx = root.ctx;
             Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.orange, 
+                enterColor = Color.orange,
             });
         }
 
         protected override void OnEnter()
         {
-            ctx.StopVisualChase();
-            ctx.ResetWait();
-            ctx.ForceMoveTo(ctx.investigationTarget, ctx.investigateSpeed);
+            root.StopVisualChase();
+            root.ResetWait();
+            root.ForceMoveTo(ctx.investigationTarget, ctx.investigateSpeed);
         }
 
         protected override void OnUpdate(float deltaTime)
         {
             if (ctx.isWaiting)
             {
-                if (!ctx.UpdateWaitTimer())
+                if (!root.UpdateWaitTimer())
                     return;
 
                 Machine.Sequencer.RequestTransition(this, Machine.GetState<EnemyReturningToPatrol>());
                 return;
             }
 
-            if (!ctx.TryMoveTo(ctx.investigationTarget, ctx.investigateSpeed))
+            if (!root.TryMoveTo(ctx.investigationTarget, ctx.investigateSpeed))
             {
                 Machine.Sequencer.RequestTransition(this, Machine.GetState<EnemyReturningToPatrol>());
                 return;
             }
 
-            if (ctx.HasCompletedManualMove())
-                ctx.BeginWait(ctx.investigateWaitTime);
+            if (root.HasCompletedManualMove())
+                root.BeginWait(ctx.investigateWaitTime);
         }
     }
 }

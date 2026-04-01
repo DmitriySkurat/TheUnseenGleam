@@ -1,24 +1,28 @@
+using PlatNav;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace HSM
 {
     public class EnemyPatrol : State
     {
+        private readonly EnemyRoot root;
         private readonly EnemyContext ctx;
 
-        public EnemyPatrol(StateMachine m, State parent, EnemyContext ctx) : base(m, parent)
+        public EnemyPatrol(StateMachine m, EnemyRoot root) : base(m, root)
         {
-            this.ctx = ctx;
+            this.root = root;
+            this.ctx = root.ctx;
             Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.blue,  
+                enterColor = Color.blue,
             });
         }
 
         protected override void OnEnter()
         {
-            ctx.StopVisualChase();
-            ctx.ResetWait();
-            ctx.ResetManualCommand();
+            root.StopVisualChase();
+            root.ResetWait();
+            root.ResetManualCommand();
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -26,29 +30,66 @@ namespace HSM
             if (ctx.patrolRoute == null || ctx.patrolRoute.Length == 0)
                 return;
 
-            if (ctx.TryHandlePatrolLightResponse())
+            if (TryHandlePatrolLightResponse())
                 return;
 
             if (ctx.isWaiting)
             {
-                if (!ctx.UpdateWaitTimer())
+                if (!root.UpdateWaitTimer())
                     return;
 
-                ctx.TryMoveTo(ctx.patrolRoute[ctx.patrolIndex], ctx.patrolSpeed);
+                root.TryMoveTo(ctx.patrolRoute[ctx.patrolIndex], ctx.patrolSpeed);
             }
 
-            if (!ctx.TryMoveTo(ctx.patrolRoute[ctx.patrolIndex], ctx.patrolSpeed))
+            if (!root.TryMoveTo(ctx.patrolRoute[ctx.patrolIndex], ctx.patrolSpeed))
             {
-                ctx.AdvancePatrolIndex();
-                ctx.BeginWait(ctx.patrolWaitTime);
+                AdvancePatrolIndex();
+                root.BeginWait(ctx.patrolWaitTime);
                 return;
             }
 
-            if (ctx.HasCompletedManualMove())
+            if (root.HasCompletedManualMove())
             {
-                ctx.AdvancePatrolIndex();
-                ctx.BeginWait(ctx.patrolWaitTime);
+                AdvancePatrolIndex();
+                root.BeginWait(ctx.patrolWaitTime);
             }
+        }
+
+        private bool TryHandlePatrolLightResponse()
+        {
+            if (ctx.lightSensor == null)
+                return false;
+
+            if (!ctx.lightSensor.IsBlinded(out Light2D strongestLight, out _))
+                return false;
+
+            bool isMirrorLight = strongestLight != null && strongestLight.GetComponent<MirrorLightSource>() != null;
+            bool isStandingStill = ctx.isWaiting || (ctx.nav != null && ctx.nav.State == PlatNavState.Idle && !ctx.nav.HasPath);
+
+            if (isMirrorLight && isStandingStill)
+            {
+                root.ResetManualCommand();
+                return true;
+            }
+
+            if (isMirrorLight)
+                return false;
+
+            root.ResetWait();
+            Vector2 escapeTarget = (Vector2)ctx.selfTransform.position + root.GetFacingDirection() * ctx.lightOverrunDistance;
+            root.TryMoveTo(escapeTarget, ctx.lightEscapeSpeed);
+            return true;
+        }
+
+        private void AdvancePatrolIndex()
+        {
+            if (ctx.patrolRoute == null || ctx.patrolRoute.Length <= 1)
+            {
+                ctx.patrolIndex = 0;
+                return;
+            }
+
+            ctx.patrolIndex = EnemyRoot.GetNextBounceIndex(ctx.patrolIndex, ref ctx.patrolDirection, ctx.patrolRoute.Length);
         }
     }
 }

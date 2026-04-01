@@ -4,6 +4,7 @@ namespace HSM
 {
     public class EnemyLightEscape : State
     {
+        private readonly EnemyRoot root;
         private readonly EnemyContext ctx;
 
         private Vector2 _escapeDirection;
@@ -17,9 +18,10 @@ namespace HSM
         private const float StuckThreshold = 0.02f;
         private const float StuckDuration  = 0.3f;
 
-        public EnemyLightEscape(StateMachine m, State parent, EnemyContext ctx) : base(m, parent)
+        public EnemyLightEscape(StateMachine m, EnemyRoot root) : base(m, root)
         {
-            this.ctx = ctx;
+            this.root = root;
+            this.ctx = root.ctx;
             Add(new ColorPhaseActivity(ctx.renderer)
             {
                 enterColor = Color.yellow,
@@ -28,7 +30,7 @@ namespace HSM
 
         protected override void OnEnter()
         {
-            _escapeDirection  = ctx.GetFacingDirection();
+            _escapeDirection  = root.GetFacingDirection();
             _exitedLight      = false;
             _overrunTravelled = 0f;
             _flipped          = false;
@@ -38,9 +40,9 @@ namespace HSM
             _overrunLastPos   = startPos;
             _prevPos          = startPos;
 
-            ctx.StopVisualChase();
-            ctx.ResetWait();
-            ctx.ResetManualCommand();
+            root.StopVisualChase();
+            root.ResetWait();
+            root.ResetManualCommand();
             if (ctx.nav != null)
                 ctx.nav.Abort();
             ctx.hasKnownPlayerPosition = false;
@@ -50,7 +52,6 @@ namespace HSM
         {
             Vector2 currentPos = ctx.selfTransform.position;
 
-            // Wall detection: check horizontal movement produced by last frame's velocity
             float movedX = Mathf.Abs(currentPos.x - _prevPos.x);
             if (movedX < StuckThreshold)
             {
@@ -65,7 +66,6 @@ namespace HSM
                     }
                     else
                     {
-                        // Still blocked after flip — bail out
                         TransitionToPatrol();
                         return;
                     }
@@ -76,7 +76,6 @@ namespace HSM
                 _stuckTimer = 0f;
             }
 
-            // Move raw horizontal at escape speed
             if (ctx.rb != null)
             {
                 ctx.rb.linearVelocity = new Vector2(_escapeDirection.x * ctx.lightEscapeSpeed, ctx.rb.linearVelocity.y);

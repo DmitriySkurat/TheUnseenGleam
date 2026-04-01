@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using PlatNav;
 using UnityEngine;
 
 namespace HSM
@@ -11,17 +13,17 @@ namespace HSM
         public readonly EnemyReturningToPatrol ReturningToPatrol;
         public readonly EnemyLightEscape LightEscape;
 
-        private readonly EnemyContext ctx;
+        internal readonly EnemyContext ctx;
 
         public EnemyRoot(StateMachine m, EnemyContext ctx) : base(m, null)
         {
             this.ctx = ctx;
-            Patrol = new EnemyPatrol(m, this, ctx);
-            Chasing = new EnemyChasing(m, this, ctx);
-            Investigating = new EnemyInvestigating(m, this, ctx);
-            Searching = new EnemySearching(m, this, ctx);
-            ReturningToPatrol = new EnemyReturningToPatrol(m, this, ctx);
-            LightEscape = new EnemyLightEscape(m, this, ctx);
+            Patrol = new EnemyPatrol(m, this);
+            Chasing = new EnemyChasing(m, this);
+            Investigating = new EnemyInvestigating(m, this);
+            Searching = new EnemySearching(m, this);
+            ReturningToPatrol = new EnemyReturningToPatrol(m, this);
+            LightEscape = new EnemyLightEscape(m, this);
         }
 
         protected override State GetInitialState() => Patrol;
@@ -43,7 +45,7 @@ namespace HSM
             if (ctx.IsTraversingLink)
             {
                 if (ctx.vision != null && ctx.vision.CanSeePlayer && ctx.playerTransform != null)
-                    ctx.UpdateKnownPlayerPosition(ctx.playerTransform.position);
+                    UpdateKnownPlayerPosition(ctx.playerTransform.position);
                 return;
             }
 
@@ -53,7 +55,6 @@ namespace HSM
             if (Machine?.Sequencer == null || Machine.Sequencer.IsTransitioning)
                 return;
 
-            // Light escape has highest priority; only trigger if not already in that state
             var lightEscape = Machine.GetState<EnemyLightEscape>();
             bool isEscaping = Machine.Root.Leaf() == lightEscape;
             if (!isEscaping && ctx.lightSensor != null && ctx.lightSensor.IsBlinded(out _, out _))
@@ -62,7 +63,6 @@ namespace HSM
                 return;
             }
 
-            // Suppress chase logic while escaping light
             if (isEscaping)
                 return;
 
@@ -70,13 +70,13 @@ namespace HSM
             if (!canSeePlayer)
                 return;
 
-            ctx.UpdateKnownPlayerPosition(ctx.playerTransform.position);
+            UpdateKnownPlayerPosition(ctx.playerTransform.position);
 
             var chasing = Machine.GetState<EnemyChasing>();
             if (Machine.Root.Leaf() == chasing)
                 return;
 
-            ctx.BeginVisualChase();
+            BeginVisualChase();
             Machine.Sequencer.RequestTransition(Machine.Root.Leaf(), chasing);
         }
 
@@ -90,7 +90,7 @@ namespace HSM
 
             if (isPlayerNoise && ctx.hasDetectedPlayer)
             {
-                ctx.UpdateKnownPlayerPosition(noiseEvent.Position);
+                UpdateKnownPlayerPosition(noiseEvent.Position);
 
                 if (ctx.IsTraversingLink)
                     return;
@@ -111,6 +111,171 @@ namespace HSM
             Machine.Sequencer.RequestTransition(
                 Machine.Root.Leaf(),
                 Machine.GetState<EnemyInvestigating>());
+        }
+
+        // ===== MOVEMENT =====
+
+        public bool TryMoveTo(Vector2 targetPosition, float speed)
+        {
+            if (ctx.nav == null)
+                return false;
+
+            float minRetarget = Mathf.Max(0.01f, ctx.retargetDistance);
+            bool needsNew = !ctx.manualCommandActive
+                || ctx.manualCommandFailed
+                || (ctx.manualDestination - targetPosition).sqrMagnitude > minRetarget * minRetarget;
+
+            if (!needsNew)
+                return !ctx.manualCommandFailed;
+
+            ForceMoveTo(targetPosition, speed);
+            return !ctx.manualCommandFailed;
+        }
+
+        public void ForceMoveTo(Vector2 targetPosition, float speed)
+        {
+            if (ctx.nav == null)
+                return;
+
+            ctx.nav.SetBehaviour(PlatNavBehaviour.FollowTarget);
+            ctx.nav.SetTarget(null);
+            ctx.nav.Abort();
+            ctx.usingVisualChase = false;
+
+            ctx.manualDestination = targetPosition;
+            ctx.manualCommandFailed = !ctx.nav.MoveTo(targetPosition, speed);
+            ctx.manualCommandActive = !ctx.manualCommandFailed;
+        }
+
+        public bool HasCompletedManualMove()
+        {
+            if (!ctx.manualCommandActive || ctx.nav == null)
+                return false;
+
+            if (ctx.nav.HasPath || ctx.nav.State != PlatNavState.Idle)
+                return false;
+
+            ResetManualCommand();
+            return true;
+        }
+
+        public void BeginWait(float duration)
+        {
+            ctx.isWaiting = duration > 0f;
+            ctx.waitTimer = duration;
+            ResetManualCommand();
+        }
+
+        public bool UpdateWaitTimer()
+        {
+            if (!ctx.isWaiting)
+                return false;
+
+            ctx.waitTimer -= Time.deltaTime;
+            if (ctx.waitTimer > 0f)
+                return false;
+
+            ctx.isWaiting = false;
+            ctx.waitTimer = 0f;
+            return true;
+        }
+
+        public void ResetWait()
+        {
+            ctx.isWaiting = false;
+            ctx.waitTimer = 0f;
+        }
+
+        public void ResetManualCommand()
+        {
+            ctx.manualCommandActive = false;
+            ctx.manualCommandFailed = false;
+        }
+
+        // ===== CHASE =====
+
+        public void BeginVisualChase()
+        {
+            if (ctx.nav == null || ctx.playerTransform == null)
+                return;
+
+            if (ctx.usingVisualChase)
+                return;
+
+            ctx.nav.Abort();
+            ctx.nav.SetBehaviour(PlatNavBehaviour.FollowTarget);
+            ctx.nav.SetTarget(ctx.playerTransform);
+            ctx.nav.MoveTo(ctx.playerTransform.position, ctx.chaseSpeed);
+            ctx.usingVisualChase = true;
+            ResetManualCommand();
+        }
+
+        public void StopVisualChase()
+        {
+            if (ctx.nav == null)
+                return;
+
+            ctx.nav.SetTarget(null);
+            if (ctx.usingVisualChase)
+                ctx.nav.Abort();
+
+            ctx.usingVisualChase = false;
+        }
+
+        public void UpdateKnownPlayerPosition(Vector2 position)
+        {
+            if (ctx.lightSensor != null && ctx.lightSensor.IsBlindedAt(position, out _, out _))
+                return;
+
+            ctx.lastKnownPlayerPosition = position;
+            ctx.hasKnownPlayerPosition = true;
+            ctx.hasDetectedPlayer = true;
+        }
+
+        // ===== UTILITY =====
+
+        public Vector2 GetFacingDirection()
+            => ctx.selfTransform.localScale.x >= 0f ? Vector2.right : Vector2.left;
+
+        public int GetInitialPatrolIndex()
+        {
+            if (ctx.patrolRoute == null || ctx.patrolRoute.Length == 0)
+                return 0;
+
+            return GetClosestIndex(ctx.patrolRoute, ctx.selfTransform.position);
+        }
+
+        public static int GetClosestIndex(IReadOnlyList<Vector2> points, Vector2 worldPosition)
+        {
+            int best = 0;
+            float bestSqr = float.MaxValue;
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                float sqr = (points[i] - worldPosition).sqrMagnitude;
+                if (sqr >= bestSqr)
+                    continue;
+
+                bestSqr = sqr;
+                best = i;
+            }
+
+            return best;
+        }
+
+        public static int GetNextBounceIndex(int current, ref int direction, int length)
+        {
+            if (length <= 1)
+                return 0;
+
+            int next = current + direction;
+            if (next >= length || next < 0)
+            {
+                direction *= -1;
+                next = current + direction;
+            }
+
+            return Mathf.Clamp(next, 0, length - 1);
         }
     }
 }

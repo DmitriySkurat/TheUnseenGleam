@@ -4,19 +4,21 @@ namespace HSM
 {
     public class EnemyChasing : State
     {
+        private readonly EnemyRoot root;
         private readonly EnemyContext ctx;
 
-        public EnemyChasing(StateMachine m, State parent, EnemyContext ctx) : base(m, parent)
+        public EnemyChasing(StateMachine m, EnemyRoot root) : base(m, root)
         {
-            this.ctx = ctx;
+            this.root = root;
+            this.ctx = root.ctx;
             Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.red, 
+                enterColor = Color.red,
             });
         }
 
         protected override void OnEnter()
         {
-            ctx.ResetWait();
+            root.ResetWait();
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -25,7 +27,7 @@ namespace HSM
 
             if (canSeePlayer)
             {
-                ctx.BeginVisualChase();
+                root.BeginVisualChase();
                 return;
             }
 
@@ -35,19 +37,19 @@ namespace HSM
                 return;
             }
 
-            if (!ctx.TryMoveTo(ctx.lastKnownPlayerPosition, ctx.chaseSpeed))
+            if (!root.TryMoveTo(ctx.lastKnownPlayerPosition, ctx.chaseSpeed))
             {
                 BeginSearch(ctx.lastKnownPlayerPosition);
                 return;
             }
 
-            if (ctx.HasCompletedManualMove())
+            if (root.HasCompletedManualMove())
                 BeginSearch(ctx.lastKnownPlayerPosition);
         }
 
-        private void BeginSearch(UnityEngine.Vector2 center)
+        private void BeginSearch(Vector2 center)
         {
-            ctx.StopVisualChase();
+            root.StopVisualChase();
             ctx.searchCenter = center;
             Machine.Sequencer.RequestTransition(this, Machine.GetState<EnemySearching>());
         }

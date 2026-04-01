@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PlatNav;
 using UnityEngine;
 using HSM;
@@ -56,6 +57,7 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
     [SerializeField] private Color targetColor = new Color(1f, 0.2f, 0.2f, 0.9f);
 
     private EnemyContext _ctx;
+    private EnemyRoot _root;
     private StateMachine _machine;
 
     public void Initialize()
@@ -102,11 +104,12 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
         if (_ctx.playerContext != null)
             _ctx.playerTransform = _ctx.playerContext.transform;
 
-        _ctx.BuildPatrolRoute();
-        _ctx.patrolIndex = _ctx.GetInitialPatrolIndex();
+        BuildPatrolRoute();
 
-        var root = new EnemyRoot(null, _ctx);
-        _machine = new StateMachineBuilder(root).Build();
+        _root = new EnemyRoot(null, _ctx);
+        _ctx.patrolIndex = _root.GetInitialPatrolIndex();
+
+        _machine = new StateMachineBuilder(_root).Build();
         _machine.Start();
     }
 
@@ -114,9 +117,95 @@ public class EnemyStateDriver : MonoBehaviour, ISceneLifecycle
 
     private void LateUpdate()
     {
-        _ctx.ResolvePlayerTransform();
-        _ctx.TryApplyContactDamage();
+        ResolvePlayerTransform();
+        TryApplyContactDamage();
         _machine.Tick(Time.deltaTime);
+    }
+
+    private void BuildPatrolRoute()
+    {
+        _ctx.patrolOrigin = transform.position;
+
+        var points = new List<Vector2>();
+        if (_ctx.patrolPoints != null)
+        {
+            for (int i = 0; i < _ctx.patrolPoints.Length; i++)
+            {
+                if (_ctx.patrolPoints[i] != null)
+                    points.Add(_ctx.patrolPoints[i].position);
+            }
+        }
+
+        if (points.Count >= 2)
+        {
+            _ctx.patrolRoute = points.ToArray();
+            return;
+        }
+
+        Vector2 offset = Vector2.right * _ctx.patrolHalfWidth;
+        _ctx.patrolRoute = new[] { _ctx.patrolOrigin - offset, _ctx.patrolOrigin + offset };
+    }
+
+    private void ResolvePlayerTransform()
+    {
+        if (_ctx.playerTransform != null)
+            return;
+
+        if (_ctx.playerContext == null)
+            _ctx.playerContext = Services.Get<PlayerContext>();
+
+        if (_ctx.playerContext != null)
+            _ctx.playerTransform = _ctx.playerContext.transform;
+    }
+
+    private void TryApplyContactDamage()
+    {
+        if (_ctx.contactDamage <= 0f)
+            return;
+
+        if (_ctx.lightSensor != null && _ctx.lightSensor.IsBlinded(out _, out _))
+        {
+            _ctx.contactAttackTimer = 0f;
+            return;
+        }
+
+        if (Time.time < _ctx.nextContactDamageTime)
+        {
+            _ctx.contactAttackTimer = 0f;
+            return;
+        }
+
+        if (_ctx.playerContext == null || _ctx.playerContext.health == null || !_ctx.playerContext.isAlive || _ctx.playerTransform == null)
+        {
+            _ctx.contactAttackTimer = 0f;
+            return;
+        }
+
+        if (!IsPlayerInContactRange())
+        {
+            _ctx.contactAttackTimer = 0f;
+            return;
+        }
+
+        if (_ctx.contactAttackWindup > 0f)
+        {
+            _ctx.contactAttackTimer += Time.deltaTime;
+            if (_ctx.contactAttackTimer < _ctx.contactAttackWindup)
+                return;
+        }
+
+        _ctx.playerContext.health.TakeDamage(_ctx.contactDamage);
+        _ctx.nextContactDamageTime = Time.time + _ctx.contactDamageCooldown;
+        _ctx.contactAttackTimer = 0f;
+    }
+
+    private bool IsPlayerInContactRange()
+    {
+        if (_ctx.selfCollider != null && _ctx.playerContext != null && _ctx.playerContext.coll != null)
+            return _ctx.selfCollider.Distance(_ctx.playerContext.coll).isOverlapped;
+
+        float sqrDist = ((Vector2)_ctx.selfTransform.position - (Vector2)_ctx.playerTransform.position).sqrMagnitude;
+        return sqrDist <= _ctx.contactDamageRangeFallback * _ctx.contactDamageRangeFallback;
     }
 
 #if UNITY_EDITOR
