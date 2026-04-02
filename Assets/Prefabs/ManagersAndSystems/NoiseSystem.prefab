@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2570949205877457855}
   - component: {fileID: 8122682527447328044}
-  - component: {fileID: -508284345753393489}
   m_Layer: 0
   m_Name: NoiseSystem
   m_TagString: Untagged
@@ -50,20 +49,3 @@ MonoBehaviour:
   gizmoColor: {r: 1, g: 0.8, b: 0.1, a: 0.8}
   sourceColor: {r: 1, g: 0.2, b: 0.2, a: 0.9}
   sourcePointRadius: 0.06
---- !u!114 &-508284345753393489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1923528717674637370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 562acdffb7dce8744b93f727fc66d16e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NoiseVisualizer
-  wavePrefab: {fileID: 6860891663880558495, guid: 7b121374e3b71a34889db43d8a2d104a, type: 3}
-  _noiseSystem: {fileID: 8122682527447328044}
-  duration: 1
-  minInterval: 0.15
-  maxSimultaneousWaves: 32

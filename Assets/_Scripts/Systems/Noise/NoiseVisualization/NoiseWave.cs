@@ -10,7 +10,7 @@ public class NoiseWave : MonoBehaviour
 
     private const int Segments = 64;
 
-    public void Init(Vector2 worldPos, float maxRadius, float duration)
+    public void Init(float maxRadius, float duration)
     {
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.useWorldSpace = false;
@@ -36,11 +36,8 @@ public class NoiseWave : MonoBehaviour
             return;
         }
 
-        float currentRadius = Mathf.Lerp(0f, _maxRadius, t);
-        float alpha = Mathf.Lerp(1f, 0f, t);
-
-        DrawCircle(currentRadius);
-        SetAlpha(alpha);
+        DrawCircle(Mathf.Lerp(0f, _maxRadius, t));
+        SetAlpha(1f - t);
     }
 
     private void DrawCircle(float radius)

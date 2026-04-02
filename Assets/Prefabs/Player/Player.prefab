@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 3687784705825962857}
   - component: {fileID: 2419083475612345678}
   - component: {fileID: 1723518907424848559}
+  - component: {fileID: 4384193120335901177}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -778,3 +779,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7227d60e438eeb54fa6ab09d116137dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStaminaBreathController
+--- !u!114 &4384193120335901177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 562acdffb7dce8744b93f727fc66d16e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NoiseVisualizer
+  wavePrefab: {fileID: 6860891663880558495, guid: 7b121374e3b71a34889db43d8a2d104a, type: 3}
+  playerTransform: {fileID: 4059880455369286371}
+  duration: 1
+  footstepCooldown: 0.4
+  breathingCooldown: 0.75
+  minFootstepRadius: 3.5
+  enemyDetectionRadius: 10
+  maxSimultaneousWaves: 8
+  gizmoColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}

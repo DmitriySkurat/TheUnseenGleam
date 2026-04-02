@@ -4,90 +4,125 @@ using UnityEngine;
 public class NoiseVisualizer : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.UI;
-    
+
     [Header("Setup")]
     [SerializeField] private NoiseWave wavePrefab;
-    [SerializeField] private NoiseSystem _noiseSystem;
-
+    [SerializeField] private Transform playerTransform;
 
     [Header("Wave Settings")]
     [SerializeField, Min(0.01f)] private float duration = 1f;
-    [SerializeField, Min(0f)] private float minInterval = 0.15f;
+
+    [Header("Cooldowns")]
+    [Tooltip("Минимальный интервал между кольцами шагов (сек)")]
+    [SerializeField, Min(0f)] private float footstepCooldown = 0.4f;
+    [Tooltip("Минимальный интервал между кольцами дыхания (сек)")]
+    [SerializeField, Min(0f)] private float breathingCooldown = 0.75f;
+
+    [Header("Filters")]
+    [Tooltip("Минимальный радиус Footstep для показа кольца. Run = 4, Walk = 2, Crouch = 1")]
+    [SerializeField, Min(0f)] private float minFootstepRadius = 3.5f;
+    [Tooltip("Радиус вокруг игрока, в котором ищется враг. Если враг ближе этого расстояния — кольцо показывается")]
+    [SerializeField, Min(0f)] private float enemyDetectionRadius = 10f;
 
     [Header("Limits")]
-    [SerializeField] private int maxSimultaneousWaves = 32;
-    
+    [SerializeField] private int maxSimultaneousWaves = 8;
 
-    private float _lastSpawnTime;
+    [Header("Debug")]
+    [SerializeField] private Color gizmoColor = new Color(1f, 0.4f, 0.1f, 0.6f);
+
+    private NoiseSystem _noiseSystem;
+    private AgentHearing[] _agents;
+    private float _lastFootstepSpawnTime;
+    private float _lastBreathingSpawnTime;
     private readonly Queue<NoiseWave> _activeWaves = new();
 
     public void Initialize()
     {
         _noiseSystem = Services.Get<NoiseSystem>();
-
         _noiseSystem.NoiseEmitted += OnNoiseEmitted;
+        _agents = FindObjectsByType<AgentHearing>(FindObjectsSortMode.None);
     }
 
     private void OnDisable()
     {
-        _noiseSystem.NoiseEmitted -= OnNoiseEmitted;
+        if (_noiseSystem != null)
+            _noiseSystem.NoiseEmitted -= OnNoiseEmitted;
     }
 
     private void OnNoiseEmitted(NoiseEvent noise)
     {
-        // Ограничение по частоте
-        if (Time.time - _lastSpawnTime < minInterval)
-            return;
+        if (!ShouldVisualize(noise)) return;
+        if (!AnyEnemyInRange(noise)) return;
+        if (IsOnCooldown(noise)) return;
 
-        _lastSpawnTime = Time.time;
-
+        UpdateCooldown(noise);
         SpawnWave(noise);
+    }
+
+    private bool ShouldVisualize(NoiseEvent noise) => noise.Type switch
+    {
+        NoiseType.Breathing => true,
+        NoiseType.Footstep  => noise.Radius >= minFootstepRadius,
+        _                   => false
+    };
+
+    private bool AnyEnemyInRange(NoiseEvent noise)
+    {
+        foreach (var agent in _agents)
+        {
+            if (agent == null) continue;
+            if (Vector2.Distance(agent.transform.position, noise.Position) <= enemyDetectionRadius)
+                return true;
+        }
+        return false;
+    }
+
+    private bool IsOnCooldown(NoiseEvent noise) => noise.Type switch
+    {
+        NoiseType.Footstep  => Time.time - _lastFootstepSpawnTime  < footstepCooldown,
+        NoiseType.Breathing => Time.time - _lastBreathingSpawnTime < breathingCooldown,
+        _                   => false
+    };
+
+    private void UpdateCooldown(NoiseEvent noise)
+    {
+        switch (noise.Type)
+        {
+            case NoiseType.Footstep:  _lastFootstepSpawnTime  = Time.time; break;
+            case NoiseType.Breathing: _lastBreathingSpawnTime = Time.time; break;
+        }
     }
 
     private void SpawnWave(NoiseEvent noise)
     {
-        // Ограничение количества
+        while (_activeWaves.Count > 0 && _activeWaves.Peek() == null)
+            _activeWaves.Dequeue();
+
         if (_activeWaves.Count >= maxSimultaneousWaves)
         {
-            var oldWave = _activeWaves.Dequeue();
-            if (oldWave != null)
-                Destroy(oldWave.gameObject);
+            var old = _activeWaves.Dequeue();
+            if (old != null) Destroy(old.gameObject);
         }
 
-        var wave = Instantiate(
-            wavePrefab,
-            noise.Position,
-            Quaternion.identity,
-            transform
-        );
+        Transform parent = (noise.Source != null) ? noise.Source.transform : transform;
 
-        wave.Init(noise.Position, noise.Radius, duration);
+        var wave = Instantiate(wavePrefab, parent.position, Quaternion.identity, parent);
+        wave.transform.localPosition = Vector3.zero;
+        wave.Init(noise.Radius, duration);
 
         _activeWaves.Enqueue(wave);
-
-        // авто-удаление из очереди
-        StartCoroutine(RemoveAfterLifetime(wave, duration));
     }
 
-    private System.Collections.IEnumerator RemoveAfterLifetime(NoiseWave wave, float time)
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
     {
-        yield return new WaitForSeconds(time);
+        Vector3 center = playerTransform != null ? playerTransform.position : transform.position;
 
-        if (_activeWaves.Contains(wave))
-        {
-            // удаляем конкретно этот объект
-            var temp = new Queue<NoiseWave>();
+        UnityEditor.Handles.color = gizmoColor;
+        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, enemyDetectionRadius);
 
-            while (_activeWaves.Count > 0)
-            {
-                var w = _activeWaves.Dequeue();
-                if (w != wave)
-                    temp.Enqueue(w);
-            }
-
-            while (temp.Count > 0)
-                _activeWaves.Enqueue(temp.Dequeue());
-        }
+        UnityEditor.Handles.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, 0.08f);
+        UnityEditor.Handles.DrawSolidDisc(center, Vector3.forward, enemyDetectionRadius);
     }
+#endif
 }
-
