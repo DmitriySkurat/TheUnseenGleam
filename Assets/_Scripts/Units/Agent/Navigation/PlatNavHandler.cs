@@ -166,14 +166,14 @@ namespace PlatNav
             _col = GetComponent<Collider2D>();
         }
 
-        private void Update()
+        public void Tick(float deltaTime)
         {
             if (graph == null || graph.segments == null) return;
 
             // Auto-repath towards target
             if (target != null)
             {
-                _repathTimer -= Time.deltaTime;
+                _repathTimer -= deltaTime;
                 if (_repathTimer <= 0f)
                 {
                     _repathTimer = repathInterval;
@@ -191,7 +191,7 @@ namespace PlatNav
                     break;
 
                 case PlatNavState.TraversingLink:
-                    UpdateLinkTraversal();
+                    UpdateLinkTraversal(deltaTime);
                     break;
             }
         }
@@ -415,9 +415,8 @@ namespace PlatNav
             if (debugLog) Debug.Log($"[PlatNav] Begin {_curLink.moveType} link: {_curLink.fromSeg}→{_curLink.toSeg}, T={_curLink.flightTime:F2}s");
         }
 
-        private void UpdateLinkTraversal()
+        private void UpdateLinkTraversal(float dt)
         {
-            float dt = Time.deltaTime;
             _linkTimer += dt;
 
             // Clamp to flight time

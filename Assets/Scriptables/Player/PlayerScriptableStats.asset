@@ -37,6 +37,7 @@ MonoBehaviour:
   MinStaminaToRun: 35
   RunStaminaDrainMultiplier: 1
   StaminaHoldBreathDrainPerSecond: 20
+  MinStaminaToHoldBreath: 25
   IdleStaminaBreathDrainMultiplier: 1
   CrouchStaminaBreathDrainMultiplier: 0.8
   HideStaminaBreathDrainMultiplier: 0.5
