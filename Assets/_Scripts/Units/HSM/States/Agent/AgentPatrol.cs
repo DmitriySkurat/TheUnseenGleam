@@ -32,10 +32,8 @@ namespace HSM {
                 ctx.patrolWaitTimer -= deltaTime;
                 if (!ctx.IsWaitingAtPoint)
                     AdvanceToNextPoint();
-                return;
             }
-
-            if (_navigating)
+            else if (_navigating)
             {
                 ctx.nav.Tick(deltaTime);
                 if (ctx.nav.State == PlatNavState.Idle)
@@ -49,9 +47,20 @@ namespace HSM {
                 // Path failed on previous attempt — retry
                 StartNavigatingToCurrentPoint();
             }
+
+            base.OnUpdate(deltaTime);
         }
 
-        protected override State GetTransition() => null;
+        protected override State GetTransition()
+        {
+            if (ctx.vision != null && ctx.vision.CanSeePlayer)
+                return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
+
+            if (ctx.pendingNoiseAlert)
+                return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
+
+            return null;
+        }
 
         void EnsurePatrolPoints()
         {

@@ -102,6 +102,7 @@ namespace PlatNav
                 _hasManualDestination = false;
         }
         public void SetBehaviour(PlatNavBehaviour b) => behaviour = b;
+        public void SetSpeed(float speed) => walkSpeed = speed;
     
         
         private void SetFacingFromDirection(float dir)

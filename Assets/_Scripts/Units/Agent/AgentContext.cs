@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using PlatNav;
 
+public enum SuspicionSource { None, Vision, Noise }
+
 [Serializable]
 public class AgentContext
 {
@@ -12,6 +14,8 @@ public class AgentContext
     public Transform transform;
     public Rigidbody2D rb;
     public PlatNavHandler nav;
+    public AgentVision vision;
+    public AgentHearing hearing;
 
     // ===== SPAWN =====
     public Vector2 spawnPosition;
@@ -24,6 +28,30 @@ public class AgentContext
 
     public int currentPatrolIndex;
     public float patrolWaitTimer;
+
+    // ===== SUSPICION =====
+    public SuspicionSource suspicionSource;
+    public float suspicionTimer;
+    // Loudness of the loudest noise heard so far during this suspicion window
+    public float suspicionNoiseLoudness;
+    // How many noise events were heard during the current suspicion window
+    public int noisesHeardDuringSuspicion;
+    // World position that triggered suspicion (last seen / heard)
+    public Vector2 suspicionPosition;
+
+    // ===== SEARCH =====
+    // Countdown while standing at the search point
+    public float searchWaitTimer;
+
+    // ===== CHASE =====
+    public Transform playerTransform;
+    // Time elapsed since the agent last had direct sight of the player during chase
+    public float chaseVisionLostTimer;
+
+    // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
+    public bool pendingNoiseAlert;
+    public float pendingNoiseLoudness;
+    public Vector2 pendingNoisePosition;
 
     // ===== DERIVED =====
     public bool IsWaitingAtPoint => patrolWaitTimer > 0f;
