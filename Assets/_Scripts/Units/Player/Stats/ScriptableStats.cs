@@ -74,6 +74,9 @@ public class PlayerScriptableStats : ScriptableObject
     [Header("BREATHE (STAMINA)")]
     [Tooltip("Stamina drained per second while not breathing")]
     public float StaminaHoldBreathDrainPerSecond = 20f;
+
+    [Tooltip("Minimum stamina required to START holding breath")]
+    public float MinStaminaToHoldBreath = 25f;
     
     [Tooltip("Breath drain multiplier while idle")]
     [Min(0f)]

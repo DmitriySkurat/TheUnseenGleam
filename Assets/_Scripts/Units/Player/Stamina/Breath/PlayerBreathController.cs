@@ -36,18 +36,32 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
 
     private void UpdateBreath(float deltaTime)
     {
-        _ctx.isHoldingBreath = _ctx.input.HoldBreathHeld && _ctx.CanHoldBreath;
+        if (!_ctx.CanHoldBreath)
+        {
+            _ctx.isHoldingBreath = false;
+            return;
+        }
+
+        if (_ctx.isHoldingBreath)
+        {
+            if (!_ctx.input.HoldBreathHeld || _ctx.stamina <= 0f)
+            {
+                _ctx.isHoldingBreath = false;
+                return;
+            }
+        }
+        else if (_ctx.input.HoldBreathHeld && _ctx.stamina >= _ctx.stats.MinStaminaToHoldBreath)
+        {
+            _ctx.isHoldingBreath = true;
+        }
 
         if (_ctx.isHoldingBreath)
         {
             float breathDrain = _ctx.stats.StaminaHoldBreathDrainPerSecond * Mathf.Max(0f, _ctx.currentStaminaBreathDrainMultiplier);
-            
             _ctx.stamina = Mathf.Max(0f, _ctx.stamina - breathDrain * deltaTime);
-            
+
             if (_ctx.stamina <= 0f)
-            {
                 _ctx.isHoldingBreath = false;
-            }
         }
     }
 

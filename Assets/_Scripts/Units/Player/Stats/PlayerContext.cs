@@ -77,7 +77,7 @@ public class PlayerContext
     public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && Time.time < frameLeftGrounded + stats.CoyoteTime;
     public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown && grounded; // Запрет на взаимодействие в воздухе
     public bool CanRun => stamina > stats.MinStaminaToRun;
-    public bool CanHoldBreath => stamina > 0f && currentStaminaBreathDrainMultiplier > 0f && currentStaminaDrainMultiplier == 0f;
+    public bool CanHoldBreath => currentStaminaBreathDrainMultiplier > 0f && currentStaminaDrainMultiplier == 0f;
     public bool HasMovementIntent => movementGraceTimer > 0f;
     public bool HasLandingRollBuffered => stats != null && Time.time < timeCrouchWasPressed + stats.LandingRollBuffer;
     public bool IsLandingRollActive => Time.time < landingRollEndTime;
