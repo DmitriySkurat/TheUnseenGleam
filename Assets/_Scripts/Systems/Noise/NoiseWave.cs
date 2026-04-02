@@ -1,27 +1,29 @@
 using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class NoiseWave : MonoBehaviour
 {
-    private Material _mat;
-
+    private LineRenderer _lineRenderer;
     private float _startTime;
     private float _duration;
     private float _maxRadius;
 
-    private static readonly int RadiusID = Shader.PropertyToID("_WaveDistanceFromCenter");
-    private static readonly int CenterID = Shader.PropertyToID("_RingSpawnPosition");
+    private const int Segments = 64;
 
     public void Init(Vector2 worldPos, float maxRadius, float duration)
     {
-        _mat = GetComponent<SpriteRenderer>().material;
+        _lineRenderer = GetComponent<LineRenderer>();
+        _lineRenderer.useWorldSpace = false;
+        _lineRenderer.positionCount = Segments + 1;
+        _lineRenderer.loop = false;
+        _lineRenderer.startWidth = 0.06f;
+        _lineRenderer.endWidth = 0.06f;
 
         _startTime = Time.time;
         _duration = duration;
         _maxRadius = maxRadius;
 
-        Vector2 uv = Camera.main.WorldToViewportPoint(worldPos);
-
-        _mat.SetVector(CenterID, uv);
+        DrawCircle(0f);
     }
 
     private void Update()
@@ -34,8 +36,31 @@ public class NoiseWave : MonoBehaviour
             return;
         }
 
-        float radius = Mathf.Lerp(0f, _maxRadius, t);
+        float currentRadius = Mathf.Lerp(0f, _maxRadius, t);
+        float alpha = Mathf.Lerp(1f, 0f, t);
 
-        _mat.SetFloat(RadiusID, radius);
+        DrawCircle(currentRadius);
+        SetAlpha(alpha);
+    }
+
+    private void DrawCircle(float radius)
+    {
+        for (int i = 0; i <= Segments; i++)
+        {
+            float angle = (float)i / Segments * Mathf.PI * 2f;
+            _lineRenderer.SetPosition(i, new Vector3(
+                Mathf.Cos(angle) * radius,
+                Mathf.Sin(angle) * radius,
+                0f
+            ));
+        }
+    }
+
+    private void SetAlpha(float alpha)
+    {
+        Color c = _lineRenderer.startColor;
+        Color faded = new Color(c.r, c.g, c.b, alpha);
+        _lineRenderer.startColor = faded;
+        _lineRenderer.endColor = faded;
     }
 }

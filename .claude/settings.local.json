@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/HSM -type f -name *.cs)"
+      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/HSM -type f -name *.cs)",
+      "Bash(find D:BSUIRDiplomaTheUnseenGleam/Assets/_Scripts -type f -name *Observer* -o -name *Listener* -o -name *Hearing*)",
+      "Bash(find D:BSUIRDiplomaTheUnseenGleam/Assets -type f -name *.shader)",
+      "Bash(grep -r \"828586ba2b26ec948b9c488848a3de44\" \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\ParticlesAndFX\\\\ShaderGraph\\\\Noise\"\" --include=\"*.meta \" -l)"
     ]
   }
 }
