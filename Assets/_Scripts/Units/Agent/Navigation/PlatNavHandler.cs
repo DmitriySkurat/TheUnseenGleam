@@ -48,12 +48,12 @@ namespace PlatNav
     
         [Header("PlatNav")]
         [SerializeField] private PlatformNavGraphAsset graph;
-        [SerializeField] private Transform target;
+        private Transform target;
 
         [Header("Runtime")]
         [SerializeField] private PlatNavBehaviour behaviour = PlatNavBehaviour.FollowTarget;
         [SerializeField] private AbilityMask abilities = AbilityMask.Jump;
-        [SerializeField] private float walkSpeed = 3f;
+        private float walkSpeed = 3f;
         [SerializeField] private float repathInterval = 0.3f;
 
         [Header("Run Away")]
