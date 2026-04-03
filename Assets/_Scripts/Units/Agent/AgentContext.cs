@@ -16,6 +16,7 @@ public class AgentContext
     public PlatNavHandler nav;
     public AgentVision vision;
     public AgentHearing hearing;
+    public AgentInteractor interactor;
 
     // ===== SPAWN =====
     public Vector2 spawnPosition;

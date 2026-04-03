@@ -4,6 +4,8 @@ public class DoorInteractable : Interactable
 {
     [Header("Door Settings")]
     [SerializeField] private bool isOpen = false;
+
+    public bool IsOpen => isOpen;
     
     [SerializeField] private Sprite openDoorSprite;
     [SerializeField] private Sprite closedDoorSprite;

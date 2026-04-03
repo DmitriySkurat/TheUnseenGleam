@@ -23,5 +23,13 @@ MonoBehaviour:
   LoudNoiseThreshold: 1
   ChaseSpeed: 5
   ChaseVisionGraceTime: 1.5
+  ChaseMemoryTime: 2
   SearchSpeed: 4
   SearchWaitTime: 3
+  SearchWanderDuration: 8
+  SearchWanderDistance: 3
+  InteractableLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  InteractRange: 1.5
+  InteractCooldown: 1

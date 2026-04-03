@@ -62,4 +62,16 @@ public class AgentScriptableStats : ScriptableObject
     [Tooltip("Distance of the left/right wander points from the search center")]
     [Min(0.5f)]
     public float SearchWanderDistance = 3f;
+
+    [Header("INTERACTION")]
+    [Tooltip("Layer mask for interactable objects (used by Linecast)")]
+    public LayerMask InteractableLayer;
+
+    [Tooltip("How far ahead the agent checks for interactable objects")]
+    [Min(0.1f)]
+    public float InteractRange = 1.5f;
+
+    [Tooltip("Minimum time between consecutive interactions")]
+    [Min(0f)]
+    public float InteractCooldown = 1f;
 }

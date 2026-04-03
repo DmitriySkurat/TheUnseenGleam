@@ -27,6 +27,9 @@ namespace HSM {
             _ctx.nav = GetComponent<PlatNavHandler>();
             _ctx.vision = GetComponent<AgentVision>();
             _ctx.hearing = GetComponent<AgentHearing>();
+            _ctx.interactor = GetComponent<AgentInteractor>();
+            if (_ctx.interactor != null)
+                _ctx.interactor.Initialize(_ctx);
             _ctx.spawnPosition = transform.position;
             _ctx.playerTransform = Services.Get<PlayerContext>()?.transform;
             _ctx.playerRb = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<Rigidbody2D>() : null;
