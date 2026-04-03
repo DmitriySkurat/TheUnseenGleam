@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5237910387827523065}
   - component: {fileID: 7189016899893544418}
   - component: {fileID: 4957498003047369023}
-  - component: {fileID: 3602301327671947888}
+  - component: {fileID: 112233445566778899}
   m_Layer: 12
   m_Name: Agent
   m_TagString: Untagged
@@ -184,10 +184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Entity.PlatNav.PlatNavHandler
   graph: {fileID: 11400000, guid: b4c07c71735b62a49925cf0f2a088562, type: 2}
-  target: {fileID: 0}
   behaviour: 0
   abilities: 1
-  walkSpeed: 5
   repathInterval: 0.3
   runAwayDistance: 10
   nearTileDist: 0.2
@@ -211,9 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2229c31c7d2897b4f9a74bc4a4ac39a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AgentHearing
-  sensitivity: 4
-  maxHearingDistance: 20
-  minLoudness: 0.1
   occlusionMask:
     serializedVersion: 2
     m_Bits: 64
@@ -222,12 +217,10 @@ MonoBehaviour:
   occlusionSampleRadius: 0.5
   includeCenterSample: 1
   drawGizmos: 1
-  gizmoColor: {r: 0.2, g: 0.9, b: 1, a: 0.8}
   lastHeardColor: {r: 1, g: 0.4, b: 0.1, a: 0.9}
   lastHeardMarkerRadius: 1.5
   drawOcclusionSamples: 1
   sampleClearColor: {r: 0.3, g: 1, b: 0.3, a: 0.9}
-  sampleTooFarColor: {r: 1, g: 0.85, b: 0.2, a: 0.9}
   sampleBlockedColor: {r: 1, g: 0.2, b: 0.2, a: 0.9}
   sampleMarkerRadius: 0.3
 --- !u!114 &7189016899893544418
@@ -245,6 +238,7 @@ MonoBehaviour:
   lightSensor: {fileID: 4957498003047369023}
   viewAngle: 90
   viewDistance: 15
+  detectionRadius: 2
   maxViewAngle: 90
   maxViewDistance: 15
   visibilityMultiplier: 1
@@ -254,6 +248,7 @@ MonoBehaviour:
   drawGizmos: 1
   gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   maxGizmoColor: {r: 0.2, g: 0.8, b: 1, a: 0.6}
+  detectionRadiusColor: {r: 0, g: 1, b: 0.5, a: 0.3}
   lastSeenColor: {r: 0.7509433, g: 0.17427546, b: 0.467554, a: 0.9}
   lastSeenMarkerRadius: 1.5
   _logger: {fileID: 1837411843657378475, guid: ceda4d486dff60f4fa86bb5f707f3d95, type: 3}
@@ -284,7 +279,7 @@ MonoBehaviour:
   glareRayMinColor: {r: 0.2, g: 1, b: 0.4, a: 0.7}
   glareRayMaxColor: {r: 1, g: 0.2, b: 0.2, a: 0.9}
   glareSampleGizmoRadius: 0.05
---- !u!114 &3602301327671947888
+--- !u!114 &112233445566778899
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,31 +288,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 165303356798854516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b1dfcc8c7e48fc9f531854d3222bd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c2f6b3f3a4a46b5a4d0e4f5f3f2a1b9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyStateDriver
-  enemy: {fileID: 5686444889323661149}
-  vision: {fileID: 7189016899893544418}
-  hearing: {fileID: 5237910387827523065}
-  lightSensor: {fileID: 4957498003047369023}
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  patrolHalfWidth: 3
-  patrolSpeed: 2
-  patrolWaitTime: 1.25
-  chaseSpeed: 4.5
-  retargetDistance: 0.35
-  investigateSpeed: 3
-  investigateWaitTime: 0.75
-  searchSpeed: 2.5
-  searchHalfWidth: 2
-  searchDuration: 4
-  searchWaitTime: 0.6
-  returnSpeed: 3
-  lightEscapeDistance: 4
-  lightEscapeSpeed: 4.5
-  drawGizmos: 1
-  patrolColor: {r: 0.3, g: 0.9, b: 0.4, a: 0.9}
-  searchColor: {r: 1, g: 0.65, b: 0.2, a: 0.9}
-  targetColor: {r: 1, g: 0.2, b: 0.2, a: 0.9}
+  m_EditorClassIdentifier: Assembly-CSharp::AgentDoorInteractor
+  doorLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  interactDistance: 0.6
+  boxSize: {x: 0.6, y: 1}
+  interactCooldown: 0.4
+  closeDelay: 0.6
+  closeDistance: 0.6

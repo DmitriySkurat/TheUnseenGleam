@@ -12,6 +12,8 @@ public class DoorInteractable : Interactable
 
 
     private Collider2D _doorCollider;
+
+    public bool IsOpen => isOpen;
     
     public override void Initialize() {
         base.Initialize();
