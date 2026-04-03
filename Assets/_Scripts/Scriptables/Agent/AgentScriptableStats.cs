@@ -42,6 +42,10 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float ChaseVisionGraceTime = 1.5f;
 
+    [Tooltip("How long (seconds) the agent remembers and navigates to the player's predicted position after losing sight")]
+    [Min(0f)]
+    public float ChaseMemoryTime = 2f;
+
     [Header("SEARCH")]
     [Tooltip("Movement speed while heading to the last known position")]
     [Min(0f)]

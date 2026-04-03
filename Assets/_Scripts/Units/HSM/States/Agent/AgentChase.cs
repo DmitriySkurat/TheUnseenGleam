@@ -3,6 +3,8 @@ namespace HSM {
     {
         readonly AgentContext ctx;
 
+        bool _inMemoryPhase;
+
         public AgentChase(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
@@ -10,11 +12,10 @@ namespace HSM {
 
         protected override void OnEnter()
         {
-            ctx.chaseVisionLostTimer = 0f;
+            _inMemoryPhase = false;
+            ctx.chaseMemoryTimer = 0f;
 
-            // Set speed once; auto-repath in Tick will keep using this value
             ctx.nav.SetSpeed(ctx.stats.ChaseSpeed);
-            // Hand the player transform to PlatNavHandler so it re-paths automatically
             ctx.nav.SetTarget(ctx.playerTransform);
 
             base.OnEnter();
@@ -22,15 +23,41 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
-            // Keep suspicionPosition up-to-date so AgentSearch knows where to go
-            if (ctx.vision != null && ctx.vision.CanSeePlayer)
+            bool canSee = ctx.vision != null && ctx.vision.CanSeePlayer;
+
+            if (canSee)
             {
-                ctx.suspicionPosition    = ctx.vision.LastSeenPosition;
-                ctx.chaseVisionLostTimer = 0f;
+                ctx.suspicionPosition = ctx.vision.LastSeenPosition;
+
+                if (ctx.playerRb != null)
+                    ctx.chaseLastKnownVelocity = ctx.playerRb.linearVelocity;
+
+                if (_inMemoryPhase)
+                {
+                    // Regained sight during memory phase — resume direct chase
+                    _inMemoryPhase = false;
+                    ctx.chaseMemoryTimer = 0f;
+                    ctx.nav.Abort();
+                    ctx.nav.SetSpeed(ctx.stats.ChaseSpeed);
+                    ctx.nav.SetTarget(ctx.playerTransform);
+                }
+            }
+            else if (!_inMemoryPhase)
+            {
+                // Just lost sight — enter memory phase and navigate to predicted position
+                _inMemoryPhase = true;
+                ctx.chaseMemoryTimer = ctx.stats.ChaseMemoryTime;
+
+                ctx.chasePredictedPosition = ctx.suspicionPosition
+                    + ctx.chaseLastKnownVelocity * ctx.stats.ChaseMemoryTime;
+                ctx.suspicionPosition = ctx.chasePredictedPosition;
+
+                ctx.nav.SetTarget(null);
+                ctx.nav.MoveTo(ctx.chasePredictedPosition, ctx.stats.ChaseSpeed);
             }
             else
             {
-                ctx.chaseVisionLostTimer += deltaTime;
+                ctx.chaseMemoryTimer -= deltaTime;
             }
 
             ctx.nav.Tick(deltaTime);
@@ -47,7 +74,7 @@ namespace HSM {
 
         protected override State GetTransition()
         {
-            if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
+            if (_inMemoryPhase && ctx.chaseMemoryTimer <= 0f)
                 return Machine != null ? Machine.GetState<AgentSearch>() : null;
 
             return null;

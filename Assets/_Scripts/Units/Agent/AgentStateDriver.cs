@@ -29,6 +29,7 @@ namespace HSM {
             _ctx.hearing = GetComponent<AgentHearing>();
             _ctx.spawnPosition = transform.position;
             _ctx.playerTransform = Services.Get<PlayerContext>()?.transform;
+            _ctx.playerRb = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<Rigidbody2D>() : null;
 
             if (_patrolPoints != null && _patrolPoints.Length > 0)
                 _ctx.patrolPointTransforms = _patrolPoints;
