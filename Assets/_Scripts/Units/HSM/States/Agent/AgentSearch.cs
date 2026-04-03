@@ -57,9 +57,9 @@ namespace HSM {
 
         protected override State GetTransition()
         {
-            // Spotted the player while searching — re-enter suspicion loop
+            // Spotted the player while searching — pursue immediately
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
-                return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
+                return Machine != null ? Machine.GetState<AgentChase>() : null;
 
             // Finished navigating and waited long enough — back to patrol
             if (!_navigating && ctx.searchWaitTimer <= 0f)
