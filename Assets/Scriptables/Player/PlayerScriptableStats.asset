@@ -42,7 +42,7 @@ MonoBehaviour:
   CrouchStaminaBreathDrainMultiplier: 0.8
   HideStaminaBreathDrainMultiplier: 0.5
   BreathingNoiseInterval: 0.75
-  BreathingNoiseRadius: 2.3
+  BreathingNoiseRadius: 3.04
   JumpPower: 36
   MaxFallSpeed: 40
   FallAcceleration: 110

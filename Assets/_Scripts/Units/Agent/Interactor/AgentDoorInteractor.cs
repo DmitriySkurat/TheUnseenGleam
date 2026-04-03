@@ -9,12 +9,15 @@ public class AgentDoorInteractor : Interactor, IInitializable
     [Header("Detection")]
     [SerializeField] private LayerMask doorLayer;
     [SerializeField, Min(0f)] private float interactDistance = 0.6f;
-    [SerializeField] private Vector2 boxSize = new Vector2(0.6f, 1.0f);
     [SerializeField, Min(0f)] private float interactCooldown = 0.4f;
 
     [Header("Auto Close")]
     [SerializeField, Min(0f)] private float closeDelay = 0.6f;
     [SerializeField, Min(0f)] private float closeDistance = 0.6f;
+
+    [Header("Debug")]
+    [SerializeField] private bool drawGizmos = true;
+    [SerializeField] private Color gizmoColor = new Color(0.2f, 0.9f, 1f, 0.9f);
 
     private Collider2D _col;
     private PlatNavHandler _nav;
@@ -75,11 +78,8 @@ public class AgentDoorInteractor : Interactor, IInitializable
         float dir = transform.localScale.x >= 0f ? 1f : -1f;
         Vector2 direction = new Vector2(dir, 0f);
 
-        Vector2 size = boxSize;
-        if (size.x <= 0f || size.y <= 0f)
-            size = _col.bounds.size * 0.9f;
-
-        var hit = Physics2D.BoxCast(origin, size, 0f, direction, interactDistance, doorLayer);
+        Vector2 end = origin + direction * interactDistance;
+        var hit = Physics2D.Linecast(origin, end, doorLayer);
         if (!hit.collider)
             return false;
 
@@ -148,5 +148,18 @@ public class AgentDoorInteractor : Interactor, IInitializable
                 _openedDoors.RemoveAt(i);
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!drawGizmos) return;
+
+        var col = _col != null ? _col : GetComponent<Collider2D>();
+        Vector2 origin = col != null ? (Vector2)col.bounds.center : (Vector2)transform.position;
+        float dir = transform.localScale.x >= 0f ? 1f : -1f;
+        Gizmos.color = gizmoColor;
+        Vector2 end = origin + new Vector2(dir * interactDistance, 0f);
+        Gizmos.DrawLine(origin, end);
+        Gizmos.DrawSphere(end, 0.05f);
     }
 }
