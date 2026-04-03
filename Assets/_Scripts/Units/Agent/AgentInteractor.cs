@@ -46,7 +46,7 @@ public class AgentInteractor : Interactor
         if (_pendingClose == null) return;
 
         float agentX = _ctx.transform.position.x;
-        bool hasPassed = _pendingCloseDirSign * (agentX - _pendingCloseDoorX) > 0.75f;
+        bool hasPassed = _pendingCloseDirSign * (agentX - _pendingCloseDoorX) > 1.25f;
         if (!hasPassed) return;
 
         _pendingClose.TryInteract(this);

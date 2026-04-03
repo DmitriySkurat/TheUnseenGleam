@@ -12,14 +12,17 @@ public class DoorInteractable : Interactable
 
     [SerializeField] private bool disableColliderWhenOpen = true;
 
+    [Header("Vision Blocking")]
+    [Tooltip("Отдельный коллайдер на слое окклюзии (дочерний объект). Включён когда дверь закрыта, выключен когда открыта.")]
+    [SerializeField] private Collider2D visionBlocker;
 
     private Collider2D _doorCollider;
-    
+
     public override void Initialize() {
         base.Initialize();
-        
+
         _doorCollider = GetComponent<Collider2D>();
-        
+
         // Для начального состояния
         UpdateDoorVisuals();
     }
@@ -38,9 +41,12 @@ public class DoorInteractable : Interactable
         }
 
         if (_doorCollider != null && disableColliderWhenOpen) {
-            _doorCollider.isTrigger = isOpen; 
+            _doorCollider.isTrigger = isOpen;
             // не сработает с - _doorCollider.enabled = !isOpen;
-        } 
+        }
+
+        if (visionBlocker != null)
+            visionBlocker.enabled = !isOpen;
     }
 
     public override void OnInteract(Interactor interactor)
