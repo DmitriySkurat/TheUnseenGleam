@@ -3,15 +3,16 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour {
     protected IInteractable currentInteractable;
+    protected bool enableHighlight = true;
     
     public IInteractable CurrentInteractable => currentInteractable;
 
     protected void SetCurrentInteractable(IInteractable interactable) {
         if (ReferenceEquals(currentInteractable, interactable)) return;
         
-        if (currentInteractable != null) currentInteractable.Unselect();
+        if (currentInteractable != null && enableHighlight) currentInteractable.Unselect();
         currentInteractable = interactable;
-        if (currentInteractable != null) currentInteractable.Select();
+        if (currentInteractable != null && enableHighlight) currentInteractable.Select();
     }
 
     protected virtual void PerformInteraction() {

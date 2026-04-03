@@ -38,6 +38,7 @@ public class AgentDoorInteractor : Interactor, IInitializable
     {
         _col = GetComponent<Collider2D>();
         _nav = GetComponent<PlatNavHandler>();
+        enableHighlight = false;
     }
 
     private void FixedUpdate()
@@ -53,16 +54,19 @@ public class AgentDoorInteractor : Interactor, IInitializable
             return;
 
         if (!TryFindDoorAhead(out DoorInteractable door, out Collider2D doorCollider))
+        {
+            SetCurrentInteractable(null);
             return;
+        }
 
         if (door == null || door.IsOpen)
             return;
 
-        if (!door.CanBeInteractedBy(this))
-            return;
-
-        door.SetOpen(true);
-        RegisterOpenedDoor(door, doorCollider);
+        bool wasOpen = door.IsOpen;
+        SetCurrentInteractable(door);
+        PerformInteraction();
+        if (!wasOpen && door.IsOpen)
+            RegisterOpenedDoor(door, doorCollider);
         _nextInteractTime = Time.time + interactCooldown;
     }
 
