@@ -17,6 +17,8 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
     [SerializeField, Min(0f)] private float footstepCooldown = 0.4f;
     [Tooltip("Минимальный интервал между кольцами дыхания (сек)")]
     [SerializeField, Min(0f)] private float breathingCooldown = 0.75f;
+    [Tooltip("Минимальный интервал между кольцами приземления (сек)")]
+    [SerializeField, Min(0f)] private float landingCooldown = 0.5f;
 
     [Header("Filters")]
     [Tooltip("Минимальный радиус Footstep для показа кольца. Run = 4, Walk = 2, Crouch = 1")]
@@ -34,6 +36,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
     private AgentHearing[] _agents;
     private float _lastFootstepSpawnTime;
     private float _lastBreathingSpawnTime;
+    private float _lastLandingSpawnTime;
     private readonly Queue<NoiseWave> _activeWaves = new();
 
     public void Initialize()
@@ -52,7 +55,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
     private void OnNoiseEmitted(NoiseEvent noise)
     {
         if (!ShouldVisualize(noise)) return;
-        if (!AnyEnemyInRange(noise)) return;
+        if (RequiresEnemyCheck(noise) && !AnyEnemyInRange(noise)) return;
         if (IsOnCooldown(noise)) return;
 
         UpdateCooldown(noise);
@@ -61,8 +64,16 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
 
     private bool ShouldVisualize(NoiseEvent noise) => noise.Type switch
     {
+        NoiseType.Breathing    => true,
+        NoiseType.Footstep     => noise.Radius >= minFootstepRadius,
+        NoiseType.Landing      => true,
+        NoiseType.ObjectImpact => true,
+        _                      => false
+    };
+
+    private bool RequiresEnemyCheck(NoiseEvent noise) => noise.Type switch
+    {
         NoiseType.Breathing => true,
-        NoiseType.Footstep  => noise.Radius >= minFootstepRadius,
         _                   => false
     };
 
@@ -79,9 +90,11 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
 
     private bool IsOnCooldown(NoiseEvent noise) => noise.Type switch
     {
-        NoiseType.Footstep  => Time.time - _lastFootstepSpawnTime  < footstepCooldown,
-        NoiseType.Breathing => Time.time - _lastBreathingSpawnTime < breathingCooldown,
-        _                   => false
+        NoiseType.Footstep     => Time.time - _lastFootstepSpawnTime  < footstepCooldown,
+        NoiseType.Breathing    => Time.time - _lastBreathingSpawnTime < breathingCooldown,
+        NoiseType.Landing      => Time.time - _lastLandingSpawnTime   < landingCooldown,
+        NoiseType.ObjectImpact => false,
+        _                      => false
     };
 
     private void UpdateCooldown(NoiseEvent noise)
@@ -90,8 +103,14 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
         {
             case NoiseType.Footstep:  _lastFootstepSpawnTime  = Time.time; break;
             case NoiseType.Breathing: _lastBreathingSpawnTime = Time.time; break;
+            case NoiseType.Landing:   _lastLandingSpawnTime   = Time.time; break;
         }
     }
+
+    // Непрерывный шум (шаги бега, дыхание) — кольцо следует за игроком
+    // Точечный шум (приземление, камень)   — кольцо остаётся в точке события
+    private bool FollowsSource(NoiseEvent noise) =>
+        noise.Type == NoiseType.Footstep || noise.Type == NoiseType.Breathing;
 
     private void SpawnWave(NoiseEvent noise)
     {
@@ -104,12 +123,20 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
             if (old != null) Destroy(old.gameObject);
         }
 
-        Transform parent = (noise.Source != null) ? noise.Source.transform : transform;
+        NoiseWave wave;
 
-        var wave = Instantiate(wavePrefab, parent.position, Quaternion.identity, parent);
-        wave.transform.localPosition = Vector3.zero;
+        if (FollowsSource(noise))
+        {
+            Transform parent = noise.Source != null ? noise.Source.transform : transform;
+            wave = Instantiate(wavePrefab, parent.position, Quaternion.identity, parent);
+            wave.transform.localPosition = Vector3.zero;
+        }
+        else
+        {
+            wave = Instantiate(wavePrefab, noise.Position, Quaternion.identity, transform);
+        }
+
         wave.Init(noise.Radius, duration);
-
         _activeWaves.Enqueue(wave);
     }
 
