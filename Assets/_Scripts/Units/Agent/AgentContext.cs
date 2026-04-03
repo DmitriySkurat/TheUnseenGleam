@@ -40,8 +40,10 @@ public class AgentContext
     public Vector2 suspicionPosition;
 
     // ===== SEARCH =====
-    // Countdown while standing at the search point
+    // Countdown while standing at a wander waypoint
     public float searchWaitTimer;
+    // Countdown for the total wander phase duration
+    public float searchWanderTimer;
 
     // ===== CHASE =====
     public Transform playerTransform;

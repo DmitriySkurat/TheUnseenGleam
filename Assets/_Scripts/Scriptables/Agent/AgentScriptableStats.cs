@@ -47,7 +47,15 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float SearchSpeed = 4f;
 
-    [Tooltip("How long the agent waits at the search point before returning to Patrol")]
+    [Tooltip("How long the agent waits at each wander waypoint before moving to the next")]
     [Min(0f)]
-    public float SearchWaitTime = 3f;
+    public float SearchWaitTime = 1f;
+
+    [Tooltip("Total time the agent wanders around the search point before returning to Patrol")]
+    [Min(0f)]
+    public float SearchWanderDuration = 8f;
+
+    [Tooltip("Distance of the left/right wander points from the search center")]
+    [Min(0.5f)]
+    public float SearchWanderDistance = 3f;
 }

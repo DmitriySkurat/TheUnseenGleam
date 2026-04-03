@@ -1,10 +1,17 @@
 using PlatNav;
+using UnityEngine;
 
 namespace HSM {
     public class AgentSearch : State
     {
         readonly AgentContext ctx;
+
         bool _navigating;
+        bool _wandering;
+        bool _waitingAtWanderPoint;
+
+        Vector2[] _wanderPoints;
+        int _wanderIndex;
 
         public AgentSearch(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -14,36 +21,46 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.nav.SetTarget(null);
-            ctx.searchWaitTimer = 0f;
-            _navigating = false;
+            ctx.searchWaitTimer   = 0f;
+            ctx.searchWanderTimer = 0f;
+
+            _navigating           = false;
+            _wandering            = false;
+            _waitingAtWanderPoint = false;
+            _wanderPoints         = null;
+            _wanderIndex          = 0;
+
             StartNavigatingToSearchPoint();
             base.OnEnter();
         }
 
         protected override void OnUpdate(float deltaTime)
         {
-            // New noise arrived — redirect to the updated position
+            // New noise arrived — redirect only if not already tracking a vision-based position
             if (ctx.pendingNoiseAlert)
             {
-                ctx.suspicionPosition = ctx.pendingNoisePosition;
                 ctx.pendingNoiseAlert = false;
-                ctx.searchWaitTimer   = 0f;
-                StartNavigatingToSearchPoint();
+                if (ctx.suspicionSource != SuspicionSource.Vision)
+                {
+                    ctx.suspicionPosition = ctx.pendingNoisePosition;
+                    _wandering            = false;
+                    _waitingAtWanderPoint = false;
+                    StartNavigatingToSearchPoint();
+                }
             }
-
-            if (_navigating)
+            else if (_wandering)
+            {
+                UpdateWander(deltaTime);
+            }
+            else if (_navigating)
             {
                 ctx.nav.Tick(deltaTime);
 
                 if (ctx.nav.State == PlatNavState.Idle)
                 {
-                    _navigating         = false;
-                    ctx.searchWaitTimer = ctx.stats.SearchWaitTime;
+                    _navigating = false;
+                    StartWandering();
                 }
-            }
-            else if (ctx.searchWaitTimer > 0f)
-            {
-                ctx.searchWaitTimer -= deltaTime;
             }
 
             base.OnUpdate(deltaTime);
@@ -57,24 +74,79 @@ namespace HSM {
 
         protected override State GetTransition()
         {
-            // Spotted the player while searching — pursue immediately
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
                 return Machine != null ? Machine.GetState<AgentChase>() : null;
 
-            // Finished navigating and waited long enough — back to patrol
-            if (!_navigating && ctx.searchWaitTimer <= 0f)
+            if (_wandering && ctx.searchWanderTimer <= 0f)
                 return Machine != null ? Machine.GetState<AgentPatrol>() : null;
 
             return null;
+        }
+
+        void UpdateWander(float deltaTime)
+        {
+            ctx.searchWanderTimer -= deltaTime;
+
+            if (_waitingAtWanderPoint)
+            {
+                ctx.searchWaitTimer -= deltaTime;
+                if (ctx.searchWaitTimer <= 0f)
+                {
+                    _waitingAtWanderPoint = false;
+                    AdvanceWanderPoint();
+                }
+            }
+            else if (_navigating)
+            {
+                ctx.nav.Tick(deltaTime);
+
+                if (ctx.nav.State == PlatNavState.Idle)
+                {
+                    _navigating           = false;
+                    _waitingAtWanderPoint = true;
+                    ctx.searchWaitTimer   = ctx.stats.SearchWaitTime;
+                }
+            }
+            else
+            {
+                // Path to wander point failed — skip to next
+                AdvanceWanderPoint();
+            }
         }
 
         void StartNavigatingToSearchPoint()
         {
             _navigating = ctx.nav.MoveTo(ctx.suspicionPosition, ctx.stats.SearchSpeed);
 
-            // If the point is unreachable, fall back to waiting then patrolling
             if (!_navigating)
-                ctx.searchWaitTimer = ctx.stats.SearchWaitTime;
+                StartWandering();
+        }
+
+        void StartWandering()
+        {
+            float dist = ctx.stats.SearchWanderDistance;
+            _wanderPoints = new Vector2[]
+            {
+                ctx.suspicionPosition + Vector2.left  * dist,
+                ctx.suspicionPosition + Vector2.right * dist,
+            };
+            _wanderIndex          = 0;
+            ctx.searchWanderTimer = ctx.stats.SearchWanderDuration;
+            _wandering            = true;
+            _waitingAtWanderPoint = false;
+
+            NavigateToCurrentWanderPoint();
+        }
+
+        void NavigateToCurrentWanderPoint()
+        {
+            _navigating = ctx.nav.MoveTo(_wanderPoints[_wanderIndex], ctx.stats.SearchSpeed);
+        }
+
+        void AdvanceWanderPoint()
+        {
+            _wanderIndex = (_wanderIndex + 1) % _wanderPoints.Length;
+            NavigateToCurrentWanderPoint();
         }
     }
 }
