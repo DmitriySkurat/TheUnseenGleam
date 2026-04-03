@@ -31,19 +31,24 @@ public class AgentInteractor : Interactor
         if (currentInteractable is not DoorInteractable door) return;
         if (door.IsOpen) return;
 
-        float dirSign = Mathf.Sign(_ctx.rb.linearVelocity.x);
-
         PerformInteraction();
         _lastInteractTime = Time.time;
 
         _pendingClose = currentInteractable;
         _pendingCloseDoorX = ((MonoBehaviour)currentInteractable).transform.position.x;
-        _pendingCloseDirSign = dirSign;
+        _pendingCloseDirSign = FacingSign();
     }
 
     private void TryClosePendingDoor()
     {
         if (_pendingClose == null) return;
+
+        // Кто-то уже закрыл дверь до нас — сбрасываем, чтобы не блокировать повторное обнаружение
+        if (_pendingClose is DoorInteractable pendingDoor && !pendingDoor.IsOpen)
+        {
+            _pendingClose = null;
+            return;
+        }
 
         float agentX = _ctx.transform.position.x;
         bool hasPassed = _pendingCloseDirSign * (agentX - _pendingCloseDoorX) > 1.25f;
@@ -54,24 +59,28 @@ public class AgentInteractor : Interactor
         _pendingClose = null;
     }
 
-    private void ScanForInteractable()
+    // Направление взгляда агента: по скорости или, если стоит, по localScale (как AgentVision)
+    private float FacingSign()
     {
         float velX = _ctx.rb.linearVelocity.x;
-        if (Mathf.Abs(velX) < 0.01f)
-        {
-            currentInteractable = null;
-            return;
-        }
+        return Mathf.Abs(velX) >= 0.01f
+            ? Mathf.Sign(velX)
+            : (_ctx.transform.localScale.x >= 0f ? 1f : -1f);
+    }
 
-        var dir = new Vector2(Mathf.Sign(velX), 0f);
+    private void ScanForInteractable()
+    {
+        var dir = new Vector2(FacingSign(), 0f);
         var origin = (Vector2)_ctx.transform.position;
         var hit = Physics2D.Linecast(origin, origin + dir * _ctx.stats.InteractRange, _ctx.stats.InteractableLayer);
 
         if (hit.collider != null)
         {
             var interactable = hit.collider.GetComponentInParent<IInteractable>();
-            // Ignore the door we're currently passing through
-            currentInteractable = ReferenceEquals(interactable, _pendingClose) ? null : interactable;
+            // Игнорируем дверь только пока она открыта (агент проходит сквозь неё)
+            bool passingThrough = ReferenceEquals(interactable, _pendingClose)
+                && _pendingClose is DoorInteractable d && d.IsOpen;
+            currentInteractable = passingThrough ? null : interactable;
         }
         else
         {
@@ -84,10 +93,7 @@ public class AgentInteractor : Interactor
     {
         if (_ctx?.rb == null) return;
 
-        float velX = _ctx.rb.linearVelocity.x;
-        if (Mathf.Abs(velX) < 0.01f) return;
-
-        var dir = new Vector2(Mathf.Sign(velX), 0f);
+        var dir = new Vector2(FacingSign(), 0f);
         var origin = (Vector2)_ctx.transform.position;
 
         Gizmos.color = currentInteractable != null ? Color.green : Color.white;
