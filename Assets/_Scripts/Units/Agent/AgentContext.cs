@@ -48,13 +48,8 @@ public class AgentContext
 
     // ===== CHASE =====
     public Transform playerTransform;
-    public Rigidbody2D playerRb;
-    // Countdown timer for the memory phase (agent navigates to predicted position while > 0)
-    public float chaseMemoryTimer;
-    // Player velocity captured at the moment sight was lost (used for prediction)
-    public Vector2 chaseLastKnownVelocity;
-    // Predicted world position where the agent expects the player to be
-    public Vector2 chasePredictedPosition;
+    // Time elapsed since the agent last had direct sight of the player during chase
+    public float chaseVisionLostTimer;
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;

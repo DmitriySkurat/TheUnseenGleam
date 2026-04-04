@@ -148,7 +148,9 @@ MonoBehaviour:
   destroyTime: 3
   whatDestroysPebble:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8256
+  impactNoiseRadius: 4
+  impactNoiseType: 3
 --- !u!114 &5408775001540020366
 MonoBehaviour:
   m_ObjectHideFlags: 0
