@@ -161,6 +161,86 @@ namespace PlatNav
             return MoveTo(rnd, speed);
         }
 
+        /// <summary>
+        /// Given a world position and the horizontal direction the player was moving,
+        /// returns the most likely destination on a walkable segment based on priority:
+        /// 1) Straight (same level — segment extends ahead or same-height link)
+        /// 2) Down (fall/jump to lower segment in that direction)
+        /// 3) Up (jump to higher segment in that direction)
+        /// Returns false when no walkable option exists (wall).
+        /// </summary>
+        public bool TryGetPredictedDestination(Vector2 fromPos, float horizontalDir, out Vector2 destination)
+        {
+            destination = fromPos;
+            if (graph == null || graph.segments == null || graph.links == null) return false;
+            if (Mathf.Abs(horizontalDir) < 0.01f) return false;
+
+            float dir = Mathf.Sign(horizontalDir);
+            int segIdx = FindNearestSegment(fromPos);
+            if (segIdx < 0) return false;
+
+            var s     = graph.segments[segIdx];
+            var links = graph.links;
+            const float sameHeightThreshold  = 1.5f;
+            const float minStraightExtension = 0.5f;
+
+            // Priority 1a: Segment extends further in dir direction (player kept running straight)
+            if (s.axis == SurfaceAxis.Horizontal)
+            {
+                int edgeCoord = dir > 0 ? s.max : s.min;
+                Vector2 edge = SegmentWorldPos(s, edgeCoord);
+                if ((edge.x - fromPos.x) * dir > minStraightExtension)
+                {
+                    destination = edge;
+                    return true;
+                }
+            }
+
+            // Priority 1b: Link to a segment at approximately the same height in dir direction
+            for (int li = s.firstOut; li < s.firstOut + s.outCount && li < links.Length; li++)
+            {
+                var lk = links[li];
+                if (!lk.IsUsable(abilities)) continue;
+                float dy = lk.landPos.y - lk.launchPos.y;
+                float dx = lk.landPos.x - lk.launchPos.x;
+                if (Mathf.Abs(dy) <= sameHeightThreshold && dx * dir > 0)
+                {
+                    destination = lk.landPos;
+                    return true;
+                }
+            }
+
+            // Priority 2: Link to a lower segment in dir direction (fall/drop)
+            for (int li = s.firstOut; li < s.firstOut + s.outCount && li < links.Length; li++)
+            {
+                var lk = links[li];
+                if (!lk.IsUsable(abilities)) continue;
+                float dy = lk.landPos.y - lk.launchPos.y;
+                float dx = lk.landPos.x - lk.launchPos.x;
+                if (dy < -sameHeightThreshold && dx * dir >= 0)
+                {
+                    destination = lk.landPos;
+                    return true;
+                }
+            }
+
+            // Priority 3: Link to a higher segment in dir direction (jump up)
+            for (int li = s.firstOut; li < s.firstOut + s.outCount && li < links.Length; li++)
+            {
+                var lk = links[li];
+                if (!lk.IsUsable(abilities)) continue;
+                float dy = lk.landPos.y - lk.launchPos.y;
+                float dx = lk.landPos.x - lk.launchPos.x;
+                if (dy > sameHeightThreshold && dx * dir >= 0)
+                {
+                    destination = lk.landPos;
+                    return true;
+                }
+            }
+
+            return false; // wall — no walkable exit in this direction
+        }
+
         public void Initialize()
         {
             _rb  = GetComponent<Rigidbody2D>();

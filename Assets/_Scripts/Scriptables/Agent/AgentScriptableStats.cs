@@ -38,13 +38,18 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float ChaseSpeed = 5f;
 
-    [Tooltip("How long the agent keeps chasing after losing direct sight of the player before switching to Search")]
+    [Tooltip("How long the agent keeps chasing after losing direct sight of the player before switching to PredictionChase")]
     [Min(0f)]
     public float ChaseVisionGraceTime = 1.5f;
 
     [Tooltip("How long (seconds) the agent remembers and navigates to the player's predicted position after losing sight")]
     [Min(0f)]
     public float ChaseMemoryTime = 2f;
+
+    [Header("PREDICTION CHASE")]
+    [Tooltip("Maximum time (seconds) the agent spends in PredictionChase before giving up and switching to Search")]
+    [Min(0f)]
+    public float PredictionSearchTime = 6f;
 
     [Header("SEARCH")]
     [Tooltip("Movement speed while heading to the last known position")]

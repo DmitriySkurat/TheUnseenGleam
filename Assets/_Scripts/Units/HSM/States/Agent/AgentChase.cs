@@ -22,11 +22,13 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
-            // Keep suspicionPosition up-to-date so AgentSearch knows where to go
+            // Keep suspicionPosition and player velocity up-to-date so PredictionChase knows where to go
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
             {
-                ctx.suspicionPosition    = ctx.vision.LastSeenPosition;
-                ctx.chaseVisionLostTimer = 0f;
+                ctx.suspicionPosition         = ctx.vision.LastSeenPosition;
+                ctx.chaseVisionLostTimer      = 0f;
+                if (ctx.playerRb != null)
+                    ctx.predictionPlayerVelocity = ctx.playerRb.linearVelocity;
             }
             else
             {
@@ -50,7 +52,7 @@ namespace HSM {
             if (ctx.IsTraversingLink) return null;
 
             if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
-                return Machine != null ? Machine.GetState<AgentSearch>() : null;
+                return Machine != null ? Machine.GetState<AgentPredictionChase>() : null;
 
             return null;
         }
