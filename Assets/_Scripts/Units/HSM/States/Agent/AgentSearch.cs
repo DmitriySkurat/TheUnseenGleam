@@ -74,6 +74,8 @@ namespace HSM {
 
         protected override State GetTransition()
         {
+            if (ctx.IsTraversingLink) return null;
+
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
                 return Machine != null ? Machine.GetState<AgentChase>() : null;
 

@@ -57,6 +57,7 @@ public class AgentContext
     public Vector2 pendingNoisePosition;
 
     // ===== DERIVED =====
+    public bool IsTraversingLink => nav != null && nav.State == PlatNavState.TraversingLink;
     public bool IsWaitingAtPoint => patrolWaitTimer > 0f;
 
     public int PatrolCount => patrolPointTransforms != null && patrolPointTransforms.Length > 0

@@ -65,6 +65,8 @@ namespace HSM {
 
         protected override State GetTransition()
         {
+            if (ctx.IsTraversingLink) return null;
+
             // Still waiting out the suspicion window
             if (ctx.suspicionTimer > 0f) return null;
 

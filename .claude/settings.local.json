@@ -6,7 +6,10 @@
       "Bash(find D:BSUIRDiplomaTheUnseenGleam/Assets -type f -name *.shader)",
       "Bash(grep -r \"828586ba2b26ec948b9c488848a3de44\" \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\ParticlesAndFX\\\\ShaderGraph\\\\Noise\"\" --include=\"*.meta \" -l)",
       "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/HSM/States/Agent -type f -name *.cs)",
-      "Bash(find D:BSUIRDiplomaTheUnseenGleamAssets -name *Scriptable* -type f)"
+      "Bash(find D:BSUIRDiplomaTheUnseenGleamAssets -name *Scriptable* -type f)",
+      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam -type f \\\\\\(-name *AgentRoot* -o -name *AgentContext* -o -name *AgentScriptableStats* \\\\\\))",
+      "Bash(grep -v \"\\\\.meta$\")",
+      "Bash(xargs grep:*)"
     ]
   }
 }

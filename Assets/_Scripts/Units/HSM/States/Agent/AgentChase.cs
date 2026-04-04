@@ -47,6 +47,8 @@ namespace HSM {
 
         protected override State GetTransition()
         {
+            if (ctx.IsTraversingLink) return null;
+
             if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
                 return Machine != null ? Machine.GetState<AgentSearch>() : null;
 
