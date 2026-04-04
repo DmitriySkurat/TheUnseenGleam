@@ -32,4 +32,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   InteractRange: 1.5
-  InteractCooldown: 1
+  InteractCooldown: 1.5

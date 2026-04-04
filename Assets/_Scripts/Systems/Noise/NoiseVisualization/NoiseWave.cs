@@ -10,6 +10,11 @@ public class NoiseWave : MonoBehaviour
 
     private const int Segments = 64;
 
+    // До какого % от исходного радиуса расширяется кольцо (0..1)
+    [SerializeField, Range(0f, 1f)] private float radiusFraction = 1f;
+    // Кольцо начинает рассеиваться после прохождения этого % от визуального радиуса (0..1)
+    [SerializeField, Range(0f, 1f)] private float fadeStartFraction = 0.6f;
+
     public void Init(float maxRadius, float duration)
     {
         _lineRenderer = GetComponent<LineRenderer>();
@@ -21,7 +26,7 @@ public class NoiseWave : MonoBehaviour
 
         _startTime = Time.time;
         _duration = duration;
-        _maxRadius = maxRadius;
+        _maxRadius = maxRadius * radiusFraction;
 
         DrawCircle(0f);
     }
@@ -37,7 +42,10 @@ public class NoiseWave : MonoBehaviour
         }
 
         DrawCircle(Mathf.Lerp(0f, _maxRadius, t));
-        SetAlpha(1f - t);
+        float alpha = t < fadeStartFraction
+            ? 1f
+            : 1f - Mathf.InverseLerp(fadeStartFraction, 1f, t);
+        SetAlpha(alpha);
     }
 
     private void DrawCircle(float radius)
