@@ -423,13 +423,18 @@ namespace PlatNav
         private void BuildJumpLinks(List<WalkSegment> segs,
             Dictionary<long, int> lut, List<NavLink> links)
         {
+            var emitted = new HashSet<(int fromSeg, int toSeg, int fromCoord, int toCoord)>();
+
             for (int si = 0; si < segs.Count; si++)
             {
                 var seg    = segs[si];
                 var nearby = GatherNearbySegments(seg, si, lut);
 
                 foreach (int tj in nearby)
-                    TryJumpLink(si, seg, tj, segs[tj], links);
+                {
+                    TryJumpLinkFromSide(si, seg, tj, segs[tj], -1, links, emitted);
+                    TryJumpLinkFromSide(si, seg, tj, segs[tj],  1, links, emitted);
+                }
             }
         }
 
@@ -460,82 +465,78 @@ namespace PlatNav
             return set;
         }
 
-        private void TryJumpLink(int fi, in WalkSegment from, int ti, in WalkSegment to, List<NavLink> links)
+        private void TryJumpLinkFromSide(int fi, in WalkSegment from, int ti, in WalkSegment to,
+            int sideSign, List<NavLink> links,
+            HashSet<(int fromSeg, int toSeg, int fromCoord, int toCoord)> emitted)
         {
             Vector2 acc = AccelFor(from.gravity);
-
-            // sample up to ~6 positions on each segment (always include endpoints)
-            var fromCs = SampleCoords(from.min, from.max, 6);
-            var toCs   = SampleCoords(to.min,   to.max,   6);
-
-            int bfMin = int.MaxValue, bfMax = int.MinValue;
-            int btMin = int.MaxValue, btMax = int.MinValue;
+            float maxJumpDistSq = jumpSearchRadius * jumpSearchRadius;
             float bestCost = float.MaxValue;
             bool any = false;
 
-            // Best trajectory data for replay
+            int bestFromCoord = 0;
+            int bestToCoord   = 0;
             Vector2 bestLaunchPos  = Vector2.zero;
             Vector2 bestLaunchVel  = Vector2.zero;
             Vector2 bestLandPos    = Vector2.zero;
             float   bestFlightTime = 0f;
 
-            foreach (int fc in fromCs)
-            foreach (int tc in toCs)
+            foreach (int fc in GetJumpLaunchCoords(from, sideSign))
             {
                 Vector2 sp = SegCoord(from, fc);
-                Vector2 tp = SegCoord(to,   tc);
 
-                if ((tp - sp).sqrMagnitude > jumpSearchRadius * jumpSearchRadius)
-                    continue;
-
-                var (tMin, tLow, tMax) = JumpTimes(sp, tp, acc);
-                if (tMin < 0) continue;
-
-                for (int k = 0; k < numTrajectoriesToTest; k++)
+                foreach (int tc in GetJumpLandingCoords(to, fc))
                 {
-                    float frac = numTrajectoriesToTest > 1
-                        ? (float)k / (numTrajectoriesToTest - 1) : 0f;
-                    float T  = Mathf.Lerp(tLow, tMax, frac);
-                    Vector2 v0 = (tp - sp) / T - 0.5f * acc * T;
+                    Vector2 tp = SegCoord(to, tc);
 
-                    if (v0.sqrMagnitude > maxJumpVelocity * maxJumpVelocity)
+                    if ((tp - sp).sqrMagnitude > maxJumpDistSq)
                         continue;
-                    if (!ValidateArc(sp, v0, acc, T, from.gravity, out var arcPts))
-                    {
-                        if (showRejectedTrajectories && arcPts != null)
-                            rejectedArcs.Add(arcPts);
-                        continue;
-                    }
 
-                    float c = T * jumpCostMultiplier;
-                    if (c < bestCost)
-                    {
-                        bestCost       = c;
-                        bestLaunchPos  = sp;
-                        bestLaunchVel  = v0;
-                        bestLandPos    = tp;
-                        bestFlightTime = T;
-                    }
+                    var (tMin, tLow, tMax) = JumpTimes(sp, tp, acc);
+                    if (tMin < 0f) continue;
 
-                    bfMin = Mathf.Min(bfMin, fc);
-                    bfMax = Mathf.Max(bfMax, fc);
-                    btMin = Mathf.Min(btMin, tc);
-                    btMax = Mathf.Max(btMax, tc);
-                    any   = true;
-                    break; // first valid arc wins for this pair
+                    foreach (float T in SampleJumpTimes(tMin, tLow, tMax))
+                    {
+                        Vector2 v0 = (tp - sp) / T - 0.5f * acc * T;
+
+                        if (v0.sqrMagnitude > maxJumpVelocity * maxJumpVelocity)
+                            continue;
+                        if (!ValidateArc(sp, v0, acc, T, from.gravity, out var arcPts))
+                        {
+                            if (showRejectedTrajectories && arcPts != null)
+                                rejectedArcs.Add(arcPts);
+                            continue;
+                        }
+
+                        float c = T * jumpCostMultiplier;
+                        if (c < bestCost)
+                        {
+                            bestCost       = c;
+                            bestFromCoord  = fc;
+                            bestToCoord    = tc;
+                            bestLaunchPos  = sp;
+                            bestLaunchVel  = v0;
+                            bestLandPos    = tp;
+                            bestFlightTime = T;
+                        }
+
+                        any = true;
+                        break; // shortest sampled valid arc wins for this pair
+                    }
                 }
             }
 
             if (!any) return;
+            if (!emitted.Add((fi, ti, bestFromCoord, bestToCoord))) return;
 
             links.Add(new NavLink
             {
                 fromSeg           = fi,
                 toSeg             = ti,
-                fromMin           = bfMin,
-                fromMax           = bfMax,
-                toMin             = btMin,
-                toMax             = btMax,
+                fromMin           = bestFromCoord,
+                fromMax           = bestFromCoord,
+                toMin             = bestToCoord,
+                toMax             = bestToCoord,
                 moveType          = LinkMoveType.Jump,
                 requiredAbilities = AbilityMask.Jump,
                 costFp            = FpCost(bestCost),
@@ -548,17 +549,58 @@ namespace PlatNav
             });
         }
 
-        private static List<int> SampleCoords(int min, int max, int maxSamples)
+        private IEnumerable<int> GetJumpLaunchCoords(WalkSegment seg, int sideSign)
         {
-            var list = new List<int>();
-            int range = max - min;
-            if (range <= 0 || maxSamples <= 1) { list.Add(min); if (max != min) list.Add(max); return list; }
+            int primary = sideSign < 0 ? seg.min : seg.max;
+            int secondary = sideSign < 0 ? seg.min + 1 : seg.max - 1;
 
-            int step = Mathf.Max(1, range / (maxSamples - 1));
-            for (int c = min; c <= max; c += step)
-                list.Add(c);
-            if (list[^1] != max) list.Add(max);
-            return list;
+            yield return primary;
+
+            if (secondary >= seg.min && secondary <= seg.max && secondary != primary)
+                yield return secondary;
+        }
+
+        private IEnumerable<int> GetJumpLandingCoords(WalkSegment seg, int aroundCoord)
+        {
+            int min = Mathf.Max(seg.min, aroundCoord - jumpSearchRadius);
+            int max = Mathf.Min(seg.max, aroundCoord + jumpSearchRadius);
+
+            for (int c = min; c <= max; c++)
+                yield return c;
+        }
+
+        private List<float> SampleJumpTimes(float tMin, float tLow, float tMax)
+        {
+            var samples = new List<float>(numTrajectoriesToTest + 3);
+
+            AddJumpTimeSample(samples, tMin);
+            AddJumpTimeSample(samples, tLow);
+            AddJumpTimeSample(samples, tMax);
+
+            if (numTrajectoriesToTest > 1)
+            {
+                for (int k = 0; k < numTrajectoriesToTest; k++)
+                {
+                    float frac = (float)k / (numTrajectoriesToTest - 1);
+                    AddJumpTimeSample(samples, Mathf.Lerp(tMin, tMax, frac));
+                }
+            }
+
+            samples.Sort();
+            return samples;
+        }
+
+        private static void AddJumpTimeSample(List<float> samples, float value)
+        {
+            const float epsilon = 0.0001f;
+
+            for (int i = 0; i < samples.Count; i++)
+            {
+                if (Mathf.Abs(samples[i] - value) <= epsilon)
+                    return;
+            }
+
+            samples.Add(value);
         }
 
         private (float tMin, float tLow, float tMax) JumpTimes(Vector2 start, Vector2 target, Vector2 acc)
