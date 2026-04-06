@@ -19,9 +19,9 @@ public class PlayerStaminaController : MonoBehaviour, IInitializable
 
     private void FixedUpdate()
     {
-        Debug.Log($"Current stamina: {_ctx.stamina:0F}");
-        Debug.Log($"currentStaminaDrainMultiplier: {_ctx.currentStaminaDrainMultiplier}");
-        Debug.Log($"currentStaminaBreathDrainMultiplier: {_ctx.currentStaminaBreathDrainMultiplier}");
+        //Debug.Log($"Current stamina: {_ctx.stamina:0F}");
+        //Debug.Log($"currentStaminaDrainMultiplier: {_ctx.currentStaminaDrainMultiplier}");
+        //Debug.Log($"currentStaminaBreathDrainMultiplier: {_ctx.currentStaminaBreathDrainMultiplier}");
         
         UpdateStamina(Time.fixedDeltaTime);
     }

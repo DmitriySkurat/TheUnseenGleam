@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Utility.Logger
   _showLogs: 1
-  _prefix: Enemy
+  _prefix: Agent
   _prefixColor: {r: 0.9245283, g: 0.12385191, b: 0.14510858, a: 0}

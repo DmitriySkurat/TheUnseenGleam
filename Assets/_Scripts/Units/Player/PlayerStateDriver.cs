@@ -63,6 +63,8 @@ namespace HSM {
         
         void OnDrawGizmos()
         {
+            if (!Application.isPlaying) return;
+            
             var col = _ctx.coll as CapsuleCollider2D;
             
             // Коллайдер
@@ -86,6 +88,7 @@ namespace HSM {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(col.bounds.center, col.bounds.center + Vector3.up * _ctx.stats.GrounderDistance);
             Gizmos.DrawWireSphere(col.bounds.center + Vector3.up * _ctx.stats.GrounderDistance, 0.05f);
+        
         }
         
         #endregion
