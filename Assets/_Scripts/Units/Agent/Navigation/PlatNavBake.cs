@@ -504,7 +504,11 @@ namespace PlatNav
                     var (tMin, tLow, tMax) = JumpTimes(sp, tp, acc);
                     if (tMin < 0f) continue;
 
-                    foreach (float T in SampleJumpTimes(tMin, tLow, tMax))
+                    var times = SampleJumpTimes(tMin, tLow, tMax);
+                    if (Mathf.Abs(sp.y - tp.y) < 0.5f)
+                        times.Sort((a, b) => Mathf.Abs(a - tLow).CompareTo(Mathf.Abs(b - tLow)));
+
+                    foreach (float T in times)
                     {
                         Vector2 v0 = (tp - sp) / T - 0.5f * acc * T;
 
