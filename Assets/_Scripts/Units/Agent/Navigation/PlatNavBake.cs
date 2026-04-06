@@ -423,7 +423,7 @@ namespace PlatNav
         private void BuildJumpLinks(List<WalkSegment> segs,
             Dictionary<long, int> lut, List<NavLink> links)
         {
-            var emitted = new HashSet<(int fromSeg, int toSeg, int fromCoord, int toCoord)>();
+            var emitted = new HashSet<(int fromSeg, int toSeg)>();
 
             for (int si = 0; si < segs.Count; si++)
             {
@@ -432,8 +432,17 @@ namespace PlatNav
 
                 foreach (int tj in nearby)
                 {
-                    TryJumpLinkFromSide(si, seg, tj, segs[tj], -1, links, emitted);
-                    TryJumpLinkFromSide(si, seg, tj, segs[tj],  1, links, emitted);
+                    if (!emitted.Add((si, tj))) continue;
+
+                    bool foundNeg = TryJumpLinkFromSide(si, seg, tj, segs[tj], -1, out NavLink linkNeg);
+                    bool foundPos = TryJumpLinkFromSide(si, seg, tj, segs[tj],  1, out NavLink linkPos);
+
+                    if (foundNeg && foundPos)
+                        links.Add(linkNeg.costFp <= linkPos.costFp ? linkNeg : linkPos);
+                    else if (foundNeg)
+                        links.Add(linkNeg);
+                    else if (foundPos)
+                        links.Add(linkPos);
                 }
             }
         }
@@ -465,9 +474,8 @@ namespace PlatNav
             return set;
         }
 
-        private void TryJumpLinkFromSide(int fi, in WalkSegment from, int ti, in WalkSegment to,
-            int sideSign, List<NavLink> links,
-            HashSet<(int fromSeg, int toSeg, int fromCoord, int toCoord)> emitted)
+        private bool TryJumpLinkFromSide(int fi, in WalkSegment from, int ti, in WalkSegment to,
+            int sideSign, out NavLink result)
         {
             Vector2 acc = AccelFor(from.gravity);
             float maxJumpDistSq = jumpSearchRadius * jumpSearchRadius;
@@ -526,10 +534,9 @@ namespace PlatNav
                 }
             }
 
-            if (!any) return;
-            if (!emitted.Add((fi, ti, bestFromCoord, bestToCoord))) return;
+            if (!any) { result = default; return false; }
 
-            links.Add(new NavLink
+            result = new NavLink
             {
                 fromSeg           = fi,
                 toSeg             = ti,
@@ -546,7 +553,8 @@ namespace PlatNav
                 flightTime        = bestFlightTime,
                 linkGravity       = from.gravity,
                 gravityStrength   = gravityStrength
-            });
+            };
+            return true;
         }
 
         private IEnumerable<int> GetJumpLaunchCoords(WalkSegment seg, int sideSign)
