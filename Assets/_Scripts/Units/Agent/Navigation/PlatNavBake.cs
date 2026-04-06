@@ -423,7 +423,7 @@ namespace PlatNav
         private void BuildJumpLinks(List<WalkSegment> segs,
             Dictionary<long, int> lut, List<NavLink> links)
         {
-            var emittedPairs = new HashSet<(int fromSeg, int toSeg)>();
+            var emitted = new HashSet<(int fromSeg, int fromCoord, int toSeg, int toCoord)>();
 
             for (int si = 0; si < segs.Count; si++)
             {
@@ -432,18 +432,13 @@ namespace PlatNav
 
                 foreach (int tj in nearby)
                 {
-                    if (!emittedPairs.Add((si, tj))) continue;
+                    if (TryJumpLinkFromSide(si, seg, tj, segs[tj], -1, out NavLink linkNeg))
+                        if (emitted.Add((si, linkNeg.fromMin, tj, linkNeg.toMin)))
+                            links.Add(linkNeg);
 
-                    bool foundNeg = TryJumpLinkFromSide(si, seg, tj, segs[tj], -1, out NavLink linkNeg);
-                    bool foundPos = TryJumpLinkFromSide(si, seg, tj, segs[tj],  1, out NavLink linkPos);
-
-                    NavLink best;
-                    if      (foundNeg && foundPos) best = linkNeg.costFp <= linkPos.costFp ? linkNeg : linkPos;
-                    else if (foundNeg)             best = linkNeg;
-                    else if (foundPos)             best = linkPos;
-                    else continue;
-
-                    links.Add(best);
+                    if (TryJumpLinkFromSide(si, seg, tj, segs[tj],  1, out NavLink linkPos))
+                        if (emitted.Add((si, linkPos.fromMin, tj, linkPos.toMin)))
+                            links.Add(linkPos);
                 }
             }
         }
