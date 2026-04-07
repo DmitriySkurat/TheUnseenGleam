@@ -433,14 +433,23 @@ namespace PlatNav
                 foreach (int tj in nearby)
                 {
                     if (TryJumpLinkFromSide(si, seg, tj, segs[tj], -1, out NavLink linkNeg))
-                        if (emitted.Add((si, linkNeg.fromMin, tj, linkNeg.toMin)))
-                            links.Add(linkNeg);
+                        TryAddJumpLink(linkNeg, links, emitted);
 
                     if (TryJumpLinkFromSide(si, seg, tj, segs[tj],  1, out NavLink linkPos))
-                        if (emitted.Add((si, linkPos.fromMin, tj, linkPos.toMin)))
-                            links.Add(linkPos);
+                        TryAddJumpLink(linkPos, links, emitted);
                 }
             }
+        }
+
+        private void TryAddJumpLink(NavLink link, List<NavLink> links,
+            HashSet<(int fromSeg, int fromCoord, int toSeg, int toCoord)> emitted)
+        {
+            if (!TryOrientJumpLinkUpward(link, out NavLink upwardLink))
+                return;
+
+            var key = (upwardLink.fromSeg, upwardLink.fromMin, upwardLink.toSeg, upwardLink.toMin);
+            if (emitted.Add(key))
+                links.Add(upwardLink);
         }
 
         private HashSet<int> GatherNearbySegments(
@@ -554,6 +563,82 @@ namespace PlatNav
                 linkGravity       = from.gravity,
                 gravityStrength   = gravityStrength
             };
+            return true;
+        }
+
+        private bool TryOrientJumpLinkUpward(NavLink link, out NavLink upwardLink)
+        {
+            const float heightEpsilon = 0.001f;
+
+            if (link.moveType != LinkMoveType.Jump || link.launchPos.y <= link.landPos.y + heightEpsilon)
+            {
+                upwardLink = link;
+                return true;
+            }
+
+            Vector2 start = link.landPos;
+            Vector2 target = link.launchPos;
+            Vector2 acc = Vector2.down * link.gravityStrength;
+
+            float bestCost = float.MaxValue;
+            float bestFlightTime = 0f;
+            Vector2 bestLaunchVel = Vector2.zero;
+            bool any = false;
+
+            var (tMin, tLow, tMax) = JumpTimes(start, target, acc);
+            if (tMin < 0f)
+            {
+                upwardLink = default;
+                return false;
+            }
+
+            var times = SampleJumpTimes(tMin, tLow, tMax);
+            AddJumpTimeSample(times, link.flightTime);
+
+            for (int i = 0; i < times.Count; i++)
+            {
+                float time = times[i];
+                Vector2 v0 = (target - start) / time - 0.5f * acc * time;
+
+                if (v0.sqrMagnitude > maxJumpVelocity * maxJumpVelocity)
+                    continue;
+
+                if (!ValidateArc(start, v0, acc, time, link.linkGravity, out var arcPts))
+                {
+                    if (showRejectedTrajectories && arcPts != null)
+                        rejectedArcs.Add(arcPts);
+                    continue;
+                }
+
+                float cost = time * jumpCostMultiplier;
+                if (cost < bestCost)
+                {
+                    bestCost = cost;
+                    bestFlightTime = time;
+                    bestLaunchVel = v0;
+                }
+
+                any = true;
+            }
+
+            if (!any)
+            {
+                upwardLink = default;
+                return false;
+            }
+
+            upwardLink = link;
+            upwardLink.fromSeg = link.toSeg;
+            upwardLink.toSeg = link.fromSeg;
+            upwardLink.fromMin = link.toMin;
+            upwardLink.fromMax = link.toMax;
+            upwardLink.toMin = link.fromMin;
+            upwardLink.toMax = link.fromMax;
+            upwardLink.launchPos = start;
+            upwardLink.launchVelocity = bestLaunchVel;
+            upwardLink.landPos = target;
+            upwardLink.flightTime = bestFlightTime;
+            upwardLink.costFp = FpCost(bestCost);
             return true;
         }
 
