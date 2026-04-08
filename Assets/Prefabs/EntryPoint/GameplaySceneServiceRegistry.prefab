@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplaySceneServiceRegistry
   stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
+  noiseStats: {fileID: 11400000, guid: eccbd4ddfcc6644489d9aeffef87daa2, type: 2}
   noisePrefab: {fileID: 8122682527447328044, guid: 4de5b4bd8f4fb4843b428fd13b5df425, type: 3}
   lightPrefab: {fileID: 4237522486028986871, guid: 7fab7f9c53cfa37459a8d7c7b8f24aad, type: 3}
   cameraPrefab: {fileID: 5033691198550900098, guid: f5675b51bb12d9f4896fa0e1f43e983d, type: 3}

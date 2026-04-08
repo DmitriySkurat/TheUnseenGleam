@@ -13,8 +13,8 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.currentSpeedMultiplier = ctx.stats.RunSpeedMultiplier;
-            ctx.currentNoiseRadius = ctx.stats.RunNoiseRadius;
-            ctx.currentFootstepInterval = ctx.stats.RunFootstepInterval;
+            ctx.currentNoiseRadius = ctx.noiseStats.RunNoiseRadius;
+            ctx.currentFootstepInterval = ctx.noiseStats.RunFootstepInterval;
             ctx.currentStaminaDrainMultiplier = ctx.stats.RunStaminaDrainMultiplier;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
             

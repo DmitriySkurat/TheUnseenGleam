@@ -16,8 +16,8 @@ namespace HSM {
         protected override void OnEnter() {
             ctx.currentSpeedMultiplier = ctx.stats.CrouchSpeedMultiplier;
             ctx.isCrouching = true;
-            ctx.currentNoiseRadius = ctx.stats.CrouchNoiseRadius;
-            ctx.currentFootstepInterval = ctx.stats.CrouchFootstepInterval;
+            ctx.currentNoiseRadius = ctx.noiseStats.CrouchNoiseRadius;
+            ctx.currentFootstepInterval = ctx.noiseStats.CrouchFootstepInterval;
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = ctx.stats.CrouchStaminaBreathDrainMultiplier;
             

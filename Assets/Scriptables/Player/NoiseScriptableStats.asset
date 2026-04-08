@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5852d28cadb7849b352aaa25bd8a93, type: 3}
+  m_Name: NoiseScriptableStats
+  m_EditorClassIdentifier: Assembly-CSharp::NoiseScriptableStats
+  NoiseMoveThreshold: 0.1
+  WalkFootstepInterval: 0.5
+  RunFootstepInterval: 0.35
+  CrouchFootstepInterval: 0.7
+  WalkNoiseRadius: 2
+  RunNoiseRadius: 4
+  CrouchNoiseRadius: 1
+  CrouchNoiseMultiplier: 0.3
+  JumpStartNoiseRadius: 1.5
+  LandingNoiseMinFallHeight: 0.75
+  LandingNoiseMaxFallHeight: 6
+  LandingNoiseMinRadius: 1.5
+  LandingNoiseMaxRadius: 6
+  LandingRollNoiseMultiplier: 0.45
+  BreathingNoiseInterval: 0.75
+  BreathingNoiseRadius: 1.2
+  PebbleImpactNoiseRadius: 4

@@ -90,20 +90,6 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float HideStaminaBreathDrainMultiplier = 0.5f;
 
-    [Header("BREATHE (NOISE)")]
-    [Tooltip("Interval between passive breathing noise pulses")]
-    [Min(0.05f)]
-    public float BreathingNoiseInterval = 0.75f;
-
-    [Tooltip("Noise radius emitted by normal breathing")]
-    [Min(0f)]
-    public float BreathingNoiseRadius = 1.2f;
-    
-    [Header("PEBBLE (NOISE)")]
-    [Tooltip("Noise radius emitted when a pebble hits a surface")]
-    [Min(0f)]
-    public float PebbleImpactNoiseRadius = 4f;
-
     [Header("JUMP")]
     [Tooltip("The immediate velocity applied when jumping")]
     public float JumpPower = 36;
@@ -141,65 +127,12 @@ public class PlayerScriptableStats : ScriptableObject
     [Range(0f, 1f)]
     public float CeilingCheckDistance = 0.05f;
 
-    [Tooltip("Noise multiplier while crouching (for stealth systems)")]
-    [Range(0f, 1f)]
-    public float CrouchNoiseMultiplier = 0.3f;
-
     [Header("HIDE")]
     [Tooltip("Multiplier applied to MaxSpeed while hiding")]
     [Range(0.1f, 1f)]
     public float HideSpeedMultiplier = 0.4f;
 
-    [Header("NOISE")]
-    [Tooltip("Minimum horizontal input required to emit footsteps")]
-    [Range(0.01f, 1f)]
-    public float NoiseMoveThreshold = 0.1f;
-
-    [Tooltip("Footstep interval while walking")]
-    [Min(0.05f)]
-    public float WalkFootstepInterval = 0.5f;
-
-    [Tooltip("Footstep interval while running")]
-    [Min(0.05f)]
-    public float RunFootstepInterval = 0.35f;
-
-    [Tooltip("Footstep interval while crouching")]
-    [Min(0.05f)]
-    public float CrouchFootstepInterval = 0.7f;
-
-    [Tooltip("Noise radius for walking footsteps")]
-    [Min(0f)]
-    public float WalkNoiseRadius = 2f;
-
-    [Tooltip("Noise radius for running footsteps")]
-    [Min(0f)]
-    public float RunNoiseRadius = 4f;
-
-    [Tooltip("Noise radius for crouch footsteps")]
-    [Min(0f)]
-    public float CrouchNoiseRadius = 1f;
-
-    [Tooltip("Noise radius for jumping")]
-    [Min(0f)]
-    public float JumpStartNoiseRadius = 1.5f;
-
     [Header("LANDING")]
-    [Tooltip("Minimum fall height required before landing noise is emitted")]
-    [Min(0f)]
-    public float LandingNoiseMinFallHeight = 0.75f;
-
-    [Tooltip("Fall height that maps to the maximum landing noise radius")]
-    [Min(0.01f)]
-    public float LandingNoiseMaxFallHeight = 6f;
-
-    [Tooltip("Landing noise radius at the minimum configured fall height")]
-    [Min(0f)]
-    public float LandingNoiseMinRadius = 1.5f;
-
-    [Tooltip("Landing noise radius at the maximum configured fall height")]
-    [Min(0f)]
-    public float LandingNoiseMaxRadius = 6f;
-
     [Tooltip("How long before touching the ground a crouch input can still trigger a landing roll")]
     [Range(0f, 0.5f)]
     public float LandingRollBuffer = 0.2f;
@@ -219,10 +152,6 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Horizontal deceleration applied while the landing roll is active")]
     [Min(0f)]
     public float LandingRollDeceleration = 45f;
-
-    [Tooltip("Multiplier applied to landing noise radius when the player rolls on landing")]
-    [Range(0f, 1f)]
-    public float LandingRollNoiseMultiplier = 0.45f;
 
     [Header("FALL DAMAGE")]
     [Tooltip("Minimum fall height before taking damage")]

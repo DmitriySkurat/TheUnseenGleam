@@ -9,6 +9,7 @@ public class PlayerContext
     // ===== INPUT & STATS =====
     public FrameInput input;
     public PlayerScriptableStats stats;
+    public NoiseScriptableStats noiseStats;
     
     // ===== COMPONENTS =====
     public Animator anim;

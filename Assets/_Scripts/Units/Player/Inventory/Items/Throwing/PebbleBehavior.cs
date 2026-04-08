@@ -18,7 +18,7 @@ public class PebbleBehavior : MonoBehaviour
     {
         _noiseSystem = Services.Get<NoiseSystem>();
         _ctx = Services.Get<PlayerContext>();
-        impactNoiseRadius = _ctx.stats.PebbleImpactNoiseRadius;
+        impactNoiseRadius = _ctx.noiseStats.PebbleImpactNoiseRadius;
         
         SetDestroyTime();
         

@@ -99,12 +99,12 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
 
     void EmitLandingNoise(float fallHeight, bool didRoll)
     {
-        if (_noiseSystem == null || _ctx.stats == null || _ctx.transform == null) return;
+        if (_noiseSystem == null || _ctx.noiseStats == null || _ctx.transform == null) return;
 
         float radius = EvaluateLandingNoiseRadius(fallHeight);
         if (didRoll)
         {
-            radius *= _ctx.stats.LandingRollNoiseMultiplier;
+            radius *= _ctx.noiseStats.LandingRollNoiseMultiplier;
         }
 
         _noiseSystem.EmitNoise(_ctx.transform.position, radius, _ctx.transform.gameObject, NoiseType.Landing);
@@ -112,12 +112,12 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
 
     float EvaluateLandingNoiseRadius(float fallHeight)
     {
-        if (_ctx.stats == null) return 0f;
-        if (fallHeight < _ctx.stats.LandingNoiseMinFallHeight) return 0f;
+        if (_ctx.noiseStats == null) return 0f;
+        if (fallHeight < _ctx.noiseStats.LandingNoiseMinFallHeight) return 0f;
 
-        float maxHeight = Mathf.Max(_ctx.stats.LandingNoiseMinFallHeight + 0.01f, _ctx.stats.LandingNoiseMaxFallHeight);
-        float t = Mathf.InverseLerp(_ctx.stats.LandingNoiseMinFallHeight, maxHeight, fallHeight);
-        return Mathf.Lerp(_ctx.stats.LandingNoiseMinRadius, _ctx.stats.LandingNoiseMaxRadius, t);
+        float maxHeight = Mathf.Max(_ctx.noiseStats.LandingNoiseMinFallHeight + 0.01f, _ctx.noiseStats.LandingNoiseMaxFallHeight);
+        float t = Mathf.InverseLerp(_ctx.noiseStats.LandingNoiseMinFallHeight, maxHeight, fallHeight);
+        return Mathf.Lerp(_ctx.noiseStats.LandingNoiseMinRadius, _ctx.noiseStats.LandingNoiseMaxRadius, t);
     }
     
     private void OnTriggerEnter2D(Collider2D other)

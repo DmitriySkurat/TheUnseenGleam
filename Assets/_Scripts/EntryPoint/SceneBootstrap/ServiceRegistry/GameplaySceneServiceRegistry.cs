@@ -10,6 +10,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
 {
     
     [SerializeField] private PlayerScriptableStats stats;
+    [SerializeField] private NoiseScriptableStats noiseStats;
     
     [SerializeField] private NoiseSystem noisePrefab;
     [SerializeField] private LightSystem lightPrefab;
@@ -23,6 +24,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
     
         var playerContext = new PlayerContext();
         playerContext.stats = stats;
+        playerContext.noiseStats = noiseStats;
         Services.Register(playerContext);
         
         

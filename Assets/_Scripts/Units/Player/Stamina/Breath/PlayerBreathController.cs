@@ -69,21 +69,22 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
     {
         if (_noiseSystem == null
             || _ctx.isHoldingBreath
-            || _ctx.stats.BreathingNoiseRadius <= 0f
-            || _ctx.stats.BreathingNoiseInterval <= 0f)
+            || _ctx.noiseStats == null
+            || _ctx.noiseStats.BreathingNoiseRadius <= 0f
+            || _ctx.noiseStats.BreathingNoiseInterval <= 0f)
         {
             _breathingNoiseTimer = 0f;
             return;
         }
 
         _breathingNoiseTimer += deltaTime;
-        if (_breathingNoiseTimer < _ctx.stats.BreathingNoiseInterval)
+        if (_breathingNoiseTimer < _ctx.noiseStats.BreathingNoiseInterval)
             return;
 
         _breathingNoiseTimer = 0f;
         _noiseSystem.EmitNoise(
             _ctx.transform.position,
-            _ctx.stats.BreathingNoiseRadius,
+            _ctx.noiseStats.BreathingNoiseRadius,
             _ctx.transform.gameObject,
             NoiseType.Breathing
         );
