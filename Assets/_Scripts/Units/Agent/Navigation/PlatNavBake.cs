@@ -33,6 +33,7 @@ namespace PlatNav
         [SerializeField] private int   numTrajectoriesToTest   = 5;
         [SerializeField] private float trajectoryStep          = 0.02f;
         [SerializeField] private float maxFallTime             = 5f;
+        [SerializeField] private int   allowJumpDownTiles      = 1;
 
         [Header("Bake – Cost")]
         [SerializeField] private float jumpCostMultiplier = 20f;
@@ -569,8 +570,9 @@ namespace PlatNav
         private bool TryOrientJumpLinkUpward(NavLink link, out NavLink upwardLink)
         {
             const float heightEpsilon = 0.001f;
+            float allowDownHeight = allowJumpDownTiles * wallTM.cellSize.y;
 
-            if (link.moveType != LinkMoveType.Jump || link.launchPos.y <= link.landPos.y + heightEpsilon)
+            if (link.moveType != LinkMoveType.Jump || link.launchPos.y <= link.landPos.y + allowDownHeight + heightEpsilon)
             {
                 upwardLink = link;
                 return true;

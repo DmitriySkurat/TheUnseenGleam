@@ -19,7 +19,8 @@ namespace HSM {
             Search          = new AgentSearch(m, this, ctx);
         }
 
-        protected override State GetInitialState() => Patrol;
+        // Debug mode: always start from direct chase.
+        protected override State GetInitialState() => Chase;
 
         protected override State GetTransition() => null;
     }

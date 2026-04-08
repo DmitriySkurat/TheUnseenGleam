@@ -57,13 +57,13 @@ MonoBehaviour:
     min: -77
     max: -70
     firstOut: 20
-    outCount: 2
+    outCount: 3
   - gravity: 1
     axis: 0
     line: -14
     min: -65
     max: -60
-    firstOut: 22
+    firstOut: 23
     outCount: 3
   links:
   - fromSeg: 0
@@ -142,6 +142,21 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 1
+    toSeg: 3
+    fromMin: -108
+    fromMax: -108
+    toMin: -111
+    toMax: -111
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 336
+    launchPos: {x: -103.39, y: 8.130005}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: -105.39, y: 4.130005}
+    flightTime: 0.83999974
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 1
     toSeg: 0
     fromMin: -108
     fromMax: -108
@@ -171,21 +186,6 @@ MonoBehaviour:
     flightTime: 0.83999974
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 1
-    toSeg: 3
-    fromMin: -108
-    fromMax: -108
-    toMin: -111
-    toMax: -111
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 336
-    launchPos: {x: -103.39, y: 8.130005}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: -105.39, y: 4.130005}
-    flightTime: 0.83999974
-    linkGravity: 1
-    gravityStrength: 10
   - fromSeg: 2
     toSeg: 3
     fromMin: -88
@@ -199,6 +199,21 @@ MonoBehaviour:
     launchVelocity: {x: -2, y: -0}
     landPos: {x: -85.39, y: 4.130005}
     flightTime: 0.83999974
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 2
+    toSeg: 6
+    fromMin: -69
+    fromMax: -69
+    toMin: -65
+    toMax: -65
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2127
+    launchPos: {x: -63.39, y: 8.130005}
+    launchVelocity: {x: 3.760603, y: 9.078899}
+    landPos: {x: -59.39, y: 12.130005}
+    flightTime: 1.0636592
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 2
@@ -261,33 +276,18 @@ MonoBehaviour:
     flightTime: 1.0636592
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 2
-    toSeg: 6
-    fromMin: -69
-    fromMax: -69
-    toMin: -65
-    toMax: -65
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2127
-    launchPos: {x: -63.39, y: 8.130005}
-    launchVelocity: {x: 3.760603, y: 9.078899}
-    landPos: {x: -59.39, y: 12.130005}
-    flightTime: 1.0636592
-    linkGravity: 1
-    gravityStrength: 10
   - fromSeg: 3
-    toSeg: 0
-    fromMin: -109
-    fromMax: -109
-    toMin: -113
-    toMax: -113
+    toSeg: 2
+    fromMin: -92
+    fromMax: -92
+    toMin: -88
+    toMax: -88
     moveType: 0
     requiredAbilities: 1
     costFp: 2127
-    launchPos: {x: -103.39, y: 4.130005}
-    launchVelocity: {x: -3.760603, y: 9.078899}
-    landPos: {x: -107.39, y: 8.130005}
+    launchPos: {x: -86.39, y: 4.130005}
+    launchVelocity: {x: 3.760603, y: 9.078899}
+    landPos: {x: -82.39, y: 8.130005}
     flightTime: 1.0636592
     linkGravity: 1
     gravityStrength: 10
@@ -307,17 +307,17 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 3
-    toSeg: 2
-    fromMin: -92
-    fromMax: -92
-    toMin: -88
-    toMax: -88
+    toSeg: 0
+    fromMin: -109
+    fromMax: -109
+    toMin: -113
+    toMax: -113
     moveType: 0
     requiredAbilities: 1
     costFp: 2127
-    launchPos: {x: -86.39, y: 4.130005}
-    launchVelocity: {x: 3.760603, y: 9.078899}
-    landPos: {x: -82.39, y: 8.130005}
+    launchPos: {x: -103.39, y: 4.130005}
+    launchVelocity: {x: -3.760603, y: 9.078899}
+    landPos: {x: -107.39, y: 8.130005}
     flightTime: 1.0636592
     linkGravity: 1
     gravityStrength: 10
@@ -394,6 +394,21 @@ MonoBehaviour:
     launchVelocity: {x: -2, y: -0}
     landPos: {x: -74.39, y: 8.130005}
     flightTime: 0.93999964
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 5
+    toSeg: 6
+    fromMin: -70
+    fromMax: -70
+    toMin: -65
+    toMax: -65
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1849
+    launchPos: {x: -64.39, y: 13.130005}
+    launchVelocity: {x: 5.4096217, y: 3.5394707}
+    landPos: {x: -59.39, y: 12.130005}
+    flightTime: 0.92427903
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 6

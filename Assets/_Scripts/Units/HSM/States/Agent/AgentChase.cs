@@ -22,8 +22,17 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
-            // Keep suspicionPosition and player velocity up-to-date so PredictionChase knows where to go
-            if (ctx.vision != null && ctx.vision.CanSeePlayer)
+            // Debug behavior: always use exact player position (no LOS dependency).
+            if (ctx.playerTransform != null)
+            {
+                ctx.suspicionPosition = ctx.playerTransform.position;
+                ctx.chaseVisionLostTimer = 0f;
+                ctx.nav.SetTarget(ctx.playerTransform);
+                if (ctx.playerRb != null)
+                    ctx.predictionPlayerVelocity = ctx.playerRb.linearVelocity;
+            }
+            // Fallback to old behavior if player transform is unavailable.
+            else if (ctx.vision != null && ctx.vision.CanSeePlayer)
             {
                 ctx.suspicionPosition         = ctx.vision.LastSeenPosition;
                 ctx.chaseVisionLostTimer      = 0f;
@@ -49,11 +58,7 @@ namespace HSM {
 
         protected override State GetTransition()
         {
-            if (ctx.IsTraversingLink) return null;
-
-            if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
-                return Machine != null ? Machine.GetState<AgentPredictionChase>() : null;
-
+            // Debug mode: stay in AgentChase permanently.
             return null;
         }
     }

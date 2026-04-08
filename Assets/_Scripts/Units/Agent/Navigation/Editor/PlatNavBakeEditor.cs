@@ -10,7 +10,7 @@ namespace PlatNav
         SerializedProperty wallTM, spikesTM, graph, entitySize;
         SerializedProperty minPos, maxPos;
         SerializedProperty maxJumpVelocity, gravityStrength, walkSpeed;
-        SerializedProperty jumpSearchRadius, numTrajectoriesToTest, trajectoryStep, maxFallTime;
+        SerializedProperty jumpSearchRadius, numTrajectoriesToTest, trajectoryStep, maxFallTime, allowJumpDownTiles;
         SerializedProperty jumpCostMultiplier, fallCostMultiplier;
         SerializedProperty showBakeBounds;
         SerializedProperty showSegments, showJumpLinks, showFallLinks;
@@ -64,6 +64,7 @@ namespace PlatNav
             numTrajectoriesToTest = serializedObject.FindProperty("numTrajectoriesToTest");
             trajectoryStep       = serializedObject.FindProperty("trajectoryStep");
             maxFallTime          = serializedObject.FindProperty("maxFallTime");
+            allowJumpDownTiles   = serializedObject.FindProperty("allowJumpDownTiles");
             jumpCostMultiplier   = serializedObject.FindProperty("jumpCostMultiplier");
             fallCostMultiplier   = serializedObject.FindProperty("fallCostMultiplier");
 
@@ -119,6 +120,7 @@ namespace PlatNav
                 EditorGUILayout.PropertyField(numTrajectoriesToTest);
                 EditorGUILayout.PropertyField(trajectoryStep);
                 EditorGUILayout.PropertyField(maxFallTime);
+                EditorGUILayout.PropertyField(allowJumpDownTiles, new GUIContent("Allow Jump Down (tiles)"));
 
                 EditorGUILayout.Space(4);
                 EditorGUILayout.LabelField("Cost", HeaderStyle);
