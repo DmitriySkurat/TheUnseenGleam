@@ -1028,6 +1028,14 @@ namespace PlatNav
             // Arrowhead at landing
             Vector3 dir = ((Vector3)lk.landPos - prev).normalized;
             DrawArrowHead(lk.landPos, dir, col, 0.25f);
+
+            // Launch marker – circle
+            Gizmos.color = col;
+            Gizmos.DrawWireSphere(lk.launchPos, 0.15f);
+
+            // Land marker – square
+            Gizmos.color = col;
+            Gizmos.DrawWireCube(lk.landPos, Vector3.one * 0.35f);
         }
 
         private static void DrawArcGizmo(Vector3 from, Vector3 to, Color col)
