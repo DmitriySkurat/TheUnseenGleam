@@ -171,10 +171,18 @@ namespace PlatNav
         void DrawToggleRow(string label, SerializedProperty toggle, SerializedProperty color)
         {
             EditorGUILayout.BeginHorizontal();
-            toggle.boolValue = EditorGUILayout.ToggleLeft(label, toggle.boolValue, GUILayout.MinWidth(160));
+            EditorGUI.BeginChangeCheck();
+            bool newToggleValue = EditorGUILayout.ToggleLeft(label, toggle.boolValue, GUILayout.MinWidth(160));
             color.colorValue = EditorGUILayout.ColorField(GUIContent.none, color.colorValue,
                                    false, true, false, GUILayout.Width(50));
             EditorGUILayout.EndHorizontal();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                toggle.boolValue = newToggleValue;
+                serializedObject.ApplyModifiedProperties();
+                SceneView.RepaintAll();
+            }
         }
 
         void DrawBakeSection(PlatNavBake baker)

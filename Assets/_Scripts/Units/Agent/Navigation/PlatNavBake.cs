@@ -907,6 +907,8 @@ namespace PlatNav
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
+            if (!ShouldDrawGraphGizmos())
+                return;
             // ── Bake bounds ──
             if (showBakeBounds)
                 DrawBakeBounds();
@@ -1092,6 +1094,34 @@ namespace PlatNav
                     UnityEditor.Handles.DrawDottedLine(arc[i], arc[j], 3f);
                 }
             }
+        }
+
+        private bool ShouldDrawGraphGizmos()
+        {
+            if (graph == null)
+                return true;
+
+            var selectedBake = Selection.activeGameObject != null
+                ? Selection.activeGameObject.GetComponent<PlatNavBake>()
+                : null;
+
+            if (selectedBake != null && selectedBake.graph == graph)
+                return selectedBake == this;
+
+            var allBakers = FindObjectsOfType<PlatNavBake>();
+            PlatNavBake primaryDrawer = this;
+
+            for (int i = 0; i < allBakers.Length; i++)
+            {
+                var baker = allBakers[i];
+                if (baker == null || baker.graph != graph)
+                    continue;
+
+                if (baker.GetInstanceID() < primaryDrawer.GetInstanceID())
+                    primaryDrawer = baker;
+            }
+
+            return primaryDrawer == this;
         }
 #endif
     }
