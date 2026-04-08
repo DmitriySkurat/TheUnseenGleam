@@ -28,12 +28,13 @@ namespace PlatNav
 
     internal struct PathNode
     {
-        public int   segIndex;     // current segment
-        public int   parentSeg;    // segment we came from (-1 for start)
-        public int   linkUsed;     // index of the NavLink used to reach this node (-1 for start)
-        public float gCost;        // cost from start
-        public float hCost;        // heuristic to goal
-        public float fCost => gCost + hCost;
+        public int     segIndex;     // current segment
+        public int     parentSeg;    // segment we came from (-1 for start)
+        public int     linkUsed;     // index of the NavLink used to reach this node (-1 for start)
+        public float   gCost;        // cost from start
+        public float   hCost;        // heuristic to goal
+        public float   fCost => gCost + hCost;
+        public Vector2 entryPos;     // world position where agent enters this segment
     }
 
     public struct PathStep
@@ -580,7 +581,8 @@ namespace PlatNav
                 parentSeg = -1,
                 linkUsed  = -1,
                 gCost     = 0f,
-                hCost     = SegmentHeuristic(startSeg, goalSeg)
+                hCost     = SegmentHeuristic(startSeg, goalSeg),
+                entryPos  = transform.position
             };
             open.Add(startNode);
             nodeMap[startSeg] = startNode;
@@ -608,7 +610,8 @@ namespace PlatNav
                     int next = lk.toSeg;
                     if (closed.Contains(next)) continue;
 
-                    float g = cur.gCost + lk.Cost;
+                    float walkCost = Vector2.Distance(cur.entryPos, lk.launchPos) / walkSpeed;
+                    float g = cur.gCost + walkCost + lk.Cost;
                     if (nodeMap.TryGetValue(next, out var existing) && existing.gCost <= g)
                         continue;
 
@@ -618,7 +621,8 @@ namespace PlatNav
                         parentSeg = cur.segIndex,
                         linkUsed  = li,
                         gCost     = g,
-                        hCost     = SegmentHeuristic(next, goalSeg)
+                        hCost     = SegmentHeuristic(next, goalSeg),
+                        entryPos  = lk.landPos
                     };
                     nodeMap[next] = nn;
 
