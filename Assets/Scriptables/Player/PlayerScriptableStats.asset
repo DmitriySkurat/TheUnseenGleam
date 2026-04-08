@@ -41,8 +41,6 @@ MonoBehaviour:
   IdleStaminaBreathDrainMultiplier: 1
   CrouchStaminaBreathDrainMultiplier: 0.8
   HideStaminaBreathDrainMultiplier: 0.5
-  BreathingNoiseInterval: 0.75
-  BreathingNoiseRadius: 4.06
   JumpPower: 36
   MaxFallSpeed: 40
   FallAcceleration: 110
@@ -53,26 +51,12 @@ MonoBehaviour:
   CrouchSpeedMultiplier: 0.5
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
-  CrouchNoiseMultiplier: 0.3
   HideSpeedMultiplier: 0.4
-  NoiseMoveThreshold: 0.1
-  WalkFootstepInterval: 0.15
-  RunFootstepInterval: 0.15
-  CrouchFootstepInterval: 0.15
-  WalkNoiseRadius: 6
-  RunNoiseRadius: 12
-  CrouchNoiseRadius: 3
-  JumpStartNoiseRadius: 1.5
-  LandingNoiseMinFallHeight: 0.3
-  LandingNoiseMaxFallHeight: 6
-  LandingNoiseMinRadius: 1.5
-  LandingNoiseMaxRadius: 15
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 3.3
   LandingRollMinHorizontalSpeed: 2
   LandingRollDuration: 0.35
   LandingRollDeceleration: 45
-  LandingRollNoiseMultiplier: 0.45
   FallDamageMinHeight: 10
   FallDamagePerUnit: 5
   FallDamageLethalHeight: 40

@@ -26,7 +26,7 @@ MonoBehaviour:
   ChaseMemoryTime: 2
   PredictionSearchTime: 6
   SearchSpeed: 4
-  SearchWaitTime: 3
+  SearchWaitTime: 1.5
   SearchWanderDuration: 8
   SearchWanderDistance: 3
   InteractableLayer:

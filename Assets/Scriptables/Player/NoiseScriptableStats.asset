@@ -16,16 +16,15 @@ MonoBehaviour:
   WalkFootstepInterval: 0.5
   RunFootstepInterval: 0.35
   CrouchFootstepInterval: 0.7
-  WalkNoiseRadius: 2
-  RunNoiseRadius: 4
-  CrouchNoiseRadius: 1
-  CrouchNoiseMultiplier: 0.3
-  JumpStartNoiseRadius: 1.5
+  WalkNoiseRadius: 6
+  RunNoiseRadius: 9
+  CrouchNoiseRadius: 4
+  JumpStartNoiseRadius: 4
   LandingNoiseMinFallHeight: 0.75
-  LandingNoiseMaxFallHeight: 6
+  LandingNoiseMaxFallHeight: 10
   LandingNoiseMinRadius: 1.5
-  LandingNoiseMaxRadius: 6
-  LandingRollNoiseMultiplier: 0.45
+  LandingNoiseMaxRadius: 12
+  LandingRollNoiseMultiplier: 0.432
   BreathingNoiseInterval: 0.75
-  BreathingNoiseRadius: 1.2
-  PebbleImpactNoiseRadius: 4
+  BreathingNoiseRadius: 3.5
+  PebbleImpactNoiseRadius: 10
