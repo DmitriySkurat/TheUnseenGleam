@@ -7,17 +7,18 @@ public class PebbleBehavior : MonoBehaviour
     
     [SerializeField] private float destroyTime = 3f;
     [SerializeField] private LayerMask whatDestroysPebble;
-    [SerializeField, Min(0f)] private float impactNoiseRadius = 4f;
     [SerializeField] private NoiseType impactNoiseType = NoiseType.ObjectImpact;
-    
-    
-    private Rigidbody2D _rb;
+
+    private float impactNoiseRadius;
     private NoiseSystem _noiseSystem;
     
+    private PlayerContext _ctx;
+
     private void Start()
     {
-        _rb = GetComponent<Rigidbody2D>();
         _noiseSystem = Services.Get<NoiseSystem>();
+        _ctx = Services.Get<PlayerContext>();
+        impactNoiseRadius = _ctx.stats.PebbleImpactNoiseRadius;
         
         SetDestroyTime();
         
@@ -28,7 +29,7 @@ public class PebbleBehavior : MonoBehaviour
     {
        // rotate pebble
        
-       transform.up = _rb.linearVelocity;
+       transform.up = _ctx.rb.linearVelocity;
     }
 
 
@@ -50,8 +51,8 @@ public class PebbleBehavior : MonoBehaviour
     
     private void InitializeBulletStats()
     {
-        _rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
-        _rb.gravityScale = pebbleGravity;
+        _ctx.rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
+        _ctx.rb.gravityScale = pebbleGravity;
     }
 
     public void SetThrowStats(float speed, float gravity)
@@ -59,10 +60,10 @@ public class PebbleBehavior : MonoBehaviour
         pebbleSpeed = speed;
         pebbleGravity = gravity;
 
-        if (_rb == null) return;
+        if (_ctx.rb == null) return;
 
-        _rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
-        _rb.gravityScale = pebbleGravity;
+        _ctx.rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
+        _ctx.rb.gravityScale = pebbleGravity;
     }
     
     private void SetDestroyTime() 

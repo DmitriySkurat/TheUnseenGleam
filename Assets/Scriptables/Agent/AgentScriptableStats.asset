@@ -18,12 +18,13 @@ MonoBehaviour:
   PatrolSpeed: 3
   PatrolWaitTime: 2
   DefaultPatrolDistance: 4
-  SuspicionTimeOnSight: 1.5
-  SuspicionTimeOnNoise: 2.5
+  SuspicionTimeOnSight: 0.5
+  SuspicionTimeOnNoise: 1
   LoudNoiseThreshold: 1
   ChaseSpeed: 5
   ChaseVisionGraceTime: 1.5
   ChaseMemoryTime: 2
+  PredictionSearchTime: 6
   SearchSpeed: 4
   SearchWaitTime: 3
   SearchWanderDuration: 8

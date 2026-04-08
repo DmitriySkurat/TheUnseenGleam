@@ -98,6 +98,11 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Noise radius emitted by normal breathing")]
     [Min(0f)]
     public float BreathingNoiseRadius = 1.2f;
+    
+    [Header("PEBBLE (NOISE)")]
+    [Tooltip("Noise radius emitted when a pebble hits a surface")]
+    [Min(0f)]
+    public float PebbleImpactNoiseRadius = 4f;
 
     [Header("JUMP")]
     [Tooltip("The immediate velocity applied when jumping")]
