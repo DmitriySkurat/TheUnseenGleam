@@ -51,13 +51,6 @@ namespace HSM {
 
         void FixedUpdate()
         {
-            // Debug convenience: player may be unavailable during Initialize due to init order.
-            if (_ctx.playerTransform == null)
-            {
-                _ctx.playerTransform = Services.Get<PlayerContext>()?.transform;
-                _ctx.playerRb = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<Rigidbody2D>() : null;
-            }
-
             _machine.Tick(Time.fixedDeltaTime);
             PrintStatePath();
         }

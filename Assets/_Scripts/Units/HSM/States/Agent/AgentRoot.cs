@@ -20,7 +20,7 @@ namespace HSM {
         }
 
         // Debug mode: always start from direct chase.
-        protected override State GetInitialState() => Chase;
+        protected override State GetInitialState() => Patrol;
 
         protected override State GetTransition() => null;
     }
