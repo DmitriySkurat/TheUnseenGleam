@@ -74,7 +74,10 @@ namespace HSM {
                 return Machine?.GetState<AgentChase>();
 
             if (ctx.predictionTimer <= 0f)
+            {
+                ctx.suspicionPosition = ctx.transform.position;
                 return Machine?.GetState<AgentSearch>();
+            }
 
             // GoToPredicted: path not found OR arrived at predicted position → Search
             if (_phase == Phase.GoToPredicted && (!_navigating || ctx.nav.State == PlatNavState.Idle))

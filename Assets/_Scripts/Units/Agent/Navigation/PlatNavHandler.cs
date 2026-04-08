@@ -120,9 +120,15 @@ namespace PlatNav
         {
             _path.Clear();
             _pathIndex = 0;
+            _lastTargetSeg = -1;
             _hasManualDestination = false;
+
             if (_state == PlatNavState.TraversingLink)
-                EndTraversal();
+                return;
+
+            if (_rb != null)
+                _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
+
             _state = PlatNavState.Idle;
         }
 
