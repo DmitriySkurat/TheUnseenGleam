@@ -5,6 +5,9 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Enemy;
 
+    [Header("Hearing")]
+    [SerializeField, Min(0f)] private float maxHearingRange = 15f;
+
     [Header("Occlusion")]
     [SerializeField] private LayerMask occlusionMask;
     [SerializeField, Range(0f, 1f)] private float occlusionMultiplier = 0.4f;
@@ -14,6 +17,7 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
+    [SerializeField] private Color hearingRangeColor = new Color(0.2f, 0.8f, 1f, 0.15f);
     [SerializeField] private Color lastHeardColor = new Color(1f, 0.4f, 0.1f, 0.9f);
     [SerializeField, Min(0f)] private float lastHeardMarkerRadius = 1.5f;
     [SerializeField] private bool drawOcclusionSamples = true;
@@ -44,6 +48,11 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
     {
         Vector2 listenerPos = transform.position;
         Vector2 noisePos = noiseEvent.Position;
+
+        float distance = Vector2.Distance(listenerPos, noisePos);
+        if (distance > maxHearingRange)
+            return;
+
         float effectiveRadius = noiseEvent.Radius;
 
         if (occlusionMask.value != 0)
@@ -57,7 +66,6 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
                 effectiveRadius *= occlusionMultiplier;
         }
 
-        float distance = Vector2.Distance(listenerPos, noisePos);
         if (distance > effectiveRadius)
             return;
 
@@ -106,6 +114,9 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
     {
         if (!drawGizmos || !isActiveAndEnabled) return;
 
+        Gizmos.color = hearingRangeColor;
+        DrawCircle(transform.position, maxHearingRange);
+
         if (_lastHeardPosition.HasValue)
         {
             Gizmos.color = lastHeardColor;
@@ -153,6 +164,19 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
         Gizmos.color = blocked ? sampleBlockedColor : sampleClearColor;
         Gizmos.DrawLine(from, to);
         Gizmos.DrawSphere(to, sampleMarkerRadius);
+    }
+
+    private static void DrawCircle(Vector2 center, float radius, int segments = 64)
+    {
+        float step = 2f * Mathf.PI / segments;
+        Vector2 prev = center + new Vector2(radius, 0f);
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = i * step;
+            Vector2 next = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+            Gizmos.DrawLine(prev, next);
+            prev = next;
+        }
     }
 #endif
 }
