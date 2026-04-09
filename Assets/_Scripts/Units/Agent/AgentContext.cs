@@ -33,8 +33,6 @@ public class AgentContext
     // ===== SUSPICION =====
     public SuspicionSource suspicionSource;
     public float suspicionTimer;
-    // Loudness of the loudest noise heard so far during this suspicion window
-    public float suspicionNoiseLoudness;
     // How many noise events were heard during the current suspicion window
     public int noisesHeardDuringSuspicion;
     // World position that triggered suspicion (last seen / heard)
@@ -60,7 +58,7 @@ public class AgentContext
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;
-    public float pendingNoiseLoudness;
+    public float pendingNoiseRadius;
     public Vector2 pendingNoisePosition;
 
     // ===== DERIVED =====

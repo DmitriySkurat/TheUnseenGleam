@@ -61,10 +61,10 @@ namespace HSM {
                 _ctx.hearing.OnHeard -= OnHeard;
         }
 
-        void OnHeard(NoiseEvent noise, float loudness)
+        void OnHeard(NoiseEvent noise)
         {
             _ctx.pendingNoiseAlert = true;
-            _ctx.pendingNoiseLoudness = loudness;
+            _ctx.pendingNoiseRadius = noise.Radius;
             _ctx.pendingNoisePosition = noise.Position;
         }
 

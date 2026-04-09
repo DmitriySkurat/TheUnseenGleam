@@ -25,7 +25,7 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
     [SerializeField] private Color sampleBlockedColor = new Color(1f, 0.2f, 0.2f, 0.9f);
     [SerializeField, Min(0f)] private float sampleMarkerRadius = 0.08f;
 
-    public event Action<NoiseEvent, float> OnHeard;
+    public event Action<NoiseEvent> OnHeard;
 
     private NoiseSystem _noiseSystem;
     private Vector2? _lastHeardPosition;
@@ -69,10 +69,8 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
         if (distance > effectiveRadius)
             return;
 
-        float loudness = Mathf.Clamp01(1f - (distance / noiseEvent.Radius));
-
         _lastHeardPosition = noisePos;
-        OnHeard?.Invoke(noiseEvent, loudness);
+        OnHeard?.Invoke(noiseEvent);
     }
 
     private bool IsOccluded(Vector2 listenerPos, Vector2 noisePos, float sampleRadius)

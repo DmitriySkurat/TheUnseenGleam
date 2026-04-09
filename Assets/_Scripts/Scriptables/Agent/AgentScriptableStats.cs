@@ -29,9 +29,9 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float SuspicionTimeOnNoise = 2.5f;
 
-    [Tooltip("Loudness value (0–1) above which a heard noise is considered 'loud' and triggers Search instead of returning to Patrol")]
-    [Range(0f, 1f)]
-    public float LoudNoiseThreshold = 0.5f;
+    [Tooltip("Noise radius at or above which a heard noise triggers Search instead of returning to Patrol")]
+    [Min(0f)]
+    public float SearchNoiseRadius = 3f;
 
     [Header("CHASE")]
     [Tooltip("Movement speed while chasing the player")]

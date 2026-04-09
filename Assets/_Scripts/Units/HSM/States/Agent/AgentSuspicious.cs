@@ -16,10 +16,9 @@ namespace HSM {
             // Determine what triggered suspicion and configure the window
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
             {
-                ctx.suspicionSource           = SuspicionSource.Vision;
-                ctx.suspicionTimer            = ctx.stats.SuspicionTimeOnSight;
-                ctx.suspicionPosition         = ctx.vision.LastSeenPosition;
-                ctx.suspicionNoiseLoudness    = 0f;
+                ctx.suspicionSource            = SuspicionSource.Vision;
+                ctx.suspicionTimer             = ctx.stats.SuspicionTimeOnSight;
+                ctx.suspicionPosition          = ctx.vision.LastSeenPosition;
                 ctx.noisesHeardDuringSuspicion = 0;
             }
             else if (ctx.pendingNoiseAlert)
@@ -27,7 +26,6 @@ namespace HSM {
                 ctx.suspicionSource            = SuspicionSource.Noise;
                 ctx.suspicionTimer             = ctx.stats.SuspicionTimeOnNoise;
                 ctx.suspicionPosition          = ctx.pendingNoisePosition;
-                ctx.suspicionNoiseLoudness     = ctx.pendingNoiseLoudness;
                 ctx.noisesHeardDuringSuspicion = 1;
             }
 
@@ -43,8 +41,6 @@ namespace HSM {
             if (ctx.pendingNoiseAlert)
             {
                 ctx.noisesHeardDuringSuspicion++;
-                if (ctx.pendingNoiseLoudness > ctx.suspicionNoiseLoudness)
-                    ctx.suspicionNoiseLoudness = ctx.pendingNoiseLoudness;
                 ctx.pendingNoiseAlert = false;
             }
 
@@ -80,12 +76,8 @@ namespace HSM {
                     return Machine != null ? Machine.GetState<AgentPatrol>() : null;
 
                 case SuspicionSource.Noise:
-                    bool isLoud     = ctx.suspicionNoiseLoudness >= ctx.stats.LoudNoiseThreshold;
-                    bool isRepeated = ctx.noisesHeardDuringSuspicion > 1;
-                    // Loud or repeated noise → investigate
-                    if (isLoud || isRepeated)
+                    if (ctx.noisesHeardDuringSuspicion > 1)
                         return Machine != null ? Machine.GetState<AgentSearch>() : null;
-                    // Quiet single noise → forget it
                     return Machine != null ? Machine.GetState<AgentPatrol>() : null;
 
                 default:

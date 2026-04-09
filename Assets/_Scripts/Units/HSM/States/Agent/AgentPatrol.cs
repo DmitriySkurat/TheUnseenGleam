@@ -59,7 +59,11 @@ namespace HSM {
                 return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
 
             if (ctx.pendingNoiseAlert)
+            {
+                if (ctx.pendingNoiseRadius >= ctx.stats.SearchNoiseRadius)
+                    return Machine != null ? Machine.GetState<AgentSearch>() : null;
                 return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
+            }
 
             return null;
         }
