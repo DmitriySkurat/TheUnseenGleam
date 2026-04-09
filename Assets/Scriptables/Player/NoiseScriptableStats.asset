@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d5852d28cadb7849b352aaa25bd8a93, type: 3}
   m_Name: NoiseScriptableStats
   m_EditorClassIdentifier: Assembly-CSharp::NoiseScriptableStats
+  MinFootstepVisualizationRadius: 7
+  VisualizationEnemyDetectionRadius: 10
+  MaxSimultaneousWaves: 8
   NoiseMoveThreshold: 0.1
   WalkFootstepInterval: 0.5
   RunFootstepInterval: 0.35

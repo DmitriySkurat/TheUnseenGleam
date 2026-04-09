@@ -61,7 +61,11 @@ namespace HSM {
             if (ctx.pendingNoiseAlert)
             {
                 if (ctx.pendingNoiseRadius >= ctx.stats.SearchNoiseRadius)
+                {
+                    ctx.suspicionSource   = SuspicionSource.Noise;
+                    ctx.suspicionPosition = ctx.pendingNoisePosition;
                     return Machine != null ? Machine.GetState<AgentSearch>() : null;
+                }
                 return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
             }
 
