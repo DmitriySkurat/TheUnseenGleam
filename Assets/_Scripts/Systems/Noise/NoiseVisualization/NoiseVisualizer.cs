@@ -20,19 +20,11 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
     [Tooltip("Минимальный интервал между кольцами приземления (сек)")]
     [SerializeField, Min(0f)] private float landingCooldown = 0.5f;
 
-    [Header("Filters")]
-    [Tooltip("Минимальный радиус Footstep для показа кольца. Run = 4, Walk = 2, Crouch = 1")]
-    [SerializeField, Min(0f)] private float minFootstepRadius = 3.5f;
-    [Tooltip("Радиус вокруг игрока, в котором ищется враг. Если враг ближе этого расстояния — кольцо показывается")]
-    [SerializeField, Min(0f)] private float enemyDetectionRadius = 10f;
-
-    [Header("Limits")]
-    [SerializeField] private int maxSimultaneousWaves = 8;
-
     [Header("Debug")]
     [SerializeField] private Color gizmoColor = new Color(1f, 0.4f, 0.1f, 0.6f);
 
     private NoiseSystem _noiseSystem;
+    private NoiseScriptableStats _noiseStats;
     private AgentHearing[] _agents;
     private float _lastFootstepSpawnTime;
     private float _lastBreathingSpawnTime;
@@ -42,6 +34,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _noiseSystem = Services.Get<NoiseSystem>();
+        _noiseStats = Services.Get<PlayerContext>().noiseStats;
         _noiseSystem.NoiseEmitted += OnNoiseEmitted;
         _agents = FindObjectsByType<AgentHearing>(FindObjectsSortMode.None);
     }
@@ -65,7 +58,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
     private bool ShouldVisualize(NoiseEvent noise) => noise.Type switch
     {
         NoiseType.Breathing    => true,
-        NoiseType.Footstep     => noise.Radius >= minFootstepRadius,
+        NoiseType.Footstep     => noise.Radius >= _noiseStats.MinFootstepVisualizationRadius,
         NoiseType.Landing      => true,
         NoiseType.ObjectImpact => true,
         _                      => false
@@ -82,7 +75,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
         foreach (var agent in _agents)
         {
             if (agent == null) continue;
-            if (Vector2.Distance(agent.transform.position, noise.Position) <= enemyDetectionRadius)
+            if (Vector2.Distance(agent.transform.position, noise.Position) <= _noiseStats.VisualizationEnemyDetectionRadius)
                 return true;
         }
         return false;
@@ -117,7 +110,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
         while (_activeWaves.Count > 0 && _activeWaves.Peek() == null)
             _activeWaves.Dequeue();
 
-        if (_activeWaves.Count >= maxSimultaneousWaves)
+        if (_activeWaves.Count >= _noiseStats.MaxSimultaneousWaves)
         {
             var old = _activeWaves.Dequeue();
             if (old != null) Destroy(old.gameObject);
@@ -143,13 +136,15 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
+        if (_noiseStats == null) return;
+
         Vector3 center = playerTransform != null ? playerTransform.position : transform.position;
 
         UnityEditor.Handles.color = gizmoColor;
-        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, enemyDetectionRadius);
+        UnityEditor.Handles.DrawWireDisc(center, Vector3.forward, _noiseStats.VisualizationEnemyDetectionRadius);
 
         UnityEditor.Handles.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, 0.08f);
-        UnityEditor.Handles.DrawSolidDisc(center, Vector3.forward, enemyDetectionRadius);
+        UnityEditor.Handles.DrawSolidDisc(center, Vector3.forward, _noiseStats.VisualizationEnemyDetectionRadius);
     }
 #endif
 }

@@ -3,6 +3,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NoiseScriptableStats", menuName = "Stats/Noise Stats")]
 public class NoiseScriptableStats : ScriptableObject
 {
+    [Header("VISUALIZATION")]
+    [Tooltip("Minimum footstep noise radius required to show a wave ring (Run = 4, Walk = 2, Crouch = 1)")]
+    [Min(0f)]
+    public float MinFootstepVisualizationRadius = 3.5f;
+
+    [Tooltip("Radius around the player to search for enemies. Ring is shown only if an enemy is within this range")]
+    [Min(0f)]
+    public float VisualizationEnemyDetectionRadius = 10f;
+
+    [Tooltip("Maximum number of simultaneously active wave rings")]
+    [Min(1)]
+    public int MaxSimultaneousWaves = 8;
+
+
+
     [Header("FOOTSTEPS")]
     [Tooltip("Minimum horizontal input required to emit footstep noise")]
     [Range(0.01f, 1f)]
