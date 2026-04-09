@@ -47,6 +47,7 @@ public class AgentContext
     // ===== CHASE =====
     public Transform playerTransform;
     public Rigidbody2D playerRb;
+    public PlayerHealth playerHealth;
     // Time elapsed since the agent last had direct sight of the player during chase
     public float chaseVisionLostTimer;
 
@@ -55,6 +56,10 @@ public class AgentContext
     public Vector2 predictionPlayerVelocity;
     // Countdown for the total time budget of PredictionChase
     public float predictionTimer;
+
+    // ===== ATTACK =====
+    public float attackFirstHitTimer;
+    public float attackRepeatTimer;
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;

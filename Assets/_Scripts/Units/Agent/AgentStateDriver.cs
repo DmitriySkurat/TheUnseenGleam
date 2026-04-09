@@ -32,7 +32,8 @@ namespace HSM {
                 _ctx.interactor.Initialize(_ctx);
             _ctx.spawnPosition = transform.position;
             _ctx.playerTransform = Services.Get<PlayerContext>()?.transform;
-            _ctx.playerRb = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<Rigidbody2D>() : null;
+            _ctx.playerRb     = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<Rigidbody2D>() : null;
+            _ctx.playerHealth = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<PlayerHealth>() : null;
 
             if (_patrolPoints != null && _patrolPoints.Length > 0)
                 _ctx.patrolPointTransforms = _patrolPoints;
@@ -87,5 +88,14 @@ namespace HSM {
         }
 
         #endregion
+
+#if UNITY_EDITOR
+        void OnDrawGizmosSelected()
+        {
+            if (_stats == null) return;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _stats.AttackRange);
+        }
+#endif
     }
 }

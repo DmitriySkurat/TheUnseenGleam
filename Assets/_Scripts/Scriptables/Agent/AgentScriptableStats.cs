@@ -68,6 +68,23 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0.5f)]
     public float SearchWanderDistance = 3f;
 
+    [Header("ATTACK")]
+    [Tooltip("Distance from the player at which the agent stops chasing and switches to attacking")]
+    [Min(0f)]
+    public float AttackRange = 1.5f;
+
+    [Tooltip("Damage dealt to the player per hit")]
+    [Min(0f)]
+    public float AttackDamage = 10f;
+
+    [Tooltip("Delay before the very first hit after entering the Attack state")]
+    [Min(0f)]
+    public float AttackFirstHitDelay = 0.5f;
+
+    [Tooltip("Time between subsequent hits after the first one")]
+    [Min(0f)]
+    public float AttackRepeatInterval = 1f;
+
     [Header("INTERACTION")]
     [Tooltip("Layer mask for interactable objects (used by Linecast)")]
     public LayerMask InteractableLayer;

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace HSM {
     public class AgentChase : State
     {
@@ -53,6 +55,11 @@ namespace HSM {
 
             if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
                 return Machine != null ? Machine.GetState<AgentPredictionChase>() : null;
+
+            if (ctx.vision != null && ctx.vision.CanSeePlayer &&
+                ctx.playerTransform != null &&
+                Vector2.Distance(ctx.transform.position, ctx.playerTransform.position) <= ctx.stats.AttackRange)
+                return Machine != null ? Machine.GetState<AgentAttack>() : null;
 
             return null;
         }
