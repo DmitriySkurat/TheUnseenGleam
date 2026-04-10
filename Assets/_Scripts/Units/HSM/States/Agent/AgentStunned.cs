@@ -18,7 +18,16 @@ namespace HSM {
         {
             ctx.nav.Abort();
             _stunTimer = ctx.stats.StunDuration;
+            // Сброс таймера: чтобы Root не сразу запросил повторный стан
+            ctx.blindedByPlayerTimer = 0f;
             base.OnEnter();
+        }
+
+        protected override void OnExit()
+        {
+            // Сброс и при выходе: игроку нужно слепить заново BlindDurationToStun секунд
+            ctx.blindedByPlayerTimer = 0f;
+            base.OnExit();
         }
 
         protected override void OnUpdate(float deltaTime)

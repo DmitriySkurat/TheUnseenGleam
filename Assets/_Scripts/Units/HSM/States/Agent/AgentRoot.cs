@@ -27,9 +27,16 @@ namespace HSM {
             Stunned         = new AgentStunned(m, this, ctx);
         }
 
-        // Debug mode: always start from direct chase.
         protected override State GetInitialState() => Patrol;
 
-        protected override State GetTransition() => null;
+        protected override State GetTransition()
+        {
+            // Глобальный стан: срабатывает из любого состояния
+            if (!ctx.IsTraversingLink &&
+                ctx.blindedByPlayerTimer >= ctx.stats.BlindDurationToStun)
+                return Machine?.GetState<AgentStunned>();
+
+            return null;
+        }
     }
 }

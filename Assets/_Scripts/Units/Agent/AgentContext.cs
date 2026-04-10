@@ -72,6 +72,8 @@ public class AgentContext
     public bool isBlindedByEnvironment;
     // Мировая позиция источника, который сейчас слепит агента
     public Vector2 blindingSourcePosition;
+    // Сколько секунд агент непрерывно ослеплён светом игрока (растёт во всех состояниях)
+    public float blindedByPlayerTimer;
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;

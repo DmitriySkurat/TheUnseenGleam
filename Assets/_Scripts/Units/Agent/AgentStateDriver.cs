@@ -65,6 +65,7 @@ namespace HSM {
             {
                 _ctx.isBlindedByPlayer      = false;
                 _ctx.isBlindedByEnvironment = false;
+                _ctx.blindedByPlayerTimer   = 0f;
                 return;
             }
 
@@ -79,6 +80,12 @@ namespace HSM {
                 _ctx.isBlindedByPlayer      = false;
                 _ctx.isBlindedByEnvironment = false;
             }
+
+            // Таймер непрерывного ослепления игроком — растёт во всех состояниях
+            if (_ctx.isBlindedByPlayer)
+                _ctx.blindedByPlayerTimer += Time.fixedDeltaTime;
+            else
+                _ctx.blindedByPlayerTimer = 0f;
         }
 
         void OnDestroy()
