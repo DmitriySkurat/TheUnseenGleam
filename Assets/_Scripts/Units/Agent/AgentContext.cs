@@ -17,6 +17,7 @@ public class AgentContext
     public AgentVision vision;
     public AgentHearing hearing;
     public AgentInteractor interactor;
+    public AgentLightSensor lightSensor;
 
     // ===== SPAWN =====
     public Vector2 spawnPosition;
@@ -63,6 +64,14 @@ public class AgentContext
     public float grabCooldownTimer;
     // true после первого захвата в текущей погоне; сбрасывается при входе в AgentChase
     public bool grabOccurredInChase;
+
+    // ===== BLINDING =====
+    // true если агент в данный момент ослеплён светом игрока
+    public bool isBlindedByPlayer;
+    // true если агент ослеплён статическим (не игроцким) источником света
+    public bool isBlindedByEnvironment;
+    // Мировая позиция источника, который сейчас слепит агента
+    public Vector2 blindingSourcePosition;
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;

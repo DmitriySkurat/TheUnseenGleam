@@ -4,6 +4,10 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
 {
     public InitializationOrder Order => InitializationOrder.Player + 5;
 
+    [Header("Hide In Light")]
+    [Tooltip("Минимальная сила освещённости, при которой задержка дыхания скрывает игрока от ослеплённого агента")]
+    [SerializeField, Min(0f)] private float _hidingLightThreshold = 0.5f;
+
     private PlayerContext _ctx;
     private NoiseSystem _noiseSystem;
     private float _breathingNoiseTimer;
@@ -25,12 +29,14 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
     {
         if (_ctx == null || _ctx.stats == null || _ctx.transform == null || !_ctx.isAlive)
         {
-            _ctx.isHoldingBreath = false;
-            _breathingNoiseTimer = 0f;
+            _ctx.isHoldingBreath  = false;
+            _ctx.isHidingInLight  = false;
+            _breathingNoiseTimer  = 0f;
             return;
         }
 
         UpdateBreath(Time.fixedDeltaTime);
+        UpdateHidingInLight();
         EmitBreathingNoise(Time.fixedDeltaTime);
     }
 
@@ -63,6 +69,18 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
             if (_ctx.stamina <= 0f)
                 _ctx.isHoldingBreath = false;
         }
+    }
+
+    /// <summary>
+    /// Игрок задерживает дыхание в достаточно ярком свету →
+    /// isHidingInLight = true: ослеплённый агент не сможет его схватить.
+    /// </summary>
+    private void UpdateHidingInLight()
+    {
+        bool inLight = _ctx.lightSensor != null
+            && _ctx.lightSensor.CurrentStrength >= _hidingLightThreshold;
+
+        _ctx.isHidingInLight = _ctx.isHoldingBreath && inLight;
     }
 
     private void EmitBreathingNoise(float deltaTime)

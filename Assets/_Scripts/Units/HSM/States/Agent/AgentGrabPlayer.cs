@@ -15,9 +15,10 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.nav.Abort();
-            // Первый захват в этой погоне — длинная задержка; повторный — короткая
+            // Первый захват в этой погоне — полная задержка;
+            // повторный — без задержки, паузу уже отыграл GrabCooldown в AgentChase
             ctx.attackFirstHitTimer = ctx.grabOccurredInChase
-                ? ctx.stats.GrabReattemptDelay
+                ? 0f
                 : ctx.stats.AttackFirstHitDelay;
             _isHolding = false;
             base.OnEnter();

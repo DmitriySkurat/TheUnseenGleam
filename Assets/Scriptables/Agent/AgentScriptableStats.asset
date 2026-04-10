@@ -20,7 +20,7 @@ MonoBehaviour:
   DefaultPatrolDistance: 4
   SuspicionTimeOnSight: 0.5
   SuspicionTimeOnNoise: 1
-  LoudNoiseThreshold: 1
+  SearchNoiseRadius: 3
   ChaseSpeed: 5
   ChaseVisionGraceTime: 1.5
   ChaseMemoryTime: 2
@@ -29,6 +29,12 @@ MonoBehaviour:
   SearchWaitTime: 1.5
   SearchWanderDuration: 8
   SearchWanderDistance: 3
+  BlindedByPlayerReactionTime: 0.5
+  GrabProximityGraceWindow: 0.4
+  AttackRange: 1.5
+  AttackFirstHitDelay: 0.05
+  GrabEscapeCount: 10
+  GrabCooldown: 1
   InteractableLayer:
     serializedVersion: 2
     m_Bits: 128

@@ -68,6 +68,19 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0.5f)]
     public float SearchWanderDistance = 3f;
 
+    [Header("BLINDING")]
+    [Tooltip("Время (секунды) от момента ослепления светом игрока до начала погони")]
+    [Min(0f)]
+    public float BlindedByPlayerReactionTime = 0.5f;
+
+    [Tooltip("Скорость движения когда агент ослеплён статическим (не игроцким) источником света")]
+    [Min(0f)]
+    public float BlindedByEnvironmentSpeed = 4f;
+
+    [Tooltip("Окно (секунды) после потери видимости игрока, в течение которого захват всё ещё срабатывает по дистанции")]
+    [Min(0f)]
+    public float GrabProximityGraceWindow = 0.4f;
+
     [Header("GRAB")]
     [Tooltip("Distance from the player at which the agent stops chasing and initiates a grab")]
     [Min(0f)]
@@ -76,10 +89,6 @@ public class AgentScriptableStats : ScriptableObject
     [Tooltip("Delay (seconds) before the grab locks the player on first contact in a chase")]
     [Min(0f)]
     public float AttackFirstHitDelay = 0.5f;
-
-    [Tooltip("Delay (seconds) before re-grabbing when the player escaped but didn't move away")]
-    [Min(0f)]
-    public float GrabReattemptDelay = 0.2f;
 
     [Tooltip("Number of alternating A/D presses the player needs to escape the grab")]
     [Min(1)]

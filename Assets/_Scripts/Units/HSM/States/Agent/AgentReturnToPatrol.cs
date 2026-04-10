@@ -25,6 +25,9 @@ namespace HSM {
         {
             if (_navigating)
             {
+                ctx.nav.SetSpeed(ctx.isBlindedByEnvironment
+                    ? ctx.stats.BlindedByEnvironmentSpeed
+                    : ctx.stats.PatrolSpeed);
                 ctx.nav.Tick(deltaTime);
 
                 if (ctx.nav.State == PlatNavState.Idle)
@@ -44,19 +47,27 @@ namespace HSM {
         {
             if (ctx.IsTraversingLink) return null;
 
+            // Игрок слепит агента — переходим в BlindedByPlayer
+            if (ctx.isBlindedByPlayer)
+                return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
+
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
                 return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
 
             if (ctx.pendingNoiseAlert)
             {
                 ctx.pendingNoiseAlert = false;
-                if (ctx.pendingNoiseRadius >= ctx.stats.SearchNoiseRadius)
+                // Ослеплены окружением — поглощаем шум без смены маршрута
+                if (!ctx.isBlindedByEnvironment)
                 {
-                    ctx.suspicionSource   = SuspicionSource.Noise;
-                    ctx.suspicionPosition = ctx.pendingNoisePosition;
-                    return Machine != null ? Machine.GetState<AgentSearch>() : null;
+                    if (ctx.pendingNoiseRadius >= ctx.stats.SearchNoiseRadius)
+                    {
+                        ctx.suspicionSource   = SuspicionSource.Noise;
+                        ctx.suspicionPosition = ctx.pendingNoisePosition;
+                        return Machine != null ? Machine.GetState<AgentSearch>() : null;
+                    }
+                    return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
                 }
-                return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
             }
 
             // Arrived at patrol start (or path failed) — hand off to AgentPatrol

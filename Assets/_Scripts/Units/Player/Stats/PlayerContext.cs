@@ -45,6 +45,8 @@ public class PlayerContext
     
     // ===== HIDING =====
     public bool isHiding;
+    // true когда игрок задерживает дыхание находясь в свету — ослеплённый агент его не схватит
+    public bool isHidingInLight;
     
     // ===== STAMINA =====
     public float stamina;

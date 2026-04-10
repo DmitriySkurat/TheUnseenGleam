@@ -59,6 +59,24 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
         return IsBlindedAt(transform.position, out strongestLight, out strength);
     }
 
+    /// <summary>
+    /// Возвращает true если агент ослеплён. Дополнительно сообщает, принадлежит ли
+    /// источник слепящего света игроку (компонент PlayerLightSource на объекте/предке),
+    /// и мировую позицию этого источника.
+    /// </summary>
+    public bool TryGetBlindingInfo(out bool isPlayerOwned, out Vector2 lightPosition)
+    {
+        isPlayerOwned = false;
+        lightPosition = default;
+
+        if (!IsBlinded(out Light2D light, out _))
+            return false;
+
+        lightPosition = light.transform.position;
+        isPlayerOwned = light.GetComponentInParent<PlayerLightSource>() != null;
+        return true;
+    }
+
     public bool IsBlindedAt(Vector2 worldPosition, out Light2D strongestLight, out float strength)
     {
         strongestLight = null;

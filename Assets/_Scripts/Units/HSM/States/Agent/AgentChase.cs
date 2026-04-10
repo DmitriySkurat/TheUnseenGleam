@@ -37,6 +37,12 @@ namespace HSM {
                 if (ctx.playerRb != null)
                     ctx.predictionPlayerVelocity = ctx.playerRb.linearVelocity;
             }
+            else if (ctx.isBlindedByPlayer)
+            {
+                // Игрок слепит агента — агент его «видит» через свет, таймер не растёт
+                ctx.suspicionPosition    = ctx.blindingSourcePosition;
+                ctx.chaseVisionLostTimer = 0f;
+            }
             else
             {
                 ctx.chaseVisionLostTimer += deltaTime;
@@ -61,11 +67,22 @@ namespace HSM {
             if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
                 return Machine != null ? Machine.GetState<AgentPredictionChase>() : null;
 
-            if (ctx.grabCooldownTimer <= 0f &&
-                ctx.vision != null && ctx.vision.CanSeePlayer &&
-                ctx.playerTransform != null &&
-                Vector2.Distance(ctx.transform.position, ctx.playerTransform.position) <= ctx.stats.AttackRange)
-                return Machine != null ? Machine.GetState<AgentGrabPlayer>() : null;
+            if (ctx.grabCooldownTimer <= 0f && ctx.playerTransform != null)
+            {
+                float dist = Vector2.Distance(ctx.transform.position, ctx.playerTransform.position);
+                bool inRange = dist <= ctx.stats.AttackRange;
+
+                // Видим игрока, или только что потеряли его в пределах окна,
+                // или ослеплены окружением но вплотную — всё равно хватаем.
+                bool canSense = (ctx.vision != null && ctx.vision.CanSeePlayer)
+                    || ctx.chaseVisionLostTimer < ctx.stats.GrabProximityGraceWindow
+                    || (inRange && !ctx.isBlindedByPlayer);
+
+                bool notHiding = ctx.playerCtx == null || !ctx.playerCtx.isHidingInLight;
+
+                if (inRange && canSense && notHiding)
+                    return Machine != null ? Machine.GetState<AgentGrabPlayer>() : null;
+            }
 
             return null;
         }

@@ -28,6 +28,7 @@ namespace HSM {
             _ctx.vision = GetComponent<AgentVision>();
             _ctx.hearing = GetComponent<AgentHearing>();
             _ctx.interactor = GetComponent<AgentInteractor>();
+            _ctx.lightSensor = GetComponent<AgentLightSensor>();
             if (_ctx.interactor != null)
                 _ctx.interactor.Initialize(_ctx);
             _ctx.spawnPosition = transform.position;
@@ -53,8 +54,31 @@ namespace HSM {
 
         void FixedUpdate()
         {
+            UpdateBlindingState();
             _machine.Tick(Time.fixedDeltaTime);
             PrintStatePath();
+        }
+
+        void UpdateBlindingState()
+        {
+            if (_ctx.lightSensor == null)
+            {
+                _ctx.isBlindedByPlayer      = false;
+                _ctx.isBlindedByEnvironment = false;
+                return;
+            }
+
+            if (_ctx.lightSensor.TryGetBlindingInfo(out bool isPlayerOwned, out Vector2 lightPos))
+            {
+                _ctx.isBlindedByPlayer      = isPlayerOwned;
+                _ctx.isBlindedByEnvironment = !isPlayerOwned;
+                _ctx.blindingSourcePosition = lightPos;
+            }
+            else
+            {
+                _ctx.isBlindedByPlayer      = false;
+                _ctx.isBlindedByEnvironment = false;
+            }
         }
 
         void OnDestroy()

@@ -40,7 +40,9 @@ namespace HSM {
             // Absorb any new noise events that arrive during the suspicion window
             if (ctx.pendingNoiseAlert)
             {
-                ctx.noisesHeardDuringSuspicion++;
+                // Ослеплены окружением — шум не считаем
+                if (!ctx.isBlindedByEnvironment)
+                    ctx.noisesHeardDuringSuspicion++;
                 ctx.pendingNoiseAlert = false;
             }
 
@@ -62,6 +64,10 @@ namespace HSM {
         protected override State GetTransition()
         {
             if (ctx.IsTraversingLink) return null;
+
+            // Игрок слепит агента — прерываем подозрение и готовимся к погоне
+            if (ctx.isBlindedByPlayer)
+                return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
 
             // Still waiting out the suspicion window
             if (ctx.suspicionTimer > 0f) return null;

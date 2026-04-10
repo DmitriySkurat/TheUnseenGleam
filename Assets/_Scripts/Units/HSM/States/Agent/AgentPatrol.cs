@@ -35,6 +35,9 @@ namespace HSM {
             }
             else if (_navigating)
             {
+                ctx.nav.SetSpeed(ctx.isBlindedByEnvironment
+                    ? ctx.stats.BlindedByEnvironmentSpeed
+                    : ctx.stats.PatrolSpeed);
                 ctx.nav.Tick(deltaTime);
                 if (ctx.nav.State == PlatNavState.Idle)
                 {
@@ -55,11 +58,22 @@ namespace HSM {
         {
             if (ctx.IsTraversingLink) return null;
 
+            // Игрок слепит агента — встаём и готовимся к погоне
+            if (ctx.isBlindedByPlayer)
+                return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
+
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
                 return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
 
             if (ctx.pendingNoiseAlert)
             {
+                // Ослеплены окружением — поглощаем событие, но не реагируем
+                if (ctx.isBlindedByEnvironment)
+                {
+                    ctx.pendingNoiseAlert = false;
+                    return null;
+                }
+
                 if (ctx.pendingNoiseRadius >= ctx.stats.SearchNoiseRadius)
                 {
                     ctx.suspicionSource   = SuspicionSource.Noise;

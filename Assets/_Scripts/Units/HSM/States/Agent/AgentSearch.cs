@@ -50,10 +50,14 @@ namespace HSM {
             if (ctx.pendingNoiseAlert && !ctx.IsTraversingLink)
             {
                 ctx.pendingNoiseAlert = false;
-                ctx.suspicionPosition = ctx.pendingNoisePosition;
-                _wandering            = false;
-                _waitingAtWanderPoint = false;
-                StartNavigatingToSearchPoint();
+                // Ослеплены окружением — шум не меняет маршрут
+                if (!ctx.isBlindedByEnvironment)
+                {
+                    ctx.suspicionPosition = ctx.pendingNoisePosition;
+                    _wandering            = false;
+                    _waitingAtWanderPoint = false;
+                    StartNavigatingToSearchPoint();
+                }
             }
             else if (_wandering)
             {
@@ -61,6 +65,9 @@ namespace HSM {
             }
             else if (_navigating)
             {
+                ctx.nav.SetSpeed(ctx.isBlindedByEnvironment
+                    ? ctx.stats.BlindedByEnvironmentSpeed
+                    : ctx.stats.SearchSpeed);
                 ctx.nav.Tick(deltaTime);
 
                 if (ctx.nav.State == PlatNavState.Idle)
@@ -82,6 +89,10 @@ namespace HSM {
         protected override State GetTransition()
         {
             if (ctx.IsTraversingLink) return null;
+
+            // Игрок слепит агента — переходим в BlindedByPlayer
+            if (ctx.isBlindedByPlayer)
+                return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
 
             // Chase if player is currently visible OR was spotted during the last jump
             if ((ctx.vision != null && ctx.vision.CanSeePlayer) || _seenPlayerDuringLink)
@@ -111,6 +122,9 @@ namespace HSM {
             }
             else if (_navigating)
             {
+                ctx.nav.SetSpeed(ctx.isBlindedByEnvironment
+                    ? ctx.stats.BlindedByEnvironmentSpeed
+                    : ctx.stats.SearchSpeed);
                 ctx.nav.Tick(deltaTime);
 
                 if (ctx.nav.State == PlatNavState.Idle)
