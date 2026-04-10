@@ -6,6 +6,7 @@ namespace HSM {
         public readonly AgentChase Chase;
         public readonly AgentPredictionChase PredictionChase;
         public readonly AgentSearch Search;
+        public readonly AgentReturnToPatrol ReturnToPatrol;
         public readonly AgentAttack Attack;
 
         readonly AgentContext ctx;
@@ -18,6 +19,7 @@ namespace HSM {
             Chase           = new AgentChase(m, this, ctx);
             PredictionChase = new AgentPredictionChase(m, this, ctx);
             Search          = new AgentSearch(m, this, ctx);
+            ReturnToPatrol  = new AgentReturnToPatrol(m, this, ctx);
             Attack          = new AgentAttack(m, this, ctx);
         }
 

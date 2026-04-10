@@ -91,7 +91,7 @@ namespace HSM {
             }
 
             if (_wandering && ctx.searchWanderTimer <= 0f)
-                return Machine != null ? Machine.GetState<AgentPatrol>() : null;
+                return Machine != null ? Machine.GetState<AgentReturnToPatrol>() : null;
 
             return null;
         }
