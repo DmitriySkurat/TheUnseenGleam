@@ -69,9 +69,17 @@ public class AgentScriptableStats : ScriptableObject
     public float SearchWanderDistance = 3f;
 
     [Header("BLINDING")]
-    [Tooltip("Время (секунды) от момента ослепления светом игрока до начала погони")]
+    [Tooltip("Минимальное время стояния на месте перед тем как отреагировать (погнаться или получить стан)")]
     [Min(0f)]
-    public float BlindedByPlayerReactionTime = 0.5f;
+    public float BlindedByPlayerReactionTime = 0.3f;
+
+    [Tooltip("Если игрок слепит агента дольше этого времени — агент уходит в AgentStunned вместо Chase")]
+    [Min(0f)]
+    public float BlindDurationToStun = 2f;
+
+    [Tooltip("Сколько секунд агент стоит оглушённым после длительного ослепления")]
+    [Min(0f)]
+    public float StunDuration = 3f;
 
     [Tooltip("Скорость движения когда агент ослеплён статическим (не игроцким) источником света")]
     [Min(0f)]

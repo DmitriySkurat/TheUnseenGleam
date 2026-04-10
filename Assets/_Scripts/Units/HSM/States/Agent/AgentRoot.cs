@@ -9,6 +9,7 @@ namespace HSM {
         public readonly AgentReturnToPatrol ReturnToPatrol;
         public readonly AgentGrabPlayer GrabPlayer;
         public readonly AgentBlindedByPlayer BlindedByPlayer;
+        public readonly AgentStunned Stunned;
 
         readonly AgentContext ctx;
 
@@ -23,6 +24,7 @@ namespace HSM {
             ReturnToPatrol  = new AgentReturnToPatrol(m, this, ctx);
             GrabPlayer      = new AgentGrabPlayer(m, this, ctx);
             BlindedByPlayer = new AgentBlindedByPlayer(m, this, ctx);
+            Stunned         = new AgentStunned(m, this, ctx);
         }
 
         // Debug mode: always start from direct chase.
