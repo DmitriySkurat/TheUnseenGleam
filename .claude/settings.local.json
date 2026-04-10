@@ -9,7 +9,8 @@
       "Bash(find D:BSUIRDiplomaTheUnseenGleamAssets -name *Scriptable* -type f)",
       "Bash(find /d/BSUIR/Diploma/TheUnseenGleam -type f \\\\\\(-name *AgentRoot* -o -name *AgentContext* -o -name *AgentScriptableStats* \\\\\\))",
       "Bash(grep -v \"\\\\.meta$\")",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(grep -E \"\\\\.cs$\")"
     ]
   }
 }
