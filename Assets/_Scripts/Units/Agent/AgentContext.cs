@@ -57,9 +57,9 @@ public class AgentContext
     // Countdown for the total time budget of PredictionChase
     public float predictionTimer;
 
-    // ===== ATTACK =====
+    // ===== GRAB =====
+    public PlayerContext playerCtx;
     public float attackFirstHitTimer;
-    public float attackRepeatTimer;
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;

@@ -7,7 +7,7 @@ namespace HSM {
         public readonly AgentPredictionChase PredictionChase;
         public readonly AgentSearch Search;
         public readonly AgentReturnToPatrol ReturnToPatrol;
-        public readonly AgentAttack Attack;
+        public readonly AgentGrabPlayer GrabPlayer;
 
         readonly AgentContext ctx;
 
@@ -20,7 +20,7 @@ namespace HSM {
             PredictionChase = new AgentPredictionChase(m, this, ctx);
             Search          = new AgentSearch(m, this, ctx);
             ReturnToPatrol  = new AgentReturnToPatrol(m, this, ctx);
-            Attack          = new AgentAttack(m, this, ctx);
+            GrabPlayer      = new AgentGrabPlayer(m, this, ctx);
         }
 
         // Debug mode: always start from direct chase.

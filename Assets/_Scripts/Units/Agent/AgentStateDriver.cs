@@ -34,6 +34,7 @@ namespace HSM {
             _ctx.playerTransform = Services.Get<PlayerContext>()?.transform;
             _ctx.playerRb     = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<Rigidbody2D>() : null;
             _ctx.playerHealth = _ctx.playerTransform != null ? _ctx.playerTransform.GetComponent<PlayerHealth>() : null;
+            _ctx.playerCtx    = Services.Get<PlayerContext>();
 
             if (_patrolPoints != null && _patrolPoints.Length > 0)
                 _ctx.patrolPointTransforms = _patrolPoints;

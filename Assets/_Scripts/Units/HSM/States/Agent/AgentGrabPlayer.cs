@@ -1,0 +1,70 @@
+using UnityEngine;
+
+namespace HSM {
+    public class AgentGrabPlayer : State
+    {
+        readonly AgentContext ctx;
+
+        bool _isHolding;
+
+        public AgentGrabPlayer(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
+        {
+            this.ctx = ctx;
+        }
+
+        protected override void OnEnter()
+        {
+            ctx.nav.Abort();
+            ctx.attackFirstHitTimer = ctx.stats.AttackFirstHitDelay;
+            _isHolding = false;
+            base.OnEnter();
+        }
+
+        protected override void OnUpdate(float deltaTime)
+        {
+            if (!_isHolding)
+            {
+                ctx.attackFirstHitTimer -= deltaTime;
+                if (ctx.attackFirstHitTimer <= 0f)
+                    StartGrab();
+            }
+
+            base.OnUpdate(deltaTime);
+        }
+
+        protected override void OnExit()
+        {
+            // Гарантированно снимаем захват при любом выходе из состояния
+            if (ctx.playerCtx != null)
+                ctx.playerCtx.isGrabbed = false;
+            base.OnExit();
+        }
+
+        protected override State GetTransition()
+        {
+            if (ctx.IsTraversingLink) return null;
+
+            // Игрок вырвался — преследуем
+            if (_isHolding && ctx.playerCtx != null && !ctx.playerCtx.isGrabbed)
+                return Machine?.GetState<AgentChase>();
+
+            // Игрок вышел из зоны до того, как агент успел схватить
+            if (!_isHolding)
+            {
+                float dist = Vector2.Distance(ctx.transform.position, ctx.playerTransform.position);
+                if (dist > ctx.stats.AttackRange)
+                    return Machine?.GetState<AgentChase>();
+            }
+
+            return null;
+        }
+
+        void StartGrab()
+        {
+            if (ctx.playerCtx == null) return;
+            ctx.playerCtx.isGrabbed = true;
+            ctx.playerCtx.grabEscapeCount = ctx.stats.GrabEscapeCount;
+            _isHolding = true;
+        }
+    }
+}

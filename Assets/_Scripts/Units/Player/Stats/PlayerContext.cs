@@ -62,6 +62,10 @@ public class PlayerContext
     // ===== HEALTH =====
     public PlayerHealth health;
     public bool isAlive;
+
+    // ===== GRABBED =====
+    public bool isGrabbed;
+    public int grabEscapeCount;
     
     // ===== TIMERS =====
     public float timeInteractWasPressed;

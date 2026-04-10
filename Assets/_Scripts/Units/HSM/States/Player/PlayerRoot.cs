@@ -7,6 +7,7 @@ namespace HSM {
         public readonly Interaction Interaction;
         public readonly Climb Climb;
         public readonly Death Death;
+        public readonly PlayerGrabbed Grabbed;
         
         readonly PlayerContext ctx;
         private float _footstepTimer;
@@ -16,11 +17,12 @@ namespace HSM {
 
         public PlayerRoot(StateMachine m, PlayerContext ctx) : base(m, null) {
             this.ctx = ctx;
-            Grounded = new Grounded(m, this, ctx);
-            Airborne = new Airborne(m, this, ctx);
+            Grounded    = new Grounded(m, this, ctx);
+            Airborne    = new Airborne(m, this, ctx);
             Interaction = new Interaction(m, this, ctx);
-            Climb = new Climb(m, this, ctx);
-            Death = new Death(m, this, ctx);
+            Climb       = new Climb(m, this, ctx);
+            Death       = new Death(m, this, ctx);
+            Grabbed     = new PlayerGrabbed(m, this, ctx);
             
             _noiseSystem = Services.Get<NoiseSystem>();
         }
@@ -28,13 +30,12 @@ namespace HSM {
         protected override State GetInitialState() => Grounded;
         protected override State GetTransition()
         {
-            if(!ctx.isAlive) return Machine != null ? Machine.GetState<Death>() : null;
-            
+            if (!ctx.isAlive)  return Machine?.GetState<Death>();
+            if (ctx.isGrabbed) return Machine?.GetState<PlayerGrabbed>();
             if (ctx.OnClimbable) return null;
-            if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
-            
+            if (!ctx.grounded) return Machine?.GetState<Airborne>();
             return null;
-        } 
+        }
 
         protected override void OnUpdate(float deltaTime) 
         {

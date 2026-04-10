@@ -59,7 +59,7 @@ namespace HSM {
             if (ctx.vision != null && ctx.vision.CanSeePlayer &&
                 ctx.playerTransform != null &&
                 Vector2.Distance(ctx.transform.position, ctx.playerTransform.position) <= ctx.stats.AttackRange)
-                return Machine != null ? Machine.GetState<AgentAttack>() : null;
+                return Machine != null ? Machine.GetState<AgentGrabPlayer>() : null;
 
             return null;
         }
