@@ -44,11 +44,12 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         if (_ctx == null)
             return;
 
-        // Схваченный игрок не может использовать способности (ЛКМ, и ПКМ когда будет реализован)
+        // Схваченный игрок не может использовать способности (ЛКМ и ПКМ)
         if (_ctx.isGrabbed)
         {
-            _frameInput.AttackDown = false;
-            _frameInput.AttackHeld = false;
+            _frameInput.AttackDown    = false;
+            _frameInput.AttackHeld    = false;
+            _frameInput.LookAroundHeld = false;
         }
 
         _ctx.input = _frameInput;
