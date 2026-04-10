@@ -24,6 +24,7 @@ namespace HSM {
             ctx.nav.SetTarget(null);
             ctx.searchWaitTimer   = 0f;
             ctx.searchWanderTimer = 0f;
+            ctx.pendingNoiseAlert = false;
 
             _navigating              = false;
             _wandering               = false;
