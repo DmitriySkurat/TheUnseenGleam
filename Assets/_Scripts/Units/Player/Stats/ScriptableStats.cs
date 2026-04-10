@@ -132,6 +132,9 @@ public class PlayerScriptableStats : ScriptableObject
     [Range(0.1f, 1f)]
     public float HideSpeedMultiplier = 0.4f;
 
+    [Header("PRESS TO WALL")]
+    // Параметры добавить при необходимости
+
     [Header("LANDING")]
     [Tooltip("How long before touching the ground a crouch input can still trigger a landing roll")]
     [Range(0f, 0.5f)]

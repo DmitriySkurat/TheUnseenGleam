@@ -8,13 +8,15 @@ namespace HSM {
         public readonly Crouch Crouch;
         public readonly Move Move;
         public readonly Hide Hide;
+        public readonly PressToWall PressToWall;
 
         public Grounded(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Idle = new Idle(m, this, ctx);
-            Crouch = new Crouch(m, this, ctx);
-            Move = new Move(m, this, ctx);
-            Hide = new Hide(m, this, ctx);
+            Idle        = new Idle(m, this, ctx);
+            Crouch      = new Crouch(m, this, ctx);
+            Move        = new Move(m, this, ctx);
+            Hide        = new Hide(m, this, ctx);
+            PressToWall = new PressToWall(m, this, ctx);
             
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.yellow,  // runs while Grounded is activating
@@ -23,13 +25,17 @@ namespace HSM {
         
         protected override State GetInitialState() => Idle;
 
-        protected override State GetTransition() 
+        protected override State GetTransition()
         {
             if (ctx.OnClimbable && ctx.input.Move.y > 0.1f) return Machine.GetState<Climb>();
             if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
-            
+
+            // W нажат, не на лестнице → прижаться к стене
+            if (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold && !ctx.OnClimbable)
+                return Machine != null ? Machine.GetState<PressToWall>() : null;
+
             return null;
-        } 
+        }
         
         
         protected override void OnUpdate(float deltaTime)
