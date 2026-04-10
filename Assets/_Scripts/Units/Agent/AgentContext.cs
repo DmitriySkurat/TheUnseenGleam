@@ -60,6 +60,9 @@ public class AgentContext
     // ===== GRAB =====
     public PlayerContext playerCtx;
     public float attackFirstHitTimer;
+    public float grabCooldownTimer;
+    // true после первого захвата в текущей погоне; сбрасывается при входе в AgentChase
+    public bool grabOccurredInChase;
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;

@@ -15,7 +15,10 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.nav.Abort();
-            ctx.attackFirstHitTimer = ctx.stats.AttackFirstHitDelay;
+            // Первый захват в этой погоне — длинная задержка; повторный — короткая
+            ctx.attackFirstHitTimer = ctx.grabOccurredInChase
+                ? ctx.stats.GrabReattemptDelay
+                : ctx.stats.AttackFirstHitDelay;
             _isHolding = false;
             base.OnEnter();
         }
@@ -37,6 +40,9 @@ namespace HSM {
             // Гарантированно снимаем захват при любом выходе из состояния
             if (ctx.playerCtx != null)
                 ctx.playerCtx.isGrabbed = false;
+
+            // Запускаем кулдаун, чтобы агент не мог сразу схватить снова
+            ctx.grabCooldownTimer = ctx.stats.GrabCooldown;
             base.OnExit();
         }
 
@@ -64,6 +70,7 @@ namespace HSM {
             if (ctx.playerCtx == null) return;
             ctx.playerCtx.isGrabbed = true;
             ctx.playerCtx.grabEscapeCount = ctx.stats.GrabEscapeCount;
+            ctx.grabOccurredInChase = true; // следующий захват в этой погоне будет повторным
             _isHolding = true;
         }
     }

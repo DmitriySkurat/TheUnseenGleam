@@ -12,7 +12,8 @@ namespace HSM {
 
         protected override void OnEnter()
         {
-            ctx.chaseVisionLostTimer = 0f;
+            ctx.chaseVisionLostTimer  = 0f;
+            ctx.grabOccurredInChase   = false; // новая погоня — первый захват будет с полной задержкой
 
             // Set speed once; auto-repath in Tick will keep using this value
             ctx.nav.SetSpeed(ctx.stats.ChaseSpeed);
@@ -24,6 +25,10 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            // Отсчёт кулдауна между захватами
+            if (ctx.grabCooldownTimer > 0f)
+                ctx.grabCooldownTimer -= deltaTime;
+
             // Keep suspicionPosition and player velocity up-to-date so PredictionChase knows where to go
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
             {
@@ -56,7 +61,8 @@ namespace HSM {
             if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
                 return Machine != null ? Machine.GetState<AgentPredictionChase>() : null;
 
-            if (ctx.vision != null && ctx.vision.CanSeePlayer &&
+            if (ctx.grabCooldownTimer <= 0f &&
+                ctx.vision != null && ctx.vision.CanSeePlayer &&
                 ctx.playerTransform != null &&
                 Vector2.Distance(ctx.transform.position, ctx.playerTransform.position) <= ctx.stats.AttackRange)
                 return Machine != null ? Machine.GetState<AgentGrabPlayer>() : null;

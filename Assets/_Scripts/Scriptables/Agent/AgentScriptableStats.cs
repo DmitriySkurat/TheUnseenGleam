@@ -73,13 +73,21 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float AttackRange = 1.5f;
 
-    [Tooltip("Delay (seconds) before the grab locks the player after entering the GrabPlayer state")]
+    [Tooltip("Delay (seconds) before the grab locks the player on first contact in a chase")]
     [Min(0f)]
-    public float AttackFirstHitDelay = 0.3f;
+    public float AttackFirstHitDelay = 0.5f;
+
+    [Tooltip("Delay (seconds) before re-grabbing when the player escaped but didn't move away")]
+    [Min(0f)]
+    public float GrabReattemptDelay = 0.2f;
 
     [Tooltip("Number of alternating A/D presses the player needs to escape the grab")]
     [Min(1)]
     public int GrabEscapeCount = 10;
+
+    [Tooltip("Cooldown (seconds) before the agent can grab again after the player escapes")]
+    [Min(0f)]
+    public float GrabCooldown = 3f;
 
     [Header("INTERACTION")]
     [Tooltip("Layer mask for interactable objects (used by Linecast)")]
