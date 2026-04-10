@@ -9,6 +9,7 @@ namespace HSM {
         bool _navigating;
         bool _wandering;
         bool _waitingAtWanderPoint;
+        bool _seenPlayerDuringLink;
 
         Vector2[] _wanderPoints;
         int _wanderIndex;
@@ -24,11 +25,12 @@ namespace HSM {
             ctx.searchWaitTimer   = 0f;
             ctx.searchWanderTimer = 0f;
 
-            _navigating           = false;
-            _wandering            = false;
-            _waitingAtWanderPoint = false;
-            _wanderPoints         = null;
-            _wanderIndex          = 0;
+            _navigating              = false;
+            _wandering               = false;
+            _waitingAtWanderPoint    = false;
+            _seenPlayerDuringLink    = false;
+            _wanderPoints            = null;
+            _wanderIndex             = 0;
 
             StartNavigatingToSearchPoint();
             base.OnEnter();
@@ -36,17 +38,21 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
-            // New noise arrived — redirect only if not already tracking a vision-based position
-            if (ctx.pendingNoiseAlert)
+            // Track player sighting during a jump so GetTransition can act after landing
+            if (ctx.IsTraversingLink && ctx.vision != null && ctx.vision.CanSeePlayer)
+            {
+                _seenPlayerDuringLink = true;
+                ctx.suspicionPosition = ctx.vision.LastSeenPosition;
+            }
+
+            // New noise arrived — defer until jump finishes to avoid interrupting traversal
+            if (ctx.pendingNoiseAlert && !ctx.IsTraversingLink)
             {
                 ctx.pendingNoiseAlert = false;
-                if (ctx.suspicionSource != SuspicionSource.Vision)
-                {
-                    ctx.suspicionPosition = ctx.pendingNoisePosition;
-                    _wandering            = false;
-                    _waitingAtWanderPoint = false;
-                    StartNavigatingToSearchPoint();
-                }
+                ctx.suspicionPosition = ctx.pendingNoisePosition;
+                _wandering            = false;
+                _waitingAtWanderPoint = false;
+                StartNavigatingToSearchPoint();
             }
             else if (_wandering)
             {
@@ -76,8 +82,12 @@ namespace HSM {
         {
             if (ctx.IsTraversingLink) return null;
 
-            if (ctx.vision != null && ctx.vision.CanSeePlayer)
+            // Chase if player is currently visible OR was spotted during the last jump
+            if ((ctx.vision != null && ctx.vision.CanSeePlayer) || _seenPlayerDuringLink)
+            {
+                _seenPlayerDuringLink = false;
                 return Machine != null ? Machine.GetState<AgentChase>() : null;
+            }
 
             if (_wandering && ctx.searchWanderTimer <= 0f)
                 return Machine != null ? Machine.GetState<AgentPatrol>() : null;
