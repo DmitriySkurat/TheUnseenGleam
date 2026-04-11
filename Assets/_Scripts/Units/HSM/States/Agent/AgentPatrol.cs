@@ -67,13 +67,6 @@ namespace HSM {
 
             if (ctx.pendingNoiseAlert)
             {
-                // Ослеплены окружением — поглощаем событие, но не реагируем
-                if (ctx.isBlindedByEnvironment)
-                {
-                    ctx.pendingNoiseAlert = false;
-                    return null;
-                }
-
                 if (ctx.pendingNoiseRadius >= ctx.stats.SearchNoiseRadius)
                 {
                     ctx.suspicionSource   = SuspicionSource.Noise;

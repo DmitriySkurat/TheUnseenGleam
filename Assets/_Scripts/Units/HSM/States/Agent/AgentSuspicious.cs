@@ -40,9 +40,7 @@ namespace HSM {
             // Absorb any new noise events that arrive during the suspicion window
             if (ctx.pendingNoiseAlert)
             {
-                // Ослеплены окружением — шум не считаем
-                if (!ctx.isBlindedByEnvironment)
-                    ctx.noisesHeardDuringSuspicion++;
+                ctx.noisesHeardDuringSuspicion++;
                 ctx.pendingNoiseAlert = false;
             }
 
