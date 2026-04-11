@@ -78,9 +78,7 @@ namespace HSM {
                     || ctx.chaseVisionLostTimer < ctx.stats.GrabProximityGraceWindow
                     || (inRange && !ctx.isBlindedByPlayer);
 
-                bool notHiding = ctx.playerCtx == null || !ctx.playerCtx.isHidingInLight;
-
-                if (inRange && canSense && notHiding)
+                if (inRange && canSense)
                     return Machine != null ? Machine.GetState<AgentGrabPlayer>() : null;
             }
 

@@ -45,8 +45,6 @@ public class PlayerContext
     
     // ===== HIDING =====
     public bool isHiding;
-    // true когда игрок задерживает дыхание находясь в свету — ослеплённый агент его не схватит
-    public bool isHidingInLight;
     // true пока игрок прижат к стене (PressToWall state) — автоматически задерживает дыхание
     public bool isPressedToWall;
     
