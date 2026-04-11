@@ -25,6 +25,8 @@ public class AgentVision : MonoBehaviour, IInitializable
     [Header("Vision Modifiers")]
     [SerializeField, Min(0f)] private float visibilityMultiplier = 1f;
     [SerializeField] private LayerMask occlusionMask;
+    [Tooltip("Минимальная освещённость игрока, при которой прижатие к стене скрывает его от зрения агента")]
+    [SerializeField, Min(0f)] private float pressedToWallLightThreshold = 0.5f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;
@@ -110,8 +112,15 @@ public class AgentVision : MonoBehaviour, IInitializable
         if (_playerContext != null && _playerContext.isHiding && !_canSeeWhilePlayerHidden)
             return false;
 
+        if (_playerContext != null && _playerContext.isPressedToWall && IsPlayerInLight())
+            return false;
+
         return CheckPlayerVisibilityGeometry(targetPosition);
     }
+
+    private bool IsPlayerInLight() =>
+        _playerContext.lightSensor != null
+        && _playerContext.lightSensor.CurrentStrength >= pressedToWallLightThreshold;
 
     private bool CheckPlayerVisibilityGeometry(Vector2 targetPosition)
     {
