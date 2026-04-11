@@ -68,9 +68,12 @@ namespace HSM {
             if (ctx.OnClimbable)
                 return Machine?.GetState<Idle>();
 
-            // S нажат — отойти от стены
+            // S или A/D нажат — отойти от стены
             if (ctx.input.Move.y < -ctx.stats.VerticalDeadZoneThreshold)
                 return Machine?.GetState<Idle>();
+
+            if (Mathf.Abs(ctx.input.Move.x) > ctx.stats.HorizontalDeadZoneThreshold)
+                return Machine?.GetState<Move>();
 
             return null;
         }
