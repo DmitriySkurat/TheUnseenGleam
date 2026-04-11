@@ -33,17 +33,18 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Register(camera);
         
 
-        var alertSystem = Instantiate(agentAlertSystemPrefab);
-        Services.Register(alertSystem);
 
         var noise = Instantiate(noisePrefab);
         var light = Instantiate(lightPrefab);
-        
+        var alert = Instantiate(agentAlertSystemPrefab);
+
         Services.Register(noise);
         Services.Register(light);
-        
+        Services.Register(alert);
+
         services.Add(noise);
         services.Add(light);
+        services.Add(alert);
         
         // Здесь же можно зарегистрировать другие сценовые сервисы
         // Services.Register<InventorySystem>(new InventorySystem());
