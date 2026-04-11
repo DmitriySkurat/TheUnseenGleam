@@ -6,6 +6,7 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
     
     private PlayerContext _ctx;
     private Rigidbody2D _rb;
+    private float _lastAppliedVelocityY;
 
     public void Initialize()
     {
@@ -18,10 +19,15 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
     void FixedUpdate()
     {
         if (_ctx == null || _rb == null) return;
-        
+
+        // Если в прошлом кадре мы применили положительную скорость, но физика её обнулила (удар о потолок) — синхронизируемся
+        if (_lastAppliedVelocityY > 0 && _rb.linearVelocity.y <= 0)
+            _ctx.velocity.y = _rb.linearVelocity.y;
+
         UpdateMovementGrace(Time.fixedDeltaTime);
         HandleGravity(Time.fixedDeltaTime);
         ApplyMovement();
+        _lastAppliedVelocityY = _ctx.velocity.y;
     }
     
     void HandleGravity(float deltaTime) 
