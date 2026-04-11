@@ -10,6 +10,9 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
     private CapsuleCollider2D _col;
     private bool _cachedQueryStartInColliders;
     
+    private bool _ceilingHit;
+    private bool _groundHit;
+    
     
     public void Initialize()
     {
@@ -36,29 +39,27 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
 
         bool wasGrounded = _ctx.grounded;
         float currentY = _ctx.transform != null ? _ctx.transform.position.y : transform.position.y;
-        // bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
-        // bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, ~_ctx.stats.GroundLayer);
 
-        bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
-        bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
+        _groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
+        _ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
 
-        if (ceilingHit) _ctx.velocity.y = Mathf.Min(0, _ctx.velocity.y);
+        if (_ceilingHit) _ctx.velocity.y = Mathf.Min(0, _ctx.velocity.y);
 
-        if (!wasGrounded && groundHit) {
+        if (!wasGrounded && _groundHit) {
             _ctx.grounded = true;
             _ctx.coyoteUsable = true;
             _ctx.bufferedJumpUsable = true;
             _ctx.endedJumpEarly = false;
             HandleLanding(currentY);
-        } else if (wasGrounded && !groundHit) {
+        } else if (wasGrounded && !_groundHit) {
             _ctx.grounded = false;
             _ctx.frameLeftGrounded = Time.time;
             _ctx.airborneStartY = currentY;
             _ctx.landingRollEndTime = float.MinValue;
             _ctx.landingRollDirection = 0f;
         } else {
-            _ctx.grounded = groundHit;
-            if (groundHit)
+            _ctx.grounded = _groundHit;
+            if (_groundHit)
             {
                 _ctx.airborneStartY = currentY;
             }
@@ -134,8 +135,6 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         {
             _ctx.onVines = true;
         }
-        
-        
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -152,7 +151,35 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         {
             _ctx.onVines = false;
         }
+    }
 
-       
+    void OnDrawGizmos()
+    {
+        if (!Application.isPlaying) return;
+        
+        var col = _ctx.coll as CapsuleCollider2D;
+        
+        // Коллайдер
+        Gizmos.color = Color.white;
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.DrawWireCube(col.offset, col.size);
+
+        Gizmos.matrix = Matrix4x4.identity;
+        
+        // CeilingAbove
+        Gizmos.color = _ctx.ceilingAbove ? Color.red : Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance, 0.05f);
+
+        // Проверка вниз (groundHit)
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(col.bounds.center, col.bounds.center + Vector3.down * _ctx.stats.GrounderDistance);
+        Gizmos.DrawWireSphere(col.bounds.center + Vector3.down * _ctx.stats.GrounderDistance, 0.05f);
+
+        // Проверка вверх (ceilingHit)
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(col.bounds.center, col.bounds.center + Vector3.up * _ctx.stats.GrounderDistance);
+        Gizmos.DrawWireSphere(col.bounds.center + Vector3.up * _ctx.stats.GrounderDistance, 0.05f);
+    
     }
 }

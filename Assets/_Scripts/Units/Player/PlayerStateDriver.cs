@@ -61,36 +61,6 @@ namespace HSM {
             return string.Join(" > ", s.PathToRoot().Reverse().Select(n => n.GetType().Name));
         }
         
-        void OnDrawGizmos()
-        {
-            if (!Application.isPlaying) return;
-            
-            var col = _ctx.coll as CapsuleCollider2D;
-            
-            // Коллайдер
-            Gizmos.color = Color.white;
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireCube(col.offset, col.size);
-
-            Gizmos.matrix = Matrix4x4.identity;
-            
-            // CeilingAbove
-            Gizmos.color = _ctx.ceilingAbove ? Color.red : Color.green;
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance);
-            Gizmos.DrawWireSphere(transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance, 0.05f);
-
-            // Проверка вниз (groundHit)
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(col.bounds.center, col.bounds.center + Vector3.down * _ctx.stats.GrounderDistance);
-            Gizmos.DrawWireSphere(col.bounds.center + Vector3.down * _ctx.stats.GrounderDistance, 0.05f);
-
-            // Проверка вверх (ceilingHit)
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(col.bounds.center, col.bounds.center + Vector3.up * _ctx.stats.GrounderDistance);
-            Gizmos.DrawWireSphere(col.bounds.center + Vector3.up * _ctx.stats.GrounderDistance, 0.05f);
-        
-        }
-        
         #endregion
     }   
 }
