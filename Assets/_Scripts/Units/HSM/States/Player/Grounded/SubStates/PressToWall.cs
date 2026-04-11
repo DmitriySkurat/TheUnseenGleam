@@ -27,7 +27,7 @@ namespace HSM {
             ctx.currentNoiseRadius      = 0f;
             ctx.currentFootstepInterval = 0f;
             ctx.currentStaminaDrainMultiplier           = 0f;
-            ctx.currentStaminaBreathDrainMultiplier     = 0f;
+            ctx.currentStaminaBreathDrainMultiplier     = ctx.stats.PressToWallStaminaBreathDrainMultiplier;
 
             col = ctx.coll as CapsuleCollider2D;
             if (col != null) {

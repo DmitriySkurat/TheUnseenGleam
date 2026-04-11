@@ -90,6 +90,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float HideStaminaBreathDrainMultiplier = 0.5f;
 
+    [Tooltip("Breath drain multiplier while pressed to wall")]
+    [Min(0f)]
+    public float PressToWallStaminaBreathDrainMultiplier = 1f;
+
     [Header("JUMP")]
     [Tooltip("The immediate velocity applied when jumping")]
     public float JumpPower = 36;
