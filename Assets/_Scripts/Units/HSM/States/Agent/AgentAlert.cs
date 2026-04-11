@@ -48,10 +48,7 @@ namespace HSM {
                 return Machine?.GetState<AgentChase>();
 
             if (_timer <= 0f)
-            {
-                ctx.suspicionPosition = ctx.transform.position;
-                return Machine?.GetState<AgentSearch>();
-            }
+                return Machine?.GetState<AgentPredictionChase>();
 
             return null;
         }
