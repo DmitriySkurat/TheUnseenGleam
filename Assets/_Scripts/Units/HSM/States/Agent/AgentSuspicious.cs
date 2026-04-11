@@ -83,7 +83,13 @@ namespace HSM {
 
                 case SuspicionSource.Noise:
                     if (ctx.noisesHeardDuringSuspicion > 1)
+                    {
+                        // Игрок стоит в свету прижавшись к стене — агент находит его по звуку,
+                        // зрение заблокировано светом, но позиция известна → преследование
+                        if (ctx.vision != null && ctx.vision.IsPlayerExposedInLight)
+                            return Machine != null ? Machine.GetState<AgentChase>() : null;
                         return Machine != null ? Machine.GetState<AgentSearch>() : null;
+                    }
                     return Machine != null ? Machine.GetState<AgentPatrol>() : null;
 
                 default:

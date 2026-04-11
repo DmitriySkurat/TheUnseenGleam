@@ -49,6 +49,12 @@ public class AgentVision : MonoBehaviour, IInitializable
     public bool CanSeePlayer => _canSeePlayer;
     public bool HasLastSeenPosition => _lastSeenPosition.HasValue;
     public Vector2 LastSeenPosition => _lastSeenPosition ?? Vector2.zero;
+    /// <summary>
+    /// Игрок прижат к стене и находится в свету — агент не видит его визуально,
+    /// но игрок «открыт»: звук может выдать его местоположение.
+    /// </summary>
+    public bool IsPlayerExposedInLight =>
+        _playerContext != null && _playerContext.isPressedToWall && IsPlayerInLight();
     public float ViewAngle => viewAngle;
     public float ViewDistance => viewDistance;
     public float VisibilityMultiplier
