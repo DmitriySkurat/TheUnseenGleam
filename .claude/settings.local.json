@@ -10,7 +10,8 @@
       "Bash(find /d/BSUIR/Diploma/TheUnseenGleam -type f \\\\\\(-name *AgentRoot* -o -name *AgentContext* -o -name *AgentScriptableStats* \\\\\\))",
       "Bash(grep -v \"\\\\.meta$\")",
       "Bash(xargs grep:*)",
-      "Bash(grep -E \"\\\\.cs$\")"
+      "Bash(grep -E \"\\\\.cs$\")",
+      "Bash(find \"D:/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/Player\" -type f -name \"*.cs\" -exec grep -l \"GetComponentInChildren\\\\|GetComponent\\\\|\\\\.child\\\\|Find\\\\|transform\\\\.\" {} \\\\;)"
     ]
   }
 }

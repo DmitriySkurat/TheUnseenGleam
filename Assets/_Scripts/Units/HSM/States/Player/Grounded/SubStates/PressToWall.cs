@@ -11,6 +11,10 @@ namespace HSM {
     public class PressToWall : State {
         readonly PlayerContext ctx;
 
+        CapsuleCollider2D col;
+        Vector2 originalColliderSize;
+        Vector2 originalColliderOffset;
+
         public PressToWall(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
             Add(new AnimatorBoolActivity(ctx.anim, "PressToWall", true, false));
@@ -25,11 +29,32 @@ namespace HSM {
             ctx.currentStaminaDrainMultiplier           = 0f;
             ctx.currentStaminaBreathDrainMultiplier     = 0f;
 
+            col = ctx.coll as CapsuleCollider2D;
+            if (col != null) {
+                originalColliderSize   = col.size;
+                originalColliderOffset = col.offset;
+
+                Vector2 newSize = new Vector2(
+                    originalColliderSize.x * ctx.stats.PressToWallWidthMultiplier,
+                    originalColliderSize.y * ctx.stats.PressToWallHeightMultiplier
+                );
+                // сдвигаем оффсет вниз так, чтобы низ коллайдера оставался на месте
+                float deltaY = (originalColliderSize.y - newSize.y) * 0.5f;
+                col.size   = newSize;
+                col.offset = new Vector2(originalColliderOffset.x, originalColliderOffset.y - deltaY);
+            }
+
             base.OnEnter();
         }
 
         protected override void OnExit() {
             ctx.isPressedToWall = false;
+
+            if (col != null) {
+                col.size   = originalColliderSize;
+                col.offset = originalColliderOffset;
+            }
+
             base.OnExit();
         }
 

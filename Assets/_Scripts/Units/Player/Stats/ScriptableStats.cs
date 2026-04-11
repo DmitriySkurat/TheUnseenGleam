@@ -133,7 +133,13 @@ public class PlayerScriptableStats : ScriptableObject
     public float HideSpeedMultiplier = 0.4f;
 
     [Header("PRESS TO WALL")]
-    // Параметры добавить при необходимости
+    [Tooltip("Height multiplier for CapsuleCollider while pressed to wall")]
+    [Range(0.2f, 1f)]
+    public float PressToWallHeightMultiplier = 0.8f;
+
+    [Tooltip("Width multiplier for CapsuleCollider while pressed to wall")]
+    [Range(0.2f, 1f)]
+    public float PressToWallWidthMultiplier = 0.5f;
 
     [Header("LANDING")]
     [Tooltip("How long before touching the ground a crouch input can still trigger a landing roll")]
