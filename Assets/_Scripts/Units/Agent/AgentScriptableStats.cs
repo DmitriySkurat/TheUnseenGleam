@@ -113,7 +113,7 @@ public class AgentScriptableStats : ScriptableObject
 
     [Tooltip("Радиус (м), в котором другие агенты слышат тревогу и переходят в Search")]
     [Min(0f)]
-    public float AlertHearRadius = 15f;
+    public float AlertRadius = 15f;
 
     [Header("INTERACTION")]
     [Tooltip("Layer mask for interactable objects (used by Linecast)")]

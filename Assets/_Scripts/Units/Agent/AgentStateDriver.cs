@@ -111,7 +111,7 @@ namespace HSM {
         void OnAlertReceived(Vector2 position)
         {
             float dist = Vector2.Distance(_ctx.transform.position, position);
-            if (dist <= _ctx.stats.AlertHearRadius)
+            if (dist <= _ctx.stats.AlertRadius)
             {
                 _ctx.alertPending  = true;
                 _ctx.alertPosition = position;
@@ -144,6 +144,8 @@ namespace HSM {
             if (_stats == null) return;
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, _stats.AttackRange);
+            Gizmos.color = new Color(1f, 0.5f, 0f); // orange
+            Gizmos.DrawWireSphere(transform.position, _stats.AlertRadius);
         }
 #endif
     }

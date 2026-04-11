@@ -1,7 +1,7 @@
 namespace HSM {
     /// <summary>
     /// Агент останавливается, сигнализирует союзникам и ждёт <see cref="AgentScriptableStats.AlertDuration"/> секунд.
-    /// Все агенты в радиусе <see cref="AgentScriptableStats.AlertHearRadius"/> получат alertPending = true
+    /// Все агенты в радиусе <see cref="AgentScriptableStats.AlertRadius"/> получат alertPending = true
     /// и перейдут в Search.
     ///
     /// Переходы:
