@@ -4,6 +4,7 @@ namespace HSM {
         public readonly AgentPatrol Patrol;
         public readonly AgentSuspicious Suspicious;
         public readonly AgentChase Chase;
+        public readonly AgentAlert Alert;
         public readonly AgentPredictionChase PredictionChase;
         public readonly AgentSearch Search;
         public readonly AgentReturnToPatrol ReturnToPatrol;
@@ -19,6 +20,7 @@ namespace HSM {
             Patrol          = new AgentPatrol(m, this, ctx);
             Suspicious      = new AgentSuspicious(m, this, ctx);
             Chase           = new AgentChase(m, this, ctx);
+            Alert           = new AgentAlert(m, this, ctx);
             PredictionChase = new AgentPredictionChase(m, this, ctx);
             Search          = new AgentSearch(m, this, ctx);
             ReturnToPatrol  = new AgentReturnToPatrol(m, this, ctx);

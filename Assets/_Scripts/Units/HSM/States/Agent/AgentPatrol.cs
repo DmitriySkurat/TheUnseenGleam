@@ -76,6 +76,13 @@ namespace HSM {
                 return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
             }
 
+            if (ctx.alertPending && !ctx.isBlindedByEnvironment)
+            {
+                ctx.alertPending      = false;
+                ctx.suspicionPosition = ctx.alertPosition;
+                return Machine != null ? Machine.GetState<AgentSearch>() : null;
+            }
+
             return null;
         }
 

@@ -25,6 +25,7 @@ namespace HSM {
             ctx.searchWaitTimer   = 0f;
             ctx.searchWanderTimer = 0f;
             ctx.pendingNoiseAlert = false;
+            ctx.alertPending      = false;
 
             _navigating              = false;
             _wandering               = false;
@@ -44,6 +45,19 @@ namespace HSM {
             {
                 _seenPlayerDuringLink = true;
                 ctx.suspicionPosition = ctx.vision.LastSeenPosition;
+            }
+
+            // Alert from another agent — перенаправляем поиск к точке тревоги
+            if (ctx.alertPending && !ctx.IsTraversingLink)
+            {
+                ctx.alertPending = false;
+                if (!ctx.isBlindedByEnvironment)
+                {
+                    ctx.suspicionPosition = ctx.alertPosition;
+                    _wandering            = false;
+                    _waitingAtWanderPoint = false;
+                    StartNavigatingToSearchPoint();
+                }
             }
 
             // New noise arrived — defer until jump finishes to avoid interrupting traversal

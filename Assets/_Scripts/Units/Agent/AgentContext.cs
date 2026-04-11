@@ -80,6 +80,11 @@ public class AgentContext
     public float pendingNoiseRadius;
     public Vector2 pendingNoisePosition;
 
+    // ===== ALERT (agent-to-agent cooperation) =====
+    public AgentAlertSystem alertSystem;
+    public bool alertPending;
+    public Vector2 alertPosition;
+
     // ===== DERIVED =====
     public bool IsTraversingLink => nav != null && nav.State == PlatNavState.TraversingLink;
     public bool IsWaitingAtPoint => patrolWaitTimer > 0f;

@@ -15,6 +15,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
     [SerializeField] private NoiseSystem noisePrefab;
     [SerializeField] private LightSystem lightPrefab;
     [SerializeField] private CameraFollow cameraPrefab;
+    [SerializeField] private AgentAlertSystem agentAlertSystemPrefab;
 
     public async Task InitializeAsync()
     {
@@ -31,6 +32,9 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         var camera = Instantiate(cameraPrefab);
         Services.Register(camera);
         
+
+        var alertSystem = Instantiate(agentAlertSystemPrefab);
+        Services.Register(alertSystem);
 
         var noise = Instantiate(noisePrefab);
         var light = Instantiate(lightPrefab);
@@ -53,6 +57,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Unregister<NoiseSystem>();
         Services.Unregister<LightSystem>();
         Services.Unregister<CameraFollow>();
+        Services.Unregister<AgentAlertSystem>();
     }
 
     // Временно, потом мб придумаю что-то

@@ -106,6 +106,15 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float GrabCooldown = 3f;
 
+    [Header("ALERT")]
+    [Tooltip("Длительность состояния Alert — агент стоит на месте и сигнализирует союзникам")]
+    [Min(0f)]
+    public float AlertDuration = 3f;
+
+    [Tooltip("Радиус (м), в котором другие агенты слышат тревогу и переходят в Search")]
+    [Min(0f)]
+    public float AlertHearRadius = 15f;
+
     [Header("INTERACTION")]
     [Tooltip("Layer mask for interactable objects (used by Linecast)")]
     public LayerMask InteractableLayer;

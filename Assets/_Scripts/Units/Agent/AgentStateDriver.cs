@@ -47,6 +47,10 @@ namespace HSM {
             if (_ctx.hearing != null)
                 _ctx.hearing.OnHeard += OnHeard;
 
+            // Forward alert broadcasts from other agents into context
+            _ctx.alertSystem = Services.Get<AgentAlertSystem>();
+            _ctx.alertSystem.OnAlertBroadcast += OnAlertReceived;
+
             _root = new AgentRoot(null, _ctx);
             var builder = new StateMachineBuilder(_root);
             _machine = builder.Build();
@@ -92,6 +96,9 @@ namespace HSM {
         {
             if (_ctx?.hearing != null)
                 _ctx.hearing.OnHeard -= OnHeard;
+
+            if (_ctx?.alertSystem != null)
+                _ctx.alertSystem.OnAlertBroadcast -= OnAlertReceived;
         }
 
         void OnHeard(NoiseEvent noise)
@@ -99,6 +106,16 @@ namespace HSM {
             _ctx.pendingNoiseAlert = true;
             _ctx.pendingNoiseRadius = noise.Radius;
             _ctx.pendingNoisePosition = noise.Position;
+        }
+
+        void OnAlertReceived(Vector2 position)
+        {
+            float dist = Vector2.Distance(_ctx.transform.position, position);
+            if (dist <= _ctx.stats.AlertHearRadius)
+            {
+                _ctx.alertPending  = true;
+                _ctx.alertPosition = position;
+            }
         }
 
 

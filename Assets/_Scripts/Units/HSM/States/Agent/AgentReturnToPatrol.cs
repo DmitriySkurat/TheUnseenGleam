@@ -70,6 +70,13 @@ namespace HSM {
                 }
             }
 
+            if (ctx.alertPending && !ctx.isBlindedByEnvironment)
+            {
+                ctx.alertPending      = false;
+                ctx.suspicionPosition = ctx.alertPosition;
+                return Machine != null ? Machine.GetState<AgentSearch>() : null;
+            }
+
             // Arrived at patrol start (or path failed) — hand off to AgentPatrol
             if (!_navigating)
                 return Machine != null ? Machine.GetState<AgentPatrol>() : null;

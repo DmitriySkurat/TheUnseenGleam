@@ -65,7 +65,7 @@ namespace HSM {
             if (ctx.IsTraversingLink) return null;
 
             if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
-                return Machine != null ? Machine.GetState<AgentPredictionChase>() : null;
+                return Machine != null ? Machine.GetState<AgentAlert>() : null;
 
             if (ctx.grabCooldownTimer <= 0f && ctx.playerTransform != null)
             {

@@ -67,6 +67,13 @@ namespace HSM {
             if (ctx.isBlindedByPlayer)
                 return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
 
+            if (ctx.alertPending && !ctx.isBlindedByEnvironment)
+            {
+                ctx.alertPending      = false;
+                ctx.suspicionPosition = ctx.alertPosition;
+                return Machine != null ? Machine.GetState<AgentSearch>() : null;
+            }
+
             // Still waiting out the suspicion window
             if (ctx.suspicionTimer > 0f) return null;
 
