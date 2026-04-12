@@ -69,6 +69,12 @@ namespace HSM {
         void StartGrab()
         {
             if (ctx.playerCtx == null) return;
+
+            // Переместить игрока перед агентом
+            float facingDir = ctx.transform.localScale.x >= 0f ? 1f : -1f;
+            Vector2 grabPos = (Vector2)ctx.transform.position + Vector2.right * (facingDir * ctx.stats.GrabPlayerOffset);
+            ctx.playerRb.position = grabPos;
+
             ctx.playerCtx.isGrabbed = true;
             ctx.playerCtx.grabEscapeCount = ctx.stats.GrabEscapeCount;
             ctx.grabOccurredInChase = true; // следующий захват в этой погоне будет повторным

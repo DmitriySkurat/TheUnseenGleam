@@ -106,6 +106,10 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float GrabCooldown = 3f;
 
+    [Tooltip("How far in front of the agent the player is placed when grabbed")]
+    [Min(0f)]
+    public float GrabPlayerOffset = 0.5f;
+
     [Header("ALERT")]
     [Tooltip("Длительность состояния Alert — агент стоит на месте и сигнализирует союзникам")]
     [Min(0f)]
