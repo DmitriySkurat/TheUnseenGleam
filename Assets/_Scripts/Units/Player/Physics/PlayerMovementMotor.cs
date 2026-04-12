@@ -30,8 +30,14 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
         _lastAppliedVelocityY = _ctx.velocity.y;
     }
     
-    void HandleGravity(float deltaTime) 
+    void HandleGravity(float deltaTime)
     {
+        if (_ctx.isGrabbed)
+        {
+            _ctx.velocity.y = 0f;
+            return;
+        }
+
         if (_ctx.isClimbing)
         {
             if (_ctx.onVines)
