@@ -11,7 +11,8 @@
       "Bash(grep -v \"\\\\.meta$\")",
       "Bash(xargs grep:*)",
       "Bash(grep -E \"\\\\.cs$\")",
-      "Bash(find \"D:/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/Player\" -type f -name \"*.cs\" -exec grep -l \"GetComponentInChildren\\\\|GetComponent\\\\|\\\\.child\\\\|Find\\\\|transform\\\\.\" {} \\\\;)"
+      "Bash(find \"D:/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/Player\" -type f -name \"*.cs\" -exec grep -l \"GetComponentInChildren\\\\|GetComponent\\\\|\\\\.child\\\\|Find\\\\|transform\\\\.\" {} \\\\;)",
+      "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -name \"*.cs\" -type f -exec grep -l \"OnCollisionEnter\\\\|OnTriggerEnter\\\\|Collider.*Agent\\\\|Agent.*Collider\" {} \\\\;)"
     ]
   }
 }

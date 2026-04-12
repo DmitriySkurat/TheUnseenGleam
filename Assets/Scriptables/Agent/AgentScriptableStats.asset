@@ -30,11 +30,16 @@ MonoBehaviour:
   SearchWanderDuration: 8
   SearchWanderDistance: 3
   BlindedByPlayerReactionTime: 0.5
+  BlindDurationToStun: 2
+  StunDuration: 3
+  BlindedByEnvironmentSpeed: 4
   GrabProximityGraceWindow: 0.4
   AttackRange: 1.5
   AttackFirstHitDelay: 0.05
   GrabEscapeCount: 10
   GrabCooldown: 1
+  AlertDuration: 3
+  AlertRadius: 15
   InteractableLayer:
     serializedVersion: 2
     m_Bits: 128

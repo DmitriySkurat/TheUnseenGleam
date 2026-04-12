@@ -61,6 +61,14 @@ namespace PlatNav
         [SerializeField] private int   runAwayDistance          = 10;
         // [SerializeField] private int   runAwayThresholdDistance = 15;
 
+        [Header("Separation")]
+        [SerializeField] private float separationRadius   = 1.2f;
+        [SerializeField] private float separationStrength = 3.0f;
+        [SerializeField] private float minWalkSpeed       = 0.5f;
+        [SerializeField] private LayerMask agentMask;
+        private float _separationNoise;
+        private static readonly Collider2D[] _separationBuffer = new Collider2D[8];
+
         [Header("Thresholds")]
         [SerializeField] private float nearTileDist       = 0.2f;
         [SerializeField] private LayerMask solidMask;
@@ -252,6 +260,7 @@ namespace PlatNav
         {
             _rb  = GetComponent<Rigidbody2D>();
             _col = GetComponent<Collider2D>();
+            _separationNoise = Random.Range(-0.08f, 0.08f);
         }
 
         public void Tick(float deltaTime)
@@ -424,6 +433,22 @@ namespace PlatNav
                 _walkTarget = SegmentCenter(_curSegIndex);
         }
 
+        private float ComputeSeparationX()
+        {
+            int count = Physics2D.OverlapCircleNonAlloc(transform.position, separationRadius, _separationBuffer, agentMask);
+            float repulseX = 0f;
+            for (int i = 0; i < count; i++)
+            {
+                if (_separationBuffer[i].gameObject == gameObject) continue;
+                Vector2 diff = (Vector2)transform.position - (Vector2)_separationBuffer[i].transform.position;
+                float dist = diff.magnitude;
+                if (dist < 0.001f) continue;
+                float t = 1f - dist / separationRadius;
+                repulseX += Mathf.Sign(diff.x) * t * separationStrength;
+            }
+            return repulseX;
+        }
+
         private void UpdateSegmentWalk()
         {
             if (!IsGrounded()) return; // wait for grounding
@@ -455,9 +480,14 @@ namespace PlatNav
                 return;
             }
 
-            // Walk horizontally
+            // Walk horizontally with separation
             float dir = Mathf.Sign(toTarget.x);
-            _rb.linearVelocity = new Vector2(dir * walkSpeed, _rb.linearVelocity.y);
+            float separationX = ComputeSeparationX();
+            float velX = dir * walkSpeed + separationX + _separationNoise * walkSpeed;
+            // Anti-stop: never let agent fully stop or reverse due to separation
+            if (Mathf.Abs(velX) < minWalkSpeed || Mathf.Sign(velX) != dir)
+                velX = dir * minWalkSpeed;
+            _rb.linearVelocity = new Vector2(velX, _rb.linearVelocity.y);
             SetFacingFromDirection(dir);
         }
 
