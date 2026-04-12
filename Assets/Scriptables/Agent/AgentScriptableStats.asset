@@ -38,8 +38,9 @@ MonoBehaviour:
   AttackFirstHitDelay: 0.05
   GrabEscapeCount: 10
   GrabCooldown: 1
+  GrabPlayerOffset: 0.5
   AlertDuration: 3
-  AlertRadius: 15
+  AlertRadius: 18
   InteractableLayer:
     serializedVersion: 2
     m_Bits: 128

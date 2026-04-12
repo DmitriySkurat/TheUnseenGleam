@@ -38,6 +38,8 @@ namespace HSM {
 
         protected override void OnExit()
         {
+            ctx.isGrabbingPlayer = false;
+
             // Гарантированно снимаем захват при любом выходе из состояния
             if (ctx.playerCtx != null)
                 ctx.playerCtx.isGrabbed = false;
@@ -75,6 +77,7 @@ namespace HSM {
             Vector2 grabPos = (Vector2)ctx.transform.position + Vector2.right * (facingDir * ctx.stats.GrabPlayerOffset);
             ctx.playerRb.position = grabPos;
 
+            ctx.isGrabbingPlayer = true;
             ctx.playerCtx.isGrabbed = true;
             ctx.playerCtx.grabEscapeCount = ctx.stats.GrabEscapeCount;
             ctx.grabOccurredInChase = true; // следующий захват в этой погоне будет повторным

@@ -115,6 +115,9 @@ public class AgentVision : MonoBehaviour, IInitializable
 
     private bool CheckPlayerVisibility(Vector2 targetPosition)
     {
+        if (_playerContext != null && _playerContext.isGrabbed)
+            return false;
+
         if (_playerContext != null && _playerContext.isHiding && !_canSeeWhilePlayerHidden)
             return false;
 

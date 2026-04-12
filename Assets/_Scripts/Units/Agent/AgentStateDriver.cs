@@ -103,6 +103,9 @@ namespace HSM {
 
         void OnHeard(NoiseEvent noise)
         {
+            if (_ctx.playerCtx != null && _ctx.playerCtx.isGrabbed)
+                return;
+
             _ctx.pendingNoiseAlert = true;
             _ctx.pendingNoiseRadius = noise.Radius;
             _ctx.pendingNoisePosition = noise.Position;

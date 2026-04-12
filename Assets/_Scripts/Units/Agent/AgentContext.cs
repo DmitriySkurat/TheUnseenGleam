@@ -64,6 +64,8 @@ public class AgentContext
     public float grabCooldownTimer;
     // true после первого захвата в текущей погоне; сбрасывается при входе в AgentChase
     public bool grabOccurredInChase;
+    // true пока именно этот агент удерживает игрока
+    public bool isGrabbingPlayer;
 
     // ===== BLINDING =====
     // true если агент в данный момент ослеплён светом игрока
