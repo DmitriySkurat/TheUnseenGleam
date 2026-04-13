@@ -14,7 +14,10 @@
       "Bash(find \"D:/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts/Units/Player\" -type f -name \"*.cs\" -exec grep -l \"GetComponentInChildren\\\\|GetComponent\\\\|\\\\.child\\\\|Find\\\\|transform\\\\.\" {} \\\\;)",
       "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -name \"*.cs\" -type f -exec grep -l \"OnCollisionEnter\\\\|OnTriggerEnter\\\\|Collider.*Agent\\\\|Agent.*Collider\" {} \\\\;)",
       "Bash(ls -la /d/BSUIR/Diploma/TheUnseenGleam/Assets/*.asset)",
-      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets -name \"*.asset.meta\" -exec grep -l \"cb2beddb433d8a94bb6514d785699e77\" {} \\\\;)"
+      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets -name \"*.asset.meta\" -exec grep -l \"cb2beddb433d8a94bb6514d785699e77\" {} \\\\;)",
+      "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Library\\\\PackageCache\\\\com.unity.render-pipelines.universal\"*/Runtime -name \"Sprite-Unlit*\" -o -name \"Sprite-Lit*\")",
+      "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\" -name \"*.mat.meta\" -exec grep -l \"ebd06b47762511c46a9b9ee207874baf\" {} \\\\;)",
+      "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\Scenes\" -name \"*.unity\" -exec grep -l \"Light2D\" {} \\\\;)"
     ]
   }
 }
