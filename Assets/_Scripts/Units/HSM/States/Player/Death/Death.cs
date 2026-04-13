@@ -18,12 +18,15 @@ namespace HSM
         protected override void OnEnter()
         {
             ctx.velocity = Vector2.zero;
-            
+
             ctx.currentNoiseRadius = 0f;
             ctx.currentFootstepInterval = 0f;
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
             
+            Debug.Log("Player has died. Ending session...");
+            Services.Get<SessionEndHandler>().EndSession();
+
             base.OnEnter();
         }
     }

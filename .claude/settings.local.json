@@ -19,7 +19,8 @@
       "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\" -name \"*.mat.meta\" -exec grep -l \"ebd06b47762511c46a9b9ee207874baf\" {} \\\\;)",
       "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\Scenes\" -name \"*.unity\" -exec grep -l \"Light2D\" {} \\\\;)",
       "Read(//d D:/BSUIR/Diploma/**)",
-      "Bash(find \"Assets\\\\_Scripts\\\\Units\\\\HSM\\\\States\\\\Agent\" -name \"*.cs\" -exec grep -l \"pendingNoise\" {} \\\\;)"
+      "Bash(find \"Assets\\\\_Scripts\\\\Units\\\\HSM\\\\States\\\\Agent\" -name \"*.cs\" -exec grep -l \"pendingNoise\" {} \\\\;)",
+      "Bash(grep -E \"\\\\.\\(cs\\)$\")"
     ]
   }
 }

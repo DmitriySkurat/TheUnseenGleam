@@ -37,10 +37,13 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         var noise = Instantiate(noisePrefab);
         var light = Instantiate(lightPrefab);
         var alert = Instantiate(agentAlertSystemPrefab);
+        var sessionEndHandler = new GameObject("SessionEndHandler").AddComponent<SessionEndHandler>();
+        
 
         Services.Register(noise);
         Services.Register(light);
         Services.Register(alert);
+        Services.Register(sessionEndHandler);
 
         services.Add(noise);
         services.Add(light);
@@ -51,7 +54,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         
         await Task.WhenAll(services.Select(s => s.InitializeAsync()));
     }
-    
+
     public void Dispose()
     {
         Services.Unregister<PlayerContext>();
@@ -59,6 +62,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Unregister<LightSystem>();
         Services.Unregister<CameraFollow>();
         Services.Unregister<AgentAlertSystem>();
+        Services.Unregister<SessionEndHandler>();
     }
 
     // Временно, потом мб придумаю что-то
