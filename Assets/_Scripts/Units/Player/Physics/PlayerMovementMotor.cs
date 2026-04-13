@@ -7,6 +7,7 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
     private PlayerContext _ctx;
     private Rigidbody2D _rb;
     private float _lastAppliedVelocityY;
+    private float _lastAppliedVelocityX;
 
     public void Initialize()
     {
@@ -24,10 +25,16 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
         if (_lastAppliedVelocityY > 0 && _rb.linearVelocity.y <= 0)
             _ctx.velocity.y = _rb.linearVelocity.y;
 
+        // Если физика остановила горизонтальное движение (удар о стену) — синхронизируемся
+        if (_lastAppliedVelocityX > 0 && _rb.linearVelocity.x <= 0 ||
+            _lastAppliedVelocityX < 0 && _rb.linearVelocity.x >= 0)
+            _ctx.velocity.x = _rb.linearVelocity.x;
+
         UpdateMovementGrace(Time.fixedDeltaTime);
         HandleGravity(Time.fixedDeltaTime);
         ApplyMovement();
         _lastAppliedVelocityY = _ctx.velocity.y;
+        _lastAppliedVelocityX = _ctx.velocity.x;
     }
     
     void HandleGravity(float deltaTime)
@@ -72,6 +79,23 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
 
     void ApplyMovement()
     {
-        _rb.linearVelocity = _ctx.velocity; 
-    } 
+        ClampVelocityAgainstWalls();
+        _rb.linearVelocity = _ctx.velocity;
+    }
+
+    void ClampVelocityAgainstWalls()
+    {
+        if (_ctx.velocity.x == 0f || _ctx.coll == null || _ctx.stats == null) return;
+        if (!(_ctx.coll is CapsuleCollider2D col)) return;
+
+        bool cachedQuery = Physics2D.queriesStartInColliders;
+        Physics2D.queriesStartInColliders = false;
+
+        Vector2 dir = _ctx.velocity.x > 0f ? Vector2.right : Vector2.left;
+        bool wallHit = Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0f, dir, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
+
+        Physics2D.queriesStartInColliders = cachedQuery;
+
+        if (wallHit) _ctx.velocity.x = 0f;
+    }
 }
