@@ -16,7 +16,7 @@ public class MagicalMirror : MonoBehaviour, IInitializable
 
     [Header("Charging")]
     [SerializeField, Min(0f)] private float chargePerSecond = 10f;
-    [SerializeField, Min(0f)] private float minLightStrengthToCharge = 0.1f;
+    [SerializeField, Min(0f)] private float minLightStrengthToCharge = 1f;
     [SerializeField] private bool chargeOnlyWhenGrounded = true;
 
     [Header("Usage")]

@@ -12,7 +12,7 @@ public class VignetteController : MonoBehaviour, IInitializable
     [SerializeField] private float aimIntensity = 0.25f;
 
     [Header("Light Influence")]
-    [SerializeField, Min(0f)] private float maxLightStrength = 1f;
+    [SerializeField, Min(0f)] private float maxLightStrength = 8f;
     [SerializeField, Range(0f, 1f)] private float minIntensityInLight = 0.05f;
     [SerializeField, Range(0f, 1f)] private float lightInfluence = 1f;
     [SerializeField, Range(0f, 5f)] private float lightDecreaseDelay = 0.5f;

@@ -26,7 +26,7 @@ public class AgentVision : MonoBehaviour, IInitializable
     [SerializeField, Min(0f)] private float visibilityMultiplier = 1f;
     [SerializeField] private LayerMask occlusionMask;
     [Tooltip("Минимальная освещённость игрока, при которой прижатие к стене скрывает его от зрения агента")]
-    [SerializeField, Min(0f)] private float pressedToWallLightThreshold = 0.5f;
+    [SerializeField, Min(0f)] private float pressedToWallLightThreshold = 2.5f;
 
     [Header("Debug")]
     [SerializeField] private bool drawGizmos = true;

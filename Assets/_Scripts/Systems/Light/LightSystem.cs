@@ -96,7 +96,10 @@ public class LightSystem : MonoBehaviour, ISceneService
     {
         if (light == null) return false;
         // Unity uses LightType.Point for point/spot 2D lights; global lights are excluded.
-        return light.lightType == Light2D.LightType.Point;
+        if (light.lightType != Light2D.LightType.Point) return false;
+        // Cosmetic lights are visual-only and must not affect game logic.
+        if (light.GetComponent<CosmeticLight>() != null) return false;
+        return true;
     }
 }
 

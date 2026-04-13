@@ -16,7 +16,7 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
     [SerializeField, Min(1)] private int glareMaxSamples = 24;
 
     [Header("Glare Strength")]
-    [SerializeField, Min(0f)] private float maxGlareStrength = 2f;
+    [SerializeField, Min(0f)] private float maxGlareStrength = 6f;
     [SerializeField, Range(0f, 1f)] private float minGlareVisibilityMultiplier = 0.3f;
     [SerializeField, Range(0f, 45f)] private float glareRayAngleOffset = 5f;
     [Tooltip("If difference between two light samples is less than this value, previous result is reused (optimization only).")]
@@ -25,8 +25,8 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
 
     [Header("Blindness")]
     [SerializeField] private bool blindWhenInStrongLight = true;
-    [SerializeField, Min(0f)] private float blindStartStrength = 1f;
-    [SerializeField, Min(0f)] private float blindFullStrength = 2f;
+    [SerializeField, Min(0f)] private float blindStartStrength = 4f;
+    [SerializeField, Min(0f)] private float blindFullStrength = 8f;
 
     [Header("Debug Glare Rays")]
     [SerializeField] private bool drawGlareRays = true;
