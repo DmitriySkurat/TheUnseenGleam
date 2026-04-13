@@ -70,6 +70,20 @@ public class AudioManager : MonoBehaviour, IService
         source.PlayOneShot(clip, volume);
     }
 
+    // Звук остаётся в мировой позиции worldPosition и не следует за игроком.
+    public void PlaySfxAtPoint(AudioClip clip, Vector3 worldPosition, float volume = 1f, float pitch = 1f)
+    {
+        if (clip == null) return;
+
+        var source = GetFreeSource();
+        if (source == null) return;
+
+        source.transform.position = worldPosition;
+        source.spatialBlend = 1f;
+        source.pitch = pitch;
+        source.PlayOneShot(clip, volume);
+    }
+
     public void PlayUiSound(AudioClip clip)
     {
         // UI обычно звучит без пространственного позиционирования

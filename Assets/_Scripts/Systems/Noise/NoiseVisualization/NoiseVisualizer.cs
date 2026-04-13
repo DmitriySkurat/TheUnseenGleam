@@ -59,6 +59,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
     {
         NoiseType.Breathing    => true,
         NoiseType.Footstep     => noise.Radius >= _noiseStats.MinFootstepVisualizationRadius,
+        NoiseType.Jump         => true,
         NoiseType.Landing      => true,
         NoiseType.ObjectImpact => true,
         _                      => false
@@ -126,7 +127,7 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
         }
         else
         {
-            wave = Instantiate(wavePrefab, noise.Position, Quaternion.identity, transform);
+            wave = Instantiate(wavePrefab, noise.Position, Quaternion.identity, null);
         }
 
         wave.Init(noise.Radius, duration);

@@ -95,6 +95,9 @@ public class PlayerScriptableStats : ScriptableObject
     public float PressToWallStaminaBreathDrainMultiplier = 1f;
 
     [Header("JUMP")]
+    [Tooltip("Sound played at the moment of jump (stays at jump position)")]
+    public AudioClip JumpClip;
+
     [Tooltip("The immediate velocity applied when jumping")]
     public float JumpPower = 36;
 

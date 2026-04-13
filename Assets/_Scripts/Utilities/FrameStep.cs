@@ -4,25 +4,11 @@ namespace Utility
 {
     public class FrameStep : MonoBehaviour
     {
-        void Start()
-        {
-            Time.timeScale = 0f; // стоп
-        }
+        [SerializeField] private float timeScale = 0.1f;
 
         void Update()
         {
-            StepFrame();
-        }
-
-        void StepFrame()
-        {
-            StartCoroutine(Step());
-        }
-
-        System.Collections.IEnumerator Step()
-        {
-            Time.timeScale = 0.1f;
-            yield return null;
+            Time.timeScale = timeScale;
         }
     }
 }
