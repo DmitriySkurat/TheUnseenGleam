@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7718836552938084601
+--- !u!1 &3927519052673628868
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9093188059125383805}
-  - component: {fileID: 3925677281339909014}
+  - component: {fileID: 2440677482723947206}
+  - component: {fileID: 9078426006806687675}
   m_Layer: 0
-  m_Name: GameServiceRegistry
+  m_Name: SceneTransitionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9093188059125383805
+--- !u!4 &2440677482723947206
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7718836552938084601}
+  m_GameObject: {fileID: 3927519052673628868}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.25927, y: -4.72923, z: 0}
+  m_LocalPosition: {x: -215.26439, y: 11.27082, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3925677281339909014
+--- !u!114 &9078426006806687675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7718836552938084601}
+  m_GameObject: {fileID: 3927519052673628868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ccc64451c2f9ba49a1a29cacc45c8e5, type: 3}
+  m_Script: {fileID: 11500000, guid: eb34a6b277c3c5a44b16de18200fb370, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ServiceRegistry
-  inputPrefab: {fileID: 9020149287889322270, guid: 8f49e04fe160ffb448dbb6bfb6a550d7, type: 3}
-  audioPrefab: {fileID: 2697390914540577186, guid: dbd8401b3da2e0f4b8c6d98f616ea0c2, type: 3}
-  sceneTransitionManagerPrefab: {fileID: 9078426006806687675, guid: e1a7b25b9157470419ef469ba782b3b3, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::SceneTransitionManager

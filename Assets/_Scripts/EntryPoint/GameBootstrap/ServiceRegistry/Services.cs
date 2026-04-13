@@ -23,6 +23,11 @@ public static class Services
             _services.Remove(type);
     }
 
+    public static bool IsRegistered<T>() where T : class
+    {
+        return _services.ContainsKey(typeof(T));
+    }
+
     public static T Get<T>() where T : class
     {
         var type = typeof(T);

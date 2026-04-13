@@ -29,10 +29,14 @@ namespace EntryPoint
 
         private IEnumerator InitializeAndBootstrap()
         {
-            var task = serviceRegistry.InitializeAsync();
-
-            while (!task.IsCompleted)
-                yield return null;
+            // Пропускаем инициализацию глобальных сервисов, если они уже зарегистрированы
+            // (например, при аддитивной загрузке сцены через SceneTransitionManager)
+            if (!Services.IsRegistered<InputManager>())
+            {
+                var task = serviceRegistry.InitializeAsync();
+                while (!task.IsCompleted)
+                    yield return null;
+            }
 
             StartCoroutine(Bootstrap());
         }
