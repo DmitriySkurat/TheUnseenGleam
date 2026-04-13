@@ -115,6 +115,18 @@ namespace HSM {
                 return Machine != null ? Machine.GetState<AgentChase>() : null;
             }
 
+            // Игрок прижат к стене в свету — зрение заблокировано, но позиция известна по шуму.
+            // Если агент вплотную — хватаем напрямую, не ждём восстановления зрения.
+            if (ctx.vision != null && ctx.vision.IsPlayerExposedInLight
+                && ctx.playerTransform != null
+                && ctx.grabCooldownTimer <= 0f)
+            {
+                float dist = Vector2.Distance(ctx.transform.position, ctx.playerTransform.position);
+                bool playerAlreadyGrabbed = ctx.playerCtx != null && ctx.playerCtx.isGrabbed;
+                if (dist <= ctx.stats.AttackRange && !playerAlreadyGrabbed)
+                    return Machine != null ? Machine.GetState<AgentGrabPlayer>() : null;
+            }
+
             if (_wandering && ctx.searchWanderTimer <= 0f)
                 return Machine != null ? Machine.GetState<AgentReturnToPatrol>() : null;
 
