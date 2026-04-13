@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7246025787013548635}
   - component: {fileID: 4237522486028986871}
+  - component: {fileID: 4040237966744034866}
   m_Layer: 0
   m_Name: LightSystem
   m_TagString: Untagged
@@ -49,3 +50,18 @@ MonoBehaviour:
   globalLightIntensity: 0.05
   globalLightColor: {r: 1, g: 1, b: 1, a: 1}
   includeInactiveSpotLights: 1
+--- !u!114 &4040237966744034866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2204820244360231336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d75983b702aa1e418bf5a0fa572e3fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ListenModeLightingController
+  listenGlobalIntensity: 1
+  smoothSpeed: 2
+  disableThreshold: 1

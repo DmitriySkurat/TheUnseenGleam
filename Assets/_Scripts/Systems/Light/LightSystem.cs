@@ -35,6 +35,9 @@ public class LightSystem : MonoBehaviour, ISceneService
         await Task.CompletedTask;
     }
     
+    public float GlobalLightIntensity => _globalLightInstance != null ? _globalLightInstance.intensity : globalLightIntensity;
+    public Color GlobalLightColor => _globalLightInstance != null ? _globalLightInstance.color : globalLightColor;
+
     public void UpdateGlobalLight(float intensity, Color color)
     {
         if (_globalLightInstance != null)
