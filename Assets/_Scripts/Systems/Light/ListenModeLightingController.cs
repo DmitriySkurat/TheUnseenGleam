@@ -98,7 +98,10 @@ public class ListenModeLightingController : MonoBehaviour, IInitializable
             {
                 // Восстанавливаем: сначала включаем, потом плавно возвращаем intensity
                 if (!light.enabled)
-                    light.enabled = true;
+                {
+                    light.intensity = _currentGlobalIntensity;
+                    light.enabled   = true;
+                }
 
                 light.intensity = Mathf.Lerp(light.intensity, snap.originalIntensity, Time.deltaTime * smoothSpeed);
             }
