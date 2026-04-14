@@ -31,6 +31,12 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         if (_ctx == null)
             return;
 
+        foreach (var field in typeof(FrameInput).GetFields())
+        {
+            var value = field.GetValue(_frameInput);
+            Debug.Log($"{field.Name}: {value}");
+        }
+
         _frameInput.JumpDown = false;
         _frameInput.InteractDown = false;
         _frameInput.AttackDown = false;
@@ -44,6 +50,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         if (_ctx == null)
             return;
 
+        
+        
         // Схваченный игрок не может использовать способности (ЛКМ и ПКМ)
         if (_ctx.isGrabbed)
         {
