@@ -4,8 +4,10 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.Rendering;
 
-public class OptionsController : MonoBehaviour
+public class OptionsController : MonoBehaviour, ISceneLifecycle
 {
+    public InitializationOrder Order => InitializationOrder.UI;
+
     public Slider slider;
     public Toggle fullScreenToggle;
 
@@ -14,28 +16,17 @@ public class OptionsController : MonoBehaviour
 
     private GameObject menuButtonsParent;
     
-    public void Update()
+    private InputManager _inputManager;
+    
+    public void Initialize()
     {
-        AudioListener.volume = slider.value;
-
-        if (InputSystem.Escape() && gameObject.activeSelf)
-        {
-            CloseSettings();
-        }
-    }
-
-    public void CloseSettings()
-    {
-        SaveSettings();
-        gameObject.SetActive(false);
-
-        if (menuButtonsParent != null)
-            menuButtonsParent.SetActive(true);
-    }
-
-
-    private void Start()
-    {
+        
+        _inputManager = Services.Get<InputManager>();
+        
+        _inputManager.OnEscape += HandleEscape;
+        
+        menuButtonsParent = transform.parent.gameObject;
+        
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
         resolutions = Screen.resolutions;
@@ -54,6 +45,35 @@ public class OptionsController : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
         LoadSettings(currentResolutionIndex);
     }
+    
+    public void Dispose()
+    {
+        _inputManager.OnEscape -= HandleEscape;
+    }
+    
+    public void HandleEscape()
+    {
+        if (gameObject.activeSelf)
+        {
+            CloseSettings();
+        }
+    }
+    
+    
+    public void Update()
+    {
+        AudioListener.volume = slider.value;    
+    }
+
+    public void CloseSettings()
+    {
+        SaveSettings();
+        gameObject.SetActive(false);
+
+        if (menuButtonsParent != null)
+            menuButtonsParent.SetActive(true);
+    }
+    
 
     public void SetResolution(int resolutionIndex)
     {

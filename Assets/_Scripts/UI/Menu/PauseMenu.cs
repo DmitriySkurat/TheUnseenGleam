@@ -1,15 +1,21 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : MonoBehaviour, ISceneLifecycle
 {
+    public InitializationOrder Order => InitializationOrder.UI;
+    
     public static bool isPaused = false;
     public GameObject pauseGameMenu;
     public GameObject optionsMenu;
     private OptionsController optionsController;
+    
+    private InputManager _inputManager;
 
-    private void Start()
+    public void Initialize()
     {
+        _inputManager = Services.Get<InputManager>();
+        
         if (optionsMenu)
             optionsController = optionsMenu.GetComponent<OptionsController>();
 
@@ -18,29 +24,37 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         if (pauseGameMenu)
             pauseGameMenu.SetActive(false);
+            
+        _inputManager.OnEscape += HandleEscape;
+    }
+    
+    public void Dispose()
+    {
+        // Ensure time scale is reset when the scene is unloaded
+        Time.timeScale = 1f;
+        
+        _inputManager.OnEscape -= HandleEscape;
     }
 
-    private void Update()
+    private void HandleEscape()
     {
-        if (InputSystem.Escape())
+        if (optionsMenu && optionsMenu.activeSelf)
         {
-            if (optionsMenu && optionsMenu.activeSelf)
-            {
-                if (optionsController)
-                    optionsController.CloseSettings();
-                else
-                    optionsMenu.SetActive(false);
-                return;
-            }
-            if (isPaused)
-            {
-                Resume();
-            }
+            if (optionsController)
+                optionsController.CloseSettings();
             else
-            {
-                Pause();
-            }
+                optionsMenu.SetActive(false);
+            return;
         }
+        if (isPaused)
+        {
+            Resume();
+        }
+        else
+        {
+            Pause();
+        }
+        
     }
 
     public void Resume()

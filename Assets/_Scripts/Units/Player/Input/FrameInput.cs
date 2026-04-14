@@ -14,8 +14,6 @@ public struct FrameInput
 
     public int SlotPressed;
     
-    public bool EscapeDown;
-    
     
     public Vector2 MousePosition;
     public bool LookAroundHeld;
