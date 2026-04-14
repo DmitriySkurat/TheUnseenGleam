@@ -1,39 +1,39 @@
-// using UnityEngine;
-// using UnityEngine.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-// public class DeathMenu : MonoBehaviour
-// {
-//     public GameObject deathGameMenu;
+public class DeathMenu : MonoBehaviour
+{
+    public GameObject deathGameMenu;
 
-//     private bool isDeathMenuActive = false;
+    private bool isDeathMenuActive = false;
 
-//     private void Start()
-//     {
-//         PlayerController.OnPlayerDied += ActivateDeathMenu;
-//     }
+    // private void Start()
+    // {
+    //     PlayerController.OnPlayerDied += ActivateDeathMenu;
+    // }
 
-//     private void ActivateDeathMenu()
-//     {
-//         isDeathMenuActive = true;
-//         deathGameMenu.SetActive(true);
-//     }
+    private void ActivateDeathMenu()
+    {
+        isDeathMenuActive = true;
+        deathGameMenu.SetActive(true);
+    }
 
-//     public void Respawn()
-//     {
-//         deathGameMenu.SetActive(false);
-//         isDeathMenuActive = false;
+    public void Respawn()
+    {
+        deathGameMenu.SetActive(false);
+        isDeathMenuActive = false;
 
-//         SceneManager.LoadScene("Demo");
-//     }
+        Utility.SceneLoader.Load("Demo");
+    }
 
-//     public void loadMenu()
-//     {
-//         Time.timeScale = 1f;
-//         SceneManager.LoadScene("Menu");
-//     }
+    public void loadMenu()
+    {
+        Time.timeScale = 1f;
+        Utility.SceneLoader.Load("Menu");
+    }
 
-//     private void OnDestroy()
-//     {
-//         PlayerController.OnPlayerDied -= ActivateDeathMenu;
-//     }
-// }
+    // private void OnDestroy()
+    // {
+    //     PlayerController.OnPlayerDied -= ActivateDeathMenu;
+    // }
+}
