@@ -23,7 +23,7 @@ public class InputManager : MonoBehaviour, IService
     public event Action OnSlot4;
     public event Action OnSlot5;
     
-    public event Action Escape;
+    public event Action OnEscape;
     
     
     // Mouse
@@ -176,7 +176,7 @@ public class InputManager : MonoBehaviour, IService
     private void HandleSlot4(InputAction.CallbackContext ctx) => OnSlot4?.Invoke();
     private void HandleSlot5(InputAction.CallbackContext ctx) => OnSlot5?.Invoke();
     
-    private void HandleEscape(InputAction.CallbackContext ctx) => Escape?.Invoke();
+    private void HandleEscape(InputAction.CallbackContext ctx) => OnEscape?.Invoke();
     
     // Mouse
     private void HandleMousePosition(InputAction.CallbackContext ctx) => OnMousePositionChanged?.Invoke(ctx.ReadValue<Vector2>());

@@ -35,6 +35,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.InteractDown = false;
         _frameInput.AttackDown = false;
         _frameInput.SlotPressed = 0;
+        _frameInput.EscapeDown = false;
 
         SyncContextInput();
     }
@@ -76,6 +77,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnSlot4 += HandleSlot4;
         _inputManager.OnSlot5 += HandleSlot5;
         
+        _inputManager.OnEscape += HandleEscape;
+        
+        
         _inputManager.OnMousePositionChanged += HandleMousePosition;
         _inputManager.OnLookAroundToggled += HandleLookAroundInput;
         _inputManager.OnLMBStarted += HandleLMBStarted;
@@ -103,6 +107,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnSlot3 -= HandleSlot3;
         _inputManager.OnSlot4 -= HandleSlot4;
         _inputManager.OnSlot5 -= HandleSlot5;
+        
+        _inputManager.OnEscape -= HandleEscape;
+        
         
         _inputManager.OnMousePositionChanged -= HandleMousePosition;
         _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
@@ -186,6 +193,12 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     void HandleSlot3() { _frameInput.SlotPressed = 3; SyncContextInput(); }
     void HandleSlot4() { _frameInput.SlotPressed = 4; SyncContextInput(); }
     void HandleSlot5() { _frameInput.SlotPressed = 5; SyncContextInput(); }
+    
+    void HandleEscape()
+    {
+        _frameInput.EscapeDown = true;
+        SyncContextInput();
+    }
     
     
     // Mouse
