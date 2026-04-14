@@ -21,7 +21,7 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
 
         // Reset pause state on scene start
         isPaused = false;
-        Time.timeScale = 1f;
+
         if (pauseGameMenu)
             pauseGameMenu.SetActive(false);
             

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+// using UnityEngine.EventSystems;
+// using UnityEngine.InputSystem.UI;
 
 using Object = UnityEngine.Object;
 
@@ -47,6 +49,8 @@ namespace EntryPoint
             // Скрываем курсор для погружения в игру
             //Cursor.visible = false;
             
+            //EnsureEventSystem();
+
             var task = _serviceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)
@@ -60,6 +64,18 @@ namespace EntryPoint
             _logger?.Log("Scene initialization complete", this);
         }
         
+        // private void EnsureEventSystem()
+        // {
+        //     if (Object.FindAnyObjectByType<EventSystem>() != null)
+        //         return;
+
+        //     var eventSystemObject = new GameObject("EventSystem");
+        //     eventSystemObject.AddComponent<EventSystem>();
+        //     eventSystemObject.AddComponent<InputSystemUIInputModule>();
+
+        //     _logger?.Log("Created missing EventSystem for UI mouse input", eventSystemObject);
+        // }
+
         private void FindInializableObjects()
         {
             _initializables = Object
