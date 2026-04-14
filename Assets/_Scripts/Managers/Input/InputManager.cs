@@ -89,7 +89,7 @@ public class InputManager : MonoBehaviour, IService
         actions["Slot4"].performed += HandleSlot4;
         actions["Slot5"].performed += HandleSlot5;
         
-        actions["Escape"].performed += HandleEscape;
+        actions["Escape"].performed += HandleOnEscape;
         
         
         actions["MousePosition"].performed += HandleMousePosition;
@@ -131,7 +131,7 @@ public class InputManager : MonoBehaviour, IService
         actions["Slot4"].performed -= HandleSlot4;
         actions["Slot5"].performed -= HandleSlot5;
         
-        actions["Escape"].performed -= HandleEscape;
+        actions["Escape"].performed -= HandleOnEscape;
         
         
         actions["MousePosition"].performed -= HandleMousePosition;
@@ -176,7 +176,7 @@ public class InputManager : MonoBehaviour, IService
     private void HandleSlot4(InputAction.CallbackContext ctx) => OnSlot4?.Invoke();
     private void HandleSlot5(InputAction.CallbackContext ctx) => OnSlot5?.Invoke();
     
-    private void HandleEscape(InputAction.CallbackContext ctx) => OnEscape?.Invoke();
+    private void HandleOnEscape(InputAction.CallbackContext ctx) => OnEscape?.Invoke();
     
     // Mouse
     private void HandleMousePosition(InputAction.CallbackContext ctx) => OnMousePositionChanged?.Invoke(ctx.ReadValue<Vector2>());

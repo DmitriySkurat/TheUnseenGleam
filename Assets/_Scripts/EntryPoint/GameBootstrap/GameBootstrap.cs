@@ -31,17 +31,18 @@ namespace EntryPoint
             while (!task.IsCompleted)
                 yield return null;
             
-            // Имитация загрузки
-            var loadingDuration = 1f;
-            while(loadingDuration > 0f) {
-                loadingDuration -= Time.deltaTime;
-                Debug.Log("Loading... " + (1f - loadingDuration) * 100f + "%");
-                yield return null;
-            }
-            Debug.Log("Loading complete! Starting game...");
+            // // Имитация загрузки
+            // var loadingDuration = 1f;
+            // while(loadingDuration > 0f) {
+            //     loadingDuration -= Time.deltaTime;
+            //     Debug.Log("Loading... " + (1f - loadingDuration) * 100f + "%");
+            //     yield return null;
+            // }
+            // Debug.Log("Loading complete! Starting game...");
             
+            Debug.Log("Game loaded.");
             
-            Utility.SceneLoader.Load("MainScene");
+            //Utility.SceneLoader.Load("MainScene");
         }
     }
 }
