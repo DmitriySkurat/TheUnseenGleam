@@ -23,6 +23,8 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
         
         _inputManager = Services.Get<InputManager>();
         
+        if (_inputManager == null) Debug.Log("_inputManager is null");
+        
         _inputManager.OnEscape += HandleEscape;
         
         menuButtonsParent = transform.parent.gameObject;

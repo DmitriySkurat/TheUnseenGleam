@@ -8,7 +8,6 @@ using System.Linq;
 
 public class GameplaySceneServiceRegistry : MonoBehaviour
 {
-    
     [SerializeField] private PlayerScriptableStats stats;
     [SerializeField] private NoiseScriptableStats noiseStats;
     
