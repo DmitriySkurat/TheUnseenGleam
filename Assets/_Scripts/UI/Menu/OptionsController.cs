@@ -90,6 +90,11 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
 
         Debug.Log("Settings saved");
     }
+    
+    public void SetFullScreen(bool isFullScreen)
+    {
+        Screen.fullScreen = isFullScreen;
+    }
 
     public void LoadSettings(int currentResolutionIndex)
     {

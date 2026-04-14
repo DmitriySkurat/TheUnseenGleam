@@ -6,6 +6,8 @@ public class PlayerHealth : MonoBehaviour, IInitializable
     private PlayerContext _ctx;
     private float _currentHealth;
     
+    public float CurrentHealth => _currentHealth;
+    
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
