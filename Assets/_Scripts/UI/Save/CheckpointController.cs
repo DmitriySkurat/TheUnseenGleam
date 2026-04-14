@@ -1,51 +1,51 @@
-using UnityEngine;
-public class CheckpointController : MonoBehaviour
-{
-    public Transform playerTransform;
-    public int index;
+// using UnityEngine;
+// public class CheckpointController : MonoBehaviour
+// {
+//     public Transform playerTransform;
+//     public int index;
 
-    public Sprite activatedCheckpointSprite;
-    private SpriteRenderer spriteRenderer;
+//     public Sprite activatedCheckpointSprite;
+//     private SpriteRenderer spriteRenderer;
 
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+//     private void Awake()
+//     {
+//         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        if (playerTransform == null)
-            playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+//         if (playerTransform == null)
+//             playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        UpdateState();
-    }
+//         UpdateState();
+//     }
 
-    public void UpdateState()
-    {
-        if (SaveVariables.checkpointIndex >= index)
-        {
-            if (activatedCheckpointSprite != null)
-            {
-                spriteRenderer.sprite = activatedCheckpointSprite;
-            }
-            if (SaveVariables.checkpointIndex == index)
-            {
-                playerTransform.position = transform.position;
-            }
-        }
-    }
+//     public void UpdateState()
+//     {
+//         if (SaveVariables.checkpointIndex >= index)
+//         {
+//             if (activatedCheckpointSprite != null)
+//             {
+//                 spriteRenderer.sprite = activatedCheckpointSprite;
+//             }
+//             if (SaveVariables.checkpointIndex == index)
+//             {
+//                 playerTransform.position = transform.position;
+//             }
+//         }
+//     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            if (index > SaveVariables.checkpointIndex)
-            {
-                SaveVariables.checkpointIndex = index;
-                SaveManager.Save();
+//     private void OnTriggerEnter2D(Collider2D collision)
+//     {
+//         if (collision.CompareTag("Player"))
+//         {
+//             if (index > SaveVariables.checkpointIndex)
+//             {
+//                 SaveVariables.checkpointIndex = index;
+//                 SaveManager.Save();
 
-                if (activatedCheckpointSprite != null)
-                {
-                    spriteRenderer.sprite = activatedCheckpointSprite;
-                }
-            }
-        }
-    }
-}
+//                 if (activatedCheckpointSprite != null)
+//                 {
+//                     spriteRenderer.sprite = activatedCheckpointSprite;
+//                 }
+//             }
+//         }
+//     }
+// }
