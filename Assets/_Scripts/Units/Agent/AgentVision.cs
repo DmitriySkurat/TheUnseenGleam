@@ -69,6 +69,23 @@ public class AgentVision : MonoBehaviour, IInitializable
             return CheckPlayerVisibilityGeometry(_playerTransform.position);
         }
     }
+
+    /// <summary>
+    /// Игрок скрыт (Hide или PressToWall) и находится в зоне непосредственного обнаружения (detectionRadius).
+    /// Агент слышит его на таком расстоянии.
+    /// </summary>
+    public bool IsPlayerHidingNearby
+    {
+        get
+        {
+            if (_playerContext == null || _playerTransform == null) return false;
+            if (!_playerContext.isHiding && !_playerContext.isPressedToWall) return false;
+            if (detectionRadius <= 0f) return false;
+            Vector2 toPlayer = (Vector2)_playerTransform.position - (Vector2)transform.position;
+            return toPlayer.sqrMagnitude <= detectionRadius * detectionRadius;
+        }
+    }
+
     public float ViewAngle => viewAngle;
     public float ViewDistance => viewDistance;
     public float VisibilityMultiplier
