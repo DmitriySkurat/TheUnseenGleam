@@ -67,7 +67,7 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         
         if (_ctx.isCrouching)
         {
-            _ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.CeilingCheckDistance, ~_ctx.stats.GroundLayer);
+            _ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.CeilingCheckDistance, _ctx.stats.GroundLayer);
         }
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
