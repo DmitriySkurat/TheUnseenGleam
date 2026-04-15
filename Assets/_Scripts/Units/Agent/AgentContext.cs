@@ -66,6 +66,8 @@ public class AgentContext
     public bool grabOccurredInChase;
     // true пока именно этот агент удерживает игрока
     public bool isGrabbingPlayer;
+    // Обратный отсчёт: другие агенты ждут это время перед уходом на патруль после захвата
+    public float grabReactionTimer;
 
     // ===== BLINDING =====
     // true если агент в данный момент ослеплён светом игрока

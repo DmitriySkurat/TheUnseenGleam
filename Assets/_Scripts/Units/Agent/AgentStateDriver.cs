@@ -61,6 +61,7 @@ namespace HSM {
         void FixedUpdate()
         {
             UpdateBlindingState();
+            UpdateGrabReactionTimer();
             _machine.Tick(Time.fixedDeltaTime);
             PrintStatePath();
         }
@@ -92,6 +93,32 @@ namespace HSM {
                 _ctx.blindedByPlayerTimer += Time.fixedDeltaTime;
             else
                 _ctx.blindedByPlayerTimer = 0f;
+        }
+
+        bool _wasPlayerGrabbed;
+
+        void UpdateGrabReactionTimer()
+        {
+            if (_ctx.playerCtx == null || _ctx.isGrabbingPlayer)
+            {
+                _ctx.grabReactionTimer = 0f;
+                _wasPlayerGrabbed = false;
+                return;
+            }
+
+            bool isGrabbed = _ctx.playerCtx.isGrabbed;
+
+            // Сброс таймера при начале нового захвата
+            if (isGrabbed && !_wasPlayerGrabbed)
+                _ctx.grabReactionTimer = _ctx.stats.GrabReactionDelay;
+
+            if (isGrabbed && _ctx.grabReactionTimer > 0f)
+                _ctx.grabReactionTimer -= Time.fixedDeltaTime;
+
+            if (!isGrabbed)
+                _ctx.grabReactionTimer = 0f;
+
+            _wasPlayerGrabbed = isGrabbed;
         }
 
         void OnDestroy()

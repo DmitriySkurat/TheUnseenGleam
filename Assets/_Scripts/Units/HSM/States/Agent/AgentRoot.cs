@@ -38,11 +38,13 @@ namespace HSM {
                 ctx.blindedByPlayerTimer >= ctx.stats.BlindDurationToStun)
                 return Machine?.GetState<AgentStunned>();
 
-            // Пока игрок захвачен другим агентом — все остальные возвращаются на патруль.
+            // Пока игрок захвачен другим агентом — все остальные возвращаются на патруль,
+            // но только после истечения таймера реакции (агенты немного стоят перед уходом).
             // Если агент уже в подсостоянии патруля (ActiveChild == Patrol) — не перезапускаем.
             if (!ctx.IsTraversingLink &&
                 !ctx.isGrabbingPlayer &&
                 ctx.playerCtx != null && ctx.playerCtx.isGrabbed &&
+                ctx.grabReactionTimer <= 0f &&
                 !(ActiveChild is AgentPatrol))
                 return Machine?.GetState<AgentPatrol>();
 

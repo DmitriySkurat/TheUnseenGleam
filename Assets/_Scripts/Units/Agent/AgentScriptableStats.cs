@@ -106,6 +106,10 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float GrabCooldown = 3f;
 
+    [Tooltip("Время (сек), которое другие агенты стоят на месте после того как один схватил игрока, прежде чем уйти на патруль")]
+    [Min(0f)]
+    public float GrabReactionDelay = 0.7f;
+
     [Tooltip("How far in front of the agent the player is placed when grabbed")]
     [Min(0f)]
     public float GrabPlayerOffset = 0.5f;
