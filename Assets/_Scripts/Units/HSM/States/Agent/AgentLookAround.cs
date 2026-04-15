@@ -47,6 +47,10 @@ namespace HSM {
 
         protected override State GetTransition()
         {
+            // Если агент вошёл в свет во время осмотра — немедленно возобновить движение
+            if (ctx.isBlindedByEnvironment)
+                return Machine?.GetState<AgentPatrolWalk>();
+
             if (_phase == Phase.Looking && _phaseTimer <= 0f)
                 return Machine?.GetState<AgentPatrolWalk>();
 
