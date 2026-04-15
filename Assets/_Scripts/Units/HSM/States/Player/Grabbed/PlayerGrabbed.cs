@@ -7,7 +7,6 @@ namespace HSM {
 
         int _progress;
         int _lastDir; // -1 = A, +1 = D, 0 = ещё не нажималось
-        float _timer;
 
         public PlayerGrabbed(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
@@ -18,7 +17,6 @@ namespace HSM {
         {
             _progress = 0;
             _lastDir  = 0;
-            _timer    = ctx.stats.GrabSessionTimeout;
             base.OnEnter();
         }
 
@@ -42,20 +40,19 @@ namespace HSM {
             if (_progress >= ctx.grabEscapeCount)
                 ctx.isGrabbed = false; // сигнал агенту
 
-            _timer -= deltaTime;
-            if (_timer <= 0f)
-            {
-                Debug.Log("Player failed to escape the grab in time.");
-                
-                Services.Get<SessionEndHandler>().EndSession(0f);
-            }
+            // Постепенный урон пока игрок схвачен
+            ctx.health?.TakeDamage(ctx.stats.GrabDamagePerSecond * deltaTime);
 
             base.OnUpdate(deltaTime);
         }
 
         protected override State GetTransition()
         {
-            if (!ctx.isAlive)   return Machine?.GetState<Death>();
+            if (!ctx.isAlive)
+            {
+                ctx.diedWhileGrabbed = true;
+                return Machine?.GetState<Death>();
+            }
             if (!ctx.isGrabbed) return Machine?.GetState<Grounded>();
             return null;
         }

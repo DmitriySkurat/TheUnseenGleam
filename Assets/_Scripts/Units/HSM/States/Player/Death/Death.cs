@@ -6,14 +6,22 @@ namespace HSM
     {
         private PlayerContext ctx;
 
+        public readonly DeathNormal Normal;
+        public readonly DeathGrabbed Grabbed;
+
         public Death(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            Normal  = new DeathNormal(m, this, ctx);
+            Grabbed = new DeathGrabbed(m, this, ctx);
+
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.black,
             });
-            Add(new AnimatorBoolActivity(ctx.anim, "Climb", true, false));
         }
+
+        protected override State GetInitialState() =>
+            ctx.diedWhileGrabbed ? (State)Grabbed : Normal;
 
         protected override void OnEnter()
         {
@@ -23,9 +31,6 @@ namespace HSM
             ctx.currentFootstepInterval = 0f;
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
-            
-            Debug.Log("Player has died. Ending session...");
-            Services.Get<SessionEndHandler>().EndSession();
 
             base.OnEnter();
         }

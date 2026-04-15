@@ -68,6 +68,7 @@ public class PlayerContext
     // ===== GRABBED =====
     public bool isGrabbed;
     public int grabEscapeCount;
+    public bool diedWhileGrabbed;
     
     // ===== TIMERS =====
     public float timeInteractWasPressed;

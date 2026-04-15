@@ -161,9 +161,9 @@ public class PlayerScriptableStats : ScriptableObject
     public float PressToWallWidthMultiplier = 0.5f;
 
     [Header("GRAB")]
-    [Tooltip("Seconds before session ends if player doesn't escape a grab")]
+    [Tooltip("HP drained per second while the player is grabbed")]
     [Min(0f)]
-    public float GrabSessionTimeout = 5f;
+    public float GrabDamagePerSecond = 20f;
 
     [Header("LANDING")]
     [Tooltip("How long before touching the ground a crouch input can still trigger a landing roll")]
