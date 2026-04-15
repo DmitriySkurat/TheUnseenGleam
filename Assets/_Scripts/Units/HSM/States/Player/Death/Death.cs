@@ -6,14 +6,14 @@ namespace HSM
     {
         private PlayerContext ctx;
 
-        public readonly DeathNormal Normal;
-        public readonly DeathGrabbed Grabbed;
+        public readonly DeathNormal DeathNormal;
+        public readonly DeathGrabbed DeathGrabbed;
 
         public Death(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
-            Normal  = new DeathNormal(m, this, ctx);
-            Grabbed = new DeathGrabbed(m, this, ctx);
+            DeathNormal  = new DeathNormal(m, this, ctx);
+            DeathGrabbed = new DeathGrabbed(m, this, ctx);
 
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.black,
@@ -21,7 +21,7 @@ namespace HSM
         }
 
         protected override State GetInitialState() =>
-            ctx.diedWhileGrabbed ? (State)Grabbed : Normal;
+            ctx.diedWhileGrabbed ? (State)DeathGrabbed : DeathNormal;
 
         protected override void OnEnter()
         {

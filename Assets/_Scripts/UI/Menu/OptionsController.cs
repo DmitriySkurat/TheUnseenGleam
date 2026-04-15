@@ -19,11 +19,8 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
     private InputManager _inputManager;
     
     public void Initialize()
-    {
-        
+    {    
         _inputManager = Services.Get<InputManager>();
-        
-        if (_inputManager == null) Debug.Log("_inputManager is null");
         
         _inputManager.OnEscape += HandleEscape;
         
