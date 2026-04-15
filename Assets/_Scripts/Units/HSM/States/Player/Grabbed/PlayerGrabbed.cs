@@ -17,6 +17,7 @@ namespace HSM {
         {
             _progress = 0;
             _lastDir  = 0;
+            ctx.grabProgress = 0f;
             base.OnEnter();
         }
 
@@ -36,6 +37,10 @@ namespace HSM {
                 _lastDir = dir;
                 _progress++;
             }
+
+            ctx.grabProgress = ctx.grabEscapeCount > 0
+                ? Mathf.Clamp01((float)_progress / ctx.grabEscapeCount)
+                : 0f;
 
             if (_progress >= ctx.grabEscapeCount)
                 ctx.isGrabbed = false; // сигнал агенту

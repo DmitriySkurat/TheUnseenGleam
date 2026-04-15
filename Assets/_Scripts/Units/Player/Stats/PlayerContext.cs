@@ -68,6 +68,7 @@ public class PlayerContext
     // ===== GRABBED =====
     public bool isGrabbed;
     public int grabEscapeCount;
+    public float grabProgress; // 0..1, доля выполненных нажатий для вырывания
     public bool diedWhileGrabbed;
     
     // ===== TIMERS =====
