@@ -17,7 +17,7 @@ namespace HSM {
             ctx.nav.Abort();
             // Первый захват в этой погоне — полная задержка;
             // повторный — без задержки, паузу уже отыграл GrabCooldown в AgentChase
-            ctx.attackFirstHitTimer = ctx.grabOccurredInChase
+            ctx.grabFirstHitTimer = ctx.grabOccurredInChase
                 ? 0f
                 : ctx.stats.AttackFirstHitDelay;
             _isHolding = false;
@@ -28,8 +28,8 @@ namespace HSM {
         {
             if (!_isHolding)
             {
-                ctx.attackFirstHitTimer -= deltaTime;
-                if (ctx.attackFirstHitTimer <= 0f)
+                ctx.grabFirstHitTimer -= deltaTime;
+                if (ctx.grabFirstHitTimer <= 0f)
                     StartGrab();
             }
 
@@ -71,6 +71,11 @@ namespace HSM {
         void StartGrab()
         {
             if (ctx.playerCtx == null) return;
+
+            // Сбрасываем скорость игрока, иначе инерция сдвинет его с позиции захвата
+            // до того, как PlayerGrabbed.OnUpdate успеет обнулить ctx.velocity
+            ctx.playerCtx.velocity = Vector2.zero;
+            ctx.playerRb.linearVelocity = Vector2.zero;
 
             // Переместить игрока перед агентом
             float facingDir = ctx.transform.localScale.x >= 0f ? 1f : -1f;

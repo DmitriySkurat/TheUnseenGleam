@@ -60,7 +60,7 @@ public class AgentContext
 
     // ===== GRAB =====
     public PlayerContext playerCtx;
-    public float attackFirstHitTimer;
+    public float grabFirstHitTimer;
     public float grabCooldownTimer;
     // true после первого захвата в текущей погоне; сбрасывается при входе в AgentChase
     public bool grabOccurredInChase;
