@@ -83,6 +83,9 @@ namespace HSM {
                     // Player still visible → pursue
                     if (ctx.vision != null && ctx.vision.CanSeePlayer)
                         return Machine != null ? Machine.GetState<AgentChase>() : null;
+                    // Игрок спрятался (Hide/PressToWall) прямо перед агентом — позиция известна
+                    if (ctx.vision != null && ctx.vision.IsPlayerHidingInSight)
+                        return Machine != null ? Machine.GetState<AgentSearch>() : null;
                     // Lost sight → return to patrol
                     return Machine != null ? Machine.GetState<AgentPatrol>() : null;
 

@@ -64,6 +64,14 @@ namespace HSM {
         {
             if (ctx.IsTraversingLink) return null;
 
+            // Игрок спрятался (Hide/PressToWall) прямо перед агентом — позиция известна, сразу идём обыскивать
+            if (ctx.vision != null && !ctx.vision.CanSeePlayer && ctx.vision.IsPlayerHidingInSight)
+            {
+                ctx.suspicionSource   = SuspicionSource.Vision;
+                ctx.suspicionPosition = ctx.vision.LastSeenPosition;
+                return Machine != null ? Machine.GetState<AgentSearch>() : null;
+            }
+
             if (ctx.chaseVisionLostTimer >= ctx.stats.ChaseVisionGraceTime)
                 return Machine != null ? Machine.GetState<AgentAlert>() : null;
 

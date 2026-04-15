@@ -55,6 +55,20 @@ public class AgentVision : MonoBehaviour, IInitializable
     /// </summary>
     public bool IsPlayerExposedInLight =>
         _playerContext != null && _playerContext.isPressedToWall && IsPlayerInLight();
+
+    /// <summary>
+    /// Игрок спрятался (Hide или PressToWall), оставаясь в геометрически видимой зоне агента.
+    /// Агент видел, как игрок прятался, и точно знает его позицию.
+    /// </summary>
+    public bool IsPlayerHidingInSight
+    {
+        get
+        {
+            if (_playerContext == null || _playerTransform == null) return false;
+            if (!_playerContext.isHiding && !_playerContext.isPressedToWall) return false;
+            return CheckPlayerVisibilityGeometry(_playerTransform.position);
+        }
+    }
     public float ViewAngle => viewAngle;
     public float ViewDistance => viewDistance;
     public float VisibilityMultiplier
