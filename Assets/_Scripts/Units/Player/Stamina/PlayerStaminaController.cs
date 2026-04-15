@@ -36,7 +36,7 @@ public class PlayerStaminaController : MonoBehaviour, IInitializable
         {
             _ctx.stamina = Mathf.Max(0f, _ctx.stamina - consumption);
         }
-        else
+        else if (_ctx.grounded)
         {
             RegenStamina(deltaTime);
         }
@@ -44,8 +44,10 @@ public class PlayerStaminaController : MonoBehaviour, IInitializable
     
     private void RegenStamina(float deltaTime)
     {
-        float regeneration = _ctx.stats.StaminaRegenPerSecond * deltaTime;
-            
+        bool isMoving = Mathf.Abs(_ctx.velocity.x) > 0.1f;
+        float multiplier = isMoving ? _ctx.stats.StaminaRegenMovingMultiplier : 1f;
+        float regeneration = _ctx.stats.StaminaRegenPerSecond * multiplier * deltaTime;
+
         _ctx.stamina = Mathf.Min(_ctx.stats.MaxStamina, _ctx.stamina + regeneration);
     }
 }

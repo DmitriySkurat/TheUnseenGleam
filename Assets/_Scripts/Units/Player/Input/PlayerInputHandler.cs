@@ -31,11 +31,11 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         if (_ctx == null)
             return;
 
-        foreach (var field in typeof(FrameInput).GetFields())
-        {
-            var value = field.GetValue(_frameInput);
-            Debug.Log($"{field.Name}: {value}");
-        }
+        // foreach (var field in typeof(FrameInput).GetFields())
+        // {
+        //     var value = field.GetValue(_frameInput);
+        //     Debug.Log($"{field.Name}: {value}");
+        // }
 
         _frameInput.JumpDown = false;
         _frameInput.InteractDown = false;

@@ -64,6 +64,10 @@ public class PlayerScriptableStats : ScriptableObject
 
     [Tooltip("Stamina regenerated per second when not running")]
     public float StaminaRegenPerSecond = 15f;
+
+    [Tooltip("Multiplier applied to StaminaRegenPerSecond while moving")]
+    [Range(0f, 1f)]
+    public float StaminaRegenMovingMultiplier = 0.4f;
     
     [Tooltip("Minimum stamina required to START running")]
     public float MinStaminaToRun = 35f;
