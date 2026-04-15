@@ -13,6 +13,7 @@ namespace HSM {
 
         Vector2[] _wanderPoints;
         int _wanderIndex;
+        int _sectorIndex;
 
         public AgentSearch(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -33,6 +34,7 @@ namespace HSM {
             _seenPlayerDuringLink    = false;
             _wanderPoints            = null;
             _wanderIndex             = 0;
+            _sectorIndex             = ctx.searchCoordinator?.Register(ctx) ?? 0;
 
             StartNavigatingToSearchPoint();
             base.OnEnter();
@@ -97,6 +99,7 @@ namespace HSM {
         protected override void OnExit()
         {
             ctx.nav.Abort();
+            ctx.searchCoordinator?.Unregister(ctx);
             base.OnExit();
         }
 
@@ -177,11 +180,14 @@ namespace HSM {
 
         void StartWandering()
         {
-            float dist = ctx.stats.SearchWanderDistance;
+            float dist         = ctx.stats.SearchWanderDistance;
+            float sectorShift  = AgentSearchCoordinator.SectorOffsetMultiplier(_sectorIndex) * dist;
+            Vector2 center     = ctx.suspicionPosition + Vector2.right * sectorShift;
+
             _wanderPoints = new Vector2[]
             {
-                ctx.suspicionPosition + Vector2.left  * dist,
-                ctx.suspicionPosition + Vector2.right * dist,
+                center + Vector2.left  * dist,
+                center + Vector2.right * dist,
             };
             _wanderIndex          = 0;
             ctx.searchWanderTimer = ctx.stats.SearchWanderDuration;

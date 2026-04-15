@@ -15,6 +15,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
     [SerializeField] private LightSystem lightPrefab;
     [SerializeField] private CameraFollow cameraPrefab;
     [SerializeField] private AgentAlertSystem agentAlertSystemPrefab;
+    [SerializeField] private AgentSearchCoordinator agentSearchCoordinatorPrefab;
 
     public async Task InitializeAsync()
     {
@@ -33,20 +34,23 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         
 
 
-        var noise = Instantiate(noisePrefab);
-        var light = Instantiate(lightPrefab);
-        var alert = Instantiate(agentAlertSystemPrefab);
+        var noise      = Instantiate(noisePrefab);
+        var light      = Instantiate(lightPrefab);
+        var alert      = Instantiate(agentAlertSystemPrefab);
+        var searchCoordinator = Instantiate(agentSearchCoordinatorPrefab);
         var sessionEndHandler = new GameObject("SessionEndHandler").AddComponent<SessionEndHandler>();
-        
+
 
         Services.Register(noise);
         Services.Register(light);
         Services.Register(alert);
+        Services.Register(searchCoordinator);
         Services.Register(sessionEndHandler);
 
         services.Add(noise);
         services.Add(light);
         services.Add(alert);
+        services.Add(searchCoordinator);
         
         // Здесь же можно зарегистрировать другие сценовые сервисы
         // Services.Register<InventorySystem>(new InventorySystem());
@@ -61,6 +65,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Unregister<LightSystem>();
         Services.Unregister<CameraFollow>();
         Services.Unregister<AgentAlertSystem>();
+        Services.Unregister<AgentSearchCoordinator>();
         Services.Unregister<SessionEndHandler>();
     }
 

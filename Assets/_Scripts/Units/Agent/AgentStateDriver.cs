@@ -51,6 +51,8 @@ namespace HSM {
             _ctx.alertSystem = Services.Get<AgentAlertSystem>();
             _ctx.alertSystem.OnAlertBroadcast += OnAlertReceived;
 
+            _ctx.searchCoordinator = Services.Get<AgentSearchCoordinator>();
+
             _root = new AgentRoot(null, _ctx);
             var builder = new StateMachineBuilder(_root);
             _machine = builder.Build();

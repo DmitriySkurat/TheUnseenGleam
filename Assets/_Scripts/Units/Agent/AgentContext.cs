@@ -87,6 +87,9 @@ public class AgentContext
     public bool alertPending;
     public Vector2 alertPosition;
 
+    // ===== SEARCH COORDINATION =====
+    public AgentSearchCoordinator searchCoordinator;
+
     // ===== DERIVED =====
     public bool IsTraversingLink => nav != null && nav.State == PlatNavState.TraversingLink;
     public bool IsWaitingAtPoint => patrolWaitTimer > 0f;
