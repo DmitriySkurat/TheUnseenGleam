@@ -1,28 +1,37 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class DeathMenu : MonoBehaviour
+public class DeathMenu : MonoBehaviour, ISceneLifecycle
 {
-    public GameObject deathGameMenu;
+    public InitializationOrder Order => InitializationOrder.UI;
 
-    private bool isDeathMenuActive = false;
+    [SerializeField] private GameObject deathGameMenu;
 
-    // private void Start()
-    // {
-    //     PlayerController.OnPlayerDied += ActivateDeathMenu;
-    // }
+    private PlayerHealth _playerHealth;
 
-    private void ActivateDeathMenu()
+    public void Initialize()
     {
-        isDeathMenuActive = true;
+        _playerHealth = Services.Get<PlayerContext>().health;
+        _playerHealth.OnDied += Show;
+
+        deathGameMenu.SetActive(false);
+    }
+
+    public void Dispose()
+    {
+        if (_playerHealth != null)
+            _playerHealth.OnDied -= Show;
+    }
+
+    private void Show()
+    {
         deathGameMenu.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void Respawn()
     {
+        Time.timeScale = 1f;
         deathGameMenu.SetActive(false);
-        isDeathMenuActive = false;
-
         Utility.SceneLoader.Load("Demo");
     }
 
@@ -31,9 +40,4 @@ public class DeathMenu : MonoBehaviour
         Time.timeScale = 1f;
         Utility.SceneLoader.Load("Menu");
     }
-
-    // private void OnDestroy()
-    // {
-    //     PlayerController.OnPlayerDied -= ActivateDeathMenu;
-    // }
 }

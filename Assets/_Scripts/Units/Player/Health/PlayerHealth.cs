@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, IInitializable
@@ -8,12 +9,14 @@ public class PlayerHealth : MonoBehaviour, IInitializable
     private float _regenDelayTimer;
 
     public float CurrentHealth => _currentHealth;
+    public event Action OnDied;
 
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
 
-        _currentHealth = _ctx.stats.MaxPlayerHealth;
+        var playerState = Services.Get<PlayerPersistentState>();
+        _currentHealth = playerState.HasData ? playerState.Health : _ctx.stats.MaxPlayerHealth;
         _regenDelayTimer = 0f;
         _ctx.isAlive = true;
 
@@ -60,5 +63,6 @@ public class PlayerHealth : MonoBehaviour, IInitializable
 
         _ctx.isAlive = false;
         Debug.Log("Player died");
+        OnDied?.Invoke();
     }
 }

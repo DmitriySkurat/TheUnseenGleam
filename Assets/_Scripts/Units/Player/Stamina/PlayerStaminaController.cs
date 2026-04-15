@@ -13,7 +13,8 @@ public class PlayerStaminaController : MonoBehaviour, IInitializable
         if (_ctx == null || _ctx.stats == null)
             return;
 
-        _ctx.stamina = _ctx.stats.MaxStamina;
+        var playerState = Services.Get<PlayerPersistentState>();
+        _ctx.stamina = playerState.HasData ? playerState.Stamina : _ctx.stats.MaxStamina;
         _ctx.currentStaminaDrainMultiplier = 0f;
     }
 

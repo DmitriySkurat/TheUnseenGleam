@@ -20,7 +20,7 @@ public class GameServiceRegistry : MonoBehaviour
         var input = Instantiate(inputPrefab);
         var audio = Instantiate(audioPrefab);
         var sceneTransitionManager = Instantiate(sceneTransitionManagerPrefab);
-        
+
         //var save = Instantiate(savePrefab);
 
         DontDestroyOnLoad(input.gameObject);
@@ -31,7 +31,8 @@ public class GameServiceRegistry : MonoBehaviour
         Services.Register(input);
         Services.Register(audio);
         Services.Register(sceneTransitionManager);
-        
+        Services.Register(new PlayerPersistentState());
+
         //Services.Register(save);
 
         services.Add(input);
