@@ -25,6 +25,14 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0)]
     public int MaxPlayerHealth = 100;
 
+    [Tooltip("HP regenerated per second")]
+    [Min(0f)]
+    public float HealthRegenPerSecond = 2f;
+
+    [Tooltip("Delay in seconds after taking damage before regen starts")]
+    [Min(0f)]
+    public float HealthRegenDelay = 5f;
+
     [Header("MOVEMENT")]
     [Tooltip("The top horizontal movement speed")]
     public float MaxSpeed = 14;
