@@ -13,6 +13,7 @@ namespace HSM {
     {
         readonly AgentContext ctx;
         float _timer;
+        bool _turned;
 
         public AgentAlert(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -21,7 +22,8 @@ namespace HSM {
 
         protected override void OnEnter()
         {
-            _timer = ctx.stats.AlertDuration;
+            _timer  = ctx.stats.AlertDuration;
+            _turned = false;
 
             ctx.nav.SetTarget(null);
             ctx.nav.Abort();
@@ -37,7 +39,21 @@ namespace HSM {
         protected override void OnUpdate(float deltaTime)
         {
             _timer -= deltaTime;
+
+            if (!_turned && _timer <= ctx.stats.AlertTurnTime)
+            {
+                FlipDirection();
+                _turned = true;
+            }
+
             base.OnUpdate(deltaTime);
+        }
+
+        void FlipDirection()
+        {
+            var scale = ctx.transform.localScale;
+            scale.x = -scale.x;
+            ctx.transform.localScale = scale;
         }
 
         protected override State GetTransition()

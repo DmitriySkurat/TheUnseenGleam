@@ -110,6 +110,23 @@ public class AgentScriptableStats : ScriptableObject
     [Min(0f)]
     public float GrabPlayerOffset = 0.5f;
 
+    [Header("LOOK AROUND")]
+    [Tooltip("Минимальное время (сек) между осмотрами во время патруля")]
+    [Min(0f)]
+    public float LookAroundMinInterval = 5f;
+
+    [Tooltip("Максимальное время (сек) между осмотрами во время патруля")]
+    [Min(0f)]
+    public float LookAroundMaxInterval = 12f;
+
+    [Tooltip("Пауза (сек) перед тем как агент повернётся во время осмотра")]
+    [Min(0f)]
+    public float LookAroundTurnDelay = 0.5f;
+
+    [Tooltip("Сколько секунд агент стоит повернувшись во время осмотра")]
+    [Min(0f)]
+    public float LookAroundDuration = 1.5f;
+
     [Header("ALERT")]
     [Tooltip("Длительность состояния Alert — агент стоит на месте и сигнализирует союзникам")]
     [Min(0f)]
@@ -118,6 +135,10 @@ public class AgentScriptableStats : ScriptableObject
     [Tooltip("Радиус (м), в котором другие агенты слышат тревогу и переходят в Search")]
     [Min(0f)]
     public float AlertRadius = 15f;
+
+    [Tooltip("Оставшееся время таймера Alert, при котором агент разворачивается в другую сторону")]
+    [Min(0f)]
+    public float AlertTurnTime = 1.5f;
 
     [Header("INTERACTION")]
     [Tooltip("Layer mask for interactable objects (used by Linecast)")]

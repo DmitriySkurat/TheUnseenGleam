@@ -1,69 +1,38 @@
-using PlatNav;
-using UnityEngine;
-
 namespace HSM {
+    /// <summary>
+    /// Составное состояние патруля.
+    /// Дочерние состояния:
+    ///   AgentPatrolWalk  — навигация по точкам маршрута (начальное)
+    ///   AgentLookAround  — периодический случайный осмотр
+    ///
+    /// AgentPatrol обрабатывает все внешние переходы (игрок, шум, тревога).
+    /// Дочерние состояния переключаются между собой самостоятельно.
+    /// </summary>
     public class AgentPatrol : State
     {
+        public readonly AgentPatrolWalk Walk;
+        public readonly AgentLookAround LookAround;
+
         readonly AgentContext ctx;
-        bool _navigating;
 
         public AgentPatrol(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            Walk       = new AgentPatrolWalk(m, this, ctx);
+            LookAround = new AgentLookAround(m, this, ctx);
         }
 
-        protected override void OnEnter()
-        {
-            // Clear any tracked target so MoveTo uses the patrol position, not a Transform
-            ctx.nav.SetTarget(null);
-            ctx.nav.Abort();
-
-            EnsurePatrolPoints();
-            ctx.patrolWaitTimer = 0f;
-            _navigating = false;
-            StartNavigatingToCurrentPoint();
-            base.OnEnter();
-        }
-
-        protected override void OnUpdate(float deltaTime)
-        {
-            if (ctx.IsWaitingAtPoint)
-            {
-                ctx.patrolWaitTimer -= deltaTime;
-                if (!ctx.IsWaitingAtPoint)
-                    AdvanceToNextPoint();
-            }
-            else if (_navigating)
-            {
-                ctx.nav.SetSpeed(ctx.isBlindedByEnvironment
-                    ? ctx.stats.BlindedByEnvironmentSpeed
-                    : ctx.stats.PatrolSpeed);
-                ctx.nav.Tick(deltaTime);
-                if (ctx.nav.State == PlatNavState.Idle)
-                {
-                    _navigating = false;
-                    ctx.patrolWaitTimer = ctx.stats.PatrolWaitTime;
-                }
-            }
-            else
-            {
-                // Path failed on previous attempt — retry
-                StartNavigatingToCurrentPoint();
-            }
-
-            base.OnUpdate(deltaTime);
-        }
+        protected override State GetInitialState() => Walk;
 
         protected override State GetTransition()
         {
             if (ctx.IsTraversingLink) return null;
 
-            // Игрок слепит агента — встаём и готовимся к погоне
             if (ctx.isBlindedByPlayer)
-                return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
+                return Machine?.GetState<AgentBlindedByPlayer>();
 
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
-                return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
+                return Machine?.GetState<AgentSuspicious>();
 
             if (ctx.pendingNoiseAlert)
             {
@@ -71,44 +40,19 @@ namespace HSM {
                 {
                     ctx.suspicionSource   = SuspicionSource.Noise;
                     ctx.suspicionPosition = ctx.pendingNoisePosition;
-                    return Machine != null ? Machine.GetState<AgentSearch>() : null;
+                    return Machine?.GetState<AgentSearch>();
                 }
-                return Machine != null ? Machine.GetState<AgentSuspicious>() : null;
+                return Machine?.GetState<AgentSuspicious>();
             }
 
             if (ctx.alertPending && !ctx.isBlindedByEnvironment)
             {
                 ctx.alertPending      = false;
                 ctx.suspicionPosition = ctx.alertPosition;
-                return Machine != null ? Machine.GetState<AgentSearch>() : null;
+                return Machine?.GetState<AgentSearch>();
             }
 
             return null;
-        }
-
-        void EnsurePatrolPoints()
-        {
-            if (ctx.PatrolCount > 0) return;
-
-            float dist = ctx.stats != null ? ctx.stats.DefaultPatrolDistance : 4f;
-            ctx.patrolPositions = new Vector2[]
-            {
-                ctx.spawnPosition + Vector2.left  * dist,
-                ctx.spawnPosition + Vector2.right * dist,
-            };
-        }
-
-        void StartNavigatingToCurrentPoint()
-        {
-            if (ctx.PatrolCount == 0) return;
-
-            _navigating = ctx.nav.MoveTo(ctx.CurrentPatrolPosition, ctx.stats.PatrolSpeed);
-        }
-
-        void AdvanceToNextPoint()
-        {
-            ctx.currentPatrolIndex = (ctx.currentPatrolIndex + 1) % ctx.PatrolCount;
-            StartNavigatingToCurrentPoint();
         }
     }
 }
