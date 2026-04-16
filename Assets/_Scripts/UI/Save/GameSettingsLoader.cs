@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GameSettingsLoader : MonoBehaviour 
+public class GameSettingsLoader : MonoBehaviour
 {
     public void Start()
     {
@@ -14,12 +14,19 @@ public class GameSettingsLoader : MonoBehaviour
         int resolutionIndex = PlayerPrefs.HasKey("ResolutionPreference") ? PlayerPrefs.GetInt("ResolutionPreference") : -1;
 
         AudioListener.volume = volume;
-        Screen.fullScreen = isFullscreen;
 
-        if (resolutionIndex >= 0 && resolutionIndex < Screen.resolutions.Length)
+        Resolution[] resolutions = Screen.resolutions;
+        if (resolutionIndex >= 0 && resolutionIndex < resolutions.Length)
         {
-            Resolution res = Screen.resolutions[resolutionIndex];
-            Screen.SetResolution(res.width, res.height, Screen.fullScreen);
+            Resolution res = resolutions[resolutionIndex];
+            Screen.SetResolution(res.width, res.height, isFullscreen);
         }
+        else
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, isFullscreen);
+        }
+
+        if (Camera.main != null)
+            Camera.main.aspect = (float)Screen.width / Screen.height;
     }
 }

@@ -64,11 +64,28 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
 
     public void CloseSettings()
     {
+        ApplyCurrentSettings();
         SaveSettings();
         gameObject.SetActive(false);
 
         if (menuButtonsParent != null)
             menuButtonsParent.SetActive(true);
+    }
+
+    private void ApplyCurrentSettings()
+    {
+        int index = resolutionDropdown.value;
+        bool isFullscreen = fullScreenToggle.isOn;
+
+        if (index >= 0 && index < resolutions.Length)
+            Screen.SetResolution(resolutions[index].width, resolutions[index].height, isFullscreen);
+        else
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, isFullscreen);
+
+        AudioListener.volume = slider.value;
+
+        if (Camera.main != null)
+            Camera.main.aspect = (float)Screen.width / Screen.height;
     }
     
 
@@ -90,23 +107,26 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
     
     public void SetFullScreen(bool isFullScreen)
     {
-        Screen.fullScreen = isFullScreen;
+        Screen.SetResolution(Screen.width, Screen.height, isFullScreen);
     }
 
     public void LoadSettings(int currentResolutionIndex)
     {
-        resolutionDropdown.value = PlayerPrefs.HasKey("ResolutionPreference")
+        int savedIndex = PlayerPrefs.HasKey("ResolutionPreference")
             ? PlayerPrefs.GetInt("ResolutionPreference")
             : currentResolutionIndex;
-
+        resolutionDropdown.value = savedIndex;
 
         bool isFullscreen = PlayerPrefs.HasKey("FullScreenPreference")
             ? PlayerPrefs.GetInt("FullScreenPreference") == 1
             : true;
 
-        fullScreenToggle.isOn = isFullscreen; 
-        Screen.fullScreen = isFullscreen;
+        fullScreenToggle.isOn = isFullscreen;
 
+        if (savedIndex >= 0 && savedIndex < resolutions.Length)
+            Screen.SetResolution(resolutions[savedIndex].width, resolutions[savedIndex].height, isFullscreen);
+        else
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, isFullscreen);
 
         slider.value = PlayerPrefs.HasKey("VolumePreference")
             ? PlayerPrefs.GetFloat("VolumePreference")
