@@ -27,6 +27,12 @@ namespace EntryPoint
             // DontDestroyOnLoad(gameObject);
 
             GameSettingsLoader.LoadAndApplySavedSettings();
+            yield return null; // ждём следующий кадр — Screen.SetResolution применится
+            if (Camera.main != null)
+            {
+                Camera.main.rect = new Rect(0, 0, 1, 1);
+                Camera.main.aspect = (float)Screen.width / Screen.height;
+            }
 
             var task = serviceRegistry.InitializeAsync();
 
