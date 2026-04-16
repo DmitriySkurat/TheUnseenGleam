@@ -47,6 +47,10 @@ public class SceneTransitionManager : MonoBehaviour, IService
             var ctx = Services.Get<PlayerContext>();
             var playerState = Services.Get<PlayerPersistentState>();
             playerState.Save(ctx.health.CurrentHealth, ctx.stamina);
+
+            // Записываем на диск, если выбран активный слот сохранения
+            if (SaveVariables.ActiveSlot >= 0)
+                SaveManager.Save(SaveVariables.ActiveSlot, ctx.health.CurrentHealth, ctx.stamina, targetSceneName);
         }
 
         // Выгружаем сервисы старой сцены ДО активации новой,
