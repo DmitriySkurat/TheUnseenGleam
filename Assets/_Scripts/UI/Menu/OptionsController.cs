@@ -14,17 +14,15 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
     public Dropdown resolutionDropdown;
     Resolution[] resolutions;
 
-    private GameObject menuButtonsParent;
-    
+    public GameObject menuButtonsParent;
+
     private InputManager _inputManager;
-    
+
     public void Initialize()
-    {    
+    {
         _inputManager = Services.Get<InputManager>();
-        
+
         _inputManager.OnEscape += HandleEscape;
-        
-        menuButtonsParent = transform.parent.gameObject;
         
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();

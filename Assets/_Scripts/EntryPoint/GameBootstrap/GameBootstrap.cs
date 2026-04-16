@@ -42,7 +42,7 @@ namespace EntryPoint
             
             Debug.Log("Game loaded.");
             
-            Utility.SceneLoader.Load("Menu");
+            Utility.SceneLoader.Load(Utility.SceneNames.Menu);
         }
     }
 }

@@ -2919,6 +2919,7 @@ MonoBehaviour:
   slider: {fileID: 168662098}
   fullScreenToggle: {fileID: 1627959674}
   resolutionDropdown: {fileID: 85712061}
+  menuButtonsParent: {fileID: 1025481955}
 --- !u!1001 &3605302632958974913
 PrefabInstance:
   m_ObjectHideFlags: 0
