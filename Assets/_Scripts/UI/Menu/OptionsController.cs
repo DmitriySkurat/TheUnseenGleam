@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+
 public class OptionsController : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.UI;
@@ -15,14 +16,6 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
 
     private InputManager _inputManager;
 
-    private static readonly (int width, int height, string label)[] PredefinedResolutions =
-    {
-        (1280,  720,  "1280×720 (HD)"),
-        (1920, 1080, "1920×1080 (Full HD)"),
-        (2560, 1440, "2560×1440 (QHD)"),
-        (3840, 2160, "3840×2160 (4K UHD)"),
-    };
-
     private const int FpsUnlimitedValue = 241;
 
     public void Initialize()
@@ -32,8 +25,8 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
 
         resolutionDropdown.ClearOptions();
         var options = new List<string>();
-        foreach (var res in PredefinedResolutions)
-            options.Add(res.label);
+        foreach (var res in GameResolutions.resolutions)
+            options.Add(GameResolutions.ToLabel(res.width, res.height));
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.RefreshShownValue();
 
@@ -84,9 +77,9 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
         int index = resolutionDropdown.value;
         bool isFullscreen = fullScreenToggle.isOn;
 
-        if (index >= 0 && index < PredefinedResolutions.Length)
+        if (index >= 0 && index < GameResolutions.resolutions.Length)
         {
-            var res = PredefinedResolutions[index];
+            var res = GameResolutions.resolutions[index];
             Screen.SetResolution(res.width, res.height, isFullscreen);
         }
         else
@@ -133,8 +126,8 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
     {
         int savedIndex = PlayerPrefs.HasKey("ResolutionIndex")
             ? PlayerPrefs.GetInt("ResolutionIndex")
-            : GetDefaultResolutionIndex();
-        savedIndex = Mathf.Clamp(savedIndex, 0, PredefinedResolutions.Length - 1);
+            : GameResolutions.DefaultIndex;
+        savedIndex = Mathf.Clamp(savedIndex, 0, GameResolutions.resolutions.Length - 1);
         resolutionDropdown.value = savedIndex;
 
         bool isFullscreen = PlayerPrefs.HasKey("FullScreenPreference")
@@ -142,7 +135,7 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
             : true;
         fullScreenToggle.isOn = isFullscreen;
 
-        var res = PredefinedResolutions[savedIndex];
+        var res = GameResolutions.resolutions[savedIndex];
         Screen.SetResolution(res.width, res.height, isFullscreen);
 
         slider.value = PlayerPrefs.HasKey("VolumePreference")
@@ -154,13 +147,5 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
             : -1;
         fpsSlider.value = savedFps == -1 ? FpsUnlimitedValue : Mathf.Clamp(savedFps, 24, FpsUnlimitedValue - 1);
         UpdateFpsLabel();
-    }
-
-    private int GetDefaultResolutionIndex()
-    {
-        for (int i = 0; i < PredefinedResolutions.Length; i++)
-            if (PredefinedResolutions[i].width == 1920 && PredefinedResolutions[i].height == 1080)
-                return i;
-        return 0;
     }
 }
