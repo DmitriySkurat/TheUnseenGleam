@@ -1,15 +1,13 @@
 using UnityEngine;
 
-public class SavesMenu : MonoBehaviour, ISceneLifecycle
+public class NewGameMenu : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.UI;
-
-
+    
     public GameObject menuButtonsParent;
-
+    
 
     private InputManager _inputManager;
-    
     
     public void Initialize()
     {
@@ -30,7 +28,6 @@ public class SavesMenu : MonoBehaviour, ISceneLifecycle
         if (menuButtonsParent != null)
             menuButtonsParent.SetActive(true);
     }
-    
     
     public void OnSlot1()
     {
