@@ -26,6 +26,8 @@ namespace EntryPoint
             // Instance = this;
             // DontDestroyOnLoad(gameObject);
 
+            GameSettingsLoader.LoadAndApplySavedSettings();
+
             var task = serviceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)

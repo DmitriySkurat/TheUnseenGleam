@@ -2,12 +2,7 @@
 
 public class GameSettingsLoader : MonoBehaviour
 {
-    public void Start()
-    {
-        ApplySavedSettings();
-    }
-
-    public static void ApplySavedSettings()
+    public static void LoadAndApplySavedSettings()
     {
         float volume = PlayerPrefs.HasKey("VolumePreference") ? PlayerPrefs.GetFloat("VolumePreference") : 1.0f;
         bool isFullscreen = PlayerPrefs.HasKey("FullScreenPreference") ? PlayerPrefs.GetInt("FullScreenPreference") == 1 : true;

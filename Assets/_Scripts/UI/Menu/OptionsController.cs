@@ -77,10 +77,17 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
         int index = resolutionDropdown.value;
         bool isFullscreen = fullScreenToggle.isOn;
 
-        if (index >= 0 && index < resolutions.Length)
-            Screen.SetResolution(resolutions[index].width, resolutions[index].height, isFullscreen);
+        if (isFullscreen)
+        {
+            if (index >= 0 && index < resolutions.Length)
+                Screen.SetResolution(resolutions[index].width, resolutions[index].height, true);
+            else
+                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+        }
         else
-            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, isFullscreen);
+        {
+            Screen.SetResolution(Screen.width, Screen.height, false);
+        }
 
         AudioListener.volume = slider.value;
 
