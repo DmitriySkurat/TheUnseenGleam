@@ -107,7 +107,7 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
     
     public void SetFullScreen(bool isFullScreen)
     {
-        Screen.SetResolution(Screen.width, Screen.height, isFullScreen);
+        // Applied on CloseSettings via ApplyCurrentSettings
     }
 
     public void LoadSettings(int currentResolutionIndex)
