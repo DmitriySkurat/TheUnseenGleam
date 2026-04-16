@@ -10,18 +10,18 @@ public class SavesMenu : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.UI;
 
-    [Header("Кнопки слотов (Image на каждой кнопке)")]
+    [Header("Button Images")]
     [SerializeField] private Image slot1Image;
     [SerializeField] private Image slot2Image;
     [SerializeField] private Image slot3Image;
 
-    [Header("Спрайты")]
+    [Header("Button Images")]
     [SerializeField] private Sprite emptySprite;
     [SerializeField] private Sprite save1Sprite;
     [SerializeField] private Sprite save2Sprite;
     [SerializeField] private Sprite save3Sprite;
 
-    [Header("Навигация")]
+    [Header("Navigation")]
     public GameObject menuButtonsParent;
 
     private InputManager _inputManager;

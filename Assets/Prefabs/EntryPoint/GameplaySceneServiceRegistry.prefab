@@ -51,3 +51,4 @@ MonoBehaviour:
   cameraPrefab: {fileID: 5033691198550900098, guid: f5675b51bb12d9f4896fa0e1f43e983d, type: 3}
   agentAlertSystemPrefab: {fileID: 8275471101476817342, guid: 6b6785286219c594babeaf81fc0cebda, type: 3}
   agentSearchCoordinatorPrefab: {fileID: 8981036070306717237, guid: cff984624a9495842890809b94a32ea2, type: 3}
+  canvasPrefab: {fileID: 7911067884657133206, guid: 1ea6c0ba15f05bc42b31d8a3c3661224, type: 3}

@@ -10,12 +10,13 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
 {
     [SerializeField] private PlayerScriptableStats stats;
     [SerializeField] private NoiseScriptableStats noiseStats;
-    
+
     [SerializeField] private NoiseSystem noisePrefab;
     [SerializeField] private LightSystem lightPrefab;
     [SerializeField] private CameraFollow cameraPrefab;
     [SerializeField] private AgentAlertSystem agentAlertSystemPrefab;
     [SerializeField] private AgentSearchCoordinator agentSearchCoordinatorPrefab;
+    [SerializeField] private GameObject canvasPrefab;
 
     public async Task InitializeAsync()
     {
@@ -31,6 +32,9 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         
         var camera = Instantiate(cameraPrefab);
         Services.Register(camera);
+
+        if (canvasPrefab != null)
+            Instantiate(canvasPrefab);
         
 
 
