@@ -24,14 +24,14 @@ namespace EntryPoint
 
         protected void FindInializableObjects()
         {
-            var currentScene = gameObject.scene;
+            //var currentScene = gameObject.scene;
 
             _initializables = Object
                 .FindObjectsByType<MonoBehaviour>(
                     FindObjectsInactive.Include,
                     FindObjectsSortMode.None
                 )
-                .Where(mb => mb.gameObject.scene == currentScene)
+                //.Where(mb => mb.gameObject.scene == currentScene)
                 .OfType<IInitializable>()
                 .OrderBy(i => i.Order)
                 .ToList();
@@ -45,14 +45,17 @@ namespace EntryPoint
             {
                 _logger?.Log($"Initializing {obj.GetType().Name} | Order: {obj.Order}", obj as Object);
 
-                try
-                {
-                    obj.Initialize();
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError($"[SceneBootstrap] Failed to initialize {obj.GetType().Name}: {e.Message}\n{e.StackTrace}", obj as Object);
-                }
+                
+                obj.Initialize();
+                
+                // try
+                // {
+                //     obj.Initialize();
+                // }
+                // catch (System.Exception e)
+                // {
+                //     Debug.LogError($"[SceneBootstrap] Failed to initialize {obj.GetType().Name}: {e.Message}\n{e.StackTrace}", obj as Object);
+                // }
             }
 
             // Сохраняем всех IDisposable
