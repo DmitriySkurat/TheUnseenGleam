@@ -9,6 +9,9 @@ namespace EntryPoint
 
         protected override IEnumerator Bootstrap()
         {
+            // Сркываем курсор - перенести в отдельный сервис, который будет управлять состоянием курсора в зависимости от сцены и контекста
+            // Cursor.visible = false;
+            
             if (!Services.IsRegistered<SessionBootstrap>())
             {
                 var sessionTask = _sessionBootstrap.StartSession();
@@ -20,8 +23,8 @@ namespace EntryPoint
             while (!task.IsCompleted)
                 yield return null;
 
-            FindSceneObjects();
-            InitializeSceneObjects();
+            FindObjects();
+            InitializeObjects();
 
             _logger?.Log("Gameplay scene initialization complete", this);
         }

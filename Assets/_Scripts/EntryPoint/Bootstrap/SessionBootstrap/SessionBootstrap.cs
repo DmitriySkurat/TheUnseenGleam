@@ -4,11 +4,8 @@ using UnityEngine;
 
 namespace EntryPoint
 {
-    public class SessionBootstrap : BootstrapBase
+    public class SessionBootstrap : LifecycleBootstrap<ISessionLifecycle>
     {
-        [Header("Debug")]
-        [SerializeField] protected Utility.Logger _logger;
-
         private bool _disposed;
 
         protected override void Awake() { }
@@ -21,6 +18,9 @@ namespace EntryPoint
             if (_registry != null)
                 await _registry.InitializeAsync();
 
+            FindObjects();
+            InitializeObjects();
+
             _logger?.Log("Session started", this);
         }
 
@@ -29,12 +29,13 @@ namespace EntryPoint
             if (_disposed) return;
             _disposed = true;
 
-            _registry?.Dispose();
+            DisposeObjects();
+            DisposeServiceRegistry();
             Services.Unregister<SessionBootstrap>();
             Destroy(gameObject);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             EndSession();
         }

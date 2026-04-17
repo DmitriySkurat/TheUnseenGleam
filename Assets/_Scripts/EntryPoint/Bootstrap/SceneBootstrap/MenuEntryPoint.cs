@@ -18,16 +18,10 @@ namespace EntryPoint
             while (!task.IsCompleted)
                 yield return null;
 
-            // if (task.IsFaulted)
-            // {
-            //     Debug.LogError($"[MenuEntryPoint] Service registry initialization failed: {task.Exception?.Flatten().InnerException?.Message}\n{task.Exception?.Flatten().InnerException?.StackTrace}", this);
-            //     yield break;
-            // }
-
             _logger?.Log("Menu scene services initialized", this);
 
-            FindSceneObjects();
-            InitializeSceneObjects();
+            FindObjects();
+            InitializeObjects();
 
             _logger?.Log("Menu scene initialization complete", this);
         }
