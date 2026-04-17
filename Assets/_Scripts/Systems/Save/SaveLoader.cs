@@ -4,7 +4,7 @@ using UnityEngine;
 /// Запускается при старте сессии.
 /// Восстанавливает состояние игрока из сохранения в PlayerContext.
 /// </summary>
-public class SaveLoader : MonoBehaviour, ISessionLifecycle
+public class SaveLoader : MonoBehaviour, ISceneLifecycle
 {
     // Запускается до Player (PlayerHealth и PlayerStaminaController)
     public InitializationOrder Order => InitializationOrder.Player - 1;

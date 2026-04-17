@@ -51,6 +51,5 @@ MonoBehaviour:
   - {fileID: 8275471101476817342, guid: 6b6785286219c594babeaf81fc0cebda, type: 3}
   - {fileID: 4237522486028986871, guid: 7fab7f9c53cfa37459a8d7c7b8f24aad, type: 3}
   _plainPrefabs:
-  - {fileID: 8758084810032045221, guid: 705527ac48db32947872a3e3e157763a, type: 3}
   - {fileID: 2526920750491237024, guid: f5675b51bb12d9f4896fa0e1f43e983d, type: 3}
   _persistAcrossScenes: 0

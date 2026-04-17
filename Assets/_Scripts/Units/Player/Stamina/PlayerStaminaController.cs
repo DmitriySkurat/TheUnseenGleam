@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerStaminaController : MonoBehaviour, ISessionLifecycle
+public class PlayerStaminaController : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 5;
 

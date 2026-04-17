@@ -459,13 +459,9 @@ GameObject:
   - component: {fileID: 3591886000825315008}
   - component: {fileID: 669612337890271470}
   - component: {fileID: -8977762195206441254}
-  - component: {fileID: 7516272934157095564}
-  - component: {fileID: 7049304287584125572}
   - component: {fileID: 8915404737102142867}
   - component: {fileID: 5490602481864773789}
-  - component: {fileID: 1124396798477559947}
   - component: {fileID: 3687784705825962857}
-  - component: {fileID: 2419083475612345678}
   - component: {fileID: 1723518907424848559}
   - component: {fileID: 4384193120335901177}
   m_Layer: 8
@@ -681,7 +677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
   m_ShadowGroup: 0
-  m_Priority: 10
+  m_Priority: 12
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
@@ -757,43 +753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cdf1b372e59e1409de20b5772443b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementMotor
---- !u!114 &7516272934157095564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9221460439243928467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb68cfcccb028744b18bd4d73914f8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  items:
-  - item: {fileID: 11400000, guid: 4d9967dd09504c34e8328ddc0b1a7d8e, type: 2}
-    count: 2
-  - item: {fileID: 11400000, guid: b27357a3cb786cf45aeece9e98a19cc1, type: 2}
-    count: 5
-  - item: {fileID: 11400000, guid: 56004921bcf937740b8c2312e5a0d3ba, type: 2}
-    count: 1
---- !u!114 &7049304287584125572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9221460439243928467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85fb39f7296783a4e9b4a6d194384300, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HotbarController
-  slotCount: 3
-  _slots: []
-  selectedHotbarSlot: -1
-  selectedHotbarEntry:
-    item: {fileID: 0}
-    count: 0
 --- !u!114 &8915404737102142867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -833,18 +792,6 @@ MonoBehaviour:
   occlusionMask:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &1124396798477559947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9221460439243928467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1f0955c92426da469e504ec7e87160e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
 --- !u!114 &3687784705825962857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,18 +804,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0bad0de632c5cb46bf98d20a06b2f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FallDamage
---- !u!114 &2419083475612345678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9221460439243928467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f86e837f8204ed1bcbaf5926fb4e463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerBreathController
 --- !u!114 &1723518907424848559
 MonoBehaviour:
   m_ObjectHideFlags: 0
