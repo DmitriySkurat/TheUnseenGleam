@@ -37,10 +37,15 @@ public abstract class ServiceRegistry : MonoBehaviour
             if (_persistAcrossScenes)
                 DontDestroyOnLoad(instance.gameObject);
 
-            if (instance is IService service)
+            foreach (var component in instance.GetComponents<MonoBehaviour>())
             {
-                Services.Register(instance);
-                _registeredServiceTypes.Add(instance.GetType());
+                if (component is not IService service) continue;
+
+                var concreteType = component.GetType();
+                typeof(Services).GetMethod("Register")
+                    .MakeGenericMethod(concreteType)
+                    .Invoke(null, new object[] { component });
+                _registeredServiceTypes.Add(concreteType);
                 _services.Add(service);
             }
         }
@@ -50,8 +55,10 @@ public abstract class ServiceRegistry : MonoBehaviour
 
     public virtual void Dispose()
     {
+        var unregisterMethod = typeof(Services).GetMethod("Unregister");
+
         foreach (var type in _registeredServiceTypes)
-            Services.Unregister(type);
+            unregisterMethod.MakeGenericMethod(type).Invoke(null, null);
 
         _registeredServiceTypes.Clear();
         _services.Clear();
