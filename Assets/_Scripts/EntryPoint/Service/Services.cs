@@ -16,13 +16,28 @@ public static class Services
 
         _services[type] = service;
     }
-    
+
+    public static void Register(object service)
+    {
+        var type = service.GetType();
+
+        if (_services.ContainsKey(type))
+            throw new Exception($"Service {type.Name} already registered");
+
+        _services[type] = service;
+    }
+
     public static void Unregister<T>() where T : class
     {
         var type = typeof(T);
 
         if (_services.ContainsKey(type))
             _services.Remove(type);
+    }
+
+    public static void Unregister(Type type)
+    {
+        _services.Remove(type);
     }
 
     public static bool IsRegistered<T>() where T : class
