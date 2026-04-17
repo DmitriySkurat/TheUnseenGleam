@@ -47,4 +47,6 @@ MonoBehaviour:
   _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
   _servicePrefabs: []
   _plainPrefabs: []
-  _persistAcrossScenes: 0
+  _persistAcrossScenes: 1
+  _stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
+  _noiseStats: {fileID: 11400000, guid: eccbd4ddfcc6644489d9aeffef87daa2, type: 2}

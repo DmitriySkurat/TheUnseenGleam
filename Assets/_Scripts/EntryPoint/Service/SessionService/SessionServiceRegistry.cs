@@ -1,27 +1,20 @@
-using System;
-using Unity.VisualScripting;
-using UnityEngine;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-
+using UnityEngine;
 
 public class SessionServiceRegistry : ServiceRegistry
 {
-    private readonly List<GameObject> _sessionObjects = new();
+    [SerializeField] private PlayerScriptableStats _stats;
+    [SerializeField] private NoiseScriptableStats _noiseStats;
 
+    public override async Task InitializeAsync()
+    {
+        Services.Register(new PlayerContext { stats = _stats, noiseStats = _noiseStats });
+        await base.InitializeAsync();
+    }
 
-    // public void Dispose()
-    // {
-    //     // Пример отмены регистрации:
-    //     // Services.Unregister<SomeService>();
-
-    //     foreach (var obj in _sessionObjects)
-    //     {
-    //         if (obj != null)
-    //             Destroy(obj);
-    //     }
-
-    //     _sessionObjects.Clear();
-    // }
+    public override void Dispose()
+    {
+        Services.Unregister<PlayerContext>();
+        base.Dispose();
+    }
 }
