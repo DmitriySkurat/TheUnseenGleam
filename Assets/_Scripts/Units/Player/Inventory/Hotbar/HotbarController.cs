@@ -8,6 +8,8 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
     [SerializeField] private int slotCount = 5;
     [SerializeField] private List<InventoryEntry> _slots;
 
+    public IReadOnlyList<InventoryEntry> Slots => _slots;
+
     private PlayerContext _ctx;
 
     public void Initialize()
