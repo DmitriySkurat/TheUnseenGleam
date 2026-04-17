@@ -21,8 +21,7 @@ public class PlayerContext
     public PlayerInventory inventory; // ???
     public PlayerLightSensor lightSensor; // ???
     public CameraFollow cameraFollow;
-    public int selectedHotbarSlot = -1;
-    public InventoryEntry selectedHotbarEntry;
+    public HotbarController hotbar;
     
     // ===== MOVEMENT =====
     public bool grounded;
@@ -64,7 +63,7 @@ public class PlayerContext
     
     // ===== HEALTH =====
     public PlayerHealth health;
-    public float currentHealth;
+    public float currentHealth; // брать из PlayerHealth
     public bool isAlive;
 
     // ===== GRABBED =====
@@ -93,5 +92,5 @@ public class PlayerContext
     public bool HasLandingRollBuffered => stats != null && Time.time < timeCrouchWasPressed + stats.LandingRollBuffer;
     public bool IsLandingRollActive => Time.time < landingRollEndTime;
     public bool WantsCrouch => input.CrouchHeld || IsLandingRollActive;
-    public ItemData SelectedHotbarItem => selectedHotbarEntry != null ? selectedHotbarEntry.item : null;
+    public ItemData SelectedHotbarItem => hotbar?.SelectedHotbarItem;
 }

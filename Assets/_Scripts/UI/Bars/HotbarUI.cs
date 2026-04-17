@@ -9,18 +9,11 @@ public class HotbarUI : MonoBehaviour, ISceneLifecycle
     [SerializeField] private Color _defaultColor = Color.white;
 
     private PlayerContext _ctx;
-    private HotbarController _hotbar;
     private int _lastSelectedSlot = int.MinValue;
 
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
-        _hotbar = Object.FindFirstObjectByType<HotbarController>(FindObjectsInactive.Include);
-
-        if (_hotbar == null)
-            Debug.LogError("[HotbarUI] HotbarController not found in scene");
-        if (_slots == null || _slots.Length == 0)
-            Debug.LogError("[HotbarUI] Slots array is empty — assign HotbarSlotUI children in Inspector");
 
         for (int i = 0; i < _slots.Length; i++)
             _slots[i].Setup(i);
@@ -37,10 +30,10 @@ public class HotbarUI : MonoBehaviour, ISceneLifecycle
 
     private void Update()
     {
-        if (_ctx == null)
+        if (_ctx?.hotbar == null)
             return;
 
-        int selected = _ctx.selectedHotbarSlot;
+        int selected = _ctx.hotbar.selectedHotbarSlot;
         if (selected == _lastSelectedSlot)
             return;
 
@@ -51,10 +44,10 @@ public class HotbarUI : MonoBehaviour, ISceneLifecycle
 
     private void RefreshItems()
     {
-        if (_hotbar == null)
+        if (_ctx?.hotbar == null)
             return;
 
-        var hotbarSlots = _hotbar.Slots;
+        var hotbarSlots = _ctx.hotbar.Slots;
         int count = Mathf.Min(_slots.Length, hotbarSlots.Count);
         for (int i = 0; i < count; i++)
             _slots[i].SetEntry(hotbarSlots[i]);

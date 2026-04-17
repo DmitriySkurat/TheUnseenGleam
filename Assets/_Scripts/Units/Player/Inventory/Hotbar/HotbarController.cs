@@ -9,25 +9,29 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
     [SerializeField] private List<InventoryEntry> _slots;
 
     public IReadOnlyList<InventoryEntry> Slots => _slots;
+    public int selectedHotbarSlot = -1;
+    public InventoryEntry selectedHotbarEntry;
+    public ItemData SelectedHotbarItem => selectedHotbarEntry?.item;
 
     private PlayerContext _ctx;
 
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
+        _ctx.hotbar = this;
 
         EnsureSlots();
         _ctx.inventory.OnInventoryChanged += HandleInventoryChanged;
         SyncHotbarWithInventory();
 
-        _ctx.selectedHotbarSlot = -1;
-        _ctx.selectedHotbarEntry = null;
-        
+        selectedHotbarSlot = -1;
+        selectedHotbarEntry = null;
     }
 
     public void Dispose()
     {
         _ctx.inventory.OnInventoryChanged -= HandleInventoryChanged;
+        _ctx.hotbar = null;
     }
 
     private void Update()
@@ -49,8 +53,8 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
         if (slotIndex < 0 || slotIndex >= _slots.Count)
             return;
 
-        _ctx.selectedHotbarSlot = slotIndex;
-        _ctx.selectedHotbarEntry = RebindSlot(slotIndex);
+        selectedHotbarSlot = slotIndex;
+        selectedHotbarEntry = RebindSlot(slotIndex);
     }
 
     private void HandlePrimaryAction()
@@ -58,7 +62,7 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
         if (!_ctx.input.AttackDown)
             return;
 
-        var selectedItem = _ctx.SelectedHotbarItem;
+        var selectedItem = SelectedHotbarItem;
         if (selectedItem == null)
             return;
 
@@ -108,13 +112,13 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
 
     private void SyncSelectedSlot()
     {
-        if (_ctx.selectedHotbarSlot < 0 || _ctx.selectedHotbarSlot >= _slots.Count)
+        if (selectedHotbarSlot < 0 || selectedHotbarSlot >= _slots.Count)
         {
-            _ctx.selectedHotbarEntry = null;
+            selectedHotbarEntry = null;
             return;
         }
 
-        _ctx.selectedHotbarEntry = RebindSlot(_ctx.selectedHotbarSlot);
+        selectedHotbarEntry = RebindSlot(selectedHotbarSlot);
     }
 
     private void EnsureSlots()
