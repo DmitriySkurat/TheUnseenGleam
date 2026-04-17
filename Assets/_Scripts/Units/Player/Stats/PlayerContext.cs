@@ -64,6 +64,7 @@ public class PlayerContext
     
     // ===== HEALTH =====
     public PlayerHealth health;
+    public float currentHealth;
     public bool isAlive;
 
     // ===== GRABBED =====

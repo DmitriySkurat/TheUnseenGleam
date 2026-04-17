@@ -15,17 +15,15 @@ public class PlayerHealth : MonoBehaviour, ISceneLifecycle
     {
         _ctx = Services.Get<PlayerContext>();
 
-        var playerState = Services.Get<PlayerPersistentState>();
-        _currentHealth = playerState.HasData ? playerState.Health : _ctx.stats.MaxPlayerHealth;
+        _currentHealth = _ctx.currentHealth > 0f ? _ctx.currentHealth : _ctx.stats.MaxPlayerHealth;
         _regenDelayTimer = 0f;
         _ctx.isAlive = true;
-
         _ctx.health = this;
     }
-    
+
     public void Dispose()
     {
-        
+        _ctx.currentHealth = _currentHealth;
     }
 
     private void Update()
