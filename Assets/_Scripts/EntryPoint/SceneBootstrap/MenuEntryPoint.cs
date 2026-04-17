@@ -37,7 +37,10 @@ namespace EntryPoint
         {
             // Возвращаем курсор
             // Cursor.visible = true;
-            
+
+            if (Services.IsRegistered<GameSessionEntryPoint>())
+                Services.Get<GameSessionEntryPoint>().End();
+
             var task = _menuServiceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)
