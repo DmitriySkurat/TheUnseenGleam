@@ -127,9 +127,9 @@ public class GrabProgressBar : MonoBehaviour, ISceneLifecycle
         if (_worldCamera != null)
             return _worldCamera;
 
-        if (Services.IsRegistered<CameraFollow>())
+        if (Services.IsRegistered<PlayerContext>())
         {
-            var cameraFollow = Services.Get<CameraFollow>();
+            var cameraFollow = Services.Get<PlayerContext>().cameraFollow;
             if (cameraFollow != null)
                 _worldCamera = cameraFollow.GetComponent<Camera>();
         }

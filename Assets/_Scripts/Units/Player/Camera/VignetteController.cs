@@ -44,9 +44,9 @@ public class VignetteController : MonoBehaviour, ISceneLifecycle
     {
         _volume = GetComponent<Volume>();
 
-        _cameraFollow = Services.Get<CameraFollow>();
-
-        _lightExposureSensor = Services.Get<PlayerContext>().lightSensor;
+        var ctx = Services.Get<PlayerContext>();
+        _cameraFollow = ctx.cameraFollow;
+        _lightExposureSensor = ctx.lightSensor;
 
         if (!_volume.profile.TryGet(out _vignette))
         {

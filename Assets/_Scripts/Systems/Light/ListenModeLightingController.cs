@@ -34,7 +34,7 @@ public class ListenModeLightingController : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
-        _cameraFollow = Services.Get<CameraFollow>();
+        _cameraFollow = Services.Get<PlayerContext>().cameraFollow;
         _lightSystem  = Services.Get<LightSystem>();
 
         _baseGlobalIntensity = _lightSystem.GlobalLightIntensity;

@@ -61,6 +61,7 @@ public class CameraFollow : MonoBehaviour, ISceneLifecycle
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
+        _ctx.cameraFollow = this;
 
         target = _ctx.transform;
         _targetRb = target != null ? target.GetComponent<Rigidbody2D>() : null;

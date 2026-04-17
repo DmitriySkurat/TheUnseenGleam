@@ -20,6 +20,7 @@ public class PlayerContext
     public Rigidbody2D rb; // ???
     public PlayerInventory inventory; // ???
     public PlayerLightSensor lightSensor; // ???
+    public CameraFollow cameraFollow;
     public int selectedHotbarSlot = -1;
     public InventoryEntry selectedHotbarEntry;
     
