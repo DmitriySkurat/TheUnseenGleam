@@ -78,31 +78,32 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
         }
     }
 
-    public void AssignItem(ItemData item)
+    // Returns true if the given item (count units) can fit into existing or free hotbar slots.
+    public bool CanFitItem(ItemData item, int count = 1)
     {
-        if (item == null || !item.CanUse || _ctx?.inventory == null)
-            return;
+        if (item == null || count <= 0) return false;
 
         EnsureSlots();
+        int remaining = count;
 
-        if (IsAssigned(item))
-            return;
-
-        var freeIndex = _slots.FindIndex(s => s == null);
-        if (freeIndex < 0)
+        // Space in existing slots for this item type
+        for (int i = 0; i < _slots.Count; i++)
         {
-            Debug.Log("No free hotbar slot");
-            return;
+            var slot = _slots[i];
+            if (slot?.item != item) continue;
+            remaining -= item.maxStackSize - slot.count;
+            if (remaining <= 0) return true;
         }
 
-        var entry = FindInventoryEntry(item, _ctx.inventory.GetEntries());
-        if (entry == null)
+        // Space in free slots
+        for (int i = 0; i < _slots.Count; i++)
         {
-            Debug.Log("Item not found in inventory");
-            return;
+            if (_slots[i] != null) continue;
+            remaining -= item.maxStackSize;
+            if (remaining <= 0) return true;
         }
 
-        _slots[freeIndex] = entry;
+        return remaining <= 0;
     }
 
     private void HandleInventoryChanged()
@@ -144,10 +145,12 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
         for (int i = 0; i < entries.Count; i++)
         {
             var entry = entries[i];
-            if (entry?.item == null || !entry.item.CanUse)
-                continue;
+            if (entry?.item == null || !entry.item.CanUse) continue;
+            if (IsAssigned(entry)) continue;
 
-            AssignItem(entry.item);
+            var freeIndex = _slots.FindIndex(s => s == null);
+            if (freeIndex < 0) break;
+            _slots[freeIndex] = entry;
         }
 
         SyncSelectedSlot();
@@ -167,6 +170,7 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
             _slots[i] = RebindSlot(i);
     }
 
+    // Validates a slot's entry still exists in inventory by reference.
     private InventoryEntry RebindSlot(int index)
     {
         var slot = _slots[index];
@@ -176,38 +180,18 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
             return null;
         }
 
-        var rebinding = FindInventoryEntry(slot.item, _ctx.inventory.GetEntries());
-        _slots[index] = rebinding;
-        return rebinding;
-    }
-
-    private InventoryEntry FindInventoryEntry(ItemData item, IReadOnlyList<InventoryEntry> entries)
-    {
-        if (item == null || entries == null)
-            return null;
-
+        var entries = _ctx.inventory.GetEntries();
         for (int i = 0; i < entries.Count; i++)
-        {
-            var entry = entries[i];
-            if (entry != null && entry.item == item)
-                return entry;
-        }
+            if (entries[i] == slot) return slot;
 
+        _slots[index] = null;
         return null;
     }
 
-    private bool IsAssigned(ItemData item)
+    private bool IsAssigned(InventoryEntry entry)
     {
-        if (item == null)
-            return false;
-
         for (int i = 0; i < _slots.Count; i++)
-        {
-            var slot = _slots[i];
-            if (slot != null && slot.item == item)
-                return true;
-        }
-
+            if (_slots[i] == entry) return true;
         return false;
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Consumable
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   id: 2
-  itemName: Consumable
+  itemName: 0
   sprite: {fileID: 0}
+  maxStackSize: 8
   type: 0

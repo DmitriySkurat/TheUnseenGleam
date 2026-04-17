@@ -11,30 +11,55 @@ public class Inventory : MonoBehaviour
     public bool Has(ItemData item, int count = 1)
     {
         if (item == null) return false;
-        var e = items.Find(x => x.item == item);
-        return e != null && e.count >= count;
+        int total = 0;
+        foreach (var e in items)
+            if (e.item == item) total += e.count;
+        return total >= count;
     }
 
     public void Add(ItemData item, int count = 1)
     {
         if (item == null || count <= 0) return;
 
-        var e = items.Find(x => x.item == item);
-        if (e == null) items.Add(new InventoryEntry { item = item, count = count });
-        else e.count += count;
+        int remaining = count;
+
+        // Fill existing stacks first
+        foreach (var e in items)
+        {
+            if (e.item != item) continue;
+            int space = item.maxStackSize - e.count;
+            if (space <= 0) continue;
+            int toAdd = Mathf.Min(space, remaining);
+            e.count += toAdd;
+            remaining -= toAdd;
+            if (remaining <= 0) break;
+        }
+
+        // Create new entries for overflow
+        while (remaining > 0)
+        {
+            int toAdd = Mathf.Min(item.maxStackSize, remaining);
+            items.Add(new InventoryEntry { item = item, count = toAdd });
+            remaining -= toAdd;
+        }
 
         OnInventoryChanged?.Invoke();
     }
 
     public bool Remove(ItemData item, int count = 1)
     {
-        if (item == null || count <= 0) return false;
+        if (!Has(item, count)) return false;
 
-        var e = items.Find(x => x.item == item);
-        if (e == null || e.count < count) return false;
-
-        e.count -= count;
-        if (e.count == 0) items.Remove(e);
+        int remaining = count;
+        for (int i = items.Count - 1; i >= 0 && remaining > 0; i--)
+        {
+            var e = items[i];
+            if (e.item != item) continue;
+            int toRemove = Mathf.Min(e.count, remaining);
+            e.count -= toRemove;
+            remaining -= toRemove;
+            if (e.count == 0) items.RemoveAt(i);
+        }
 
         OnInventoryChanged?.Invoke();
         return true;
