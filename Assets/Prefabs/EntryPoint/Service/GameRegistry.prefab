@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3105868410568605993
+--- !u!1 &7718836552938084601
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6174412375907803376}
-  - component: {fileID: 5996283277709006169}
+  - component: {fileID: 9093188059125383805}
+  - component: {fileID: 3925677281339909014}
   m_Layer: 0
-  m_Name: MenuEntryPoint
+  m_Name: GameRegistry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6174412375907803376
+--- !u!4 &9093188059125383805
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3105868410568605993}
+  m_GameObject: {fileID: 7718836552938084601}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 75.08609, y: 58.30841, z: 0}
+  m_LocalPosition: {x: 2.25927, y: -4.72923, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5996283277709006169
+--- !u!114 &3925677281339909014
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3105868410568605993}
+  m_GameObject: {fileID: 7718836552938084601}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d6f3ff652365545a1b926b073d2e91, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ccc64451c2f9ba49a1a29cacc45c8e5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EntryPoint.MainMenuEntryPoint
-  _registry: {fileID: 528810512198967375, guid: 893fe2a1facd15747bfb9175bc2ca4e9, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::ServiceRegistry
   _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
-  gameServiceRegistry: {fileID: 3925677281339909014, guid: b6dfc778366e8c34ebe06266877319c0, type: 3}
+  _servicePrefabs:
+  - {fileID: -8763163762646409491, guid: 8f49e04fe160ffb448dbb6bfb6a550d7, type: 3}
+  - {fileID: 2697390914540577186, guid: dbd8401b3da2e0f4b8c6d98f616ea0c2, type: 3}
+  - {fileID: 9078426006806687675, guid: e1a7b25b9157470419ef469ba782b3b3, type: 3}
+  _plainPrefabs: []
+  _persistAcrossScenes: 1

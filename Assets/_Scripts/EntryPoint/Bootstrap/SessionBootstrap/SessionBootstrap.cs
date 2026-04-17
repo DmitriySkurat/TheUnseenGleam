@@ -1,58 +1,44 @@
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-namespace EntryPoint 
+namespace EntryPoint
 {
     public class SessionBootstrap : BootstrapBase
     {
         [Header("Debug")]
         [SerializeField] protected Utility.Logger _logger;
-        
-                
-        private SessionServiceRegistry _registry;
-        
-        
-        // protected virtual void Awake()
-        // {
-        //     StartCoroutine(Bootstrap());
-        // }
-        
-        public void StartSession()
+
+        private bool _disposed;
+
+        protected override void Awake() { }
+
+        public async Task StartSession()
         {
-            StartCoroutine(Bootstrap());
-        }
+            DontDestroyOnLoad(gameObject);
+            Services.Register(this);
 
-        protected override IEnumerator Bootstrap()
-        {
-            yield return null;
-        }
-
-        private void Dispose()
-        {
-            _registry?.Dispose();
-        }
-
-        private void OnDestroy()
-        {
-            Dispose();
-        }
-
-
-
-        public async Task InitializeAsync()
-        {
             if (_registry != null)
                 await _registry.InitializeAsync();
+
+            _logger?.Log("Session started", this);
         }
 
-        // Завершение сессии при выходе в меню
         public void EndSession()
         {
+            if (_disposed) return;
+            _disposed = true;
+
             _registry?.Dispose();
             Services.Unregister<SessionBootstrap>();
             Destroy(gameObject);
         }
+
+        private void OnDestroy()
+        {
+            EndSession();
+        }
+
+        protected override IEnumerator Bootstrap() { yield break; }
     }
 }

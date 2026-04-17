@@ -11,8 +11,6 @@ namespace EntryPoint
         [Header("Debug")]
         [SerializeField] protected Utility.Logger _logger;
         
-        [SerializeField] protected SceneServiceRegistry _serviceRegistry;
-
         protected List<ISceneLifecycle> _sceneObjects;
         
         
@@ -99,10 +97,10 @@ namespace EntryPoint
         
         protected virtual void DisposeServiceRegistry()
         {
-            if (_serviceRegistry == null) 
+            if (_registry == null) 
                 return;
                 
-            _serviceRegistry?.Dispose();
+            _registry?.Dispose();
         }
 
         protected virtual void OnDestroy()

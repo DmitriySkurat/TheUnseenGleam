@@ -5,8 +5,6 @@ namespace EntryPoint
 {
     public class GameBootstrap : BootstrapBase
     {
-        [SerializeField] private GameServiceRegistry serviceRegistry;
-
 
         protected override IEnumerator Bootstrap()
         {
@@ -19,7 +17,7 @@ namespace EntryPoint
                 Camera.main.aspect = (float)Screen.width / Screen.height;
             }
 
-            var task = serviceRegistry.InitializeAsync();
+            var task = _registry.InitializeAsync();
 
             while (!task.IsCompleted)
                 yield return null;

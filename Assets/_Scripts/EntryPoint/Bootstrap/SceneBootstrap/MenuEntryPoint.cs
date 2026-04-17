@@ -13,7 +13,7 @@ namespace EntryPoint
             if (Services.IsRegistered<SessionBootstrap>())
                 Services.Get<SessionBootstrap>().EndSession();
 
-            var task = _serviceRegistry.InitializeAsync();
+            var task = _registry.InitializeAsync();
 
             while (!task.IsCompleted)
                 yield return null;
