@@ -14,8 +14,8 @@ namespace HSM
 
         protected override void OnEnter()
         {
-            Debug.Log("Player has died (normal). Ending session...");
-            Services.Get<SessionEndHandler>().EndSession();
+            Debug.Log("Player has died (normal)");
+            
             base.OnEnter();
         }
     }

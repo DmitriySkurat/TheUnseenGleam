@@ -42,14 +42,11 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         var light      = Instantiate(lightPrefab);
         var alert      = Instantiate(agentAlertSystemPrefab);
         var searchCoordinator = Instantiate(agentSearchCoordinatorPrefab);
-        var sessionEndHandler = new GameObject("SessionEndHandler").AddComponent<SessionEndHandler>();
-
 
         Services.Register(noise);
         Services.Register(light);
         Services.Register(alert);
         Services.Register(searchCoordinator);
-        Services.Register(sessionEndHandler);
 
         services.Add(noise);
         services.Add(light);
@@ -70,7 +67,6 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Unregister<CameraFollow>();
         Services.Unregister<AgentAlertSystem>();
         Services.Unregister<AgentSearchCoordinator>();
-        Services.Unregister<SessionEndHandler>();
     }
 
 }
