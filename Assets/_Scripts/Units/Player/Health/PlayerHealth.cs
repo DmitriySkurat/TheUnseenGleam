@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour, ISceneLifecycle
+public class PlayerHealth : MonoBehaviour, ISessionLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 10;
     private PlayerContext _ctx;

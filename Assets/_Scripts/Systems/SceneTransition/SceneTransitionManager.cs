@@ -42,16 +42,11 @@ public class SceneTransitionManager : MonoBehaviour, IService
         while (loadOp.progress < 0.9f)
             yield return null;
 
-        // Сохраняем здоровье и выносливость игрока перед выгрузкой сцены
-        if (Services.IsRegistered<PlayerContext>())
+        // Записываем на диск, если выбран активный слот сохранения
+        if (Services.IsRegistered<PlayerContext>() && SaveVariables.ActiveSlot >= 0)
         {
             var ctx = Services.Get<PlayerContext>();
-            var playerState = Services.Get<PlayerPersistentState>();
-            playerState.Save(ctx.health.CurrentHealth, ctx.stamina);
-
-            // Записываем на диск, если выбран активный слот сохранения
-            if (SaveVariables.ActiveSlot >= 0)
-                SaveManager.Save(SaveVariables.ActiveSlot, ctx.health.CurrentHealth, ctx.stamina, targetSceneName);
+            SaveManager.Save(SaveVariables.ActiveSlot, ctx.health.CurrentHealth, ctx.stamina, targetSceneName);
         }
 
         // Выгружаем сервисы старой сцены ДО активации новой,

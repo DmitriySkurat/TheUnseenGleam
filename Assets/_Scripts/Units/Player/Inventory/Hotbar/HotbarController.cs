@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HotbarController : MonoBehaviour, ISceneLifecycle
+public class HotbarController : MonoBehaviour, ISessionLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 20;
 

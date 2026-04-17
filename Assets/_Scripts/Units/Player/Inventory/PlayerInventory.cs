@@ -2,29 +2,19 @@ using UnityEngine;
 using HSM;
 using System.Collections.Generic;
 
-public class PlayerInventory : Inventory, ISceneLifecycle
+public class PlayerInventory : Inventory, ISessionLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 10;
 
     PlayerContext _ctx;
-    
+
     public void Initialize()
     {
         _ctx = Services.Get<PlayerContext>();
         _ctx.inventory = this;
-
-        var state = Services.Get<PlayerPersistentState>();
-        if (state.InventoryEntries != null && state.InventoryEntries.Count > 0)
-        {
-            items = new List<InventoryEntry>(state.InventoryEntries);
-            state.ClearInventory();
-        }
     }
 
-    public void Dispose()
-    {
-        Services.Get<PlayerPersistentState>().SaveInventory(items);
-    }
+    public void Dispose() { }
 
     public void Update()
     {
@@ -33,13 +23,8 @@ public class PlayerInventory : Inventory, ISceneLifecycle
             Debug.LogError("Придурок забыл инициализировать PlayerInventory");
             return;
         }
-        
-        // foreach (Entry item in items)
-        // {
-        //     Debug.Log($" item name {item.item.name} {item.count}");
-        // }
     }
-    
+
     public bool TryUse(ItemData item, PlayerContext ctx)
     {
         if (item == null || !item.CanUse) return false;

@@ -80,7 +80,6 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
         SaveVariables.ActiveSlot = slot;
 
         Utility.SceneLoader.Load(Utility.SceneNames.Demo);
-        // PlayerPersistentState не трогаем — PlayerHealth возьмёт значения по умолчанию из ScriptableStats
         // _sceneTransition.TransitionTo(Utility.SceneNames.Demo);
     }
 }
