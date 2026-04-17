@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e38aa1cb323f5142bdaed65253c74c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplaySceneServiceRegistry
+  _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
   stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
   noiseStats: {fileID: 11400000, guid: eccbd4ddfcc6644489d9aeffef87daa2, type: 2}
   noisePrefab: {fileID: 8122682527447328044, guid: 4de5b4bd8f4fb4843b428fd13b5df425, type: 3}

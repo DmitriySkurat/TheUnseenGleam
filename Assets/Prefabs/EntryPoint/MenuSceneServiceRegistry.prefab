@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc678c3a9a820104e8ecd077c3bca5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuSceneServiceRegistry
+  _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
