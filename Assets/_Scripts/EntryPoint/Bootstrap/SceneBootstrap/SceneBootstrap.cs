@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace EntryPoint
 {
-    public abstract class SceneBootstrap : MonoBehaviour
+    public abstract class SceneBootstrap : BootstrapBase
     {
         [Header("Debug")]
         [SerializeField] protected Utility.Logger _logger;
@@ -14,14 +14,28 @@ namespace EntryPoint
         [SerializeField] protected SceneServiceRegistry _serviceRegistry;
 
         protected List<ISceneLifecycle> _sceneObjects;
-
-        protected virtual void Awake()
+        
+        
+        // Просто для запуска сцен, после завершения разработки удалить
+        [SerializeField] private GameServiceRegistry gameServiceRegistry;
+        protected override void Awake()
         {
+            StartCoroutine(InitializeAndBootstrap());
+        }
+        private IEnumerator InitializeAndBootstrap()
+        {
+            // Пропускаем инициализацию глобальных сервисов, если они уже зарегистрированы
+            // (например, при аддитивной загрузке сцены через SceneTransitionManager)
+            if (!Services.IsRegistered<InputManager>())
+            {
+                var task = gameServiceRegistry.InitializeAsync();
+                while (!task.IsCompleted)
+                    yield return null;
+            }
+
             StartCoroutine(Bootstrap());
         }
-
-        protected abstract IEnumerator Bootstrap();
-
+        // КОНЕЦ ---------
 
         protected void FindSceneObjects()
         {

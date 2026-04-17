@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace EntryPoint
 {
-    public class GameBootstrap : MonoBehaviour
+    public class GameBootstrap : BootstrapBase
     {
         [SerializeField] private GameServiceRegistry serviceRegistry;
 
 
-        private IEnumerator Start()
+        protected override IEnumerator Bootstrap()
         {
             GameSettingsLoader.LoadAndApplySavedSettings();
             yield return null; // ждём следующий кадр — Screen.SetResolution применится

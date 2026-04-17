@@ -18,10 +18,6 @@ public class GameplaySceneServiceRegistry : SceneServiceRegistry
 
     public override async Task InitializeAsync()
     {
-        var services = new List<ISceneService>();
-        
-        Debug.Log("SceneServicesRegistrar Initialize()");
-    
         var playerContext = new PlayerContext();
         playerContext.stats = stats;
         playerContext.noiseStats = noiseStats;
@@ -46,15 +42,15 @@ public class GameplaySceneServiceRegistry : SceneServiceRegistry
         Services.Register(alert);
         Services.Register(searchCoordinator);
 
-        services.Add(noise);
-        services.Add(light);
-        services.Add(alert);
-        services.Add(searchCoordinator);
+        _services.Add(noise);
+        _services.Add(light);
+        _services.Add(alert);
+        _services.Add(searchCoordinator);
         
         // Здесь же можно зарегистрировать другие сценовые сервисы
         // Services.Register<InventorySystem>(new InventorySystem());
         
-        await Task.WhenAll(services.Select(s => s.InitializeAsync()));
+        await base.InitializeAsync();
     }
 
     public override void Dispose()

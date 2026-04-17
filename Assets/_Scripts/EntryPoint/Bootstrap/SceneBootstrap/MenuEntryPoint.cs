@@ -5,31 +5,6 @@ namespace EntryPoint
 {
     public class MenuEntryPoint : SceneBootstrap
     {        
-        // Просто для запуска сцен, после завершения разработки удалить
-        [SerializeField] private GameServiceRegistry gameServiceRegistry;
-        protected override void Awake()
-        {
-            StartCoroutine(InitializeAndBootstrap());
-            
-            // StartCoroutine(Bootstrap());
-        }
-
-        private IEnumerator InitializeAndBootstrap()
-        {
-            // Пропускаем инициализацию глобальных сервисов, если они уже зарегистрированы
-            // (например, при аддитивной загрузке сцены через SceneTransitionManager)
-            if (!Services.IsRegistered<InputManager>())
-            {
-                var task = gameServiceRegistry.InitializeAsync();
-                while (!task.IsCompleted)
-                    yield return null;
-            }
-
-            StartCoroutine(Bootstrap());
-        }
-        // КОНЕЦ ---------
-        
-        
         protected override IEnumerator Bootstrap()
         {
             // Возвращаем курсор
