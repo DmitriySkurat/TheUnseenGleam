@@ -15,7 +15,7 @@ namespace EntryPoint
         
         
         // Просто для запуска сцен, после завершения разработки удалить
-        [SerializeField] private GameServiceRegistry serviceRegistry;
+        [SerializeField] private GameServiceRegistry gameServiceRegistry;
         protected override void Awake()
         {
             StartCoroutine(InitializeAndBootstrap());
@@ -29,7 +29,7 @@ namespace EntryPoint
             // (например, при аддитивной загрузке сцены через SceneTransitionManager)
             if (!Services.IsRegistered<InputManager>())
             {
-                var task = serviceRegistry.InitializeAsync();
+                var task = gameServiceRegistry.InitializeAsync();
                 while (!task.IsCompleted)
                     yield return null;
             }
@@ -46,16 +46,19 @@ namespace EntryPoint
 
         protected override IEnumerator Bootstrap()
         {
+            // Скрываем курсор для погружения в игру (не забыть включать при паузе)
+            // Cursor.visible = true;
+            
             var task = _serviceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)
                 yield return null;
 
-            if (task.IsFaulted)
-            {
-                Debug.LogError($"[GameplayEntryPoint] Service registry initialization failed: {task.Exception?.Flatten().InnerException?.Message}\n{task.Exception?.Flatten().InnerException?.StackTrace}", this);
-                yield break;
-            }
+            // if (task.IsFaulted)
+            // {
+            //     Debug.LogError($"[GameplayEntryPoint] Service registry initialization failed: {task.Exception?.Flatten().InnerException?.Message}\n{task.Exception?.Flatten().InnerException?.StackTrace}", this);
+            //     yield break;
+            // }
 
             _logger?.Log("Gameplay scene services initialized", this);
 
@@ -64,19 +67,6 @@ namespace EntryPoint
 
             _logger?.Log("Gameplay scene initialization complete", this);
         }
-        
-        // private void EnsureEventSystem()
-        // {
-        //     if (Object.FindAnyObjectByType<EventSystem>() != null)
-        //         return;
-
-        //     var eventSystemObject = new GameObject("EventSystem");
-        //     eventSystemObject.AddComponent<EventSystem>();
-        //     eventSystemObject.AddComponent<InputSystemUIInputModule>();
-
-        //     _logger?.Log("Created missing EventSystem for UI mouse input", eventSystemObject);
-        // }
-
         
     }
 }

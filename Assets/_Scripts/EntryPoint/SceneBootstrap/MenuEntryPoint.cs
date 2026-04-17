@@ -9,7 +9,7 @@ namespace EntryPoint
         
         
         // Просто для запуска сцен, после завершения разработки удалить
-        [SerializeField] private GameServiceRegistry serviceRegistry;
+        [SerializeField] private GameServiceRegistry gameServiceRegistry;
         protected override void Awake()
         {
             StartCoroutine(InitializeAndBootstrap());
@@ -23,7 +23,7 @@ namespace EntryPoint
             // (например, при аддитивной загрузке сцены через SceneTransitionManager)
             if (!Services.IsRegistered<InputManager>())
             {
-                var task = serviceRegistry.InitializeAsync();
+                var task = gameServiceRegistry.InitializeAsync();
                 while (!task.IsCompleted)
                     yield return null;
             }
@@ -35,16 +35,19 @@ namespace EntryPoint
         
         protected override IEnumerator Bootstrap()
         {
+            // Возвращаем курсор
+            // Cursor.visible = true;
+            
             var task = _menuServiceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)
                 yield return null;
 
-            if (task.IsFaulted)
-            {
-                Debug.LogError($"[MenuEntryPoint] Service registry initialization failed: {task.Exception?.Flatten().InnerException?.Message}\n{task.Exception?.Flatten().InnerException?.StackTrace}", this);
-                yield break;
-            }
+            // if (task.IsFaulted)
+            // {
+            //     Debug.LogError($"[MenuEntryPoint] Service registry initialization failed: {task.Exception?.Flatten().InnerException?.Message}\n{task.Exception?.Flatten().InnerException?.StackTrace}", this);
+            //     yield break;
+            // }
 
             _logger?.Log("Menu scene services initialized", this);
 

@@ -46,4 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntryPoint.MainMenuEntryPoint
   _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
   _menuServiceRegistry: {fileID: 528810512198967375, guid: 893fe2a1facd15747bfb9175bc2ca4e9, type: 3}
-  serviceRegistry: {fileID: 3925677281339909014, guid: b6dfc778366e8c34ebe06266877319c0, type: 3}
+  gameServiceRegistry: {fileID: 3925677281339909014, guid: b6dfc778366e8c34ebe06266877319c0, type: 3}
