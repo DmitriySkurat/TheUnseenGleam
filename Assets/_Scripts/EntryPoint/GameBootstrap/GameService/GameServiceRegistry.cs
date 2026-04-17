@@ -26,6 +26,7 @@ public class GameServiceRegistry : MonoBehaviour
         DontDestroyOnLoad(input.gameObject);
         DontDestroyOnLoad(audio.gameObject);
         DontDestroyOnLoad(sceneTransitionManager.gameObject);
+        
         //DontDestroyOnLoad(save.gameObject);
 
         Services.Register(input);
@@ -38,6 +39,7 @@ public class GameServiceRegistry : MonoBehaviour
         services.Add(input);
         services.Add(audio);
         services.Add(sceneTransitionManager);
+        
         //services.Add(save);
 
         

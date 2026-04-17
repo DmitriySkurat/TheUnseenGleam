@@ -10,6 +10,8 @@ namespace EntryPoint
     {
         [Header("Debug")]
         [SerializeField] protected Utility.Logger _logger;
+        
+        [SerializeField] protected SceneServiceRegistry _serviceRegistry;
 
         protected List<ISceneLifecycle> _sceneObjects;
 
@@ -21,7 +23,7 @@ namespace EntryPoint
         protected abstract IEnumerator Bootstrap();
 
 
-        protected void FindInializableObjects()
+        protected void FindSceneObjects()
         {
             //var currentScene = gameObject.scene;
 
@@ -57,8 +59,8 @@ namespace EntryPoint
                 // }
             }
         }
-
-        protected virtual void OnDestroy()
+        
+        protected virtual void DisposeSceneObjects()
         {
             if (_sceneObjects == null || _sceneObjects.Count == 0)
                 return;
@@ -79,6 +81,20 @@ namespace EntryPoint
             }
 
             _logger?.Log("Scene disposed successfully", this);
+        }
+        
+        protected virtual void DisposeServiceRegistry()
+        {
+            if (_serviceRegistry == null) 
+                return;
+                
+            _serviceRegistry?.Dispose();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            DisposeSceneObjects();
+            DisposeServiceRegistry();
         }
     }
 }

@@ -12,10 +12,15 @@ public class SessionBootstrap : MonoBehaviour
     private SessionServiceRegistry _registry;
     
     
-    protected virtual void Awake()
-        {
-            StartCoroutine(Bootstrap());
-        }
+    // protected virtual void Awake()
+    // {
+    //     StartCoroutine(Bootstrap());
+    // }
+    
+    public void StartSession()
+    {
+        StartCoroutine(Bootstrap());
+    }
 
     protected IEnumerator Bootstrap()
     {
@@ -41,7 +46,7 @@ public class SessionBootstrap : MonoBehaviour
     }
 
     // Завершение сессии при выходе в меню
-    public void End()
+    public void EndSession()
     {
         _registry?.Dispose();
         Services.Unregister<SessionBootstrap>();

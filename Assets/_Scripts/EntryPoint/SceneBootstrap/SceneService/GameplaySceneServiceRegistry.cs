@@ -1,12 +1,10 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
 
-public class GameplaySceneServiceRegistry : MonoBehaviour
+public class GameplaySceneServiceRegistry : SceneServiceRegistry
 {
     [SerializeField] private PlayerScriptableStats stats;
     [SerializeField] private NoiseScriptableStats noiseStats;
@@ -18,7 +16,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
     [SerializeField] private AgentSearchCoordinator agentSearchCoordinatorPrefab;
     [SerializeField] private GameObject canvasPrefab;
 
-    public async Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
         var services = new List<ISceneService>();
         
@@ -59,7 +57,7 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         await Task.WhenAll(services.Select(s => s.InitializeAsync()));
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         Services.Unregister<PlayerContext>();
         Services.Unregister<NoiseSystem>();

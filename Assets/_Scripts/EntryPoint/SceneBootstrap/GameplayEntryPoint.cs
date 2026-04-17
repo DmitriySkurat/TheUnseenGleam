@@ -11,10 +11,6 @@ namespace EntryPoint
 {
     public class GameplayEntryPoint : SceneBootstrap
     {
-        [SerializeField] private GameplaySceneServiceRegistry _serviceRegistry;
-        [SerializeField] private SessionBootstrap _sessionPrefab;
-
-
         // Просто для запуска сцен, после завершения разработки удалить
         [SerializeField] private GameServiceRegistry gameServiceRegistry;
         protected override void Awake()
@@ -39,15 +35,9 @@ namespace EntryPoint
         }
         // КОНЕЦ ---------
 
-        protected override void OnDestroy()
-        {
-            _serviceRegistry?.Dispose();
-            base.OnDestroy();
-        }
-
         protected override IEnumerator Bootstrap()
         {
-            // Скрываем курсор для погружения в игру (не забыть включать при паузе)
+            // Скрываем курсор для погружения в игру (не забыть включать при паузе) - сделать отдельный класс
             // Cursor.visible = true;
             
             var task = _serviceRegistry.InitializeAsync();
@@ -63,20 +53,20 @@ namespace EntryPoint
 
             _logger?.Log("Gameplay scene services initialized", this);
 
-            if (!Services.IsRegistered<SessionBootstrap>() && _sessionPrefab != null)
-            {
-                var session = Instantiate(_sessionPrefab);
-                DontDestroyOnLoad(session.gameObject);
-                Services.Register(session);
+            // if (!Services.IsRegistered<SessionBootstrap>() && _sessionPrefab != null)
+            // {
+            //     var session = Instantiate(_sessionPrefab);
+            //     DontDestroyOnLoad(session.gameObject);
+            //     Services.Register(session);
 
-                var sessionTask = session.InitializeAsync();
-                while (!sessionTask.IsCompleted)
-                    yield return null;
+            //     var sessionTask = session.InitializeAsync();
+            //     while (!sessionTask.IsCompleted)
+            //         yield return null;
 
-                _logger?.Log("Game session started", this);
-            }
+            //     _logger?.Log("Game session started", this);
+            // }
 
-            FindInializableObjects();
+            FindSceneObjects();
             InitializeSceneObjects();
 
             _logger?.Log("Gameplay scene initialization complete", this);

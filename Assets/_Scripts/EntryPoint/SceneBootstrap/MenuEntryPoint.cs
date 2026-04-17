@@ -4,10 +4,7 @@ using System.Collections;
 namespace EntryPoint
 {
     public class MenuEntryPoint : SceneBootstrap
-    {
-        [SerializeField] private MenuSceneServiceRegistry _menuServiceRegistry;
-        
-        
+    {        
         // Просто для запуска сцен, после завершения разработки удалить
         [SerializeField] private GameServiceRegistry gameServiceRegistry;
         protected override void Awake()
@@ -39,9 +36,9 @@ namespace EntryPoint
             // Cursor.visible = true;
 
             if (Services.IsRegistered<SessionBootstrap>())
-                Services.Get<SessionBootstrap>().End();
+                Services.Get<SessionBootstrap>().EndSession();
 
-            var task = _menuServiceRegistry.InitializeAsync();
+            var task = _serviceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)
                 yield return null;
@@ -54,7 +51,7 @@ namespace EntryPoint
 
             _logger?.Log("Menu scene services initialized", this);
 
-            FindInializableObjects();
+            FindSceneObjects();
             InitializeSceneObjects();
 
             _logger?.Log("Menu scene initialization complete", this);
