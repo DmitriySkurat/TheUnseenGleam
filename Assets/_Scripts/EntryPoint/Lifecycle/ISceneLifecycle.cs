@@ -1,6 +1,3 @@
-public interface ISceneLifecycle
+public interface ISceneLifecycle : ILifecycle
 {
-    InitializationOrder Order { get; }
-    void Initialize();
-    void Dispose();
 }

@@ -64,7 +64,6 @@ public class PlayerContext
     // ===== HEALTH =====
     public PlayerHealth health;
     public float currentHealth; // брать из PlayerHealth
-    public System.Collections.Generic.List<InventoryEntry> inventorySnapshot; // for cross-scene persistence
     public bool isAlive;
 
     // ===== GRABBED =====

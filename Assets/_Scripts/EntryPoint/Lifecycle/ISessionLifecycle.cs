@@ -1,5 +1,3 @@
-public interface ISessionLifecycle
+public interface ISessionLifecycle : ILifecycle
 {
-    public void Initialize();
-    public void Dispose();
 }

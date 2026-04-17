@@ -13,16 +13,17 @@ public class PlayerInventory : Inventory, ISceneLifecycle
         _ctx = Services.Get<PlayerContext>();
         _ctx.inventory = this;
 
-        if (_ctx.inventorySnapshot != null && _ctx.inventorySnapshot.Count > 0)
+        var state = Services.Get<PlayerPersistentState>();
+        if (state.InventoryEntries != null && state.InventoryEntries.Count > 0)
         {
-            items = _ctx.inventorySnapshot;
-            _ctx.inventorySnapshot = null;
+            items = new List<InventoryEntry>(state.InventoryEntries);
+            state.ClearInventory();
         }
     }
 
     public void Dispose()
     {
-        _ctx.inventorySnapshot = new System.Collections.Generic.List<InventoryEntry>(items);
+        Services.Get<PlayerPersistentState>().SaveInventory(items);
     }
 
     public void Update()
