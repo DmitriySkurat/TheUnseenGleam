@@ -6,8 +6,6 @@ public static class Services
 {
     private static readonly Dictionary<Type, object> _services = new();
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetOnLoad() => _services.Clear();
 
     public static void Register<T>(T service) where T : class
     {
