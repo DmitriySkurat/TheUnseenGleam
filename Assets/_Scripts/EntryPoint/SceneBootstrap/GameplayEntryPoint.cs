@@ -12,7 +12,7 @@ namespace EntryPoint
     public class GameplayEntryPoint : SceneBootstrap
     {
         [SerializeField] private GameplaySceneServiceRegistry _serviceRegistry;
-        [SerializeField] private GameSessionEntryPoint _sessionPrefab;
+        [SerializeField] private SessionBootstrap _sessionPrefab;
 
 
         // Просто для запуска сцен, после завершения разработки удалить
@@ -63,7 +63,7 @@ namespace EntryPoint
 
             _logger?.Log("Gameplay scene services initialized", this);
 
-            if (!Services.IsRegistered<GameSessionEntryPoint>() && _sessionPrefab != null)
+            if (!Services.IsRegistered<SessionBootstrap>() && _sessionPrefab != null)
             {
                 var session = Instantiate(_sessionPrefab);
                 DontDestroyOnLoad(session.gameObject);

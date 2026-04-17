@@ -3,26 +3,21 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameSessionEntryPoint : MonoBehaviour, IService
+public class SessionBootstrap : MonoBehaviour
 {
     private SessionServiceRegistry _registry;
-    private bool _isEnding;
+    
 
     private void Awake()
     {
         _registry = GetComponent<SessionServiceRegistry>();
-        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        _isEnding = false;
-    }
+
 
     public async Task InitializeAsync()
     {
@@ -34,7 +29,7 @@ public class GameSessionEntryPoint : MonoBehaviour, IService
     public void End()
     {
         _registry?.Dispose();
-        Services.Unregister<GameSessionEntryPoint>();
+        Services.Unregister<SessionBootstrap>();
         Destroy(gameObject);
     }
 }
