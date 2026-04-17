@@ -38,20 +38,27 @@ namespace EntryPoint
         }
         // КОНЕЦ ---------
 
-        protected override IEnumerator Bootstrap()
-        {    
-            // Скрываем курсор для погружения в игру
-            //Cursor.visible = false;
-            
-            //EnsureEventSystem();
+        protected override void OnDestroy()
+        {
+            _serviceRegistry?.Dispose();
+            base.OnDestroy();
+        }
 
+        protected override IEnumerator Bootstrap()
+        {
             var task = _serviceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)
                 yield return null;
-            
+
+            if (task.IsFaulted)
+            {
+                Debug.LogError($"[GameplayEntryPoint] Service registry initialization failed: {task.Exception?.Flatten().InnerException?.Message}\n{task.Exception?.Flatten().InnerException?.StackTrace}", this);
+                yield break;
+            }
+
             _logger?.Log("Gameplay scene services initialized", this);
-            
+
             FindInializableObjects();
             InitializeSceneObjects();
 

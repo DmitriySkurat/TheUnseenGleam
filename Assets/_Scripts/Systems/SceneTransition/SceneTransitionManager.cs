@@ -22,8 +22,9 @@ public class SceneTransitionManager : MonoBehaviour, IService
     /// </summary>
     public void TransitionTo(string targetSceneName)
     {
-        if (_isTransitioning) return;
-        StartCoroutine(TransitionCoroutine(targetSceneName));
+        Utility.SceneLoader.Load(targetSceneName);
+        //if (_isTransitioning) return;
+        //StartCoroutine(TransitionCoroutine(targetSceneName));
     }
 
     private IEnumerator TransitionCoroutine(string targetSceneName)

@@ -75,6 +75,9 @@ public class SavesMenu : MonoBehaviour, ISceneLifecycle
 
         SaveVariables.ActiveSlot = slot;
         Services.Get<PlayerPersistentState>().Save(data.health, data.stamina);
-        _sceneTransition.TransitionTo(data.sceneName);
+
+        Utility.SceneLoader.Load(data.sceneName);
+
+        //_sceneTransition.TransitionTo(data.sceneName);
     }
 }

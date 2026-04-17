@@ -34,19 +34,20 @@ namespace EntryPoint
         
         
         protected override IEnumerator Bootstrap()
-        {    
-            // Скрываем курсор для погружения в игру
-            //Cursor.visible = true;
-            
-            //EnsureEventSystem();
-
+        {
             var task = _menuServiceRegistry.InitializeAsync();
 
             while (!task.IsCompleted)
                 yield return null;
-            
+
+            if (task.IsFaulted)
+            {
+                Debug.LogError($"[MenuEntryPoint] Service registry initialization failed: {task.Exception?.Flatten().InnerException?.Message}\n{task.Exception?.Flatten().InnerException?.StackTrace}", this);
+                yield break;
+            }
+
             _logger?.Log("Menu scene services initialized", this);
-            
+
             FindInializableObjects();
             InitializeSceneObjects();
 

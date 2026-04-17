@@ -1,7 +1,7 @@
 using HSM;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour, IInitializable
+public class CameraFollow : MonoBehaviour, ISceneLifecycle
 {
     private const float MovementThreshold = 0.05f;
 
@@ -67,6 +67,11 @@ public class CameraFollow : MonoBehaviour, IInitializable
         _targetCollider = target != null ? target.GetComponent<Collider2D>() : null;
     }
 
+    public void Dispose()
+    {
+        
+    }
+    
     private void Update()
     {
         if (target == null || _ctx == null)

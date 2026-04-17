@@ -13,8 +13,6 @@ public class GameServiceRegistry : MonoBehaviour
 
     public async Task InitializeAsync()
     {
-        DontDestroyOnLoad(gameObject);
-
         var services = new List<IService>();
 
         var input = Instantiate(inputPrefab);

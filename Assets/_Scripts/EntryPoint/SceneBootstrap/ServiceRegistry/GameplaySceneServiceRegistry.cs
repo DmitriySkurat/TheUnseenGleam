@@ -73,9 +73,4 @@ public class GameplaySceneServiceRegistry : MonoBehaviour
         Services.Unregister<SessionEndHandler>();
     }
 
-    // Временно, потом мб придумаю что-то
-    void OnDestroy()
-    {
-        Dispose();
-    }
 }

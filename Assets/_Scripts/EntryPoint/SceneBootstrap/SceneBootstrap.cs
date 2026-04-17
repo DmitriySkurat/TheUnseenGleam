@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace EntryPoint
 {
@@ -9,39 +10,49 @@ namespace EntryPoint
     {
         [Header("Debug")]
         [SerializeField] protected Utility.Logger _logger;
-        
+
         protected List<IInitializable> _initializables;
         protected List<IDisposable> _disposables;
-        
+
         protected virtual void Awake()
         {
             StartCoroutine(Bootstrap());
         }
-        
+
         protected abstract IEnumerator Bootstrap();
-        
-        
+
+
         protected void FindInializableObjects()
         {
+            var currentScene = gameObject.scene;
+
             _initializables = Object
                 .FindObjectsByType<MonoBehaviour>(
-                    FindObjectsInactive.Include, 
+                    FindObjectsInactive.Include,
                     FindObjectsSortMode.None
                 )
+                .Where(mb => mb.gameObject.scene == currentScene)
                 .OfType<IInitializable>()
                 .OrderBy(i => i.Order)
                 .ToList();
 
             _logger?.Log($"Found {_initializables.Count} initializables", this);
         }
-        
+
         protected void InitializeSceneObjects()
         {
             foreach (var obj in _initializables)
             {
                 _logger?.Log($"Initializing {obj.GetType().Name} | Order: {obj.Order}", obj as Object);
 
-                obj.Initialize();
+                try
+                {
+                    obj.Initialize();
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"[SceneBootstrap] Failed to initialize {obj.GetType().Name}: {e.Message}\n{e.StackTrace}", obj as Object);
+                }
             }
 
             // Сохраняем всех IDisposable
@@ -50,7 +61,7 @@ namespace EntryPoint
                 .ToList();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             if (_disposables == null || _disposables.Count == 0)
                 return;
