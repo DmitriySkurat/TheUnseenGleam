@@ -8,15 +8,21 @@ public class PlayerInventory : Inventory, ISceneLifecycle
 
     PlayerContext _ctx;
     
-    public void Initialize() {
+    public void Initialize()
+    {
         _ctx = Services.Get<PlayerContext>();
-        
         _ctx.inventory = this;
+
+        if (_ctx.inventorySnapshot != null && _ctx.inventorySnapshot.Count > 0)
+        {
+            items = _ctx.inventorySnapshot;
+            _ctx.inventorySnapshot = null;
+        }
     }
-    
+
     public void Dispose()
     {
-        
+        _ctx.inventorySnapshot = new System.Collections.Generic.List<InventoryEntry>(items);
     }
 
     public void Update()
