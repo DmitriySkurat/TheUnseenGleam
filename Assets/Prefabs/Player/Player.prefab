@@ -788,8 +788,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85fb39f7296783a4e9b4a6d194384300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotbarController
-  slotCount: 5
+  slotCount: 3
   _slots: []
+  selectedHotbarSlot: -1
+  selectedHotbarEntry:
+    item: {fileID: 0}
+    count: 0
 --- !u!114 &8915404737102142867
 MonoBehaviour:
   m_ObjectHideFlags: 0

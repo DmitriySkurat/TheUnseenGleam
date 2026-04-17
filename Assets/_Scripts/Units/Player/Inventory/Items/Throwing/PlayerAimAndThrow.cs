@@ -111,7 +111,7 @@ public class PlayerAimAndThrow : MonoBehaviour, ISceneLifecycle
         if (_wasAttackHeld && !attackHeld)
         {
             if (_currentAimDistance < minThrowRadius) return;
-            if (!_ctx.inventory.TryUse(_ctx.SelectedHotbarItem, _ctx)) return;
+            if (!_ctx.inventory.TryUse(_ctx.hotbar?.selectedHotbarEntry, _ctx)) return;
 
             bulletInst = Instantiate(pebble, bulletSpawnPoint.position, hand.transform.rotation);
 

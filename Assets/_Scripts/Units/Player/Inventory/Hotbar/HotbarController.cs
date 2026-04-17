@@ -73,7 +73,7 @@ public class HotbarController : MonoBehaviour, ISceneLifecycle
                 // Pebble and Mirror handle their own input flow.
                 break;
             default:
-                _ctx.inventory.TryUse(selectedItem, _ctx);
+                _ctx.inventory.TryUse(selectedHotbarEntry, _ctx);
                 break;
         }
     }

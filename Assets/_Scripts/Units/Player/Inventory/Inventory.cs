@@ -65,5 +65,18 @@ public class Inventory : MonoBehaviour
         return true;
     }
 
+    // Removes from a specific entry (slot-precise consumption).
+    public bool Remove(InventoryEntry entry, int count = 1)
+    {
+        if (entry == null || count <= 0 || entry.count < count) return false;
+        if (!items.Contains(entry)) return false;
+
+        entry.count -= count;
+        if (entry.count == 0) items.Remove(entry);
+
+        OnInventoryChanged?.Invoke();
+        return true;
+    }
+
     public IReadOnlyList<InventoryEntry> GetEntries() => items;
 }

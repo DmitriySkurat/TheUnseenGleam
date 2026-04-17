@@ -35,16 +35,25 @@ public class PlayerInventory : Inventory, ISceneLifecycle
     
     public bool TryUse(ItemData item, PlayerContext ctx)
     {
-        if (item == null || !item.CanUse)
-            return false;
-
-        if (!Has(item))
-            return false;
+        if (item == null || !item.CanUse) return false;
+        if (!Has(item)) return false;
 
         item.Use(ctx);
-        
-        if (item.type == ItemType.Consumable) 
+        if (item.type == ItemType.Consumable)
             Remove(item, 1);
+
+        return true;
+    }
+
+    // Consumes from the specific slot entry so the correct stack is decremented.
+    public bool TryUse(InventoryEntry entry, PlayerContext ctx)
+    {
+        if (entry?.item == null || !entry.item.CanUse) return false;
+        if (entry.count <= 0) return false;
+
+        entry.item.Use(ctx);
+        if (entry.item.type == ItemType.Consumable)
+            Remove(entry, 1);
 
         return true;
     }
