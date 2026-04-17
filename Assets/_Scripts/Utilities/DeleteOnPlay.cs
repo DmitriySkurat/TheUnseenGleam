@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Utility
 {
-    public class DeleteOnPlay : MonoBehaviour, IInitializable
+    public class DeleteOnPlay : MonoBehaviour, ISceneLifecycle
     {
         public InitializationOrder Order => InitializationOrder.GameplayCore;
 
@@ -10,6 +10,11 @@ namespace Utility
         {
             if (Application.isPlaying)
                 Destroy(gameObject);
+        }
+        
+        public void Dispose()
+        {
+            
         }
     }
 }

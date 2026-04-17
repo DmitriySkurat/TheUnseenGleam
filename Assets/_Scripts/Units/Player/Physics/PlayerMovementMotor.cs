@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovementMotor : MonoBehaviour, IInitializable
+public class PlayerMovementMotor : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player;
     
@@ -15,6 +15,11 @@ public class PlayerMovementMotor : MonoBehaviour, IInitializable
         _rb = GetComponent<Rigidbody2D>();
         
         _ctx.velocity = _rb.linearVelocity;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     void FixedUpdate()

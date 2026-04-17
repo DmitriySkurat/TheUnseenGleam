@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour, IInitializable
+public class PlayerHealth : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 10;
     private PlayerContext _ctx;
@@ -21,6 +21,11 @@ public class PlayerHealth : MonoBehaviour, IInitializable
         _ctx.isAlive = true;
 
         _ctx.health = this;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void Update()

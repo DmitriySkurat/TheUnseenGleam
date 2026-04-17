@@ -2,7 +2,7 @@ using UnityEngine;
 using HSM;
 using System.Collections.Generic;
 
-public class PlayerInventory : Inventory, IInitializable
+public class PlayerInventory : Inventory, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 10;
 
@@ -12,6 +12,11 @@ public class PlayerInventory : Inventory, IInitializable
         _ctx = Services.Get<PlayerContext>();
         
         _ctx.inventory = this;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     public void Update()

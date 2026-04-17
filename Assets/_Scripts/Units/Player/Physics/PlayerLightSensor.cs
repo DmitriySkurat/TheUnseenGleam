@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class PlayerLightSensor : MonoBehaviour, IInitializable
+public class PlayerLightSensor : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player;
 
@@ -41,6 +41,11 @@ public class PlayerLightSensor : MonoBehaviour, IInitializable
             _logger.Log("LightSystem got in LightExposureSenser", this);
             _logger.Log($"Count of spotlights: {_lightSystem.GetSpotLights().Count}", this);
         }
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void Update()

@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Volume))]
-public class VignetteController : MonoBehaviour, IInitializable
+public class VignetteController : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.PostProcessing;
 
@@ -69,6 +69,11 @@ public class VignetteController : MonoBehaviour, IInitializable
         }
 
         _timeInLight = 0f;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void Update()

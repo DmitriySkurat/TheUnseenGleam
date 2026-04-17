@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace HSM {
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlayerInteractor))]
-    public class PlayerStateDriver : MonoBehaviour, IInitializable 
+    public class PlayerStateDriver : MonoBehaviour, ISceneLifecycle 
     {
         public InitializationOrder Order => InitializationOrder.Player;
     
@@ -32,6 +32,11 @@ namespace HSM {
             var builder = new StateMachineBuilder(_root);
             _machine = builder.Build();
         }        
+        
+        public void Dispose()
+        {
+            
+        }
 
 
         void FixedUpdate() {

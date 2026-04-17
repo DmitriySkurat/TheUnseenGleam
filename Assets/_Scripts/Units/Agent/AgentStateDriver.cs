@@ -4,7 +4,7 @@ using PlatNav;
 
 namespace HSM {
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlatNavHandler))]
-    public class AgentStateDriver : MonoBehaviour, IInitializable
+    public class AgentStateDriver : MonoBehaviour, ISceneLifecycle
     {
         public InitializationOrder Order => InitializationOrder.Enemy;
 
@@ -56,6 +56,12 @@ namespace HSM {
             _root = new AgentRoot(null, _ctx);
             var builder = new StateMachineBuilder(_root);
             _machine = builder.Build();
+        }
+        
+        public void Dispose()
+        {
+            _ctx.hearing.OnHeard -= OnHeard;
+            _ctx.alertSystem.OnAlertBroadcast -= OnAlertReceived;
         }
 
         void FixedUpdate()

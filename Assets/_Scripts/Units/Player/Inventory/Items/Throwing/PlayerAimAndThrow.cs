@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerAimAndThrow : MonoBehaviour, IInitializable
+public class PlayerAimAndThrow : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 1;
     
@@ -42,6 +42,11 @@ public class PlayerAimAndThrow : MonoBehaviour, IInitializable
             _baseGravity = pebbleBehavior.pebbleGravity;
             _currentSpeed = _baseSpeed;
         }
+    }
+    
+    public void Dispose()
+    {
+        
     }
     
     

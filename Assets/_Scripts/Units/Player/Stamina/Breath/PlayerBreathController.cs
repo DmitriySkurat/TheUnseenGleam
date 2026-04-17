@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerBreathController : MonoBehaviour, IInitializable
+public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 5;
 
@@ -23,6 +23,11 @@ public class PlayerBreathController : MonoBehaviour, IInitializable
         _ctx.isHoldingBreath = false;
         _ctx.currentStaminaBreathDrainMultiplier = 0f;
         _breathingNoiseTimer = 0f;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void FixedUpdate()

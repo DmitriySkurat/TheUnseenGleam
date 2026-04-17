@@ -5,16 +5,31 @@ using UnityEngine.SceneManagement;
 
 public class SessionBootstrap : MonoBehaviour
 {
+    [Header("Debug")]
+    [SerializeField] protected Utility.Logger _logger;
+    
+            
     private SessionServiceRegistry _registry;
     
+    
+    protected virtual void Awake()
+        {
+            StartCoroutine(Bootstrap());
+        }
 
-    private void Awake()
+    protected IEnumerator Bootstrap()
     {
-        _registry = GetComponent<SessionServiceRegistry>();
+        yield return null;
+    }
+
+    private void Dispose()
+    {
+        _registry?.Dispose();
     }
 
     private void OnDestroy()
     {
+        Dispose();
     }
 
 

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
-public abstract class Interactable : MonoBehaviour, IInteractable, IInitializable {
+public abstract class Interactable : MonoBehaviour, IInteractable, ISceneLifecycle {
     public InitializationOrder Order => InitializationOrder.Interactable;
 
     // Скорее всего удалю
@@ -46,6 +46,11 @@ public abstract class Interactable : MonoBehaviour, IInteractable, IInitializabl
         }
         
         _defaultColor = _sr.color;
+    }
+    
+    public virtual void Dispose()
+    {
+        
     }
 
     public virtual void Select() {

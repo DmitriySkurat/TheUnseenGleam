@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 /// При зажатом ПКМ ("прислушаться") выравнивает свет в сцене:
 /// плавно гасит точечные источники и поднимает глобальный свет.
 /// </summary>
-public class ListenModeLightingController : MonoBehaviour, IInitializable
+public class ListenModeLightingController : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.PostProcessing;
 
@@ -42,6 +42,11 @@ public class ListenModeLightingController : MonoBehaviour, IInitializable
         _currentGlobalIntensity = _baseGlobalIntensity;
 
         CaptureSpotLights();
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void CaptureSpotLights()

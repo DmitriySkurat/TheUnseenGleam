@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class MagicalMirror : MonoBehaviour, IInitializable
+public class MagicalMirror : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 10;
     
@@ -49,6 +49,11 @@ public class MagicalMirror : MonoBehaviour, IInitializable
         
         CreateLight();
         SetLightActive(false);
+    }
+    
+    public void Dispose()
+    {
+        
     }
     
     private void CreateLight()

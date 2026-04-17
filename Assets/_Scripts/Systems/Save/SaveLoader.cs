@@ -5,7 +5,7 @@ using UnityEngine;
 /// При инициализации восстанавливает состояние игрока из сохранения,
 /// если PlayerPersistentState ещё не заполнен (например, при прямом запуске сцены).
 /// </summary>
-public class SaveLoader : MonoBehaviour, IInitializable
+public class SaveLoader : MonoBehaviour, ISceneLifecycle
 {
     // Запускается до Player (PlayerHealth и PlayerStaminaController)
     public InitializationOrder Order => InitializationOrder.Player - 1;
@@ -27,5 +27,10 @@ public class SaveLoader : MonoBehaviour, IInitializable
             playerState.Save(saveData.health, saveData.stamina);
             Debug.Log($"[SaveLoader] Loaded slot {SaveVariables.ActiveSlot}: HP={saveData.health}, Stamina={saveData.stamina}");
         }
+    }
+    
+    public void Dispose()
+    {
+        
     }
 }

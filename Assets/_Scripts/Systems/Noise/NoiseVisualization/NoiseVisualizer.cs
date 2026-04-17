@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NoiseVisualizer : MonoBehaviour, IInitializable
+public class NoiseVisualizer : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.UI;
 
@@ -38,11 +38,10 @@ public class NoiseVisualizer : MonoBehaviour, IInitializable
         _noiseSystem.NoiseEmitted += OnNoiseEmitted;
         _agents = FindObjectsByType<AgentHearing>(FindObjectsSortMode.None);
     }
-
-    private void OnDisable()
+    
+    public void Dispose()
     {
-        if (_noiseSystem != null)
-            _noiseSystem.NoiseEmitted -= OnNoiseEmitted;
+        _noiseSystem.NoiseEmitted -= OnNoiseEmitted;
     }
 
     private void OnNoiseEmitted(NoiseEvent noise)

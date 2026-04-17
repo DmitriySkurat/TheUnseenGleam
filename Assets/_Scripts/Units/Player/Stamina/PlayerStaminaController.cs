@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerStaminaController : MonoBehaviour, IInitializable
+public class PlayerStaminaController : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 5;
 
@@ -16,6 +16,11 @@ public class PlayerStaminaController : MonoBehaviour, IInitializable
         var playerState = Services.Get<PlayerPersistentState>();
         _ctx.stamina = playerState.HasData ? playerState.Stamina : _ctx.stats.MaxStamina;
         _ctx.currentStaminaDrainMultiplier = 0f;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void FixedUpdate()

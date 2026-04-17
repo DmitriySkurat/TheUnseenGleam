@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Utility 
 {
-    public class DisableOnPlay : MonoBehaviour, IInitializable
+    public class DisableOnPlay : MonoBehaviour, ISceneLifecycle
     {
         public InitializationOrder Order => InitializationOrder.GameplayCore;
         
@@ -10,6 +10,11 @@ namespace Utility
         {
             if (Application.isPlaying)
                 gameObject.SetActive(false);
+        }
+        
+        public void Dispose()
+        {
+            
         }
     }
 }

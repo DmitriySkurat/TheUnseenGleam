@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCollisionSensor : MonoBehaviour, IInitializable
+public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player;
     
@@ -24,6 +24,11 @@ public class PlayerCollisionSensor : MonoBehaviour, IInitializable
         _ctx.airborneStartY = transform.position.y;
         
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     public void FixedUpdate()

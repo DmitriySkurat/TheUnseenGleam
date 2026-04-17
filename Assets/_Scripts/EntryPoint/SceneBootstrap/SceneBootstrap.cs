@@ -11,8 +11,7 @@ namespace EntryPoint
         [Header("Debug")]
         [SerializeField] protected Utility.Logger _logger;
 
-        protected List<IInitializable> _initializables;
-        protected List<IDisposable> _disposables;
+        protected List<ISceneLifecycle> _sceneObjects;
 
         protected virtual void Awake()
         {
@@ -26,22 +25,22 @@ namespace EntryPoint
         {
             //var currentScene = gameObject.scene;
 
-            _initializables = Object
+            _sceneObjects = Object
                 .FindObjectsByType<MonoBehaviour>(
                     FindObjectsInactive.Include,
                     FindObjectsSortMode.None
                 )
                 //.Where(mb => mb.gameObject.scene == currentScene)
-                .OfType<IInitializable>()
+                .OfType<ISceneLifecycle>()
                 .OrderBy(i => i.Order)
                 .ToList();
 
-            _logger?.Log($"Found {_initializables.Count} initializables", this);
+            _logger?.Log($"Found {_sceneObjects.Count} scene objects", this);
         }
 
         protected void InitializeSceneObjects()
         {
-            foreach (var obj in _initializables)
+            foreach (var obj in _sceneObjects)
             {
                 _logger?.Log($"Initializing {obj.GetType().Name} | Order: {obj.Order}", obj as Object);
 
@@ -57,24 +56,19 @@ namespace EntryPoint
                 //     Debug.LogError($"[SceneBootstrap] Failed to initialize {obj.GetType().Name}: {e.Message}\n{e.StackTrace}", obj as Object);
                 // }
             }
-
-            // Сохраняем всех IDisposable
-            _disposables = _initializables
-                .OfType<IDisposable>()
-                .ToList();
         }
 
         protected virtual void OnDestroy()
         {
-            if (_disposables == null || _disposables.Count == 0)
+            if (_sceneObjects == null || _sceneObjects.Count == 0)
                 return;
 
             _logger?.Log("Disposing scene objects...", this);
 
             // Dispose в ОБРАТНОМ порядке
-            for (int i = _disposables.Count - 1; i >= 0; i--)
+            for (int i = _sceneObjects.Count - 1; i >= 0; i--)
             {
-                var disposable = _disposables[i];
+                var disposable = _sceneObjects[i];
 
                 _logger?.Log(
                     $"Disposing {disposable.GetType().Name}",

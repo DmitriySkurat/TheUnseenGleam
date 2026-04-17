@@ -5,7 +5,8 @@ using NUnit.Framework;
 using HSM;
 
 [RequireComponent(typeof(Collider2D))]
-public class PlayerInteractor : Interactor, IInitializable {
+public class PlayerInteractor : Interactor, ISceneLifecycle
+ {
     public InitializationOrder Order => InitializationOrder.Player + 10;
 
 
@@ -26,6 +27,11 @@ public class PlayerInteractor : Interactor, IInitializable {
         
         if (interactOrigin == null) 
             interactOrigin = transform;
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     void Update() {

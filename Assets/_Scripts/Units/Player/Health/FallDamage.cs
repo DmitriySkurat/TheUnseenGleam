@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FallDamage : MonoBehaviour, IInitializable
+public class FallDamage : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Player + 20;
 
@@ -21,6 +21,11 @@ public class FallDamage : MonoBehaviour, IInitializable
         {
             _maxHeightY = _ctx.transform.position.y;
         }
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void Update()

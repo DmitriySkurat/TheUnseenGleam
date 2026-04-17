@@ -43,7 +43,7 @@ namespace PlatNav
         public int linkIndex;      // NavLink index used to arrive here (-1 for start segment)
     }
 
-    public class PlatNavHandler : MonoBehaviour, IInitializable
+    public class PlatNavHandler : MonoBehaviour, ISceneLifecycle
     {
         public InitializationOrder Order => InitializationOrder.Enemy;
     
@@ -261,6 +261,11 @@ namespace PlatNav
             _rb  = GetComponent<Rigidbody2D>();
             _col = GetComponent<Collider2D>();
             _separationNoise = Random.Range(-0.08f, 0.08f);
+        }
+        
+        public void Dispose()
+        {
+            
         }
 
         public void Tick(float deltaTime)

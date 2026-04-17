@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TrajectoryLine : MonoBehaviour, IInitializable
+public class TrajectoryLine : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.PostProcessing;
 
@@ -36,6 +36,11 @@ public class TrajectoryLine : MonoBehaviour, IInitializable
         _pebbleBehavior = _playerAimAndThrow.pebble.GetComponent<PebbleBehavior>();
         _projectileSpeed = _pebbleBehavior.pebbleSpeed;
         _projectileGravity = _pebbleBehavior.pebbleGravity;
+    }
+    
+    public void Dispose()
+    {
+        
     }
     
     private void Update()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AgentVision : MonoBehaviour, IInitializable
+public class AgentVision : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Enemy;
 
@@ -104,6 +104,11 @@ public class AgentVision : MonoBehaviour, IInitializable
             lightSensor = GetComponent<AgentLightSensor>();
             _logger.Log("lightSensor reference wasn't found, GetComponent used", this);
         }
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     private void Update()

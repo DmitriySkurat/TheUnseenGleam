@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class AgentLightSensor : MonoBehaviour, IInitializable
+public class AgentLightSensor : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Enemy;
 
@@ -52,6 +52,11 @@ public class AgentLightSensor : MonoBehaviour, IInitializable
     public void Initialize()
     {
         _lightSystem = Services.Get<LightSystem>();
+    }
+    
+    public void Dispose()
+    {
+        
     }
 
     public bool IsBlinded(out Light2D strongestLight, out float strength)
