@@ -31,8 +31,10 @@ public class TrajectoryLine : MonoBehaviour, ISceneLifecycle
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.positionCount = _segmentCount;
         
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
-        
+
         _pebbleBehavior = _playerAimAndThrow.pebble.GetComponent<PebbleBehavior>();
         _projectileSpeed = _pebbleBehavior.pebbleSpeed;
         _projectileGravity = _pebbleBehavior.pebbleGravity;

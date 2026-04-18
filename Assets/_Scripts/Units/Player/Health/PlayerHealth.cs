@@ -13,6 +13,8 @@ public class PlayerHealth : MonoBehaviour, ISessionLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
 
         _currentHealth = _ctx.currentHealth > 0f ? _ctx.currentHealth : _ctx.stats.MaxPlayerHealth;

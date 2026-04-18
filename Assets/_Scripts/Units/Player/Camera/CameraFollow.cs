@@ -60,6 +60,8 @@ public class CameraFollow : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         _ctx.cameraFollow = this;
 

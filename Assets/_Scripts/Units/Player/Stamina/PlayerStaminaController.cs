@@ -8,6 +8,9 @@ public class PlayerStaminaController : MonoBehaviour, ISessionLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
+        
         _ctx = Services.Get<PlayerContext>();
 
         if (_ctx == null || _ctx.stats == null)
@@ -15,6 +18,7 @@ public class PlayerStaminaController : MonoBehaviour, ISessionLifecycle
 
         if (_ctx.stamina <= 0f)
             _ctx.stamina = _ctx.stats.MaxStamina;
+            
         _ctx.currentStaminaDrainMultiplier = 0f;
     }
     

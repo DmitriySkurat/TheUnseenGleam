@@ -17,6 +17,8 @@ public class HotbarController : MonoBehaviour, ISessionLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         _ctx.hotbar = this;
 

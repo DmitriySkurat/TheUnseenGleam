@@ -10,6 +10,8 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _playerHealth = Services.Get<PlayerContext>().health;
         _playerHealth.OnDied += Show;
 

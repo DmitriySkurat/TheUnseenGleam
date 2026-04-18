@@ -20,6 +20,8 @@ public class SaveLoader : MonoBehaviour, ISceneLifecycle
         if (saveData == null || saveData.health <= 0f)
             return;
 
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         var ctx = Services.Get<PlayerContext>();
         ctx.currentHealth = saveData.health;
         ctx.stamina = saveData.stamina;

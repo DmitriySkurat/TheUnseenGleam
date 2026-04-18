@@ -42,6 +42,8 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         _lightSystem = Services.Get<LightSystem>();
 

@@ -14,6 +14,8 @@ public class FallDamage : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         _rb = _ctx.rb;
         

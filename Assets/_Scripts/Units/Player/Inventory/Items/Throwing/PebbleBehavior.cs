@@ -17,6 +17,8 @@ public class PebbleBehavior : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _noiseSystem = Services.Get<NoiseSystem>();
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         var playerCtx = Services.Get<PlayerContext>();
         impactNoiseRadius = playerCtx.noiseStats.PebbleImpactNoiseRadius;
         

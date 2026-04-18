@@ -32,6 +32,9 @@ public class GrabProgressBar : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
+
         _ctx = Services.Get<PlayerContext>();
         _rectTransform = transform as RectTransform;
         _parentRectTransform = _rectTransform != null ? _rectTransform.parent as RectTransform : null;

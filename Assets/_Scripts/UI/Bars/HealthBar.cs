@@ -11,6 +11,9 @@ public class HealthBar : MonoBehaviour, ISceneLifecycle
     
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
+        
         _playerCtx = Services.Get<PlayerContext>();
     }
     

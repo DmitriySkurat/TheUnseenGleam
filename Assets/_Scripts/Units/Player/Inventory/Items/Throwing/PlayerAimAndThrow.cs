@@ -33,6 +33,8 @@ public class PlayerAimAndThrow : MonoBehaviour, ISceneLifecycle
     
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
 
         var pebbleBehavior = pebble != null ? pebble.GetComponent<PebbleBehavior>() : null;

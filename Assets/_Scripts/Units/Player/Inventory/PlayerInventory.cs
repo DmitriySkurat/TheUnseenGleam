@@ -10,8 +10,11 @@ public class PlayerInventory : Inventory, ISessionLifecycle
 
     public void Initialize()
     {
-        _ctx = Services.Get<PlayerContext>();
-        _ctx.inventory = this;
+        if (Services.IsRegistered<PlayerContext>())
+        {
+            _ctx = Services.Get<PlayerContext>();
+            _ctx.inventory = this;
+        }
     }
 
     public void Dispose() { }

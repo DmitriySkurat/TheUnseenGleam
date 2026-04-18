@@ -96,6 +96,8 @@ public class AgentVision : MonoBehaviour, ISceneLifecycle
     
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _playerContext = Services.Get<PlayerContext>();
         _playerTransform = _playerContext.transform;
         

@@ -23,6 +23,8 @@ public class PlayerInteractor : Interactor, ISceneLifecycle
     public PlayerContext Context => _ctx;
     
     public void Initialize() {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         
         if (interactOrigin == null) 

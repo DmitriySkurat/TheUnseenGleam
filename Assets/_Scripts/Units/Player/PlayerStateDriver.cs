@@ -20,6 +20,8 @@ namespace HSM {
         
         public void Initialize()
         {
+            if (!Services.IsRegistered<PlayerContext>())
+                return;
             _ctx = Services.Get<PlayerContext>();
             _ctx.transform = transform;
             _ctx.rb = GetComponentInChildren<Rigidbody2D>();

@@ -12,6 +12,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         _inputManager = Services.Get<InputManager>();
         

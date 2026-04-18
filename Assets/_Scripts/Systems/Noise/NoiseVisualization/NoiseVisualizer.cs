@@ -34,6 +34,8 @@ public class NoiseVisualizer : MonoBehaviour, ISceneLifecycle
     public void Initialize()
     {
         _noiseSystem = Services.Get<NoiseSystem>();
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _noiseStats = Services.Get<PlayerContext>().noiseStats;
         _noiseSystem.NoiseEmitted += OnNoiseEmitted;
         _agents = FindObjectsByType<AgentHearing>(FindObjectsSortMode.None);

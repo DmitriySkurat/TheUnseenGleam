@@ -11,6 +11,8 @@ public class PlayerMovementMotor : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         _rb = GetComponent<Rigidbody2D>();
         

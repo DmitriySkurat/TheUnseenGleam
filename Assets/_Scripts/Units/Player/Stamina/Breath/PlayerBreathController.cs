@@ -14,6 +14,8 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
         _ctx = Services.Get<PlayerContext>();
         _noiseSystem = Services.Get<NoiseSystem>();
 

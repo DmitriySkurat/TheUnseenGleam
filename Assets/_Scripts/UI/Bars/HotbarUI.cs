@@ -13,6 +13,9 @@ public class HotbarUI : MonoBehaviour, ISceneLifecycle
 
     public void Initialize()
     {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
+            
         _ctx = Services.Get<PlayerContext>();
 
         for (int i = 0; i < _slots.Length; i++)
