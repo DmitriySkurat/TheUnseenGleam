@@ -75,6 +75,6 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
     {
         Time.timeScale = 1f;
         isPaused = false;
-        Utility.SceneLoader.Load(Utility.SceneNames.Menu);
+        Utility.SceneLoader.Load(SceneNames.Menu);
     }
 }

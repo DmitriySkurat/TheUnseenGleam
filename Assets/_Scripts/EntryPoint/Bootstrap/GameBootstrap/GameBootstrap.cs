@@ -33,7 +33,7 @@ namespace EntryPoint
             
             Debug.Log("Loading complete! Starting game...");
             
-            Utility.SceneLoader.Load(Utility.SceneNames.Menu);
+            Utility.SceneLoader.Load(SceneNames.Menu);
         }
     }
 }

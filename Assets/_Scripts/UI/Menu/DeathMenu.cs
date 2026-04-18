@@ -32,12 +32,12 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
     {
         Time.timeScale = 1f;
         deathGameMenu.SetActive(false);
-        Utility.SceneLoader.Load(Utility.SceneNames.Demo);
+        Utility.SceneLoader.Load(SceneNames.Demo);
     }
 
     public void loadMenu()
     {
         Time.timeScale = 1f;
-        Utility.SceneLoader.Load(Utility.SceneNames.Menu);
+        Utility.SceneLoader.Load(SceneNames.Menu);
     }
 }

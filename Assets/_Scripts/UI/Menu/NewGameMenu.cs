@@ -75,11 +75,11 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
 
         // Создаём заглушку, чтобы слот сразу отображался как занятый.
         // health=0 — признак «новой игры»; SaveLoader не будет читать эти значения.
-        SaveManager.Save(slot, 0f, 0f, Utility.SceneNames.Demo);
+        SaveManager.Save(slot, 0f, 0f, SceneNames.Demo);
 
         SaveVariables.ActiveSlot = slot;
 
-        Utility.SceneLoader.Load(Utility.SceneNames.Demo);
-        // _sceneTransition.TransitionTo(Utility.SceneNames.Demo);
+        Utility.SceneLoader.Load(SceneNames.Demo);
+        // _sceneTransition.TransitionTo(SceneNames.Demo);
     }
 }
