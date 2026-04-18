@@ -47,7 +47,13 @@ public class SceneTransitionManager : MonoBehaviour, IService
         if (Services.IsRegistered<PlayerContext>() && SaveVariables.ActiveSlot >= 0)
         {
             var ctx = Services.Get<PlayerContext>();
-            SaveManager.Save(SaveVariables.ActiveSlot, ctx.health.CurrentHealth, ctx.stamina, targetSceneName);
+            SaveManager.Save(
+                SaveVariables.ActiveSlot,
+                ctx.health.CurrentHealth,
+                ctx.stamina,
+                targetSceneName,
+                ctx.inventory?.GetEntries()
+            );
         }
 
         // Явно Dispose'им ISceneLifecycle старой игровой сцены ДО активации новой.

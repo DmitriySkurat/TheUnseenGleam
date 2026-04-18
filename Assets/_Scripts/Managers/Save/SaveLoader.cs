@@ -1,16 +1,20 @@
 using UnityEngine;
 
 /// <summary>
-/// Запускается при старте сессии.
 /// Восстанавливает состояние игрока из сохранения в PlayerContext.
+/// Должен быть ISessionLifecycle с Order < Player, чтобы выполниться ДО
+/// PlayerHealth (Player+10) и PlayerInventory (Player+10).
+/// Инвентарь передаётся через SaveVariables.PendingSave и применяется
+/// в PlayerInventory.Initialize().
 /// </summary>
-public class SaveLoader : MonoBehaviour, ISceneLifecycle
+public class SaveLoader : MonoBehaviour, ISessionLifecycle
 {
-    // Запускается до Player (PlayerHealth и PlayerStaminaController)
     public InitializationOrder Order => InitializationOrder.Player - 1;
 
     public void Initialize()
     {
+        SaveVariables.PendingSave = null;
+
         if (SaveVariables.ActiveSlot < 0)
             return;
 
@@ -22,11 +26,16 @@ public class SaveLoader : MonoBehaviour, ISceneLifecycle
 
         if (!Services.IsRegistered<PlayerContext>())
             return;
+
         var ctx = Services.Get<PlayerContext>();
         ctx.currentHealth = saveData.health;
         ctx.stamina = saveData.stamina;
 
-        Debug.Log($"[SaveLoader] Loaded slot {SaveVariables.ActiveSlot}: HP={saveData.health}, Stamina={saveData.stamina}");
+        // Инвентарь применяется в PlayerInventory.Initialize() (Order Player+10).
+        // PendingSave сбрасывается там же после восстановления.
+        SaveVariables.PendingSave = saveData;
+
+        Debug.Log($"[SaveLoader] Slot {SaveVariables.ActiveSlot}: HP={saveData.health}, Stamina={saveData.stamina}, Items={saveData.inventory.Count}");
     }
 
     public void Dispose() { }

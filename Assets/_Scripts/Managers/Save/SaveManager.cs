@@ -10,7 +10,8 @@ public static class SaveManager
     private static string GetPath(int slot) =>
         Path.Combine(Application.persistentDataPath, $"save_slot_{slot}.json");
 
-    public static void Save(int slot, float health, float stamina, string sceneName)
+    public static void Save(int slot, float health, float stamina, string sceneName,
+        System.Collections.Generic.IReadOnlyList<InventoryEntry> inventoryEntries = null)
     {
         var data = new SaveData
         {
@@ -19,8 +20,15 @@ public static class SaveManager
             sceneName = sceneName
         };
 
+        if (inventoryEntries != null)
+        {
+            foreach (var entry in inventoryEntries)
+                if (entry?.item != null && !string.IsNullOrEmpty(entry.item.id) && entry.count > 0)
+                    data.inventory.Add(new SaveData.SavedItem { itemId = entry.item.id, count = entry.count });
+        }
+
         File.WriteAllText(GetPath(slot), JsonUtility.ToJson(data, true));
-        Debug.Log($"[SaveManager] Slot {slot} saved: HP={health}, Stamina={stamina}, Scene={sceneName}");
+        Debug.Log($"[SaveManager] Slot {slot} saved: HP={health}, Stamina={stamina}, Scene={sceneName}, Items={data.inventory.Count}");
     }
 
     public static SaveData Load(int slot)
