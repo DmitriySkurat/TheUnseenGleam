@@ -21,7 +21,8 @@
       "Read(//d D:/BSUIR/Diploma/**)",
       "Bash(find \"Assets\\\\_Scripts\\\\Units\\\\HSM\\\\States\\\\Agent\" -name \"*.cs\" -exec grep -l \"pendingNoise\" {} \\\\;)",
       "Bash(grep -E \"\\\\.\\(cs\\)$\")",
-      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts -name \"*.cs\" -type f -exec grep -l \"jump\\\\|land\" {} \\\\;)"
+      "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts -name \"*.cs\" -type f -exec grep -l \"jump\\\\|land\" {} \\\\;)",
+      "Bash(find ./Assets/_Scripts -name \"*.cs\" -exec grep -l \"SaveManager\\\\|SaveVariables\" {} \\\\;)"
     ]
   }
 }

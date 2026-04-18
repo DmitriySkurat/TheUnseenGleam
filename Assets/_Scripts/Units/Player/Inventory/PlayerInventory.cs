@@ -61,8 +61,6 @@ public class PlayerInventory : Inventory, ISessionLifecycle
         if (pending == null || pending.inventory == null || pending.inventory.Count == 0)
             return;
 
-        // Восстанавливаем только если инвентарь ещё пуст (первый старт сессии из сохранения).
-        // При переходе между сценами внутри сессии инвентарь уже заполнен через ISessionLifecycle.
         if (GetEntries().Count > 0)
             return;
 

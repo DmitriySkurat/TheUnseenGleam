@@ -1,17 +1,19 @@
+using System;
 using System.Collections.Generic;
 
-[System.Serializable]
+[Serializable]
 public class SaveData
 {
-    public float health;
+    public int slot;
+    public float playerHealth;
     public float stamina;
     public string sceneName;
-    public List<SavedItem> inventory = new List<SavedItem>();
+    public List<InventoryItemData> inventory = new List<InventoryItemData>();
+}
 
-    [System.Serializable]
-    public class SavedItem
-    {
-        public string itemId;
-        public int count;
-    }
+[Serializable]
+public class InventoryItemData
+{
+    public string itemId;
+    public int count;
 }

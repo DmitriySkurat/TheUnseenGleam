@@ -17,7 +17,15 @@ public class PlayerHealth : MonoBehaviour, ISessionLifecycle
             return;
         _ctx = Services.Get<PlayerContext>();
 
-        _currentHealth = _ctx.currentHealth > 0f ? _ctx.currentHealth : _ctx.stats.MaxPlayerHealth;
+        if (_ctx.currentHealth > 0f)
+            _currentHealth = _ctx.currentHealth;
+        else
+        {
+            var pending = SaveVariables.PendingSave;
+            _currentHealth = pending != null && pending.playerHealth > 0f
+                ? pending.playerHealth
+                : _ctx.stats.MaxPlayerHealth;
+        }
         _regenDelayTimer = 0f;
         _ctx.isAlive = true;
         _ctx.health = this;

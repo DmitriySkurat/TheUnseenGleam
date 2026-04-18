@@ -44,8 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb68cfcccb028744b18bd4d73914f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  items:
-  - item: {fileID: 11400000, guid: b27357a3cb786cf45aeece9e98a19cc1, type: 2}
-    count: 5
-  - item: {fileID: 11400000, guid: 56004921bcf937740b8c2312e5a0d3ba, type: 2}
-    count: 1
+  items: []
+  _itemRegistry: {fileID: 11400000, guid: 85e712a30b9273d46b90325c29fad719, type: 2}

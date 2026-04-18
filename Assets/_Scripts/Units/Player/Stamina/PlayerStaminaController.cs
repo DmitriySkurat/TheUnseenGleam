@@ -17,8 +17,13 @@ public class PlayerStaminaController : MonoBehaviour, ISessionLifecycle
             return;
 
         if (_ctx.stamina <= 0f)
-            _ctx.stamina = _ctx.stats.MaxStamina;
-            
+        {
+            var pending = SaveVariables.PendingSave;
+            _ctx.stamina = pending != null && pending.playerHealth > 0f
+                ? pending.stamina
+                : _ctx.stats.MaxStamina;
+        }
+
         _ctx.currentStaminaDrainMultiplier = 0f;
     }
     

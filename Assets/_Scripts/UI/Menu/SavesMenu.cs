@@ -74,6 +74,7 @@ public class SavesMenu : MonoBehaviour, ISceneLifecycle
             return;
 
         SaveVariables.ActiveSlot = slot;
+        SaveVariables.PendingSave = data;
         Utility.SceneLoader.Load(data.sceneName);
 
         //_sceneTransition.TransitionTo(data.sceneName);

@@ -23,6 +23,17 @@ public class SceneTransitionManager : MonoBehaviour, IService
     /// </summary>
     public void TransitionTo(string targetSceneName)
     {
+        if (Services.IsRegistered<PlayerContext>() && SaveVariables.ActiveSlot >= 0)
+        {
+            var ctx = Services.Get<PlayerContext>();
+            var entries = ctx.inventory?.GetEntries();
+
+            SaveManager.Save(SaveVariables.ActiveSlot, ctx.health.CurrentHealth, ctx.stamina, targetSceneName, entries);
+
+            // Keep inventory accessible for the new scene's PlayerInventory.RestoreFromSave()
+            SaveVariables.PendingSave = SaveManager.Load(SaveVariables.ActiveSlot);
+        }
+
         Utility.SceneLoader.Load(targetSceneName);
         //if (_isTransitioning) return;
         //StartCoroutine(TransitionCoroutine(targetSceneName));
