@@ -78,6 +78,7 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
         SaveManager.Save(slot, 0f, 0f, SceneNames.Demo);
 
         SaveVariables.ActiveSlot = slot;
+        SaveVariables.PendingSave = null;
 
         Utility.SceneLoader.Load(SceneNames.Demo);
         // _sceneTransition.TransitionTo(SceneNames.Demo);
