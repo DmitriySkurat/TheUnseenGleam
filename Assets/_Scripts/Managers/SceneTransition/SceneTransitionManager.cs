@@ -2,6 +2,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using EntryPoint;
 
 /// <summary>
 /// Управляет переходом между сценами через аддитивную загрузку.
@@ -22,9 +23,9 @@ public class SceneTransitionManager : MonoBehaviour, IService
     /// </summary>
     public void TransitionTo(string targetSceneName)
     {
-        Utility.SceneLoader.Load(targetSceneName);
-        //if (_isTransitioning) return;
-        //StartCoroutine(TransitionCoroutine(targetSceneName));
+        //Utility.SceneLoader.Load(targetSceneName);
+        if (_isTransitioning) return;
+        StartCoroutine(TransitionCoroutine(targetSceneName));
     }
 
     private IEnumerator TransitionCoroutine(string targetSceneName)
@@ -47,6 +48,15 @@ public class SceneTransitionManager : MonoBehaviour, IService
         {
             var ctx = Services.Get<PlayerContext>();
             SaveManager.Save(SaveVariables.ActiveSlot, ctx.health.CurrentHealth, ctx.stamina, targetSceneName);
+        }
+
+        // Явно Dispose'им ISceneLifecycle старой игровой сцены ДО активации новой.
+        // Это гарантирует корректный порядок: ISceneLifecycle → ISessionLifecycle,
+        // а OnDestroy старого GameplayEntryPoint станет безопасным no-op (флаг _isDisposed).
+        if (Services.IsRegistered<GameplayEntryPoint>())
+        {
+            Services.Get<GameplayEntryPoint>().DisposeObjects();
+            Services.Unregister<GameplayEntryPoint>();
         }
 
         // Выгружаем сервисы старой сцены ДО активации новой,

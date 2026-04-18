@@ -10,6 +10,7 @@ namespace EntryPoint
         [SerializeField] protected Utility.Logger _logger;
 
         protected List<T> _lifecycleObjects;
+        protected bool _isDisposed;
 
         protected void FindObjects()
         {
@@ -18,12 +19,19 @@ namespace EntryPoint
                     FindObjectsInactive.Include,
                     FindObjectsSortMode.None
                 )
+                .Where(ShouldInclude)
                 .OfType<T>()
                 .OrderBy(i => i.Order)
                 .ToList();
 
             _logger?.Log($"Found {_lifecycleObjects.Count} {typeof(T).Name} objects", this);
         }
+
+        /// <summary>
+        /// Фильтр для FindObjects. По умолчанию — все объекты.
+        /// SceneBootstrap переопределяет, чтобы брать только объекты из своей сцены.
+        /// </summary>
+        protected virtual bool ShouldInclude(MonoBehaviour mb) => true;
 
         protected void InitializeObjects()
         {
@@ -36,6 +44,9 @@ namespace EntryPoint
 
         public virtual void DisposeObjects()
         {
+            if (_isDisposed) return;
+            _isDisposed = true;
+
             if (_lifecycleObjects == null || _lifecycleObjects.Count == 0)
                 return;
 
@@ -54,6 +65,10 @@ namespace EntryPoint
             _registry?.Dispose();
         }
 
+        /// <summary>
+        /// Страховочный вызов: если Dispose уже был вызван явно (из TransitionManager или EntryPoint),
+        /// оба метода будут no-op благодаря флагу и пустым спискам реестра.
+        /// </summary>
         protected virtual void OnDestroy()
         {
             DisposeObjects();
