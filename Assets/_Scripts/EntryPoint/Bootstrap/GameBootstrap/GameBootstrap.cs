@@ -5,12 +5,14 @@ namespace EntryPoint
 {
     public class GameBootstrap : BootstrapBase
     {
+        //[Header("Loading Screen")]
+        //[SerializeField] private LoadingScreen _loadingScreen;
 
         protected override IEnumerator Bootstrap()
         {
             GameSettingsLoader.LoadAndApplySavedSettings();
             yield return null; // ждём следующий кадр — Screen.SetResolution применится
-            
+
             if (Camera.main != null)
             {
                 Camera.main.rect = new Rect(0, 0, 1, 1);
@@ -18,21 +20,12 @@ namespace EntryPoint
             }
 
             var task = _registry.InitializeAsync();
-
             while (!task.IsCompleted)
                 yield return null;
-            
-            // Имитация загрузки
-            var loadingDuration = 0.3f;
-            var loading = loadingDuration;
-            while(loading > 0f) {
-                loading -= Time.deltaTime;
-                Debug.Log("Loading... " + (loadingDuration - loading) * 100f + "%");
-                yield return null;
-            }
-            
-            Debug.Log("Loading complete! Starting game...");
-            
+
+            // if (_loadingScreen != null)
+            //     yield return StartCoroutine(_loadingScreen.Play());
+
             Utility.SceneLoader.Load(SceneNames.Menu);
         }
     }
