@@ -19,19 +19,12 @@ namespace EntryPoint
                     FindObjectsInactive.Include,
                     FindObjectsSortMode.None
                 )
-                .Where(ShouldInclude)
                 .OfType<T>()
                 .OrderBy(i => i.Order)
                 .ToList();
 
             _logger?.Log($"Found {_lifecycleObjects.Count} {typeof(T).Name} objects", this);
         }
-
-        /// <summary>
-        /// Фильтр для FindObjects. По умолчанию — все объекты.
-        /// SceneBootstrap переопределяет, чтобы брать только объекты из своей сцены.
-        /// </summary>
-        protected virtual bool ShouldInclude(MonoBehaviour mb) => true;
 
         protected void InitializeObjects()
         {
@@ -42,7 +35,7 @@ namespace EntryPoint
             }
         }
 
-        public virtual void DisposeObjects()
+        protected virtual void DisposeObjects()
         {
             if (_isDisposed) return;
             _isDisposed = true;
@@ -70,6 +63,12 @@ namespace EntryPoint
         /// оба метода будут no-op благодаря флагу и пустым спискам реестра.
         /// </summary>
         protected virtual void OnDestroy()
+        {
+            DisposeObjects();
+            DisposeServiceRegistry();
+        }
+        
+        public virtual void Dispose()
         {
             DisposeObjects();
             DisposeServiceRegistry();

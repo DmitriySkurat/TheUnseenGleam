@@ -23,9 +23,9 @@ public class SceneTransitionManager : MonoBehaviour, IService
     /// </summary>
     public void TransitionTo(string targetSceneName)
     {
-        //Utility.SceneLoader.Load(targetSceneName);
-        if (_isTransitioning) return;
-        StartCoroutine(TransitionCoroutine(targetSceneName));
+        Utility.SceneLoader.Load(targetSceneName);
+        //if (_isTransitioning) return;
+        //StartCoroutine(TransitionCoroutine(targetSceneName));
     }
 
     private IEnumerator TransitionCoroutine(string targetSceneName)
@@ -55,14 +55,14 @@ public class SceneTransitionManager : MonoBehaviour, IService
         // а OnDestroy старого GameplayEntryPoint станет безопасным no-op (флаг _isDisposed).
         if (Services.IsRegistered<GameplayEntryPoint>())
         {
-            Services.Get<GameplayEntryPoint>().DisposeObjects();
+            Services.Get<GameplayEntryPoint>().Dispose();
             Services.Unregister<GameplayEntryPoint>();
         }
 
-        // Выгружаем сервисы старой сцены ДО активации новой,
-        // чтобы новый GameplaySceneServiceRegistry мог зарегистрировать их без конфликта
-        var oldRegistry = FindObjectOfType<GameplaySceneServiceRegistry>();
-        oldRegistry?.Dispose();
+        // // Выгружаем сервисы старой сцены ДО активации новой,
+        // // чтобы новый GameplaySceneServiceRegistry мог зарегистрировать их без конфликта
+        // var oldRegistry = FindObjectOfType<GameplaySceneServiceRegistry>();
+        // oldRegistry?.Dispose();
 
         // Активируем новую сцену — запускаются Awake и Bootstrap нового EntryPoint
         loadOp.allowSceneActivation = true;

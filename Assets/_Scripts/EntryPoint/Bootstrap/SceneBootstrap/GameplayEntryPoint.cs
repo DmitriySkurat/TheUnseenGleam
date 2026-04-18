@@ -27,14 +27,11 @@ namespace EntryPoint
             FindObjects();
             InitializeObjects();
 
-            Services.Register<GameplayEntryPoint>(this);
             _logger?.Log("Gameplay scene initialization complete", this);
         }
 
         protected override void OnDestroy()
         {
-            if (Services.IsRegistered<GameplayEntryPoint>())
-                Services.Unregister<GameplayEntryPoint>();
             base.OnDestroy();
         }
     }

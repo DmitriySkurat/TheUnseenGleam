@@ -26,7 +26,12 @@ public abstract class ServiceRegistry : MonoBehaviour
         _logger.Log($"{GetType().Name} Initialize()", this);
 
         foreach (var prefab in _plainPrefabs)
-            if (prefab != null) Instantiate(prefab);
+        {
+            if (prefab == null) continue;
+            var instance = Instantiate(prefab);
+            if (_persistAcrossScenes)
+                DontDestroyOnLoad(instance);
+        }
 
         foreach (var prefab in _servicePrefabs)
         {
