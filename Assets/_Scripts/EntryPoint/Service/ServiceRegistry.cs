@@ -20,6 +20,7 @@ public abstract class ServiceRegistry : MonoBehaviour
 
     protected readonly List<IService> _services = new();
     private readonly List<Type> _registeredServiceTypes = new();
+    private readonly List<GameObject> _persistentInstances = new();
 
     public virtual async Task InitializeAsync()
     {
@@ -30,7 +31,10 @@ public abstract class ServiceRegistry : MonoBehaviour
             if (prefab == null) continue;
             var instance = Instantiate(prefab);
             if (_persistAcrossScenes)
+            {
                 DontDestroyOnLoad(instance);
+                _persistentInstances.Add(instance);
+            }
         }
 
         foreach (var prefab in _servicePrefabs)
@@ -40,7 +44,10 @@ public abstract class ServiceRegistry : MonoBehaviour
             var instance = Instantiate(prefab);
 
             if (_persistAcrossScenes)
+            {
                 DontDestroyOnLoad(instance.gameObject);
+                _persistentInstances.Add(instance.gameObject);
+            }
 
             foreach (var component in instance.GetComponents<MonoBehaviour>())
             {
@@ -67,6 +74,11 @@ public abstract class ServiceRegistry : MonoBehaviour
 
         _registeredServiceTypes.Clear();
         _services.Clear();
+
+        foreach (var instance in _persistentInstances)
+            if (instance != null) Destroy(instance);
+
+        _persistentInstances.Clear();
     }
 
     private void OnDestroy()
