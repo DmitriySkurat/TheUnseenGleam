@@ -14,7 +14,8 @@ namespace EntryPoint
             
             if (!Services.IsRegistered<SessionBootstrap>())
             {
-                var sessionTask = _sessionBootstrap.StartSession();
+                var sessionInstance = Instantiate(_sessionBootstrap);
+                var sessionTask = sessionInstance.StartSession();
                 while (!sessionTask.IsCompleted)
                     yield return null;
             }
@@ -26,7 +27,15 @@ namespace EntryPoint
             FindObjects();
             InitializeObjects();
 
+            Services.Register<GameplayEntryPoint>(this);
             _logger?.Log("Gameplay scene initialization complete", this);
+        }
+
+        protected override void OnDestroy()
+        {
+            if (Services.IsRegistered<GameplayEntryPoint>())
+                Services.Unregister<GameplayEntryPoint>();
+            base.OnDestroy();
         }
     }
 }

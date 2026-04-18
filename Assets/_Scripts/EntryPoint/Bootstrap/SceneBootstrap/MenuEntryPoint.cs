@@ -10,6 +10,12 @@ namespace EntryPoint
             // Возвращаем курсор
             // Cursor.visible = true;
 
+            if (Services.IsRegistered<GameplayEntryPoint>())
+            {
+                Services.Get<GameplayEntryPoint>().DisposeObjects();
+                Services.Unregister<GameplayEntryPoint>();
+            }
+
             if (Services.IsRegistered<SessionBootstrap>())
                 Services.Get<SessionBootstrap>().EndSession();
 

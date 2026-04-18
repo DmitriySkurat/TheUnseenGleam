@@ -156,10 +156,10 @@ public class InputManager : MonoBehaviour, IService
         _playerInput.SwitchCurrentActionMap("UI");
     }
     
-    void Update()
-        {
-            Services.Update();
-        }
+    // void Update()
+    //     {
+    //         Services.Update();
+    //     }
 
     #region Input Handlers
     

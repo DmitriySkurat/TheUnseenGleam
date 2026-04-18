@@ -34,7 +34,7 @@ namespace EntryPoint
             }
         }
 
-        protected virtual void DisposeObjects()
+        public virtual void DisposeObjects()
         {
             if (_lifecycleObjects == null || _lifecycleObjects.Count == 0)
                 return;
@@ -45,6 +45,8 @@ namespace EntryPoint
                 _logger?.Log($"Disposing {disposable.GetType().Name}", disposable as Object);
                 disposable.Dispose();
             }
+
+            _lifecycleObjects.Clear();
         }
 
         protected virtual void DisposeServiceRegistry()
