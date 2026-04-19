@@ -221,6 +221,42 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float VinesSlipAcceleration = 12f;
     
+    [Header("LEDGE GRAB")]
+    [Tooltip("Y offset from capsule bottom for the wall-check ray (should be ~0.7–0.9 × player height)")]
+    [Min(0f)]
+    public float LedgeWallCheckHeight = 1.0f;
+
+    [Tooltip("Additional Y above the wall-check origin; that band must be free to confirm it's a ledge top")]
+    [Min(0f)]
+    public float LedgeTopCheckOffset = 0.25f;
+
+    [Tooltip("Horizontal cast distance for ledge detection (added to capsule half-width)")]
+    [Min(0f)]
+    public float LedgeCheckDistance = 0.15f;
+
+    [Tooltip("Maximum upward velocity at which a ledge can still be grabbed (0 = only while falling)")]
+    public float LedgeGrabMaxRiseSpeed = 1f;
+
+    [Tooltip("X offset from ledge corner for the hang position (player body behind wall)")]
+    [Min(0f)]
+    public float LedgeHangOffsetX = 0.4f;
+
+    [Tooltip("Y offset from ledge corner for the hang position (player body below ledge)")]
+    [Min(0f)]
+    public float LedgeHangOffsetY = 0.9f;
+
+    [Tooltip("X offset from ledge corner for the stand position (player on top of ledge)")]
+    [Min(0f)]
+    public float LedgeStandOffsetX = 0.35f;
+
+    [Tooltip("Y offset from ledge corner for the stand position (player on top of ledge)")]
+    [Min(0f)]
+    public float LedgeStandOffsetY = 0.05f;
+
+    [Tooltip("Duration of the climb-up movement in seconds")]
+    [Min(0.05f)]
+    public float LedgeClimbDuration = 0.45f;
+
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]
     // public float SlideDuration = 2f;

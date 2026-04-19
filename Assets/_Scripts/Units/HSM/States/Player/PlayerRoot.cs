@@ -8,6 +8,7 @@ namespace HSM {
         public readonly Climb Climb;
         public readonly Death Death;
         public readonly PlayerGrabbed Grabbed;
+        public readonly LedgeClimb LedgeClimb;
         
         readonly PlayerContext ctx;
         private float _footstepTimer;
@@ -23,6 +24,7 @@ namespace HSM {
             Climb       = new Climb(m, this, ctx);
             Death       = new Death(m, this, ctx);
             Grabbed     = new PlayerGrabbed(m, this, ctx);
+            LedgeClimb  = new LedgeClimb(m, this, ctx);
             
             _noiseSystem = Services.Get<NoiseSystem>();
         }
@@ -33,6 +35,7 @@ namespace HSM {
             if (!ctx.isAlive)  return Machine?.GetState<Death>();
             if (ctx.isGrabbed) return Machine?.GetState<PlayerGrabbed>();
             if (ctx.OnClimbable) return null;
+            if (ctx.isLedgeGrabbing) return null;
             if (!ctx.grounded && Time.time >= ctx.frameLeftGrounded + Time.fixedDeltaTime) return Machine?.GetState<Airborne>();
             return null;
         }

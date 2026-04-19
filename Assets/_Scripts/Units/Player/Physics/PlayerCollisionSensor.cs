@@ -77,6 +77,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             _ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.CeilingCheckDistance, _ctx.stats.GroundLayer);
         }
 
+        CheckLedgeGrab();
+
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
     }
 
@@ -128,6 +130,72 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         return Mathf.Lerp(_ctx.noiseStats.LandingNoiseMinRadius, _ctx.noiseStats.LandingNoiseMaxRadius, t);
     }
     
+    void CheckLedgeGrab()
+    {
+        if (_ctx.grounded || _ctx.isLedgeGrabbing || _ctx.isClimbing || _ctx.stats == null)
+        {
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
+        if (_ctx.velocity.y > _ctx.stats.LedgeGrabMaxRiseSpeed)
+        {
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
+        float dirInput = _ctx.input.Move.x;
+        float dirVel   = _ctx.velocity.x;
+        float dir = 0f;
+        if (Mathf.Abs(dirInput) > _ctx.stats.HorizontalDeadZoneThreshold)
+            dir = Mathf.Sign(dirInput);
+        else if (Mathf.Abs(dirVel) > 0.1f)
+            dir = Mathf.Sign(dirVel);
+
+        if (dir == 0f)
+        {
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
+        bool cachedQuery = Physics2D.queriesStartInColliders;
+        Physics2D.queriesStartInColliders = false;
+
+        float rayLength      = _col.bounds.extents.x + _ctx.stats.LedgeCheckDistance;
+        float wallCheckY     = _col.bounds.min.y + _ctx.stats.LedgeWallCheckHeight;
+        float topCheckY      = wallCheckY + _ctx.stats.LedgeTopCheckOffset;
+        Vector2 wallOrigin   = new Vector2(_col.bounds.center.x, wallCheckY);
+        Vector2 topOrigin    = new Vector2(_col.bounds.center.x, topCheckY);
+        Vector2 horizontal   = new Vector2(dir, 0f);
+
+        RaycastHit2D wallHit = Physics2D.Raycast(wallOrigin, horizontal, rayLength, _ctx.stats.GroundLayer);
+        RaycastHit2D topHit  = Physics2D.Raycast(topOrigin,  horizontal, rayLength, _ctx.stats.GroundLayer);
+
+        if (!wallHit || topHit)
+        {
+            Physics2D.queriesStartInColliders = cachedQuery;
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
+        // Cast down from just past the wall edge to find the ledge surface.
+        Vector2 downOrigin = new Vector2(wallHit.point.x + dir * 0.05f, topCheckY);
+        RaycastHit2D downHit = Physics2D.Raycast(downOrigin, Vector2.down,
+            _ctx.stats.LedgeTopCheckOffset + 0.3f, _ctx.stats.GroundLayer);
+
+        Physics2D.queriesStartInColliders = cachedQuery;
+
+        if (!downHit)
+        {
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
+        _ctx.canGrabLedge        = true;
+        _ctx.ledgeFacingRight    = dir > 0f;
+        _ctx.ledgeCornerPosition = new Vector2(wallHit.point.x, downHit.point.y);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         var ladder = other.GetComponent<Ladder>();
@@ -177,6 +245,26 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         Gizmos.color = _ctx.ceilingAbove ? Color.red : Color.green;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance);
         Gizmos.DrawWireSphere(transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance, 0.05f);
+
+        // Ledge detection rays
+        if (_ctx.stats != null)
+        {
+            float wallCheckY = col.bounds.min.y + _ctx.stats.LedgeWallCheckHeight;
+            float topCheckY  = wallCheckY + _ctx.stats.LedgeTopCheckOffset;
+            float rayLength  = col.bounds.extents.x + _ctx.stats.LedgeCheckDistance;
+            Gizmos.color = _ctx.canGrabLedge ? Color.cyan : new Color(0f, 1f, 1f, 0.25f);
+            Vector3 wallL = new Vector3(col.bounds.center.x - rayLength, wallCheckY, 0f);
+            Vector3 wallR = new Vector3(col.bounds.center.x + rayLength, wallCheckY, 0f);
+            Vector3 topL  = new Vector3(col.bounds.center.x - rayLength, topCheckY, 0f);
+            Vector3 topR  = new Vector3(col.bounds.center.x + rayLength, topCheckY, 0f);
+            Gizmos.DrawLine(wallL, wallR);
+            Gizmos.DrawLine(topL,  topR);
+            if (_ctx.canGrabLedge)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(_ctx.ledgeCornerPosition, 0.08f);
+            }
+        }
 
         // Проверка вниз (groundHit)
         Gizmos.color = Color.green;

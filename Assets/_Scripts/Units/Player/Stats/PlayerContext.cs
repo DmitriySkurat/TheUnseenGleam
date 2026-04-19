@@ -61,6 +61,12 @@ public class PlayerContext
 
     public bool OnClimbable => onLadder || onVines;
     
+    // ===== LEDGE GRAB =====
+    public bool canGrabLedge;
+    public bool isLedgeGrabbing;
+    public Vector2 ledgeCornerPosition;
+    public bool ledgeFacingRight;
+
     // ===== HEALTH =====
     public PlayerHealth health;
     public float currentHealth; // брать из PlayerHealth

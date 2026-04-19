@@ -52,6 +52,12 @@ public class PlayerMovementMotor : MonoBehaviour, ISceneLifecycle
             return;
         }
 
+        if (_ctx.isLedgeGrabbing)
+        {
+            _ctx.velocity.y = 0f;
+            return;
+        }
+
         if (_ctx.isClimbing)
         {
             if (_ctx.onVines)
@@ -105,7 +111,9 @@ public class PlayerMovementMotor : MonoBehaviour, ISceneLifecycle
 
         // Только настоящие стены имеют преимущественно горизонтальную нормаль.
         // Угловые грани тайлов пола имеют вертикальную нормаль — их не блокируем.
-        if (hit && Mathf.Abs(hit.normal.x) > Mathf.Abs(hit.normal.y))
+        // Гасим горизонтальную скорость либо при нормали стены, либо при обнаруженном уступе —
+        // иначе скруглённый конец капсулы «объедет» угол раньше, чем LedgeClimb успеет сработать.
+        if (hit && (Mathf.Abs(hit.normal.x) > Mathf.Abs(hit.normal.y) || _ctx.canGrabLedge))
             _ctx.velocity.x = 0f;
     }
 }
