@@ -21,6 +21,12 @@ public class PlayerSpriteFlip : MonoBehaviour, ISceneLifecycle
     {
         if (_ctx == null) return;
 
+        if (_ctx.isLedgeGrabbing)
+        {
+            _sprite.flipX = !_ctx.ledgeFacingRight;
+            return;
+        }
+
         float dirX = _ctx.velocity.x;
         if (Mathf.Abs(dirX) > 0.01f)
             _sprite.flipX = dirX < 0f;
