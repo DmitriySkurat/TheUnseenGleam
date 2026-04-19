@@ -33,7 +33,7 @@ namespace HSM {
             if (!ctx.isAlive)  return Machine?.GetState<Death>();
             if (ctx.isGrabbed) return Machine?.GetState<PlayerGrabbed>();
             if (ctx.OnClimbable) return null;
-            if (!ctx.grounded) return Machine?.GetState<Airborne>();
+            if (!ctx.grounded && Time.time >= ctx.frameLeftGrounded + Time.fixedDeltaTime) return Machine?.GetState<Airborne>();
             return null;
         }
 

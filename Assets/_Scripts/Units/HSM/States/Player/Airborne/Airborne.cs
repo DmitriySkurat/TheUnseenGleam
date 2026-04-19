@@ -9,7 +9,9 @@ namespace HSM {
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.red, // runs while Airborne is activating
             });
-            Add(new AnimatorBoolActivity(ctx.anim, "Airborne", true, false));
+            //Add(new AnimatorBoolActivity(ctx.anim, "Airborne", true, false));
+
+            Add(new AnimatorPlayActivity(ctx.anim, "Jump"));
         }
         
         protected override State GetTransition()

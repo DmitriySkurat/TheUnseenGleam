@@ -28,7 +28,7 @@ namespace HSM {
         protected override State GetTransition()
         {
             if (ctx.OnClimbable && ctx.input.Move.y > 0.1f) return Machine.GetState<Climb>();
-            if (!ctx.grounded) return Machine != null ? Machine.GetState<Airborne>() : null;
+            if (!ctx.grounded && Time.time >= ctx.frameLeftGrounded + Time.fixedDeltaTime) return Machine != null ? Machine.GetState<Airborne>() : null;
 
             // W нажат, не на лестнице → прижаться к стене
             if (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold && !ctx.OnClimbable)

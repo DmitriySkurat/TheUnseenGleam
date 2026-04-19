@@ -99,10 +99,13 @@ public class PlayerMovementMotor : MonoBehaviour, ISceneLifecycle
         Physics2D.queriesStartInColliders = false;
 
         Vector2 dir = _ctx.velocity.x > 0f ? Vector2.right : Vector2.left;
-        bool wallHit = Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0f, dir, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
+        RaycastHit2D hit = Physics2D.CapsuleCast(col.bounds.center, col.size, col.direction, 0f, dir, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
 
         Physics2D.queriesStartInColliders = cachedQuery;
 
-        if (wallHit) _ctx.velocity.x = 0f;
+        // Только настоящие стены имеют преимущественно горизонтальную нормаль.
+        // Угловые грани тайлов пола имеют вертикальную нормаль — их не блокируем.
+        if (hit && Mathf.Abs(hit.normal.x) > Mathf.Abs(hit.normal.y))
+            _ctx.velocity.x = 0f;
     }
 }
