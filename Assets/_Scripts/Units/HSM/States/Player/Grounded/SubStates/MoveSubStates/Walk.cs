@@ -6,7 +6,7 @@ namespace HSM {
         readonly PlayerContext ctx;
         public Walk(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "Walking", true, false));
+            Add(new AnimatorBoolActivity(ctx.anim, "Walk", true, false));
             //Add(new AudioLoopActivity(ctx.audio));
         }
         

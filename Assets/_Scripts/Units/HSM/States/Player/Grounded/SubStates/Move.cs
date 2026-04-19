@@ -15,7 +15,7 @@ namespace HSM {
             Walk = new Walk(m, this, ctx);
             Run = new Run (m, this, ctx);
             
-            Add(new AnimatorBoolActivity(ctx.anim, "Moving", true, false));
+            Add(new AnimatorBoolActivity(ctx.anim, "Move", true, false));
             //Add(new AudioLoopActivity(ctx.audio));
         }
 

@@ -21,6 +21,8 @@ namespace HSM {
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.yellow,  // runs while Grounded is activating
             });
+
+            Add(new AnimatorBoolActivity(ctx.anim, "Idle", true, false));
         }
         
         protected override State GetInitialState() => Idle;

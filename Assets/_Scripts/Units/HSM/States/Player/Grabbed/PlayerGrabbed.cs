@@ -11,6 +11,8 @@ namespace HSM {
         public PlayerGrabbed(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            
+            Add(new AnimatorBoolActivity(ctx.anim, "Grabbed", true, false));
         }
 
         protected override void OnEnter()

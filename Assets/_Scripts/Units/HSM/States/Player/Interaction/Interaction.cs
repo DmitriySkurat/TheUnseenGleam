@@ -17,7 +17,7 @@ namespace HSM
         {
             this.ctx = ctx;
             
-            Add(new AnimatorBoolActivity(ctx.anim, "Interacting", true, false));
+            Add(new AnimatorBoolActivity(ctx.anim, "Interact", true, false));
         }
     }
     

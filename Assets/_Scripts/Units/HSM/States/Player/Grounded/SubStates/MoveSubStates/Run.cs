@@ -6,7 +6,7 @@ namespace HSM {
         readonly PlayerContext ctx;
         public Run(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "Running", true, false));
+            Add(new AnimatorBoolActivity(ctx.anim, "Run", true, false));
             //Add(new AudioLoopActivity(ctx.audio));
         }
         
