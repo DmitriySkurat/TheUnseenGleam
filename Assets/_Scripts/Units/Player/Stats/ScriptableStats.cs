@@ -234,20 +234,17 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float LedgeCheckDistance = 0.15f;
 
-    [Tooltip("Maximum upward velocity at which a ledge can still be grabbed (0 = only while falling)")]
-    public float LedgeGrabMaxRiseSpeed = 1f;
-
-    [Tooltip("X offset from ledge corner for the hang position (player body behind wall)")]
+    [Tooltip("Extra gap between capsule edge and wall when hanging (0 = flush to wall)")]
     [Min(0f)]
-    public float LedgeHangOffsetX = 0.4f;
+    public float LedgeHangOffsetX = 0.05f;
 
     [Tooltip("Y offset from ledge corner for the hang position (player body below ledge)")]
     [Min(0f)]
     public float LedgeHangOffsetY = 0.9f;
 
-    [Tooltip("X offset from ledge corner for the stand position (player on top of ledge)")]
+    [Tooltip("Extra gap between capsule edge and wall corner when standing on ledge")]
     [Min(0f)]
-    public float LedgeStandOffsetX = 0.35f;
+    public float LedgeStandOffsetX = 0.05f;
 
     [Tooltip("Y offset from ledge corner for the stand position (player on top of ledge)")]
     [Min(0f)]

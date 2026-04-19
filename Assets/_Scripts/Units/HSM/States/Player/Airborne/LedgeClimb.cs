@@ -18,7 +18,9 @@ namespace HSM {
 
         public LedgeClimb(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "LedgeGrab", true, false));
+            //Add(new AnimatorBoolActivity(ctx.anim, "LedgeGrab", true, false));
+            
+            Add(new AnimatorPlayActivity(ctx.anim, "JumpWallgrab"));
         }
 
         protected override void OnEnter() {

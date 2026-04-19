@@ -22,6 +22,8 @@ MonoBehaviour:
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
   MaxPlayerHealth: 100
+  HealthRegenPerSecond: 2
+  HealthRegenDelay: 5
   MaxSpeed: 14
   Acceleration: 120
   GroundDeceleration: 50
@@ -34,6 +36,7 @@ MonoBehaviour:
   MaxStamina: 100
   StaminaDrainPerSecond: 20
   StaminaRegenPerSecond: 15
+  StaminaRegenMovingMultiplier: 0.4
   MinStaminaToRun: 35
   RunStaminaDrainMultiplier: 1
   StaminaHoldBreathDrainPerSecond: 20
@@ -41,6 +44,8 @@ MonoBehaviour:
   IdleStaminaBreathDrainMultiplier: 1
   CrouchStaminaBreathDrainMultiplier: 0.8
   HideStaminaBreathDrainMultiplier: 0.5
+  PressToWallStaminaBreathDrainMultiplier: 1
+  JumpClip: {fileID: 0}
   JumpPower: 36
   MaxFallSpeed: 40
   FallAcceleration: 110
@@ -52,6 +57,9 @@ MonoBehaviour:
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
   HideSpeedMultiplier: 0.4
+  PressToWallHeightMultiplier: 0.8
+  PressToWallWidthMultiplier: 0.5
+  GrabDamagePerSecond: 20
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 3.3
   LandingRollMinHorizontalSpeed: 2
@@ -65,3 +73,11 @@ MonoBehaviour:
   ClimbHorizontalSpeedMultiplier: 0.5
   VinesSlipSpeed: 2
   VinesSlipAcceleration: 12
+  LedgeWallCheckHeight: 1
+  LedgeTopCheckOffset: 0.25
+  LedgeCheckDistance: 0.15
+  LedgeHangOffsetX: 0.05
+  LedgeHangOffsetY: 5.53
+  LedgeStandOffsetX: 0.35
+  LedgeStandOffsetY: 0.05
+  LedgeClimbDuration: 0.45

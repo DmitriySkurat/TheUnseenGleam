@@ -12,7 +12,9 @@ namespace HSM
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.purple,
             });
-            Add(new AnimatorBoolActivity(ctx.anim, "Climb", true, false));
+            //Add(new AnimatorBoolActivity(ctx.anim, "Climb", true, false));
+
+            Add(new AnimatorPlayActivity(ctx.anim, "Climb"));
         }
 
         protected override void OnEnter()
