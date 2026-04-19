@@ -1,4 +1,5 @@
 using UnityEngine;
+using EntryPoint;
 
 public class DeathMenu : MonoBehaviour, ISceneLifecycle
 {
@@ -27,13 +28,15 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
     private void Show()
     {
         deathGameMenu.SetActive(true);
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
 
     public void Respawn()
     {
         Time.timeScale = 1f;
         deathGameMenu.SetActive(false);
+        if (Services.IsRegistered<SessionBootstrap>())
+            Services.Get<SessionBootstrap>().EndSession();
         Utility.SceneLoader.Load(SceneNames.Demo);
     }
 
