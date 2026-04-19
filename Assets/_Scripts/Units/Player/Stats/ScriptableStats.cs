@@ -250,9 +250,17 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float LedgeStandOffsetY = 0.05f;
 
-    [Tooltip("Duration of the climb-up movement in seconds")]
+    [Tooltip("Длительность движения вверх (Y)")]
     [Min(0.05f)]
-    public float LedgeClimbDuration = 0.45f;
+    public float LedgeClimbRiseDuration = 0.35f;
+
+    [Tooltip("Задержка от начала подъёма до старта движения вбок")]
+    [Min(0f)]
+    public float LedgeClimbSideDelay = 0.2f;
+
+    [Tooltip("Длительность движения вбок (X)")]
+    [Min(0.05f)]
+    public float LedgeClimbSideDuration = 0.2f;
 
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]

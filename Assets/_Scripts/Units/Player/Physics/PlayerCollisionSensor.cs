@@ -155,31 +155,25 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         bool cachedQuery = Physics2D.queriesStartInColliders;
         Physics2D.queriesStartInColliders = false;
 
-        float rayLength      = _col.bounds.extents.x + _ctx.stats.LedgeCheckDistance;
-        float wallCheckY     = _col.bounds.min.y + _ctx.stats.LedgeWallCheckHeight;
-        float topCheckY      = wallCheckY + _ctx.stats.LedgeTopCheckOffset;
-        Vector2 wallOrigin   = new Vector2(_col.bounds.center.x, wallCheckY);
-        Vector2 topOrigin    = new Vector2(_col.bounds.center.x, topCheckY);
-        Vector2 horizontal   = new Vector2(dir, 0f);
+        float   checkY     = _col.bounds.min.y + _ctx.stats.LedgeWallCheckHeight;
+        float   topCheckY  = checkY + _ctx.stats.LedgeTopCheckOffset;
+        float   rayLen     = _col.bounds.extents.x + _ctx.stats.LedgeCheckDistance;
+        Vector2 horizontal = new Vector2(dir, 0f);
 
-        RaycastHit2D wallHit = Physics2D.Raycast(wallOrigin, horizontal, rayLength, _ctx.stats.GroundLayer);
-        RaycastHit2D topHit  = Physics2D.Raycast(topOrigin,  horizontal, rayLength, _ctx.stats.GroundLayer);
+        // Нижний луч попадает → стена есть на уровне захвата.
+        RaycastHit2D wallHit = Physics2D.Raycast(new Vector2(_col.bounds.center.x, checkY),    horizontal, rayLen, _ctx.stats.GroundLayer);
+        // Верхний луч НЕ попадает → над захватом свободно, значит это уступ, а не сплошная стена.
+        RaycastHit2D topHit  = Physics2D.Raycast(new Vector2(_col.bounds.center.x, topCheckY), horizontal, rayLen, _ctx.stats.GroundLayer);
 
-        if (!wallHit || topHit)
-        {
-            Physics2D.queriesStartInColliders = cachedQuery;
-            _ctx.canGrabLedge = false;
-            return;
-        }
-
-        // Cast down from just past the wall edge to find the ledge surface.
+        // Вертикальный луч сверху вниз — находит реальную Y-координату поверхности уступа,
+        // независимо от текущей высоты игрока.
         Vector2 downOrigin = new Vector2(wallHit.point.x + dir * 0.05f, topCheckY);
         RaycastHit2D downHit = Physics2D.Raycast(downOrigin, Vector2.down,
-            _ctx.stats.LedgeTopCheckOffset + 0.3f, _ctx.stats.GroundLayer);
+            _ctx.stats.LedgeTopCheckOffset + 0.5f, _ctx.stats.GroundLayer);
 
         Physics2D.queriesStartInColliders = cachedQuery;
 
-        if (!downHit)
+        if (!wallHit || topHit || !downHit)
         {
             _ctx.canGrabLedge = false;
             return;
@@ -243,21 +237,18 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         // Ledge detection rays
         if (_ctx.stats != null)
         {
-            float wallCheckY = col.bounds.min.y + _ctx.stats.LedgeWallCheckHeight;
-            float topCheckY  = wallCheckY + _ctx.stats.LedgeTopCheckOffset;
-            float rayLength  = col.bounds.extents.x + _ctx.stats.LedgeCheckDistance;
+            float checkY    = col.bounds.min.y + _ctx.stats.LedgeWallCheckHeight;
+            float topCheckY = checkY + _ctx.stats.LedgeTopCheckOffset;
+            float rayLength = col.bounds.extents.x + _ctx.stats.LedgeCheckDistance;
             Gizmos.color = _ctx.canGrabLedge ? Color.cyan : new Color(0f, 1f, 1f, 0.25f);
-            Vector3 wallL = new Vector3(col.bounds.center.x - rayLength, wallCheckY, 0f);
-            Vector3 wallR = new Vector3(col.bounds.center.x + rayLength, wallCheckY, 0f);
-            Vector3 topL  = new Vector3(col.bounds.center.x - rayLength, topCheckY, 0f);
-            Vector3 topR  = new Vector3(col.bounds.center.x + rayLength, topCheckY, 0f);
-            Gizmos.DrawLine(wallL, wallR);
-            Gizmos.DrawLine(topL,  topR);
+            // нижний — стена должна быть
+            Gizmos.DrawLine(new Vector3(col.bounds.center.x - rayLength, checkY,    0f),
+                            new Vector3(col.bounds.center.x + rayLength, checkY,    0f));
+            // верхний — стены быть не должно
+            Gizmos.DrawLine(new Vector3(col.bounds.center.x - rayLength, topCheckY, 0f),
+                            new Vector3(col.bounds.center.x + rayLength, topCheckY, 0f));
             if (_ctx.canGrabLedge)
-            {
-                Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(_ctx.ledgeCornerPosition, 0.08f);
-            }
         }
 
         // Проверка вниз (groundHit)

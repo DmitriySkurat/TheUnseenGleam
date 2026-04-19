@@ -12,7 +12,7 @@ namespace HSM {
 
         bool    _isClimbingUp;
         bool    _completedClimb;
-        float   _climbStartTime;
+        float   _riseStartTime;
         Vector2 _hangPosition;
         Vector2 _standPosition;
 
@@ -46,11 +46,12 @@ namespace HSM {
                 ctx.ledgeCornerPosition.y - offsetY - halfH
             );
 
-            // Stand: нижний край капсулы чуть выше уровня угла, тело за стеной.
+            // Stand: на платформе, чуть дальше от края.
             _standPosition = new Vector2(
                 ctx.ledgeCornerPosition.x + dir * (halfW + ctx.stats.LedgeStandOffsetX),
                 ctx.ledgeCornerPosition.y - offsetY + halfH + ctx.stats.LedgeStandOffsetY
             );
+
 
             if (ctx.rb != null) {
                 ctx.rb.linearVelocity = Vector2.zero;
@@ -70,33 +71,45 @@ namespace HSM {
         }
 
         protected override void OnUpdate(float deltaTime) {
+            ctx.velocity = Vector2.zero;
+
             if (!_isClimbingUp) {
-                ctx.velocity = Vector2.zero;
+                if (ctx.rb != null) ctx.rb.position = _hangPosition;
 
                 if (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold) {
                     _isClimbingUp  = true;
-                    _climbStartTime = Time.time;
+                    _riseStartTime = Time.time;
                     ctx.anim.Play("WallgrabClime");
                 }
             } else {
-                float t = Mathf.Clamp01((Time.time - _climbStartTime) / ctx.stats.LedgeClimbDuration);
+                // Y: подъём вверх, начинается сразу.
+                float riseT = Mathf.Clamp01((Time.time - _riseStartTime) / ctx.stats.LedgeClimbRiseDuration);
+
+                // X: движение вбок, начинается после LedgeClimbSideDelay.
+                float sideElapsed = Time.time - _riseStartTime - ctx.stats.LedgeClimbSideDelay;
+                float sideT = Mathf.Clamp01(sideElapsed / ctx.stats.LedgeClimbSideDuration);
+
                 if (ctx.rb != null)
-                    ctx.rb.position = Vector2.Lerp(_hangPosition, _standPosition, t);
-                ctx.velocity = Vector2.zero;
+                    ctx.rb.position = new Vector2(
+                        Mathf.Lerp(_hangPosition.x, _standPosition.x, sideT),
+                        Mathf.Lerp(_hangPosition.y, _standPosition.y, riseT)
+                    );
             }
 
             base.OnUpdate(deltaTime);
         }
 
         protected override State GetTransition() {
-            // S — отпустить уступ
             if (!_isClimbingUp && ctx.input.Move.y < -ctx.stats.VerticalDeadZoneThreshold)
                 return Machine?.GetState<Airborne>();
 
-            // Подтянулись до конца
-            if (_isClimbingUp && Time.time >= _climbStartTime + ctx.stats.LedgeClimbDuration) {
-                _completedClimb = true;
-                return Machine?.GetState<Grounded>();
+            if (_isClimbingUp) {
+                float riseEnd = _riseStartTime + ctx.stats.LedgeClimbRiseDuration;
+                float sideEnd = _riseStartTime + ctx.stats.LedgeClimbSideDelay + ctx.stats.LedgeClimbSideDuration;
+                if (Time.time >= Mathf.Max(riseEnd, sideEnd)) {
+                    _completedClimb = true;
+                    return Machine?.GetState<Grounded>();
+                }
             }
 
             return null;
