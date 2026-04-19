@@ -629,6 +629,7 @@ GameObject:
   - component: {fileID: 3687784705825962857}
   - component: {fileID: 1723518907424848559}
   - component: {fileID: 4384193120335901177}
+  - component: {fileID: 5985911744305217693}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -868,3 +869,16 @@ MonoBehaviour:
   breathingCooldown: 0.75
   landingCooldown: 0.5
   gizmoColor: {r: 1, g: 0.4, b: 0.1, a: 0.6}
+--- !u!114 &5985911744305217693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9221460439243928467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6566574be082f45b15a3e8a3682f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpriteFlip
+  _sprite: {fileID: 2674044243155758756}
