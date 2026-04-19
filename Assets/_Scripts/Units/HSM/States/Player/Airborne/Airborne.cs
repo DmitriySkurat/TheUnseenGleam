@@ -4,14 +4,13 @@ namespace HSM {
     public class Airborne : State {
         readonly PlayerContext ctx;
 
+        bool isJumping;
+
         public Airborne(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
             Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.red, // runs while Airborne is activating
+                enterColor = Color.red,
             });
-            //Add(new AnimatorBoolActivity(ctx.anim, "Airborne", true, false));
-
-            Add(new AnimatorPlayActivity(ctx.anim, "Jump"));
         }
         
         protected override State GetTransition()
@@ -26,12 +25,22 @@ namespace HSM {
         {
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
-            
+
+            isJumping = ctx.velocity.y > 0f;
+            ctx.anim.Play(isJumping ? "Jump" : "Dropdown");
+
             base.OnEnter();
         }
 
         protected override void OnUpdate(float deltaTime) {
             if (ctx.stats != null) HandleHorizontal(deltaTime);
+
+            // переключаем с Jump на Dropdown в вершине дуги
+            if (isJumping && ctx.velocity.y < 0f) {
+                isJumping = false;
+                ctx.anim.Play("Dropdown");
+            }
+
             base.OnUpdate(deltaTime);
         }
 

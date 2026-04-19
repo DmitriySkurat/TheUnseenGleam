@@ -3,17 +3,21 @@ using UnityEngine;
 namespace HSM {
     public class Crouch : State {
         readonly PlayerContext ctx;
-        
+
+        public readonly CrouchIdle CrouchIdle;
+        public readonly CrouchWalk CrouchWalk;
+
         CapsuleCollider2D col;
         Vector2 originalColliderSize;
         Vector2 originalColliderOffset;
 
         public Crouch(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            //Add(new AnimatorBoolActivity(ctx.anim, "Crouch", true, false));
-            
-            Add(new AnimatorPlayActivity(ctx.anim, "Crouch"));
+            CrouchIdle = new CrouchIdle(m, this, ctx);
+            CrouchWalk = new CrouchWalk(m, this, ctx);
         }
+
+        protected override State GetInitialState() => CrouchIdle;
         
         protected override void OnEnter() {
             ctx.currentSpeedMultiplier = ctx.stats.CrouchSpeedMultiplier;
