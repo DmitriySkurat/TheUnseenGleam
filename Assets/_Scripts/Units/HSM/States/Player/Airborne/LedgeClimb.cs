@@ -76,7 +76,7 @@ namespace HSM {
                 if (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold) {
                     _isClimbingUp  = true;
                     _climbStartTime = Time.time;
-                    ctx.anim.Play("LedgeClimb");
+                    ctx.anim.Play("WallgrabClime");
                 }
             } else {
                 float t = Mathf.Clamp01((Time.time - _climbStartTime) / ctx.stats.LedgeClimbDuration);
