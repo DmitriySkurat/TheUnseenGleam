@@ -10,7 +10,9 @@ namespace HSM {
 
         public Crouch(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "Crouch", true, false));
+            //Add(new AnimatorBoolActivity(ctx.anim, "Crouch", true, false));
+            
+            Add(new AnimatorPlayActivity(ctx.anim, "Crouch"));
         }
         
         protected override void OnEnter() {

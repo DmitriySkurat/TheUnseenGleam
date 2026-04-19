@@ -9,7 +9,9 @@ namespace HSM
         public DeathNormal(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "Death", true, false));
+            //Add(new AnimatorBoolActivity(ctx.anim, "Death", true, false));
+            
+            Add(new AnimatorPlayActivity(ctx.anim, "Death"));
         }
 
         protected override void OnEnter()

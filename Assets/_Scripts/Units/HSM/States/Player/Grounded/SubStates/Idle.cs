@@ -6,7 +6,9 @@ namespace HSM {
 
         public Idle(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "Idle", true, false));
+            //Add(new AnimatorBoolActivity(ctx.anim, "Idle", true, false));
+
+            Add(new AnimatorPlayActivity(ctx.anim, "Idle"));
         }
 
         protected override void OnEnter()

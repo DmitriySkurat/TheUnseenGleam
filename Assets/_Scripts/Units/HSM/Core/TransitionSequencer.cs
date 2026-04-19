@@ -51,10 +51,10 @@ namespace HSM {
             return steps;
         }
         
-        // States to exit: from → ... up to (but excluding) lca; bottom→up order.
+        // States to exit: leaf of 'from' → ... up to (but excluding) lca; bottom→up order.
         static List<State> StatesToExit(State from, State lca) {
             var list = new List<State>();
-            for (var s = from; s != null && s != lca; s = s.Parent) list.Add(s);
+            for (var s = from.Leaf(); s != null && s != lca; s = s.Parent) list.Add(s);
             return list;
         }
         
@@ -84,8 +84,11 @@ namespace HSM {
             nextPhase = () => {
                 // 2. ChangeState
                 Machine.ChangeState(from, to);
-                // 3. Activate the “new branch”
-                var enterSteps = GatherPhaseSteps(enterChain, deactivate: false);
+                // 3. Include any initial children entered via GetInitialState (not in enterChain)
+                var fullEnterChain = new List<State>(enterChain);
+                for (State s = to; s.ActiveChild != null; s = s.ActiveChild)
+                    if (!fullEnterChain.Contains(s.ActiveChild)) fullEnterChain.Add(s.ActiveChild);
+                var enterSteps = GatherPhaseSteps(fullEnterChain, deactivate: false);
                 // sequencer = new NoopPhase();
                 sequencer = UseSequential
                     ? new SequentialPhase(enterSteps, cts.Token)
