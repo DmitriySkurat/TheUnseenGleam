@@ -24,6 +24,7 @@ public class InputManager : MonoBehaviour, IService
     public event Action OnSlot5;
     
     public event Action OnEscape;
+    public event Action OnCloseWindow;
     
     
     // Mouse
@@ -90,6 +91,7 @@ public class InputManager : MonoBehaviour, IService
         actions["Slot5"].performed += HandleSlot5;
         
         actions["Escape"].performed += HandleOnEscape;
+        actions["CloseWindow"].performed += HandleOnCloseWindow;
         
         
         actions["MousePosition"].performed += HandleMousePosition;
@@ -132,6 +134,7 @@ public class InputManager : MonoBehaviour, IService
         actions["Slot5"].performed -= HandleSlot5;
         
         actions["Escape"].performed -= HandleOnEscape;
+        actions["CloseWindow"].performed -= HandleOnCloseWindow;
         
         
         actions["MousePosition"].performed -= HandleMousePosition;
@@ -182,6 +185,7 @@ public class InputManager : MonoBehaviour, IService
     private void HandleSlot5(InputAction.CallbackContext ctx) => OnSlot5?.Invoke();
     
     private void HandleOnEscape(InputAction.CallbackContext ctx) => OnEscape?.Invoke();
+    private void HandleOnCloseWindow(InputAction.CallbackContext ctx) => OnCloseWindow?.Invoke();
     
     // Mouse
     private void HandleMousePosition(InputAction.CallbackContext ctx) => OnMousePositionChanged?.Invoke(ctx.ReadValue<Vector2>());

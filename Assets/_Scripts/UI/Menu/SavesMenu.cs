@@ -32,17 +32,17 @@ public class SavesMenu : MonoBehaviour, ISceneLifecycle
         _inputManager = Services.Get<InputManager>();
         _sceneTransition = Services.Get<SceneTransitionManager>();
 
-        _inputManager.OnEscape += HandleEscape;
+        _inputManager.OnCloseWindow += HandleCloseWindow;
 
         RefreshSlotImages();
     }
 
     public void Dispose()
     {
-        _inputManager.OnEscape -= HandleEscape;
+        _inputManager.OnCloseWindow -= HandleCloseWindow;
     }
 
-    private void HandleEscape()
+    private void HandleCloseWindow()
     {
         gameObject.SetActive(false);
 

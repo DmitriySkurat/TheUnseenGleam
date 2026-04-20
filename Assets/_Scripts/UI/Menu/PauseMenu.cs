@@ -25,36 +25,30 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
         if (pauseGameMenu)
             pauseGameMenu.SetActive(false);
             
-        _inputManager.OnEscape += HandleEscape;
+        _inputManager.OnEscape += HandleEscapeGameplay;
+        _inputManager.OnCloseWindow += HandleEscapeUI;
     }
-    
+
     public void Dispose()
     {
         // Ensure time scale is reset when the scene is unloaded
         Time.timeScale = 1f;
-        
-        _inputManager.OnEscape -= HandleEscape;
+
+        _inputManager.OnEscape -= HandleEscapeGameplay;
+        _inputManager.OnCloseWindow -= HandleEscapeUI;
     }
 
-    private void HandleEscape()
+    private void HandleEscapeGameplay()
+    {
+        Pause();
+    }
+
+    private void HandleEscapeUI()
     {
         if (optionsMenu && optionsMenu.activeSelf)
-        {
-            if (optionsController)
-                optionsController.CloseSettings();
-            else
-                optionsMenu.SetActive(false);
             return;
-        }
-        if (isPaused)
-        {
-            Resume();
-        }
-        else
-        {
-            Pause();
-        }
-        
+
+        Resume();
     }
 
     public void Resume()
@@ -62,6 +56,7 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
         pauseGameMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+        _inputManager.EnableGameplay();
     }
 
     public void Pause()
@@ -69,6 +64,7 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
         pauseGameMenu.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+        _inputManager.EnableUI();
     }
 
     public void loadMenu()

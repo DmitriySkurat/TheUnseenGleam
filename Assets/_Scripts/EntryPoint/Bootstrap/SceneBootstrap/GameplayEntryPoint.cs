@@ -27,6 +27,8 @@ namespace EntryPoint
             FindObjects();
             InitializeObjects();
 
+            Services.Get<InputManager>().EnableGameplay();
+
             _logger?.Log("Gameplay scene initialization complete", this);
         }
 

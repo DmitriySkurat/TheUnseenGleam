@@ -28,6 +28,8 @@ namespace EntryPoint
             FindObjects();
             InitializeObjects();
 
+            Services.Get<InputManager>().EnableUI();
+
             _logger?.Log("Menu scene initialization complete", this);
         }
     }

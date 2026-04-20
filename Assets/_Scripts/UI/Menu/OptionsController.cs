@@ -21,7 +21,7 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
     public void Initialize()
     {
         _inputManager = Services.Get<InputManager>();
-        _inputManager.OnEscape += HandleEscape;
+        _inputManager.OnCloseWindow += HandleCloseWindow;
 
         resolutionDropdown.ClearOptions();
         var options = new List<string>();
@@ -40,11 +40,11 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
 
     public void Dispose()
     {
-        _inputManager.OnEscape -= HandleEscape;
+        _inputManager.OnCloseWindow -= HandleCloseWindow;
         fpsSlider.onValueChanged.RemoveAllListeners();
     }
 
-    public void HandleEscape()
+    public void HandleCloseWindow()
     {
         if (gameObject.activeSelf)
             CloseSettings();

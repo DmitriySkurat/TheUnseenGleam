@@ -37,7 +37,7 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
         _inputManager = Services.Get<InputManager>();
         _sceneTransition = Services.Get<SceneTransitionManager>();
 
-        _inputManager.OnEscape += HandleEscape;
+        _inputManager.OnCloseWindow += HandleCloseWindow;
 
         if (confirmPanel != null)
             confirmPanel.SetActive(false);
@@ -47,10 +47,10 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
 
     public void Dispose()
     {
-        _inputManager.OnEscape -= HandleEscape;
+        _inputManager.OnCloseWindow -= HandleCloseWindow;
     }
 
-    private void HandleEscape()
+    private void HandleCloseWindow()
     {
         if (confirmPanel != null && confirmPanel.activeSelf)
         {
