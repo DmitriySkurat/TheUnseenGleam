@@ -46,7 +46,7 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
 
     public void HandleCloseWindow()
     {
-        if (gameObject.activeSelf)
+        if (gameObject.activeSelf && !PauseMenu.isPaused)
             CloseSettings();
     }
 

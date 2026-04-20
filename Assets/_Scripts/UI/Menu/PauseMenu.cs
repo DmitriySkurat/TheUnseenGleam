@@ -46,7 +46,13 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
     private void HandleEscapeUI()
     {
         if (optionsMenu && optionsMenu.activeSelf)
+        {
+            if (optionsController)
+                optionsController.CloseSettings();
+            else
+                optionsMenu.SetActive(false);
             return;
+        }
 
         Resume();
     }
