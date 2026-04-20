@@ -20,6 +20,9 @@ namespace HSM {
             _progress = 0;
             _lastDir  = 0;
             ctx.grabProgress = 0f;
+            ctx.currentStaminaDrainMultiplier = ctx.stats.GrabbedStaminaDrainMultiplier;
+            ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
             base.OnEnter();
         }
 

@@ -82,6 +82,9 @@ public class PlayerScriptableStats : ScriptableObject
     
     [Tooltip("Drain multiplier while running")]
     public float RunStaminaDrainMultiplier = 1f;
+
+    [Tooltip("Drain multiplier while grabbed")]
+    public float GrabbedStaminaDrainMultiplier = 1f;
     
     [Header("BREATHE (STAMINA)")]
     [Tooltip("Stamina drained per second while not breathing")]
