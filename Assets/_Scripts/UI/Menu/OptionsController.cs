@@ -13,6 +13,7 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
     public Toggle fullScreenToggle;
     public Dropdown resolutionDropdown;
     public GameObject menuButtonsParent;
+    public ToastNotification settingsSavedToast;
 
     private InputManager _inputManager;
 
@@ -142,7 +143,7 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
         PlayerPrefs.SetInt("FpsPreference", fps >= FpsUnlimitedValue ? -1 : fps);
         PlayerPrefs.Save();
 
-        Debug.Log("Settings saved");
+        settingsSavedToast?.Show();
     }
 
     public void LoadSettings()
