@@ -50,6 +50,23 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
         _inputManager.OnCloseWindow -= HandleCloseWindow;
     }
 
+    private void OnEnable()
+    {
+        SetMenuButtonsInteractable(false);
+    }
+
+    private void OnDisable()
+    {
+        SetMenuButtonsInteractable(true);
+    }
+
+    private void SetMenuButtonsInteractable(bool interactable)
+    {
+        if (menuButtonsParent == null) return;
+        foreach (var btn in menuButtonsParent.GetComponentsInChildren<Button>())
+            btn.interactable = interactable;
+    }
+
     private void HandleCloseWindow()
     {
         if (confirmPanel != null && confirmPanel.activeSelf)
@@ -60,8 +77,7 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
 
         gameObject.SetActive(false);
 
-        if (menuButtonsParent != null)
-            menuButtonsParent.SetActive(true);
+        // кнопки разблокируются через OnDisable
     }
 
     private void RefreshSlotImages()

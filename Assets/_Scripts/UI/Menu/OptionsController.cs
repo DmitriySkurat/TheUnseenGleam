@@ -50,6 +50,23 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
             _inputManager.OnCloseWindow -= HandleCloseWindow;
     }
 
+    private void OnEnable()
+    {
+        SetMenuButtonsInteractable(false);
+    }
+
+    private void OnDisable()
+    {
+        SetMenuButtonsInteractable(true);
+    }
+
+    private void SetMenuButtonsInteractable(bool interactable)
+    {
+        if (menuButtonsParent == null) return;
+        foreach (var btn in menuButtonsParent.GetComponentsInChildren<Button>())
+            btn.interactable = interactable;
+    }
+
     public void HandleCloseWindow()
     {
         if (this == null) return;
@@ -75,8 +92,7 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
         SaveSettings();
         gameObject.SetActive(false);
 
-        if (menuButtonsParent != null)
-            menuButtonsParent.SetActive(true);
+        // кнопки разблокируются через OnDisable
     }
 
     private void ApplyCurrentSettings()

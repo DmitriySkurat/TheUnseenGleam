@@ -23,7 +23,8 @@
       "Bash(grep -E \"\\\\.\\(cs\\)$\")",
       "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts -name \"*.cs\" -type f -exec grep -l \"jump\\\\|land\" {} \\\\;)",
       "Bash(find ./Assets/_Scripts -name \"*.cs\" -exec grep -l \"SaveManager\\\\|SaveVariables\" {} \\\\;)",
-      "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -name \"*.cs\" -exec grep -l \"localScale\\\\|transform.localPosition\\\\|spriteRenderer\" {} \\\\;)"
+      "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -name \"*.cs\" -exec grep -l \"localScale\\\\|transform.localPosition\\\\|spriteRenderer\" {} \\\\;)",
+      "Bash(find \"D:/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts\" -name \"*.cs\" -exec grep -l \"optionsMenu\\\\|OptionsController\\\\|SavesMenu\\\\|NewGameMenu\" {} \\\\;)"
     ]
   }
 }
