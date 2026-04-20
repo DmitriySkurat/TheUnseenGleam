@@ -34,5 +34,12 @@ namespace HSM
 
             base.OnEnter();
         }
+
+        protected override State GetTransition()
+        {
+            if (ctx.isAlive) return Machine?.GetState<PlayerRoot>();
+            
+            return null;
+        }
     }
 }
