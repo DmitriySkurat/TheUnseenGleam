@@ -4,7 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Меню NewGame: показывает 3 слота.
 /// Пустой слот — создать новое сохранение.
-/// Занятый слот — перезаписать сохранение и начать заново.
+/// Занятый слот — показать панель подтверждения перезаписи.
 /// </summary>
 public class NewGameMenu : MonoBehaviour, ISceneLifecycle
 {
@@ -21,11 +21,16 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
     [SerializeField] private Sprite save2Sprite;
     [SerializeField] private Sprite save3Sprite;
 
+    [Header("Confirmation Panel")]
+    [SerializeField] private GameObject confirmPanel;
+    [SerializeField] private GameObject slotsPanel;
+
     [Header("Navigation")]
     public GameObject menuButtonsParent;
 
     private InputManager _inputManager;
     private SceneTransitionManager _sceneTransition;
+    private int _pendingSlot;
 
     public void Initialize()
     {
@@ -33,6 +38,9 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
         _sceneTransition = Services.Get<SceneTransitionManager>();
 
         _inputManager.OnEscape += HandleEscape;
+
+        if (confirmPanel != null)
+            confirmPanel.SetActive(false);
 
         RefreshSlotImages();
     }
@@ -44,6 +52,12 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
 
     private void HandleEscape()
     {
+        if (confirmPanel != null && confirmPanel.activeSelf)
+        {
+            OnConfirmNo();
+            return;
+        }
+
         gameObject.SetActive(false);
 
         if (menuButtonsParent != null)
@@ -63,17 +77,48 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
         image.sprite = SaveManager.Exists(slot) ? saveSprite : emptySprite;
     }
 
-    public void OnSlot1() => StartNewGame(1);
-    public void OnSlot2() => StartNewGame(2);
-    public void OnSlot3() => StartNewGame(3);
+    public void OnSlot1() => TryStartNewGame(1);
+    public void OnSlot2() => TryStartNewGame(2);
+    public void OnSlot3() => TryStartNewGame(3);
+
+    private void TryStartNewGame(int slot)
+    {
+        if (SaveManager.Exists(slot))
+        {
+            _pendingSlot = slot;
+            ShowConfirmPanel(true);
+        }
+        else
+        {
+            StartNewGame(slot);
+        }
+    }
+
+    public void OnConfirmYes()
+    {
+        ShowConfirmPanel(false);
+        StartNewGame(_pendingSlot);
+    }
+
+    public void OnConfirmNo()
+    {
+        ShowConfirmPanel(false);
+    }
+
+    private void ShowConfirmPanel(bool show)
+    {
+        if (confirmPanel != null)
+            confirmPanel.SetActive(show);
+
+        if (slotsPanel != null)
+            slotsPanel.SetActive(!show);
+    }
 
     private void StartNewGame(int slot)
     {
-        // Перезаписываем старый слот (если был)
         if (SaveManager.Exists(slot))
             SaveManager.Delete(slot);
 
-        // Создаём заглушку, чтобы слот сразу отображался как занятый.
         // health=0 — признак «новой игры»; SaveLoader не будет читать эти значения.
         SaveManager.Save(slot, 0f, 0f, SceneNames.Demo);
 

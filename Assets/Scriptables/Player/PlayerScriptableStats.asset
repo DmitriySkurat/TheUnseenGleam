@@ -74,10 +74,12 @@ MonoBehaviour:
   VinesSlipSpeed: 2
   VinesSlipAcceleration: 12
   LedgeWallCheckHeight: 1
-  LedgeTopCheckOffset: 0.25
-  LedgeCheckDistance: 0.15
+  LedgeTopCheckOffset: 1.08
+  LedgeCheckDistance: 0.46
   LedgeHangOffsetX: 0.05
-  LedgeHangOffsetY: 5.53
-  LedgeStandOffsetX: 0.35
-  LedgeStandOffsetY: 0.05
-  LedgeClimbDuration: 0.45
+  LedgeHangOffsetY: 5
+  LedgeStandOffsetX: 0
+  LedgeStandOffsetY: 0
+  LedgeClimbRiseDuration: 1
+  LedgeClimbSideDelay: 0.35
+  LedgeClimbSideDuration: 0.5

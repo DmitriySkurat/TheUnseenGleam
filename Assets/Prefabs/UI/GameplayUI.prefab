@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 2855487886249513021}
   - component: {fileID: 1330109970508306286}
   - component: {fileID: 3639003143225621697}
+  - component: {fileID: 2203858873551775096}
   m_Layer: 5
   m_Name: 'Canvas '
   m_TagString: Untagged
@@ -564,6 +565,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathMenu
   deathGameMenu: {fileID: 7854475527136577345}
+--- !u!114 &2203858873551775096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 662871617382107854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56c3e08477ed65946854beca356e5160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FontFilterFix
+  fonts:
+  - {fileID: 12800000, guid: f87ab59ada92ca549b85571f37abee82, type: 3}
 --- !u!1 &686396072965938210
 GameObject:
   m_ObjectHideFlags: 0
