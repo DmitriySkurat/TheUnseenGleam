@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using EntryPoint;
 
 public class DeathMenu : MonoBehaviour, ISceneLifecycle
@@ -43,7 +44,8 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
         deathGameMenu.SetActive(false);
         if (Services.IsRegistered<SessionBootstrap>())
             Services.Get<SessionBootstrap>().EndSession();
-        Utility.SceneLoader.Load(SaveVariables.PendingSave.sceneName);
+        var sceneName = SaveVariables.PendingSave?.sceneName ?? SceneManager.GetActiveScene().name;
+        Utility.SceneLoader.Load(sceneName);
         
         _inputManager.EnableGameplay();
     }
