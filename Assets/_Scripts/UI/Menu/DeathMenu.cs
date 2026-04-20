@@ -9,10 +9,15 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
 
     private PlayerHealth _playerHealth;
 
+    private InputManager _inputManager;
+
     public void Initialize()
     {
         if (!Services.IsRegistered<PlayerContext>())
             return;
+
+        _inputManager = Services.Get<InputManager>();
+
         _playerHealth = Services.Get<PlayerContext>().health;
         _playerHealth.OnDied += Show;
 
@@ -28,6 +33,7 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
     private void Show()
     {
         deathGameMenu.SetActive(true);
+        _inputManager.EnableUI();
         //Time.timeScale = 0f;
     }
 
@@ -37,7 +43,9 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
         deathGameMenu.SetActive(false);
         if (Services.IsRegistered<SessionBootstrap>())
             Services.Get<SessionBootstrap>().EndSession();
-        Utility.SceneLoader.Load(SceneNames.Demo);
+        Utility.SceneLoader.Load(SaveVariables.PendingSave.sceneName);
+        
+        _inputManager.EnableGameplay();
     }
 
     public void loadMenu()

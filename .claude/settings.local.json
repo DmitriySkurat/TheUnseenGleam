@@ -24,7 +24,14 @@
       "Bash(find /d/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts -name \"*.cs\" -type f -exec grep -l \"jump\\\\|land\" {} \\\\;)",
       "Bash(find ./Assets/_Scripts -name \"*.cs\" -exec grep -l \"SaveManager\\\\|SaveVariables\" {} \\\\;)",
       "Bash(find \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -name \"*.cs\" -exec grep -l \"localScale\\\\|transform.localPosition\\\\|spriteRenderer\" {} \\\\;)",
-      "Bash(find \"D:/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts\" -name \"*.cs\" -exec grep -l \"optionsMenu\\\\|OptionsController\\\\|SavesMenu\\\\|NewGameMenu\" {} \\\\;)"
+      "Bash(find \"D:/BSUIR/Diploma/TheUnseenGleam/Assets/_Scripts\" -name \"*.cs\" -exec grep -l \"optionsMenu\\\\|OptionsController\\\\|SavesMenu\\\\|NewGameMenu\" {} \\\\;)",
+      "Bash(awk '{if \\(NR==1\\) print \"[ROOT]\"; else print \"  \" $0}')",
+      "Bash(cd /d \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\")",
+      "Bash(npm list *)",
+      "Bash(node generate_arch_doc.js)",
+      "Bash(npm root *)",
+      "Bash(NODE_PATH=\"C:/Users/Dima/AppData/Roaming/npm/node_modules\" node \"D:/BSUIR/Diploma/TheUnseenGleam/generate_arch_doc.js\")",
+      "Bash(python C:/Users/Dima/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/785efe0d-06db-4d3f-80b8-9d4c6b205e53/67b16118-27f6-416f-9fd9-de8817a885ad/skills/docx/scripts/office/validate.py D:/BSUIR/Diploma/TheUnseenGleam/Architecture_TheUnseenGleam.docx)"
     ]
   }
 }
