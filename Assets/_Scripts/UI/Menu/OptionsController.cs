@@ -44,8 +44,15 @@ public class OptionsController : MonoBehaviour, ISceneLifecycle
         fpsSlider.onValueChanged.RemoveAllListeners();
     }
 
+    private void OnDestroy()
+    {
+        if (_inputManager != null)
+            _inputManager.OnCloseWindow -= HandleCloseWindow;
+    }
+
     public void HandleCloseWindow()
     {
+        if (this == null) return;
         if (gameObject.activeSelf && !PauseMenu.isPaused)
             CloseSettings();
     }

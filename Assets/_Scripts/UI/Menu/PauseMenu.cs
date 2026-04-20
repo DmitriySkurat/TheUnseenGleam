@@ -31,11 +31,19 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
 
     public void Dispose()
     {
-        // Ensure time scale is reset when the scene is unloaded
         Time.timeScale = 1f;
 
         _inputManager.OnEscape -= HandleEscapeGameplay;
         _inputManager.OnCloseWindow -= HandleEscapeUI;
+    }
+
+    private void OnDestroy()
+    {
+        if (_inputManager != null)
+        {
+            _inputManager.OnEscape -= HandleEscapeGameplay;
+            _inputManager.OnCloseWindow -= HandleEscapeUI;
+        }
     }
 
     private void HandleEscapeGameplay()
@@ -59,7 +67,8 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
 
     public void Resume()
     {
-        pauseGameMenu.SetActive(false);
+        if (pauseGameMenu != null)
+            pauseGameMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
         _inputManager.EnableGameplay();
