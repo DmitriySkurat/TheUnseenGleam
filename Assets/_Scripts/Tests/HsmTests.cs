@@ -36,12 +36,14 @@ namespace Tests
 
         public override async Task ActivateAsync(CancellationToken ct)
         {
+            if (Mode != ActivityMode.Inactive) return;
             ActivateCallCount++;
             await base.ActivateAsync(ct);
         }
 
         public override async Task DeactivateAsync(CancellationToken ct)
         {
+            if (Mode != ActivityMode.Active) return;
             DeactivateCallCount++;
             await base.DeactivateAsync(ct);
         }
