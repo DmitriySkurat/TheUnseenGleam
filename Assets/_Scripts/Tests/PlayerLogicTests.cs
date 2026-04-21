@@ -99,6 +99,72 @@ namespace Tests
         }
     }
 
+    // ── Mirrors PlayerStaminaController + PlayerBreathController ─────────────
+    // (UpdateStamina / RegenStamina / UpdateBreath — без MonoBehaviour)
+
+    class StaminaTracker
+    {
+        public float Max;
+        public float Current;
+        public float DrainPerSecond;
+        public float RegenPerSecond;
+        public float RegenMovingMultiplier;
+        public float MinToRun;
+        public float MinToHoldBreath;
+        public float BreathDrainPerSecond;
+
+        public float DrainMultiplier;       // ctx.currentStaminaDrainMultiplier
+        public float BreathDrainMultiplier; // ctx.currentStaminaBreathDrainMultiplier
+        public bool  IsHoldingBreath;
+        public bool  IsGrounded;
+        public bool  IsMoving;
+
+        public bool CanRun        => Current > MinToRun;
+        public bool CanHoldBreath => BreathDrainMultiplier > 0f && DrainMultiplier == 0f;
+
+        // Mirrors PlayerStaminaController.UpdateStamina()
+        public void UpdateStamina(float dt)
+        {
+            if (IsHoldingBreath) return;
+
+            float consumption = DrainPerSecond * DrainMultiplier * dt;
+            if (consumption > 0f)
+                Current = Math.Max(0f, Current - consumption);
+            else if (IsGrounded)
+                RegenStamina(dt);
+        }
+
+        // Mirrors PlayerStaminaController.RegenStamina()
+        void RegenStamina(float dt)
+        {
+            float mult  = IsMoving ? RegenMovingMultiplier : 1f;
+            float regen = RegenPerSecond * mult * dt;
+            Current = Math.Min(Max, Current + regen);
+        }
+
+        // Mirrors PlayerBreathController.UpdateBreath()
+        public void UpdateBreath(bool holdInput, float dt)
+        {
+            if (!CanHoldBreath) { IsHoldingBreath = false; return; }
+
+            if (IsHoldingBreath)
+            {
+                if (!holdInput || Current <= 0f) { IsHoldingBreath = false; return; }
+            }
+            else if (holdInput && Current >= MinToHoldBreath)
+            {
+                IsHoldingBreath = true;
+            }
+
+            if (IsHoldingBreath)
+            {
+                float drain = BreathDrainPerSecond * Math.Max(0f, BreathDrainMultiplier);
+                Current = Math.Max(0f, Current - drain * dt);
+                if (Current <= 0f) IsHoldingBreath = false;
+            }
+        }
+    }
+
     // ── Tests ─────────────────────────────────────────────────────────────────
 
     [TestFixture]
@@ -205,6 +271,121 @@ namespace Tests
 
             Assert.That(withRoll, Is.LessThan(withoutRoll));
             Assert.That(withRoll, Is.EqualTo(withoutRoll * 0.35f).Within(0.001f));
+        }
+
+        // ── Stamina ───────────────────────────────────────────────────────────
+
+        StaminaTracker MakeStamina(float current = 100f) => new StaminaTracker
+        {
+            Max                  = 100f,
+            Current              = current,
+            DrainPerSecond       = 20f,
+            RegenPerSecond       = 15f,
+            RegenMovingMultiplier = 0.4f,
+            MinToRun             = 35f,
+            MinToHoldBreath      = 25f,
+            BreathDrainPerSecond = 20f,
+            IsGrounded           = true,
+        };
+
+        // 11. Стамина тратится пропорционально DrainMultiplier и deltaTime
+        [Test]
+        public void Stamina_Drain_ReducesCurrentByExpectedAmount()
+        {
+            var s = MakeStamina();
+            s.DrainMultiplier = 1f;
+
+            s.UpdateStamina(1f);   // 20 * 1 * 1 = 20
+
+            Assert.That(s.Current, Is.EqualTo(80f).Within(0.001f));
+        }
+
+        // 12. Нулевой DrainMultiplier → стамина не тратится, а восстанавливается
+        [Test]
+        public void Stamina_ZeroDrainMultiplier_RegensOnGround()
+        {
+            var s = MakeStamina(50f);
+            s.DrainMultiplier = 0f;
+
+            s.UpdateStamina(1f);   // regen: 15 * 1 * 1 = 15
+
+            Assert.That(s.Current, Is.EqualTo(65f).Within(0.001f));
+        }
+
+        // 13. Регенерация в движении умножается на MovingMultiplier
+        [Test]
+        public void Stamina_RegenWhileMoving_AppliesMovingMultiplier()
+        {
+            var s = MakeStamina(50f);
+            s.DrainMultiplier = 0f;
+            s.IsMoving = true;
+
+            s.UpdateStamina(1f);   // 15 * 0.4 * 1 = 6
+
+            Assert.That(s.Current, Is.EqualTo(56f).Within(0.001f));
+        }
+
+        // 14. Стамина не превышает Max при регенерации
+        [Test]
+        public void Stamina_Regen_ClampsToMax()
+        {
+            var s = MakeStamina(99f);
+            s.DrainMultiplier = 0f;
+
+            s.UpdateStamina(1f);   // regen 15, но max = 100
+
+            Assert.That(s.Current, Is.EqualTo(100f));
+        }
+
+        // 15. Стамина не уходит в отрицательную при большом drain
+        [Test]
+        public void Stamina_Drain_ClampsToZero()
+        {
+            var s = MakeStamina(5f);
+            s.DrainMultiplier = 1f;
+
+            s.UpdateStamina(1f);   // нужно потратить 20, но есть только 5
+
+            Assert.That(s.Current, Is.EqualTo(0f));
+        }
+
+        // 16. CanRun = false когда стамина ≤ MinToRun
+        [Test]
+        public void Stamina_CanRun_FalseWhenBelowThreshold()
+        {
+            var s = MakeStamina(35f);   // ровно на пороге
+
+            Assert.That(s.CanRun, Is.False);
+        }
+
+        // 17. Задержка дыхания расходует стамину
+        [Test]
+        public void Stamina_HoldBreath_DrainsStamina()
+        {
+            var s = MakeStamina(100f);
+            s.BreathDrainMultiplier = 1f;   // CanHoldBreath = true (DrainMultiplier == 0)
+            s.DrainMultiplier       = 0f;
+
+            s.UpdateBreath(holdInput: true, dt: 1f);   // начинает задержку
+            s.UpdateBreath(holdInput: true, dt: 1f);   // тратит: 20 * 1 * 1 = 20
+
+            Assert.That(s.IsHoldingBreath, Is.True);
+            Assert.That(s.Current, Is.LessThan(100f));
+        }
+
+        // 18. Задержка дыхания прекращается при обнулении стамины
+        [Test]
+        public void Stamina_HoldBreath_StopsWhenStaminaDepleted()
+        {
+            var s = MakeStamina(1f);
+            s.BreathDrainMultiplier = 1f;
+            s.DrainMultiplier       = 0f;
+            s.IsHoldingBreath       = true;
+
+            s.UpdateBreath(holdInput: true, dt: 1f);   // тратит 20, но есть 1 → обнуляется
+
+            Assert.That(s.IsHoldingBreath, Is.False);
+            Assert.That(s.Current, Is.EqualTo(0f));
         }
 
         // 10. Предметы сверх maxStackSize создают новый стак в инвентаре
