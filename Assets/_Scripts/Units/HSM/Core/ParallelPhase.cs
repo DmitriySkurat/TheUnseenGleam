@@ -8,7 +8,7 @@ namespace HSM {
         readonly CancellationToken ct;
         List<Task> tasks;
         public bool IsDone { get; private set; }
-        
+
         public ParallelPhase(List<PhaseStep> steps, CancellationToken ct) {
             this.steps = steps;
             this.ct = ct;

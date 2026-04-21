@@ -14,7 +14,7 @@ namespace HSM {
             this.steps = steps;
             this.ct = ct;
         }
-        
+
         public void Start() => Next();
 
         public bool Update() {

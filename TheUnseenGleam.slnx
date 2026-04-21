@@ -1,4 +1,6 @@
 ﻿<Solution>
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="HSM.Core.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="EditMode.Tests.csproj" />
 </Solution>

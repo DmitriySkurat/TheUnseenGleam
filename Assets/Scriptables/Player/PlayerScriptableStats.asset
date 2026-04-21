@@ -39,6 +39,7 @@ MonoBehaviour:
   StaminaRegenMovingMultiplier: 0.4
   MinStaminaToRun: 35
   RunStaminaDrainMultiplier: 1
+  GrabbedStaminaDrainMultiplier: 0.5
   StaminaHoldBreathDrainPerSecond: 20
   MinStaminaToHoldBreath: 25
   IdleStaminaBreathDrainMultiplier: 1

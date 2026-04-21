@@ -152,11 +152,18 @@ public class InputManager : MonoBehaviour, IService
     public void EnableGameplay()
     {
         _playerInput.SwitchCurrentActionMap("Gameplay");
+        SetCursorVisibility(false);
     }
 
     public void EnableUI()
     {
         _playerInput.SwitchCurrentActionMap("UI");
+        SetCursorVisibility(true);
+    }
+
+    public void SetCursorVisibility(bool visible)
+    {
+        Cursor.visible = visible;
     }
     
     // void Update()
