@@ -17,7 +17,9 @@ namespace HSM {
 
         public PressToWall(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorBoolActivity(ctx.anim, "PressToWall", true, false));
+            //Add(new AnimatorBoolActivity(ctx.anim, "PressToWall", true, false));
+            
+            Add(new AnimatorPlayActivity(ctx.anim, "PressToWall"));
         }
 
         protected override void OnEnter() {

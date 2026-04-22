@@ -31,7 +31,14 @@
       "Bash(node generate_arch_doc.js)",
       "Bash(npm root *)",
       "Bash(NODE_PATH=\"C:/Users/Dima/AppData/Roaming/npm/node_modules\" node \"D:/BSUIR/Diploma/TheUnseenGleam/generate_arch_doc.js\")",
-      "Bash(python C:/Users/Dima/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/785efe0d-06db-4d3f-80b8-9d4c6b205e53/67b16118-27f6-416f-9fd9-de8817a885ad/skills/docx/scripts/office/validate.py D:/BSUIR/Diploma/TheUnseenGleam/Architecture_TheUnseenGleam.docx)"
+      "Bash(python C:/Users/Dima/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/785efe0d-06db-4d3f-80b8-9d4c6b205e53/67b16118-27f6-416f-9fd9-de8817a885ad/skills/docx/scripts/office/validate.py D:/BSUIR/Diploma/TheUnseenGleam/Architecture_TheUnseenGleam.docx)",
+      "Read(//c/Users/Dima/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/785efe0d-06db-4d3f-80b8-9d4c6b205e53/67b16118-27f6-416f-9fd9-de8817a885ad/skills/docx/**)",
+      "Bash(node -e \"require\\('docx'\\); console.log\\('ok'\\)\")",
+      "Bash(npm install *)",
+      "Bash(python scripts/office/unpack.py \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\Диплом.docx\" unpacked_diploma/)",
+      "Bash(pip install *)",
+      "Bash(pandoc \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\Диплом.docx\" -o diploma_text.md)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }
