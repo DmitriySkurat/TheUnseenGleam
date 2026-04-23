@@ -78,9 +78,6 @@ MonoBehaviour:
   LedgeTopCheckOffset: 1.08
   LedgeCheckDistance: 0.46
   LedgeHangOffsetX: 0.05
-  LedgeHangOffsetY: 5
   LedgeStandOffsetX: 0
   LedgeStandOffsetY: 0
-  LedgeClimbRiseDuration: 1
-  LedgeClimbSideDelay: 0.35
-  LedgeClimbSideDuration: 0.5
+  LedgeClimbTeleportDelay: 0.6

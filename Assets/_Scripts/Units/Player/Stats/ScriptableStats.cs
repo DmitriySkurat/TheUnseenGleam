@@ -6,7 +6,7 @@ public class PlayerScriptableStats : ScriptableObject
     [Header("LAYERS")]
     [Tooltip("Set this to the layer your player is on")]
     public LayerMask PlayerLayer;
-    
+
     [Tooltip("Layer considered as ground")]
     public LayerMask GroundLayer;
 
@@ -19,7 +19,7 @@ public class PlayerScriptableStats : ScriptableObject
 
     [Tooltip("Minimum input required before a left or right is recognized. Avoids drifting with sticky controllers"), Range(0.01f, 0.99f)]
     public float HorizontalDeadZoneThreshold = 0.1f;
-    
+
     [Header("HEALTH")]
     [Tooltip("Max player Health")]
     [Min(0)]
@@ -51,18 +51,18 @@ public class PlayerScriptableStats : ScriptableObject
 
     [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.5f)]
     public float GrounderDistance = 0.05f;
-    
+
     [Tooltip("Multiplier applied to MaxSpeed while walking")]
     public float WalkSpeedMultiplier = 1f;
-    
+
     [Tooltip("Multiplier applied to MaxSpeed while running")]
     [Range(1f, 2f)]
     public float RunSpeedMultiplier = 1.5f;
-    
-    [Tooltip("Window of time during which a specific input is still considered valid, even if the timing wasn't frame-perfect")]  
+
+    [Tooltip("Window of time during which a specific input is still considered valid, even if the timing wasn't frame-perfect")]
     [Range(0.01f, 0.5f)]
     public float GraceTime = 0.08f;
-    
+
     [Header("STAMINA")]
     [Tooltip("Maximum stamina value")]
     public float MaxStamina = 100f;
@@ -76,23 +76,23 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Multiplier applied to StaminaRegenPerSecond while moving")]
     [Range(0f, 1f)]
     public float StaminaRegenMovingMultiplier = 0.4f;
-    
+
     [Tooltip("Minimum stamina required to START running")]
     public float MinStaminaToRun = 35f;
-    
+
     [Tooltip("Drain multiplier while running")]
     public float RunStaminaDrainMultiplier = 1f;
 
     [Tooltip("Drain multiplier while grabbed")]
     public float GrabbedStaminaDrainMultiplier = 1f;
-    
+
     [Header("BREATHE (STAMINA)")]
     [Tooltip("Stamina drained per second while not breathing")]
     public float StaminaHoldBreathDrainPerSecond = 20f;
 
     [Tooltip("Minimum stamina required to START holding breath")]
     public float MinStaminaToHoldBreath = 25f;
-    
+
     [Tooltip("Breath drain multiplier while idle")]
     [Min(0f)]
     public float IdleStaminaBreathDrainMultiplier = 1f;
@@ -130,12 +130,12 @@ public class PlayerScriptableStats : ScriptableObject
 
     [Tooltip("The amount of time we buffer a jump. This allows jump input before actually hitting the ground")]
     public float JumpBuffer = .2f;
-    
+
     [Header("INTERACTION")]
     [Tooltip("Delay between interactions")]
     [Range(0f, 0.5f)]
     public float InteractionCooldown = 0.25f;
-    
+
     [Header("CROUCH")]
     [Tooltip("Multiplier applied to MaxSpeed while crouching")]
     [Range(0.1f, 1f)]
@@ -144,7 +144,7 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Height multiplier for CapsuleCollider while crouching")]
     [Range(0.2f, 1f)]
     public float CrouchHeightMultiplier = 0.5f;
-    
+
     [Tooltip("Distance to check above the standing height for obstacles")]
     [Range(0f, 1f)]
     public float CeilingCheckDistance = 0.05f;
@@ -205,12 +205,12 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Damage multiplier when successfully rolling on landing (0-1, where 1 is no reduction)")]
     [Range(0f, 1f)]
     public float FallDamageRollMultiplier = 0.35f;
-    
+
     [Header("CLIMB")]
     [Tooltip("Multiplier applied to (vertical) MaxSpeed while climbing")]
     [Range(0f, 2f)]
     public float ClimbVerticalSpeedMultiplier = 0.5f;
-    
+
     [Tooltip("Multiplier applied to (horizontal) MaxSpeed while climbing")]
     [Range(0f, 2f)]
     public float ClimbHorizontalSpeedMultiplier = 0.5f;
@@ -223,9 +223,9 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("How quickly the player slides down to the target liana slip speed")]
     [Min(0f)]
     public float VinesSlipAcceleration = 12f;
-    
+
     [Header("LEDGE GRAB")]
-    [Tooltip("Y offset from capsule bottom for the wall-check ray (should be ~0.7–0.9 × player height)")]
+    [Tooltip("Y offset from capsule bottom for the wall-check ray (should be about 0.7-0.9 of player height)")]
     [Min(0f)]
     public float LedgeWallCheckHeight = 1.0f;
 
@@ -241,10 +241,6 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float LedgeHangOffsetX = 0.05f;
 
-    [Tooltip("Y offset from ledge corner for the hang position (player body below ledge)")]
-    [Min(0f)]
-    public float LedgeHangOffsetY = 0.9f;
-
     [Tooltip("Extra gap between capsule edge and wall corner when standing on ledge")]
     [Min(0f)]
     public float LedgeStandOffsetX = 0.05f;
@@ -253,29 +249,21 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float LedgeStandOffsetY = 0.05f;
 
-    [Tooltip("Длительность движения вверх (Y)")]
-    [Min(0.05f)]
-    public float LedgeClimbRiseDuration = 0.35f;
-
-    [Tooltip("Задержка от начала подъёма до старта движения вбок")]
+    [Tooltip("Delay before the player is teleported from the hang position to the top of the ledge")]
     [Min(0f)]
-    public float LedgeClimbSideDelay = 0.2f;
-
-    [Tooltip("Длительность движения вбок (X)")]
-    [Min(0.05f)]
-    public float LedgeClimbSideDuration = 0.2f;
+    public float LedgeClimbTeleportDelay = 0.4f;
 
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]
     // public float SlideDuration = 2f;
-    
+
     // [Tooltip("Multiplier applied to MaxSpeed while sliding")]
     // public float SlideSpeedMultiplier = 1.8f;
-    
+
     // [Tooltip("Time window after running during which slide input is accepted")]
     // [Range(0f, 0.5f)]
     // public float SlideInputWindow = 3f;
-    
+
     // [Tooltip("Height multiplier for CapsuleCollider while sliding")]
     // [Range(0.2f, 1f)]
     // public float SlideHeightMultiplier = 0.3f;
