@@ -45,8 +45,6 @@ public class PlayerContext
     
     // ===== HIDING =====
     public bool isHiding;
-    public HidingSpotInteractable activeHidingSpot;
-    // true пока игрок прижат к стене (PressToWall state) — автоматически задерживает дыхание
     public bool isPressedToWall;
     
     // ===== STAMINA =====

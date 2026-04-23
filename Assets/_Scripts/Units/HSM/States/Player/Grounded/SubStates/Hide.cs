@@ -5,10 +5,6 @@ namespace HSM
     public class Hide : State
     {
         private PlayerContext ctx;
-        private HidingSpotInteractable activeHidingSpot;
-        private int playerSortingOrder;
-        private int hidingSpotSortingOrder;
-        private bool hasSwappedSortingOrder;
 
         public Hide(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
@@ -20,9 +16,7 @@ namespace HSM
         }
 
         protected override void OnEnter()
-        {
-            SwapSortingOrderWithHidingSpot();
-            
+        {            
             ctx.isHiding = true;
             ctx.currentSpeedMultiplier = ctx.stats.HideSpeedMultiplier;
             ctx.currentNoiseRadius = 0f;
@@ -34,8 +28,6 @@ namespace HSM
 
         protected override void OnExit()
         {
-            RestoreSortingOrderWithHidingSpot();
-
             ctx.isHiding = false;
             ctx.velocity.y = 0f;
             ctx.currentStaminaDrainMultiplier = 1f;
@@ -61,43 +53,6 @@ namespace HSM
             }
 
             return null;
-        }
-
-        private void SwapSortingOrderWithHidingSpot()
-        {
-            hasSwappedSortingOrder = false;
-            activeHidingSpot = ctx.activeHidingSpot;
-
-            if (ctx.renderer == null || activeHidingSpot == null)
-                return;
-
-            var hidingSpotRenderer = activeHidingSpot.VisualRenderer;
-            if (hidingSpotRenderer == null)
-                return;
-
-            playerSortingOrder = ctx.renderer.sortingOrder;
-            hidingSpotSortingOrder = hidingSpotRenderer.sortingOrder;
-
-            ctx.renderer.sortingOrder = hidingSpotSortingOrder;
-            hidingSpotRenderer.sortingOrder = playerSortingOrder;
-            hasSwappedSortingOrder = true;
-        }
-
-        private void RestoreSortingOrderWithHidingSpot()
-        {
-            if (hasSwappedSortingOrder)
-            {
-                if (ctx.renderer != null)
-                    ctx.renderer.sortingOrder = playerSortingOrder;
-
-                var hidingSpotRenderer = activeHidingSpot != null ? activeHidingSpot.VisualRenderer : null;
-                if (hidingSpotRenderer != null)
-                    hidingSpotRenderer.sortingOrder = hidingSpotSortingOrder;
-            }
-
-            hasSwappedSortingOrder = false;
-            activeHidingSpot = null;
-            ctx.activeHidingSpot = null;
         }
     }
 }
