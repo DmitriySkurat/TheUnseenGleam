@@ -14,6 +14,7 @@ public class PlayerContext
     // ===== COMPONENTS =====
     public Animator anim;
     public Renderer renderer;
+    public SortingOrderSetter sortingOrderSetter;
     public Collider2D coll;
     public Transform transform;
     //public AudioSource audio;

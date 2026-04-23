@@ -16,7 +16,9 @@ namespace HSM
         }
 
         protected override void OnEnter()
-        {            
+        {
+            ctx.sortingOrderSetter?.SetOrder((int)SortingOrder.InteractablesInBack - 1);
+
             ctx.isHiding = true;
             ctx.currentSpeedMultiplier = ctx.stats.HideSpeedMultiplier;
             ctx.currentNoiseRadius = 0f;
@@ -28,6 +30,8 @@ namespace HSM
 
         protected override void OnExit()
         {
+            ctx.sortingOrderSetter?.ResetOrder();
+
             ctx.isHiding = false;
             ctx.velocity.y = 0f;
             ctx.currentStaminaDrainMultiplier = 1f;

@@ -27,7 +27,8 @@ namespace HSM {
             _ctx.rb = GetComponentInChildren<Rigidbody2D>();
             _ctx.anim = GetComponentInChildren<Animator>();
             _ctx.renderer = GetComponentInChildren<Renderer>();
-            _ctx.lightSensor = GetComponentInChildren<PlayerLightSensor>(); 
+            _ctx.sortingOrderSetter = GetComponentInChildren<SortingOrderSetter>();
+            _ctx.lightSensor = GetComponentInChildren<PlayerLightSensor>();
 
 
             _root = new PlayerRoot(null, _ctx);
