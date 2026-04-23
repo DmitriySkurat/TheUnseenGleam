@@ -66,14 +66,19 @@ namespace HSM {
         }
 
         protected override State GetTransition() {
-            // На лестнице — выйти
+            // На лестнице — выйти (Climb подхватит родительский Grounded)
             if (ctx.OnClimbable)
                 return Machine?.GetState<Idle>();
 
-            // S или A/D нажат — отойти от стены
+            // Пока W зажата — выход заблокирован (кроме лестницы выше)
+            if (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold)
+                return null;
+
+            // S нажат — отойти от стены
             if (ctx.input.Move.y < -ctx.stats.VerticalDeadZoneThreshold)
                 return Machine?.GetState<Idle>();
 
+            // W отпущена — выйти в Move или Idle
             if (Mathf.Abs(ctx.input.Move.x) > ctx.stats.HorizontalDeadZoneThreshold)
                 return Machine?.GetState<Move>();
 
