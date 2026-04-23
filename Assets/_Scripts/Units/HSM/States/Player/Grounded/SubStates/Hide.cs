@@ -21,6 +21,8 @@ namespace HSM
 
         protected override void OnEnter()
         {
+            SwapSortingOrderWithHidingSpot();
+            
             ctx.isHiding = true;
             ctx.currentSpeedMultiplier = ctx.stats.HideSpeedMultiplier;
             ctx.currentNoiseRadius = 0f;
@@ -28,8 +30,6 @@ namespace HSM
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = ctx.stats.HideStaminaBreathDrainMultiplier;
             ctx.velocity = Vector2.zero;
-
-            SwapSortingOrderWithHidingSpot();
         }
 
         protected override void OnExit()
