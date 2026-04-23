@@ -8,7 +8,7 @@ namespace HSM {
             this.ctx = ctx;
             //Add(new AnimatorBoolActivity(ctx.anim, "Idle", true, false));
 
-            Add(new AnimatorPlayActivity(ctx.anim, "Idle"));
+            Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.Idle));
         }
 
         protected override void OnEnter()

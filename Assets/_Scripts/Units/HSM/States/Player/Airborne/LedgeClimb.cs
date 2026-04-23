@@ -15,7 +15,7 @@ namespace HSM
         public LedgeClimb(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
-            Add(new AnimatorPlayActivity(ctx.anim, "JumpWallgrab"));
+            Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.JumpWallgrab));
         }
 
         protected override void OnEnter()
@@ -69,7 +69,7 @@ namespace HSM
             {
                 _isClimbingUp = true;
                 _climbStartTime = Time.time;
-                ctx.anim.Play("WallgrabClime");
+                ctx.anim.Play(PlayerAnimations.WallgrabClime);
             }
 
             base.OnUpdate(deltaTime);

@@ -11,7 +11,7 @@ namespace HSM
             this.ctx = ctx;
             //Add(new AnimatorBoolActivity(ctx.anim, "DeathGrabbed", true, false));
             
-            Add(new AnimatorPlayActivity(ctx.anim, "Death"));
+            Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.Death));
         }
 
         protected override void OnEnter()

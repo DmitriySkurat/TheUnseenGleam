@@ -8,9 +8,9 @@ namespace HSM {
         readonly int stateHash;
         readonly int layer;
 
-        public AnimatorPlayActivity(Animator animator, string stateName, int layer = 0) {
+        public AnimatorPlayActivity(Animator animator, int stateHash, int layer = 0) {
             this.animator = animator;
-            this.stateHash = Animator.StringToHash(stateName);
+            this.stateHash = stateHash;
             this.layer = layer;
         }
 

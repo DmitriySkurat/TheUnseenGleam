@@ -16,7 +16,7 @@ namespace HSM
             Add(new ColorPhaseActivity(ctx.renderer){
                 enterColor = Color.cyan,
             });
-            Add(new AnimatorBoolActivity(ctx.anim, "Hide", true, false));
+            Add(new AnimatorBoolActivity(ctx.anim, PlayerAnimations.Hide, true, false));
         }
 
         protected override void OnEnter()

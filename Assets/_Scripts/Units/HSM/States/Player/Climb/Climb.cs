@@ -6,9 +6,6 @@ namespace HSM
     {
         private PlayerContext ctx;
 
-        private static readonly int ClimbHash = Animator.StringToHash("Climb");
-        private static readonly int ClimbIdleHash = Animator.StringToHash("ClimbIdle");
-
         public Climb(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
@@ -21,7 +18,7 @@ namespace HSM
         {
             ctx.isClimbing = true;
             ctx.velocity = Vector2.zero;
-            ctx.anim.Play(ClimbIdleHash, 0, 0f);
+            ctx.anim.Play(PlayerAnimations.ClimbIdle, 0, 0f);
 
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
@@ -46,11 +43,11 @@ namespace HSM
 
             if (Mathf.Abs(ctx.velocity.y) > 0f)
             {
-                ctx.anim.Play(ClimbHash);
+                ctx.anim.Play(PlayerAnimations.Climb);
             }
             else
             {
-                ctx.anim.Play(ClimbIdleHash);
+                ctx.anim.Play(PlayerAnimations.ClimbIdle);
             }
 
             base.OnUpdate(deltaTime);

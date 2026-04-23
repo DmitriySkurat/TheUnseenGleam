@@ -4,7 +4,7 @@ namespace HSM {
 
         public CrouchWalk(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorPlayActivity(ctx.anim, "CrouchWalk"));
+            Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.CrouchWalk));
         }
 
         protected override State GetTransition() {

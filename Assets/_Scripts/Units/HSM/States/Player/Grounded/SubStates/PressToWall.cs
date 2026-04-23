@@ -19,7 +19,7 @@ namespace HSM {
             this.ctx = ctx;
             //Add(new AnimatorBoolActivity(ctx.anim, "PressToWall", true, false));
             
-            Add(new AnimatorPlayActivity(ctx.anim, "PressToWall"));
+            Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.PressToWall));
         }
 
         protected override void OnEnter() {

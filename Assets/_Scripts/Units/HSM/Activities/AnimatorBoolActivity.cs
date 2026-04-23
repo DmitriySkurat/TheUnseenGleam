@@ -10,12 +10,12 @@ namespace HSM {
         readonly bool exitValue;
         readonly bool hasParam;
 
-        public AnimatorBoolActivity(Animator animator, string parameter, bool enterValue = true, bool exitValue = false) {
+        public AnimatorBoolActivity(Animator animator, int paramHash, bool enterValue = true, bool exitValue = false) {
             this.animator = animator;
             this.enterValue = enterValue;
             this.exitValue = exitValue;
-            if (animator != null && !string.IsNullOrEmpty(parameter)) {
-                paramHash = Animator.StringToHash(parameter);
+            if (animator != null) {
+                this.paramHash = paramHash;
                 hasParam = HasParameter(animator, paramHash);
             }
         }

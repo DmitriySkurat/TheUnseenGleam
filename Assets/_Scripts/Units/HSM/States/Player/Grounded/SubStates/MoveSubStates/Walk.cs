@@ -9,7 +9,7 @@ namespace HSM {
             //Add(new AnimatorBoolActivity(ctx.anim, "Walk", true, false));
             //Add(new AudioLoopActivity(ctx.audio));
             
-            Add(new AnimatorPlayActivity(ctx.anim, "Walk"));
+            Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.Walk));
         }
         
         protected override void OnEnter()

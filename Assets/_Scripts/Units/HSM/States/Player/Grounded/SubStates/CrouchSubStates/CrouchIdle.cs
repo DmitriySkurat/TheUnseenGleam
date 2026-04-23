@@ -4,7 +4,7 @@ namespace HSM {
 
         public CrouchIdle(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new AnimatorPlayActivity(ctx.anim, "CrouchIdle"));
+            Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.CrouchIdle));
         }
 
         protected override State GetTransition() {

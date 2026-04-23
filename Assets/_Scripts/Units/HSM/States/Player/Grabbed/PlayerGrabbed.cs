@@ -12,7 +12,7 @@ namespace HSM {
         {
             this.ctx = ctx;
             
-            Add(new AnimatorBoolActivity(ctx.anim, "Grabbed", true, false));
+            Add(new AnimatorBoolActivity(ctx.anim, PlayerAnimations.Grabbed, true, false));
         }
 
         protected override void OnEnter()

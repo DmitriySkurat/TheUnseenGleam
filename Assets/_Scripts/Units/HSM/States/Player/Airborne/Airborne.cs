@@ -28,7 +28,7 @@ namespace HSM {
             ctx.currentStaminaBreathDrainMultiplier = 0f;
 
             isJumping = ctx.velocity.y > 0f;
-            ctx.anim.Play(isJumping ? "Jump" : "Dropdown");
+            ctx.anim.Play(isJumping ? PlayerAnimations.Jump : PlayerAnimations.Dropdown);
 
             base.OnEnter();
         }
@@ -39,7 +39,7 @@ namespace HSM {
             // переключаем с Jump на Dropdown в вершине дуги
             if (isJumping && ctx.velocity.y < 0f) {
                 isJumping = false;
-                ctx.anim.Play("Dropdown");
+                ctx.anim.Play(PlayerAnimations.Dropdown);
             }
 
             base.OnUpdate(deltaTime);
