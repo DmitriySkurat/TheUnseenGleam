@@ -38,7 +38,8 @@
       "Bash(python scripts/office/unpack.py \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\Диплом.docx\" unpacked_diploma/)",
       "Bash(pip install *)",
       "Bash(pandoc \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\Диплом.docx\" -o diploma_text.md)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(grep -v \"m_Name: $\")"
     ]
   }
 }
