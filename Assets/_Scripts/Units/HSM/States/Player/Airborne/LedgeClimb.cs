@@ -12,6 +12,7 @@ namespace HSM {
 
         bool    _isClimbingUp;
         bool    _completedClimb;
+        bool    _colliderWasEnabled;
         float   _riseStartTime;
         Vector2 _hangPosition;
         Vector2 _standPosition;
@@ -26,10 +27,14 @@ namespace HSM {
         protected override void OnEnter() {
             _isClimbingUp   = false;
             _completedClimb = false;
+            _colliderWasEnabled = ctx.coll != null && ctx.coll.enabled;
             ctx.isLedgeGrabbing = true;
             ctx.velocity        = Vector2.zero;
             ctx.currentStaminaDrainMultiplier       = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
+
+            if (ctx.coll != null)
+                ctx.coll.enabled = false;
 
             float dir = ctx.ledgeFacingRight ? 1f : -1f;
 
@@ -63,6 +68,8 @@ namespace HSM {
 
         protected override void OnExit() {
             ctx.isLedgeGrabbing = false;
+            if (ctx.coll != null)
+                ctx.coll.enabled = _colliderWasEnabled;
             // Если подтянулись до конца — сообщаем физике, что игрок на земле,
             // чтобы PlayerRoot не вернул нас мгновенно в Airborne за один кадр.
             if (_completedClimb)

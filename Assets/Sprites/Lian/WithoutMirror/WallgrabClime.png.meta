@@ -131,9 +131,9 @@ TextureImporter:
       name: WallgrabClime_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 2
         y: 0
-        width: 11
+        width: 10
         height: 31
       alignment: 9
       pivot: {x: 0, y: 0}
@@ -153,9 +153,9 @@ TextureImporter:
       name: WallgrabClime_1
       rect:
         serializedVersion: 2
-        x: 31
+        x: 32
         y: 0
-        width: 13
+        width: 12
         height: 32
       alignment: 9
       pivot: {x: 0, y: 0}
@@ -175,9 +175,9 @@ TextureImporter:
       name: WallgrabClime_2
       rect:
         serializedVersion: 2
-        x: 64
+        x: 65
         y: 4
-        width: 16
+        width: 15
         height: 34
       alignment: 9
       pivot: {x: 0, y: 0}
@@ -197,9 +197,9 @@ TextureImporter:
       name: WallgrabClime_3
       rect:
         serializedVersion: 2
-        x: 98
+        x: 99
         y: 15
-        width: 16
+        width: 15
         height: 30
       alignment: 9
       pivot: {x: 0, y: 0}
@@ -219,9 +219,9 @@ TextureImporter:
       name: WallgrabClime_4
       rect:
         serializedVersion: 2
-        x: 135
+        x: 136
         y: 30
-        width: 14
+        width: 13
         height: 22
       alignment: 9
       pivot: {x: 0, y: 0}
@@ -241,9 +241,9 @@ TextureImporter:
       name: WallgrabClime_5
       rect:
         serializedVersion: 2
-        x: 169
+        x: 170
         y: 32
-        width: 14
+        width: 13
         height: 25
       alignment: 9
       pivot: {x: 0, y: 0}
