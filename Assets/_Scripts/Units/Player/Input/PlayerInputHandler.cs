@@ -8,6 +8,17 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     private InputManager _inputManager;
     private FrameInput _frameInput;
     private PlayerContext _ctx;
+    private DialogManager _dialogManager;
+
+    private bool IsInDialog
+    {
+        get
+        {
+            if (_dialogManager == null && Services.IsRegistered<DialogManager>())
+                _dialogManager = Services.Get<DialogManager>();
+            return _dialogManager != null && _dialogManager.IsDialogActive;
+        }
+    }
     
     
     public void Initialize()
@@ -122,8 +133,15 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     }
     
 
-    void HandleMoveInput(Vector2 direction) 
+    void HandleMoveInput(Vector2 direction)
     {
+        if (IsInDialog)
+        {
+            _frameInput.Move = Vector2.zero;
+            SyncContextInput();
+            return;
+        }
+
         _frameInput.Move = direction;
 
         if (_ctx != null && _ctx.stats != null && _ctx.stats.SnapInput)
@@ -135,8 +153,10 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         SyncContextInput();
     }
 
-    void HandleJumpStarted() 
+    void HandleJumpStarted()
     {
+        if (IsInDialog) return;
+
         _frameInput.JumpDown = true;
         _frameInput.JumpHeld = true;
 
