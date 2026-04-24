@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class DialogData : ScriptableObject
 {
     public string playerName = "Lian";
-    public string npcName = "NPC";
     public Sprite playerSprite;
     public Sprite npcSprite;
 

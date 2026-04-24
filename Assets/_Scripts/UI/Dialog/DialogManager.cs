@@ -25,6 +25,7 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
 
     private InputManager _inputManager;
     private DialogData _currentDialog;
+    private string _currentNpcName;
     private int _lineIndex;
     private bool _isTyping;
     private Coroutine _typingCoroutine;
@@ -45,11 +46,12 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
         Services.Unregister<DialogManager>();
     }
 
-    public void StartDialog(DialogData data)
+    public void StartDialog(DialogData data, string npcName = "NPC")
     {
         if (IsDialogActive || data == null) return;
 
         _currentDialog = data;
+        _currentNpcName = npcName;
         _lineIndex = 0;
         IsDialogActive = true;
 
@@ -78,7 +80,7 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
         var line = _currentDialog.lines[_lineIndex];
         bool isPlayer = line.speaker == DialogSpeaker.Lian;
 
-        _speakerNameText.text = isPlayer ? _currentDialog.playerName : _currentDialog.npcName;
+        _speakerNameText.text = isPlayer ? _currentDialog.playerName : _currentNpcName;
         _playerPortrait.color = isPlayer ? Color.white : _dimColor;
         _npcPortrait.color = isPlayer ? _dimColor : Color.white;
 

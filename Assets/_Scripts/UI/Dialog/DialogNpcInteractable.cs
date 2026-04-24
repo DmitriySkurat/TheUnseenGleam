@@ -3,6 +3,7 @@ using UnityEngine;
 public class DialogNpcInteractable : Interactable
 {
     [SerializeField] private DialogData _dialogData;
+    [SerializeField] private string _npcName = "NPC";
 
     private DialogManager _dialogManager;
 
@@ -27,6 +28,6 @@ public class DialogNpcInteractable : Interactable
         }
 
         if (_dialogManager.IsDialogActive) return;
-        _dialogManager.StartDialog(_dialogData);
+        _dialogManager.StartDialog(_dialogData, _npcName);
     }
 }
