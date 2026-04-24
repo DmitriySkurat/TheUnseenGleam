@@ -76,7 +76,7 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
         }
 
         var line = _currentDialog.lines[_lineIndex];
-        bool isPlayer = line.speaker == DialogSpeaker.Player;
+        bool isPlayer = line.speaker == DialogSpeaker.Lian;
 
         _speakerNameText.text = isPlayer ? _currentDialog.playerName : _currentDialog.npcName;
         _playerPortrait.color = isPlayer ? Color.white : _dimColor;

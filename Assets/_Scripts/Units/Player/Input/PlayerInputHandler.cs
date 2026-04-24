@@ -192,7 +192,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     }
     
     void HandleHoldBreathInput(bool isHoldingBreath)
-    {
+    {   
+        if (IsInDialog) return;
+        
         _frameInput.HoldBreathHeld = isHoldingBreath;
         SyncContextInput();
     }
@@ -229,24 +231,32 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
     void HandleLookAroundInput(bool isLookingAround)
     {
+        if (IsInDialog) return;
+        
         _frameInput.LookAroundHeld = isLookingAround;
         SyncContextInput();
     }
 
     void HandleLMBStarted()
     {
+        if (IsInDialog) return;
+        
         _frameInput.AttackDown = true;
         SyncContextInput();
     }
 
     void HandleLMBPerformed()
     {
+        if (IsInDialog) return;
+        
         _frameInput.AttackHeld = true;
         SyncContextInput();
     }
 
     void HandleLMBCanceled()
     {
+        if (IsInDialog) return;
+        
         _frameInput.AttackHeld = false;
         SyncContextInput();
     }

@@ -4,8 +4,6 @@ public class DialogNpcInteractable : Interactable
 {
     [SerializeField] private DialogData _dialogData;
 
-    public override string InteractionPrompt => "E — поговорить";
-
     private DialogManager _dialogManager;
 
     public override void Initialize()
