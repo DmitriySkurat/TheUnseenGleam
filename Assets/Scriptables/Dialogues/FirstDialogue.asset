@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d965b609d06c44599f59bc71c36117, type: 3}
   m_Name: FirstDialogue
   m_EditorClassIdentifier: Assembly-CSharp::DialogData
-  playerName: Player
-  npcName: NPC
+  playerName: Lian
   playerSprite: {fileID: 3393699401562451319, guid: 0bad411d107959f4bb7c6a514bfb2ab5, type: 3}
   npcSprite: {fileID: 7370158955753839994, guid: 4bd36f1b2d4eb2f44b41ca794f7ccd66, type: 3}
   lines:

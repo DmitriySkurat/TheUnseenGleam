@@ -63,7 +63,6 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
 
         if (_playerCtx != null) _playerCtx.isInDialog = true;
         _dialogPanel.SetActive(true);
-        Time.timeScale = 0f;
 
         _inputManager.OnInteractStarted += OnAdvance;
         _inputManager.OnJumpStarted += OnAdvance;
@@ -99,7 +98,7 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
         foreach (char c in text)
         {
             _dialogText.text += c;
-            yield return new WaitForSecondsRealtime(_typingSpeed);
+            yield return new WaitForSeconds(_typingSpeed);
         }
         _isTyping = false;
         if (_continueIndicator) _continueIndicator.SetActive(true);
@@ -130,7 +129,6 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
     {
         if (_playerCtx != null) _playerCtx.isInDialog = false;
         _dialogPanel.SetActive(false);
-        Time.timeScale = 1f;
 
         _inputManager.OnInteractStarted -= OnAdvance;
         _inputManager.OnJumpStarted -= OnAdvance;
