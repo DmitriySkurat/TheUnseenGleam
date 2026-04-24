@@ -24,42 +24,44 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
     private static readonly Color _dimColor = new Color(0.45f, 0.45f, 0.45f);
 
     private InputManager _inputManager;
+    private PlayerContext _playerCtx;
     private DialogData _currentDialog;
     private string _currentNpcName;
     private int _lineIndex;
     private bool _isTyping;
     private Coroutine _typingCoroutine;
 
-    public bool IsDialogActive { get; private set; }
-
     public void Initialize()
     {
         _inputManager = Services.Get<InputManager>();
+        if (Services.IsRegistered<PlayerContext>())
+            _playerCtx = Services.Get<PlayerContext>();
         Services.Register(this);
         _dialogPanel.SetActive(false);
     }
 
     public void Dispose()
     {
-        if (IsDialogActive)
+        if (_playerCtx != null && _playerCtx.isInDialog)
             EndDialog();
         Services.Unregister<DialogManager>();
     }
 
     public void StartDialog(DialogData data, string npcName = "NPC")
     {
-        if (IsDialogActive || data == null) return;
+        if (_playerCtx != null && _playerCtx.isInDialog) return;
+        if (data == null) return;
 
         _currentDialog = data;
         _currentNpcName = npcName;
         _lineIndex = 0;
-        IsDialogActive = true;
 
         _playerPortrait.sprite = data.playerSprite;
         _npcPortrait.sprite = data.npcSprite;
         _playerPortrait.gameObject.SetActive(data.playerSprite != null);
         _npcPortrait.gameObject.SetActive(data.npcSprite != null);
 
+        if (_playerCtx != null) _playerCtx.isInDialog = true;
         _dialogPanel.SetActive(true);
         Time.timeScale = 0f;
 
@@ -105,7 +107,7 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
 
     private void OnAdvance()
     {
-        if (!IsDialogActive) return;
+        if (_playerCtx == null || !_playerCtx.isInDialog) return;
 
         if (_isTyping)
             FinishLine();
@@ -126,7 +128,7 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
 
     private void EndDialog()
     {
-        IsDialogActive = false;
+        if (_playerCtx != null) _playerCtx.isInDialog = false;
         _dialogPanel.SetActive(false);
         Time.timeScale = 1f;
 

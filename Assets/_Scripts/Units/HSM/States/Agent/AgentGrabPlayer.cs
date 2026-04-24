@@ -84,6 +84,7 @@ namespace HSM {
 
             ctx.isGrabbingPlayer = true;
             ctx.playerCtx.isGrabbed = true;
+            ctx.playerCtx.isInDialog = false;
             ctx.playerCtx.grabEscapeCount = ctx.stats.GrabEscapeCount;
             ctx.grabOccurredInChase = true; // следующий захват в этой погоне будет повторным
             _isHolding = true;

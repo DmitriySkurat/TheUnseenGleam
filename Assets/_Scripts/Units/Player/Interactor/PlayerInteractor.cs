@@ -22,8 +22,6 @@ public class PlayerInteractor : Interactor, ISceneLifecycle
     private PlayerContext _ctx;
     public PlayerContext Context => _ctx;
 
-    private DialogManager _dialogManager;
-    
     public void Initialize() {
         if (!Services.IsRegistered<PlayerContext>())
             return;
@@ -45,10 +43,7 @@ public class PlayerInteractor : Interactor, ISceneLifecycle
             return;
         }
         
-        if (_dialogManager == null && Services.IsRegistered<DialogManager>())
-            _dialogManager = Services.Get<DialogManager>();
-
-        if (_dialogManager != null && _dialogManager.IsDialogActive)
+        if (_ctx.isInDialog)
             return;
 
         ScanForInteractable();

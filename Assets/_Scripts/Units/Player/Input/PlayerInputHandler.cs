@@ -8,17 +8,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     private InputManager _inputManager;
     private FrameInput _frameInput;
     private PlayerContext _ctx;
-    private DialogManager _dialogManager;
 
-    private bool IsInDialog
-    {
-        get
-        {
-            if (_dialogManager == null && Services.IsRegistered<DialogManager>())
-                _dialogManager = Services.Get<DialogManager>();
-            return _dialogManager != null && _dialogManager.IsDialogActive;
-        }
-    }
+    private bool IsInDialog => _ctx != null && _ctx.isInDialog;
     
     
     public void Initialize()
