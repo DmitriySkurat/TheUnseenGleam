@@ -59,7 +59,9 @@ namespace HSM
                 return Machine.GetState<Grounded>();
 
             if (!ctx.OnClimbable)
-                return Machine.GetState<Airborne>();
+                return ctx.grounded
+                    ? Machine.GetState<Grounded>()
+                    : Machine.GetState<Airborne>();
 
             return null;
         }
