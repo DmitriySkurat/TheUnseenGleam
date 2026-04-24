@@ -55,7 +55,10 @@ namespace HSM
             ctx.isLedgeGrabbing = false;
 
             if (_completedClimb)
+            {
+                SnapToPosition(_standPosition);
                 ctx.grounded = true;
+            }
 
             base.OnExit();
         }
@@ -82,7 +85,6 @@ namespace HSM
 
             if (_isClimbingUp && Time.time >= _climbStartTime + ctx.stats.LedgeClimbTeleportDelay)
             {
-                SnapToPosition(_standPosition);
                 _completedClimb = true;
                 return Machine?.GetState<Grounded>();
             }
