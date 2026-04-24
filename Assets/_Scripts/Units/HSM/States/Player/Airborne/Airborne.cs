@@ -36,6 +36,12 @@ namespace HSM {
         protected override void OnUpdate(float deltaTime) {
             if (ctx.stats != null) HandleHorizontal(deltaTime);
 
+            // coyote-прыжок: перешли из падения в прыжок
+            if (!isJumping && ctx.velocity.y > 0f) {
+                isJumping = true;
+                ctx.anim.Play(PlayerAnimations.Jump);
+            }
+
             // переключаем с Jump на Dropdown в вершине дуги
             if (isJumping && ctx.velocity.y < 0f) {
                 isJumping = false;

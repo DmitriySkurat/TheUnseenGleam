@@ -80,4 +80,4 @@ MonoBehaviour:
   LedgeHangOffsetX: 0.05
   LedgeStandOffsetX: 0
   LedgeStandOffsetY: 0
-  LedgeClimbTeleportDelay: 0.6
+  LedgeClimbTeleportDelay: 0.65
