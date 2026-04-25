@@ -17,6 +17,7 @@ namespace HSM {
         enum Phase { GoToLastSeen, GoToPredicted }
         Phase _phase;
         bool  _navigating;
+        bool  _wasTraversing;
 
         public AgentPredictionChase(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -25,6 +26,9 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            _wasTraversing = false;
+            ctx.anim?.Play(AgentAnimations.Run, 0, 0f);
+
             ctx.predictionTimer = ctx.stats.PredictionSearchTime;
             _phase              = Phase.GoToLastSeen;
             _navigating         = ctx.nav.MoveTo(ctx.suspicionPosition, ctx.stats.ChaseSpeed);
@@ -38,6 +42,14 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            bool traversing = ctx.IsTraversingLink;
+            if (traversing != _wasTraversing)
+            {
+                var traversalAnim = ctx.nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump;
+                ctx.anim?.Play(traversing ? traversalAnim : AgentAnimations.Run, 0, 0f);
+                _wasTraversing = traversing;
+            }
+
             ctx.predictionTimer -= deltaTime;
 
             if (_phase == Phase.GoToLastSeen)

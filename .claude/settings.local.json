@@ -41,7 +41,8 @@
       "Bash(python3 -c ' *)",
       "Bash(grep -v \"m_Name: $\")",
       "Bash(dir \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\\\\Dialog\")",
-      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\\\\Dialog\" -Force)"
+      "PowerShell(New-Item -ItemType Directory -Path \"D:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\\\\Dialog\" -Force)",
+      "Bash(grep -E \"\\\\.\\(cs|anim|controller\\)$\")"
     ]
   }
 }

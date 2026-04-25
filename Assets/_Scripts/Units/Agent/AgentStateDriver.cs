@@ -24,6 +24,7 @@ namespace HSM {
             _ctx.stats = _stats;
             _ctx.transform = transform;
             _ctx.rb = GetComponent<Rigidbody2D>();
+            _ctx.anim = GetComponentInChildren<Animator>();
             _ctx.nav = GetComponent<PlatNavHandler>();
             _ctx.vision = GetComponent<AgentVision>();
             _ctx.hearing = GetComponent<AgentHearing>();

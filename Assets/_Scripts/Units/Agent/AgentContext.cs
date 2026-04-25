@@ -13,6 +13,7 @@ public class AgentContext
     // ===== COMPONENTS =====
     public Transform transform;
     public Rigidbody2D rb;
+    public Animator anim;
     public PlatNavHandler nav;
     public AgentVision vision;
     public AgentHearing hearing;

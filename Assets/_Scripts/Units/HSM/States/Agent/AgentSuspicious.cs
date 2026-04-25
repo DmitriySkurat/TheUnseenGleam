@@ -6,6 +6,8 @@ namespace HSM {
         public AgentSuspicious(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            if (ctx.anim != null)
+                Add(new AnimatorPlayActivity(ctx.anim, AgentAnimations.Suspicious));
         }
 
         protected override void OnEnter()

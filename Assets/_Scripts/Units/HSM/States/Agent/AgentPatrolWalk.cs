@@ -13,6 +13,7 @@ namespace HSM {
         bool _navigating;
         float _lookAroundTimer;
         bool _triggerLookAround;
+        bool _wasTraversing;
 
         public AgentPatrolWalk(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -21,6 +22,9 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            _wasTraversing = false;
+            ctx.anim?.Play(AgentAnimations.Walk, 0, 0f);
+
             ctx.nav.SetTarget(null);
             ctx.nav.Abort();
 
@@ -38,6 +42,14 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            bool traversing = ctx.IsTraversingLink;
+            if (traversing != _wasTraversing)
+            {
+                var traversalAnim = ctx.nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump;
+                ctx.anim?.Play(traversing ? traversalAnim : AgentAnimations.Walk, 0, 0f);
+                _wasTraversing = traversing;
+            }
+
             if (ctx.IsWaitingAtPoint)
             {
                 ctx.patrolWaitTimer -= deltaTime;

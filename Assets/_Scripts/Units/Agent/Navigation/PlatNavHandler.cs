@@ -103,6 +103,7 @@ namespace PlatNav
 
         public PlatNavState State => _state;
         public bool HasPath => _path.Count > 0;
+        public bool IsTraversingFall => _state == PlatNavState.TraversingLink && _linkIsEuler;
 
         public void SetTarget(Transform t)
         {

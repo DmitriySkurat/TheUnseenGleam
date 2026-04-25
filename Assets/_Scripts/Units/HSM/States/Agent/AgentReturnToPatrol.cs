@@ -5,6 +5,7 @@ namespace HSM {
     {
         readonly AgentContext ctx;
         bool _navigating;
+        bool _wasTraversing;
 
         public AgentReturnToPatrol(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -13,6 +14,9 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            _wasTraversing = false;
+            ctx.anim?.Play(AgentAnimations.Walk, 0, 0f);
+
             ctx.nav.SetTarget(null);
             ctx.nav.Abort();
             ctx.currentPatrolIndex = 0;
@@ -23,6 +27,14 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            bool traversing = ctx.IsTraversingLink;
+            if (traversing != _wasTraversing)
+            {
+                var traversalAnim = ctx.nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump;
+                ctx.anim?.Play(traversing ? traversalAnim : AgentAnimations.Walk, 0, 0f);
+                _wasTraversing = traversing;
+            }
+
             if (_navigating)
             {
                 ctx.nav.SetSpeed(ctx.isBlindedByEnvironment

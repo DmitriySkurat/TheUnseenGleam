@@ -10,6 +10,7 @@ namespace HSM {
         bool _wandering;
         bool _waitingAtWanderPoint;
         bool _seenPlayerDuringLink;
+        bool _wasTraversing;
 
         Vector2[] _wanderPoints;
         int _wanderIndex;
@@ -22,6 +23,9 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            _wasTraversing = false;
+            ctx.anim?.Play(AgentAnimations.Walk, 0, 0f);
+
             ctx.nav.SetTarget(null);
             ctx.searchWaitTimer   = 0f;
             ctx.searchWanderTimer = 0f;
@@ -42,6 +46,14 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            bool traversing = ctx.IsTraversingLink;
+            if (traversing != _wasTraversing)
+            {
+                var traversalAnim = ctx.nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump;
+                ctx.anim?.Play(traversing ? traversalAnim : AgentAnimations.Walk, 0, 0f);
+                _wasTraversing = traversing;
+            }
+
             // Track player sighting during a jump so GetTransition can act after landing
             if (ctx.IsTraversingLink && ctx.vision != null && ctx.vision.CanSeePlayer)
             {

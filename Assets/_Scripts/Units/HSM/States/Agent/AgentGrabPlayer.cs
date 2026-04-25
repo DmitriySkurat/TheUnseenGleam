@@ -10,6 +10,8 @@ namespace HSM {
         public AgentGrabPlayer(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            if (ctx.anim != null)
+                Add(new AnimatorPlayActivity(ctx.anim, AgentAnimations.GrabPlayer));
         }
 
         protected override void OnEnter()

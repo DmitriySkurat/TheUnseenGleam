@@ -4,6 +4,7 @@ namespace HSM {
     public class AgentChase : State
     {
         readonly AgentContext ctx;
+        bool _wasTraversing;
 
         public AgentChase(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -12,6 +13,9 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            _wasTraversing = false;
+            ctx.anim?.Play(AgentAnimations.Run, 0, 0f);
+
             ctx.chaseVisionLostTimer  = 0f;
             ctx.grabOccurredInChase   = false; // новая погоня — первый захват будет с полной задержкой
 
@@ -25,6 +29,14 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            bool traversing = ctx.IsTraversingLink;
+            if (traversing != _wasTraversing)
+            {
+                var traversalAnim = ctx.nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump;
+                ctx.anim?.Play(traversing ? traversalAnim : AgentAnimations.Run, 0, 0f);
+                _wasTraversing = traversing;
+            }
+
             // Отсчёт кулдауна между захватами
             if (ctx.grabCooldownTimer > 0f)
                 ctx.grabCooldownTimer -= deltaTime;
