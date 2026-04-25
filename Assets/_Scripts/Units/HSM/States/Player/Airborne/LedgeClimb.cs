@@ -9,6 +9,7 @@ namespace HSM
         bool _isClimbingUp;
         bool _completedClimb;
         float _climbStartTime;
+        float _hangTimer;
         Vector2 _hangPosition;
         Vector2 _standPosition;
 
@@ -23,6 +24,7 @@ namespace HSM
             _isClimbingUp = false;
             _completedClimb = false;
             _climbStartTime = float.MinValue;
+            _hangTimer = 0f;
 
             ctx.isLedgeGrabbing = true;
             ctx.velocity = Vector2.zero;
@@ -68,6 +70,9 @@ namespace HSM
             ctx.velocity = Vector2.zero;
             SnapToPosition(_hangPosition);
 
+            if (!_isClimbingUp)
+                _hangTimer += deltaTime;
+
             if (!_isClimbingUp && ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold)
             {
                 _isClimbingUp = true;
@@ -81,6 +86,9 @@ namespace HSM
         protected override State GetTransition()
         {
             if (!_isClimbingUp && ctx.input.Move.y < -ctx.stats.VerticalDeadZoneThreshold)
+                return Machine?.GetState<Airborne>();
+
+            if (!_isClimbingUp && ctx.stats.WallGrabMaxDuration > 0f && _hangTimer >= ctx.stats.WallGrabMaxDuration)
                 return Machine?.GetState<Airborne>();
 
             if (_isClimbingUp && Time.time >= _climbStartTime + ctx.stats.LedgeClimbTeleportDelay)

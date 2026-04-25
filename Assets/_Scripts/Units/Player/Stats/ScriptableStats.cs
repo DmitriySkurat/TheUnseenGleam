@@ -253,6 +253,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float LedgeClimbTeleportDelay = 0.4f;
 
+    [Tooltip("How long the player can hang on a ledge before automatically falling (0 = infinite)")]
+    [Min(0f)]
+    public float WallGrabMaxDuration = 3f;
+
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]
     // public float SlideDuration = 2f;
