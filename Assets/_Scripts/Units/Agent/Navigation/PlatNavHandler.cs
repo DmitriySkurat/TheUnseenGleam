@@ -504,7 +504,7 @@ namespace PlatNav
             _curLink = graph.links[linkIdx];
 
             // Safety: don't teleport to launch if entity is too far away
-            float distToLaunch = Vector2.Distance(transform.position, _curLink.launchPos);
+            float distToLaunch = Vector2.Distance(transform.position, NavToPhysics(_curLink.launchPos));
             if (distToLaunch > maxLaunchSnap)
             {
                 if (debugLog) Debug.Log($"[PlatNav] Link aborted: {distToLaunch:F1} units from launch");
@@ -520,7 +520,7 @@ namespace PlatNav
             // Switch to kinematic so physics doesn't fight position overrides
             _rb.bodyType = RigidbodyType2D.Kinematic;
             _rb.linearVelocity = Vector2.zero;
-            _rb.position = _curLink.launchPos;
+            _rb.position = NavToPhysics(_curLink.launchPos);
 
             _linkIsEuler = _curLink.moveType == LinkMoveType.Fall;
 
@@ -576,15 +576,16 @@ namespace PlatNav
             Vector2 prevPos = _rb.position;
             SetFacingFromDirection(nextPos.x - prevPos.x);
 
-            // Override position
-            _rb.position = nextPos;
+            // Override position (nextPos is in nav/foot-tile coords → convert to physics pivot)
+            _rb.position = NavToPhysics(nextPos);
             _rb.linearVelocity = Vector2.zero;
 
         }
 
         private void LandFromTraversal()
         {
-            _rb.position = _curLink.landPos;
+            var size = _col.bounds.size;
+            _rb.position = new Vector2(_curLink.landPos.x, _curLink.landPos.y + size.y * 0.5f - 0.5f);
             EndTraversal();
             AdvanceStep();
         }
@@ -885,6 +886,17 @@ namespace PlatNav
         {
             var bounds = _col.bounds;
             return Physics2D.BoxCast(bounds.center, bounds.size, 0f, Vector2.down, 0.05f, solidMask);
+        }
+
+        /// <summary>
+        /// Converts a nav foot-tile-center position to the physical pivot position
+        /// that should be assigned to _rb.position.
+        /// Nav Y = tile where entity's feet stand → physics center Y = nav.y + height/2 - 0.5
+        /// </summary>
+        private Vector2 NavToPhysics(Vector2 navPos)
+        {
+            var h = _col.bounds.size.y;
+            return new Vector2(navPos.x, navPos.y + h * 0.5f - 0.5f);
         }
 
         private static readonly List<Collider2D> _fitsBuffer = new(8);
