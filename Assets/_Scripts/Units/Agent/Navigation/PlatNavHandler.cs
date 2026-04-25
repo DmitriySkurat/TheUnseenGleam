@@ -892,13 +892,19 @@ namespace PlatNav
         private bool FitsAt(Vector2 position)
         {
             var size = _col.bounds.size;
+            // position = foot-tile-center in nav coords.
+            // Entity extends from (position.y - 0.5) to (position.y - 0.5 + height),
+            // so entity center = position + (height/2 - 0.5).
+            var checkCenter = new Vector2(position.x, position.y + size.y * 0.5f - 0.5f);
             var filter = new ContactFilter2D();
             filter.SetLayerMask(solidMask);
             filter.useLayerMask = true;
-            int count = Physics2D.OverlapBox(position, size * 0.95f, 0f, filter, _fitsBuffer);
+            int count = Physics2D.OverlapBox(checkCenter, size * 0.95f, 0f, filter, _fitsBuffer);
             for (int i = 0; i < count; i++)
             {
-                if (_fitsBuffer[i] != _col) return false;
+                if (_fitsBuffer[i] == _col) continue;
+                if (debugLog) Debug.Log($"[PlatNav] FitsAt blocked by: {_fitsBuffer[i].name} tag={_fitsBuffer[i].tag} at pos={position} center={checkCenter}");
+                return false;
             }
             return true;
         }
