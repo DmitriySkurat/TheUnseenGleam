@@ -127,7 +127,11 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
 
     private void EndDialog()
     {
-        if (_playerCtx != null) _playerCtx.isInDialog = false;
+        if (_playerCtx != null)
+        {
+            _playerCtx.isInDialog = false;
+            _playerCtx.timeLastInteraction = Time.time;
+        }
         _dialogPanel.SetActive(false);
 
         _inputManager.OnInteractStarted -= OnAdvance;
