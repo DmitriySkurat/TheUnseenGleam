@@ -5,6 +5,10 @@ public class Spikes : MonoBehaviour
 {
     [SerializeField] private float _damage = 9999f;
 
+    private bool _playerInside;
+    private float _timer;
+    private PlayerContext _ctx;
+
     private void Reset()
     {
         var col = GetComponent<Collider2D>();
@@ -17,6 +21,41 @@ public class Spikes : MonoBehaviour
             return;
 
         if (Services.IsRegistered<PlayerContext>())
-            Services.Get<PlayerContext>().health?.TakeDamage(_damage);
+            _ctx = Services.Get<PlayerContext>();
+
+        _playerInside = true;
+        _timer = 0f;
+        DamagePlayer(); // первый удар сразу при входе
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        _playerInside = false;
+        _ctx = null;
+    }
+
+    private void Update()
+    {
+        if (!_playerInside || _ctx == null)
+            return;
+
+        float interval = _ctx.currentFootstepInterval;
+        if (interval <= 0f)
+            return;
+
+        _timer += Time.deltaTime;
+        if (_timer < interval)
+            return;
+
+        _timer = 0f;
+        DamagePlayer();
+    }
+
+    private void DamagePlayer()
+    {
+        _ctx?.health?.TakeDamage(_damage);
     }
 }
