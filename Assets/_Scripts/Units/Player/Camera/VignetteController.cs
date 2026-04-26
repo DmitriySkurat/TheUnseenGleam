@@ -39,6 +39,7 @@ public class VignetteController : MonoBehaviour, ISceneLifecycle
     private float currentIntensity;
     private float _currentSaturation;
     private float _timeInLight;
+    private bool _darknessActive;
 
     public void Initialize()
     {
@@ -73,10 +74,9 @@ public class VignetteController : MonoBehaviour, ISceneLifecycle
         _timeInLight = 0f;
     }
     
-    public void Dispose()
-    {
-        
-    }
+    public void Dispose() { }
+
+    public void SetDarknessActive(bool active) => _darknessActive = active;
 
     private void Update()
     {
@@ -110,6 +110,9 @@ public class VignetteController : MonoBehaviour, ISceneLifecycle
         {
             _timeInLight = 0f;
         }
+
+        if (_darknessActive)
+            targetIntensity = 1f;
 
         targetIntensity = Mathf.Clamp(targetIntensity, minIntensityClamp, 1f);
         currentIntensity = Mathf.Lerp(currentIntensity, targetIntensity, Time.deltaTime * smoothSpeed);

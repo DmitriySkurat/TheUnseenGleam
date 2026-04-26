@@ -25,13 +25,20 @@ public class Spikes : MonoBehaviour
 
         _playerInside = true;
         _timer = 0f;
-        DamagePlayer(); // первый удар сразу при входе
+
+        if (_ctx != null)
+            _ctx.spikesSpeedMultiplier = _ctx.stats.SpikesSpeedMultiplier;
+
+        DamagePlayer();
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Player"))
             return;
+
+        if (_ctx != null)
+            _ctx.spikesSpeedMultiplier = 1f;
 
         _playerInside = false;
         _ctx = null;

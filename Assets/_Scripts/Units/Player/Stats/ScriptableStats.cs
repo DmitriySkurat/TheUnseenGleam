@@ -154,6 +154,16 @@ public class PlayerScriptableStats : ScriptableObject
     [Range(0.1f, 1f)]
     public float HideSpeedMultiplier = 0.4f;
 
+    [Header("DARKNESS")]
+    [Tooltip("Multiplier applied to MaxSpeed while inside an active DarknessZone")]
+    [Range(0.1f, 1f)]
+    public float DarknessSpeedMultiplier = 0.4f;
+
+    [Header("SPIKES")]
+    [Tooltip("Multiplier applied to MaxSpeed while standing on spikes")]
+    [Range(0.1f, 1f)]
+    public float SpikesSpeedMultiplier = 0.3f;
+
     [Header("PRESS TO WALL")]
     [Tooltip("Height multiplier for CapsuleCollider while pressed to wall")]
     [Range(0.2f, 1f)]

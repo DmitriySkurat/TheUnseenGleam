@@ -14,7 +14,7 @@ public class DarknessZone : MonoBehaviour
     [Header("Dissipation")]
     [Tooltip("Сколько секунд тьма остаётся рассеянной после того, как свет пропал")]
     [SerializeField] private float _dissipateDelay = 2f;
-    [Tooltip("Время fade-in/out оверлея в секундах")]
+    [Tooltip("Время fade-in/out оверлея и эффектов (секунды)")]
     [SerializeField] private float _fadeDuration = 0.8f;
 
     [Header("Visual")]
@@ -22,10 +22,20 @@ public class DarknessZone : MonoBehaviour
     [SerializeField] private SpriteRenderer _overlay;
 
     private Collider2D _col;
+
+    // Состояние игрока
     private bool _playerInside;
     private PlayerContext _ctx;
+
+    // Тьма
     private float _dissipateTimer;
     private float _currentAlpha = 1f;
+
+    // Эффекты
+    private VignetteController _vignetteController;
+    private Light2D _ambientLight;
+    private float _ambientLightBaseIntensity;
+    private float _currentAmbientIntensity;
 
     private void Awake()
     {
@@ -40,6 +50,11 @@ public class DarknessZone : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        _vignetteController = FindObjectOfType<VignetteController>();
+    }
+
     private void Reset()
     {
         GetComponent<Collider2D>().isTrigger = true;
@@ -48,8 +63,12 @@ public class DarknessZone : MonoBehaviour
     private void Update()
     {
         UpdateDissipation();
+
+        bool darknessActive = _playerInside && _dissipateTimer <= 0f;
+
         UpdateOverlay();
-        ApplyDamage();
+        UpdateEffects(darknessActive);
+        ApplyDamage(darknessActive);
     }
 
     private void UpdateDissipation()
@@ -73,9 +92,24 @@ public class DarknessZone : MonoBehaviour
         _overlay.color = c;
     }
 
-    private void ApplyDamage()
+    private void UpdateEffects(bool darknessActive)
     {
-        if (!_playerInside || _ctx == null || _dissipateTimer > 0f) return;
+        _vignetteController?.SetDarknessActive(darknessActive);
+
+        if (_ctx != null)
+            _ctx.darknessSpeedMultiplier = darknessActive ? _ctx.stats.DarknessSpeedMultiplier : 1f;
+
+        if (_ambientLight == null) return;
+
+        float targetAmbient = darknessActive ? 0f : _ambientLightBaseIntensity;
+        float speed = 1f / Mathf.Max(0.001f, _fadeDuration);
+        _currentAmbientIntensity = Mathf.MoveTowards(_currentAmbientIntensity, targetAmbient, speed * Time.deltaTime);
+        _ambientLight.intensity = _currentAmbientIntensity;
+    }
+
+    private void ApplyDamage(bool darknessActive)
+    {
+        if (!darknessActive || _ctx == null) return;
         _ctx.health?.TakeDamage(_damagePerSecond * Time.deltaTime);
     }
 
@@ -104,15 +138,45 @@ public class DarknessZone : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
+
         if (Services.IsRegistered<PlayerContext>())
             _ctx = Services.Get<PlayerContext>();
+
         _playerInside = true;
+        CacheAmbientLight();
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
+        if (_ctx != null)
+            _ctx.darknessSpeedMultiplier = 1f;
         _playerInside = false;
         _ctx = null;
+    }
+
+    private void CacheAmbientLight()
+    {
+        if (_ctx?.transform == null || _ambientLight != null) return;
+
+        var ambientGO = _ctx.transform.Find("PlayerAmbientLight");
+        if (ambientGO == null) return;
+
+        _ambientLight = ambientGO.GetComponent<Light2D>();
+        if (_ambientLight != null)
+        {
+            _ambientLightBaseIntensity = _ambientLight.intensity;
+            _currentAmbientIntensity = _ambientLightBaseIntensity;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Сброс эффектов при удалении зоны из сцены.
+        _vignetteController?.SetDarknessActive(false);
+        if (_ctx != null)
+            _ctx.darknessSpeedMultiplier = 1f;
+        if (_ambientLight != null)
+            _ambientLight.intensity = _ambientLightBaseIntensity;
     }
 }

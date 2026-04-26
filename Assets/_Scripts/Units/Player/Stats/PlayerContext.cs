@@ -28,6 +28,8 @@ public class PlayerContext
     public bool grounded;
     public Vector2 velocity;
     public float currentSpeedMultiplier = 1f;
+    public float darknessSpeedMultiplier = 1f;
+    public float spikesSpeedMultiplier = 1f;
     public float currentNoiseRadius;
     public float currentFootstepInterval;
     public float airborneStartY;
