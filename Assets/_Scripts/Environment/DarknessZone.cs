@@ -12,8 +12,8 @@ public class DarknessZone : MonoBehaviour
     [Header("Light Detection")]
     [Tooltip("Маска слоёв для стен, перекрывающих свет")]
     [SerializeField] private LayerMask _occlusionMask;
-    [Tooltip("Радиус стирания тьмы вокруг точки попадания света (world units)")]
-    [SerializeField, Min(0.1f)] private float _eraseRadius = 1.5f;
+    [Tooltip("Максимум лучей на один направленный источник (больше = точнее, но дороже)")]
+    [SerializeField, Min(8)] private int _maxRaysPerLight = 60;
     [Tooltip("Если alpha пикселя под игроком выше этого — тьма активна")]
     [SerializeField, Range(0f, 1f)] private float _darknessThreshold = 0.4f;
 
@@ -171,52 +171,74 @@ public class DarknessZone : MonoBehaviour
 
         if (outerAngle >= FullAngle)
         {
-            // 360° источник: стираем у ближайшей точки зоны
+            // 360° источник: стираем диск вокруг позиции
             Vector2 center = IsInZoneBoundsXY(lightPos)
                 ? lightPos
                 : (Vector2)_col.ClosestPoint(lightPos);
-            TryEraseAtPoint(lightPos, center, outerRadius);
+            EraseDisc(lightPos, center, outerRadius, light.pointLightInnerRadius);
         }
         else
         {
-            // Направленный источник (зеркало): сэмплируем лучи внутри конуса
+            // Направленный источник: поточечная закраска пикселей вдоль лучей конуса
             Vector2 forward = ((Vector2)light.transform.up).normalized;
-            float halfAngle = outerAngle * 0.5f;
+            EraseLightCone(lightPos, forward, outerRadius, outerAngle,
+                light.pointLightInnerAngle, light.pointLightInnerRadius);
+        }
+    }
 
-            int numRays = Mathf.Clamp(Mathf.RoundToInt(halfAngle / 5f) * 2 + 1, 1, 9);
-            const int numSamples = 8;
+    // Поточечная закраска вдоль лучей конуса — без видимых окружностей
+    private void EraseLightCone(Vector2 lightPos, Vector2 forward,
+        float outerRadius, float outerAngle, float innerAngle, float innerRadius)
+    {
+        float halfOuter = outerAngle * 0.5f;
+        float halfInner = Mathf.Min(innerAngle * 0.5f, halfOuter);
 
-            for (int r = 0; r < numRays; r++)
+        // Шаг угла: чтобы на максимальной дальности между лучами не было щелей в пиксель
+        float pixelWorld = 1f / _pixelsPerUnit;
+        float autoStep = Mathf.Atan2(pixelWorld * 0.5f, outerRadius) * Mathf.Rad2Deg;
+        float minStep = (halfOuter * 2f) / _maxRaysPerLight;
+        float angleStep = Mathf.Max(autoStep, minStep);
+
+        float distStep = pixelWorld;
+
+        for (float angle = -halfOuter; angle <= halfOuter + 0.001f; angle += angleStep)
+        {
+            Vector2 dir = Rotate2D(forward, angle);
+
+            float maxDist = outerRadius;
+            if (_occlusionMask.value != 0)
             {
-                float angle = numRays > 1
-                    ? Mathf.Lerp(-halfAngle, halfAngle, (float)r / (numRays - 1))
-                    : 0f;
-                Vector2 dir = Rotate2D(forward, angle);
+                RaycastHit2D hit = Physics2D.Raycast(lightPos, dir, outerRadius, _occlusionMask);
+                if (hit.collider != null)
+                    maxDist = hit.distance;
+            }
 
-                for (int s = 0; s < numSamples; s++)
-                {
-                    float dist = outerRadius * (s + 1f) / numSamples;
-                    Vector2 samplePoint = lightPos + dir * dist;
+            float absAngle = Mathf.Abs(angle);
+            float angleFactor = halfOuter > halfInner
+                ? Mathf.Clamp01((halfOuter - absAngle) / Mathf.Max(0.001f, halfOuter - halfInner))
+                : 1f;
 
-                    if (!IsInZoneBoundsXY(samplePoint)) continue;
+            for (float dist = 0f; dist <= maxDist; dist += distStep)
+            {
+                Vector2 wp = lightPos + dir * dist;
+                if (!IsInZoneBoundsXY(wp)) continue;
 
-                    if (_occlusionMask.value != 0)
-                    {
-                        RaycastHit2D hit = Physics2D.Raycast(lightPos, dir, dist, _occlusionMask);
-                        if (hit.collider != null) break; // стена — дальше этот луч не идёт
-                    }
+                float radialFactor = innerRadius < outerRadius
+                    ? Mathf.Clamp01((outerRadius - dist) / Mathf.Max(0.001f, outerRadius - innerRadius))
+                    : 1f;
 
-                    EraseAt(samplePoint, _eraseRadius);
-                }
+                byte targetAlpha = (byte)(255 * (1f - angleFactor * radialFactor));
+                WritePixelAlpha(wp, targetAlpha);
             }
         }
     }
 
-    private void TryEraseAtPoint(Vector2 lightPos, Vector2 eraseCenter, float lightRadius)
+    // Диск для 360° источника
+    private void EraseDisc(Vector2 lightPos, Vector2 center, float outerRadius, float innerRadius)
     {
-        Vector2 toCenter = eraseCenter - lightPos;
+        Vector2 toCenter = center - lightPos;
         float dist = toCenter.magnitude;
-        if (dist > lightRadius) return;
+        if (dist > outerRadius) return;
 
         if (_occlusionMask.value != 0 && dist > 0.01f)
         {
@@ -224,18 +246,13 @@ public class DarknessZone : MonoBehaviour
             if (hit.collider != null) return;
         }
 
-        EraseAt(eraseCenter, _eraseRadius);
-    }
+        float pixelWorld = 1f / _pixelsPerUnit;
+        int rPx = Mathf.CeilToInt(outerRadius * _pixelsPerUnit);
 
-    private void EraseAt(Vector2 worldPos, float worldRadius)
-    {
-        float u = (worldPos.x - _zoneBounds.min.x) / _zoneBounds.size.x;
-        float v = (worldPos.y - _zoneBounds.min.y) / _zoneBounds.size.y;
-
+        float u = (center.x - _zoneBounds.min.x) / _zoneBounds.size.x;
+        float v = (center.y - _zoneBounds.min.y) / _zoneBounds.size.y;
         int cx = Mathf.RoundToInt(u * (_texWidth - 1));
         int cy = Mathf.RoundToInt(v * (_texHeight - 1));
-        int rPx = Mathf.CeilToInt(worldRadius * _pixelsPerUnit);
-        float innerFraction = 0.6f; // 60% радиуса — полностью прозрачная зона
 
         for (int py = cy - rPx; py <= cy + rPx; py++)
         {
@@ -244,13 +261,15 @@ public class DarknessZone : MonoBehaviour
             {
                 if (px < 0 || px >= _texWidth) continue;
 
-                float dist = Mathf.Sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
-                if (dist > rPx) continue;
+                float d = Mathf.Sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+                float dWorld = d * pixelWorld;
+                if (dWorld > outerRadius) continue;
 
-                // Мягкий край: от innerFraction*rPx до rPx идёт градиент
-                float t = 1f - Mathf.Clamp01((dist - rPx * innerFraction) / Mathf.Max(1f, rPx * (1f - innerFraction)));
-                byte targetAlpha = (byte)(255 * (1f - t));
+                float radialFactor = innerRadius < outerRadius
+                    ? Mathf.Clamp01((outerRadius - dWorld) / Mathf.Max(0.001f, outerRadius - innerRadius))
+                    : 1f;
 
+                byte targetAlpha = (byte)(255 * (1f - radialFactor));
                 int idx = py * _texWidth + px;
                 if (_pixels[idx].a > targetAlpha)
                 {
@@ -259,6 +278,23 @@ public class DarknessZone : MonoBehaviour
                     _hasAnyCleared = true;
                 }
             }
+        }
+    }
+
+    private void WritePixelAlpha(Vector2 worldPos, byte targetAlpha)
+    {
+        float u = (worldPos.x - _zoneBounds.min.x) / _zoneBounds.size.x;
+        float v = (worldPos.y - _zoneBounds.min.y) / _zoneBounds.size.y;
+
+        int px = Mathf.Clamp(Mathf.RoundToInt(u * (_texWidth - 1)), 0, _texWidth - 1);
+        int py = Mathf.Clamp(Mathf.RoundToInt(v * (_texHeight - 1)), 0, _texHeight - 1);
+
+        int idx = py * _texWidth + px;
+        if (_pixels[idx].a > targetAlpha)
+        {
+            _pixels[idx].a = targetAlpha;
+            _textureDirty = true;
+            _hasAnyCleared = true;
         }
     }
 
