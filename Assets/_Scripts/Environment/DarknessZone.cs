@@ -8,8 +8,8 @@ public class DarknessZone : MonoBehaviour
     [SerializeField] private float _damagePerSecond = 20f;
 
     [Header("Light Detection")]
-    [Tooltip("Как близко должен быть источник света игрока к границе зоны, чтобы рассеять тьму")]
-    [SerializeField] private float _lightDetectionRadius = 4f;
+    [Tooltip("Маска слоёв для стен, перекрывающих свет (как в AgentLightSensor)")]
+    [SerializeField] private LayerMask _occlusionMask;
 
     [Header("Dissipation")]
     [Tooltip("Сколько секунд тьма остаётся рассеянной после того, как свет пропал")]
@@ -132,7 +132,8 @@ public class DarknessZone : MonoBehaviour
         _ctx.health?.TakeDamage(_damagePerSecond * Time.deltaTime);
     }
 
-    // Проверяем MirrorLightSource (свет зеркала) и PlayerLightSource (любой свет игрока).
+    private const float FullAngle = 359.9f;
+
     private bool IsPlayerLightPresent()
     {
         if (!Services.IsRegistered<LightSystem>()) return false;
@@ -145,12 +146,55 @@ public class DarknessZone : MonoBehaviour
             if (light.GetComponent<MirrorLightSource>() == null &&
                 light.GetComponent<PlayerLightSource>() == null) continue;
 
-            Vector2 closest = _col.ClosestPoint(light.transform.position);
-            float dist = Vector2.Distance(closest, (Vector2)light.transform.position);
-            if (dist <= _lightDetectionRadius)
+            if (IsLightHittingZone(light))
                 return true;
         }
         return false;
+    }
+
+    private bool IsLightHittingZone(Light2D light)
+    {
+        Vector2 lightPos = light.transform.position;
+
+        // Проверяем ближайшую точку зоны к источнику света и центр bounds
+        if (IsPointIlluminatedByLight(light, lightPos, _col.ClosestPoint(lightPos)))
+            return true;
+        if (IsPointIlluminatedByLight(light, lightPos, _col.bounds.center))
+            return true;
+
+        return false;
+    }
+
+    private bool IsPointIlluminatedByLight(Light2D light, Vector2 lightPos, Vector2 targetPoint)
+    {
+        float outerRadius = light.pointLightOuterRadius;
+        if (outerRadius <= 0f) return false;
+
+        Vector2 toTarget = targetPoint - lightPos;
+        float distance = toTarget.magnitude;
+        if (distance > outerRadius) return false;
+
+        // Проверка углового конуса (если не 360°)
+        float outerAngle = light.pointLightOuterAngle;
+        if (outerAngle < FullAngle)
+        {
+            Vector2 forward = light.transform.up;
+            if (forward.sqrMagnitude > 0f && distance > 0f)
+            {
+                float cosHalfAngle = Mathf.Cos(outerAngle * 0.5f * Mathf.Deg2Rad);
+                float dot = Vector2.Dot(forward.normalized, toTarget / distance);
+                if (dot < cosHalfAngle) return false;
+            }
+        }
+
+        // Raycast: проверяем, нет ли стены между светом и точкой
+        if (_occlusionMask.value != 0 && distance > 0f)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(lightPos, toTarget / distance, distance, _occlusionMask);
+            if (hit.collider != null) return false;
+        }
+
+        return true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
