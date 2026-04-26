@@ -26,8 +26,11 @@ namespace HSM {
             _ctx.transform = transform;
             _ctx.rb = GetComponentInChildren<Rigidbody2D>();
             _ctx.anim = GetComponentInChildren<Animator>();
-            _ctx.renderer = GetComponentInChildren<Renderer>();
-            _ctx.sortingOrderSetter = GetComponentInChildren<SortingOrderSetter>();
+            _ctx.renderer = GetComponentInChildren<SpriteRenderer>();
+            var spriteChild = transform.Find("Sprite");
+            _ctx.sortingOrderSetter = spriteChild != null
+                ? spriteChild.GetComponent<SortingOrderSetter>()
+                : GetComponentInChildren<SortingOrderSetter>();
             _ctx.lightSensor = GetComponentInChildren<PlayerLightSensor>();
 
 

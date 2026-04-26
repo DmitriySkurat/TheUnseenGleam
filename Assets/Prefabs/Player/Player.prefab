@@ -356,9 +356,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8980388689928930765}
   - component: {fileID: 2674044243155758756}
+  - component: {fileID: 7939062093050313681}
   - component: {fileID: 4049510902069182745}
   - component: {fileID: 1627415003069123074}
-  - component: {fileID: 7939062093050313681}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -440,6 +440,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7939062093050313681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8381137467430842625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e40835e8eac88fc4e971b4636f155aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingOrderSetter
+  _order: 30
 --- !u!95 &4049510902069182745
 Animator:
   serializedVersion: 7
@@ -475,7 +488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.ShadowCaster2D
   m_ShadowGroup: 0
-  m_Priority: 12
+  m_Priority: 30
   m_ComponentVersion: 5
   m_HasRenderer: 1
   m_UseRendererSilhouette: 1
@@ -515,19 +528,6 @@ MonoBehaviour:
     - rid: 8363858946034237509
       type: {class: ShadowShape2DProvider_SpriteRenderer, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
---- !u!114 &7939062093050313681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8381137467430842625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e40835e8eac88fc4e971b4636f155aeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SortingOrderSetter
-  _order: 30
 --- !u!1 &8683501935639828607
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,9 +664,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8980388689928930765}
   - {fileID: 9208377014202925448}
   - {fileID: 9049922902160105476}
-  - {fileID: 8980388689928930765}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4923245662171321035

@@ -63,7 +63,7 @@ public class PlayerHealth : MonoBehaviour, ISessionLifecycle
         _currentHealth = Mathf.Max(0f, _currentHealth - damage);
         _regenDelayTimer = _ctx.stats.HealthRegenDelay;
 
-        Debug.Log($"Current Health: {_currentHealth}");
+        //Debug.Log($"Current Health: {_currentHealth}");
 
         if (_currentHealth <= 0f)
             Die();
