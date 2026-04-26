@@ -57,7 +57,7 @@ namespace HSM {
                 return;
             }
 
-            float targetSpeed = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.currentSpeedMultiplier * ctx.darknessSpeedMultiplier * ctx.spikesSpeedMultiplier;
+            float targetSpeed = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.currentSpeedMultiplier;
 
             float accel = Mathf.Abs(ctx.input.Move.x) > 0.01f
                 ? ctx.stats.Acceleration

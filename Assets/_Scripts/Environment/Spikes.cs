@@ -8,6 +8,7 @@ public class Spikes : MonoBehaviour
     private bool _playerInside;
     private float _timer;
     private PlayerContext _ctx;
+    private float _savedSpeedMultiplier;
 
     private void Reset()
     {
@@ -27,7 +28,10 @@ public class Spikes : MonoBehaviour
         _timer = 0f;
 
         if (_ctx != null)
-            _ctx.spikesSpeedMultiplier = _ctx.stats.SpikesSpeedMultiplier;
+        {
+            _savedSpeedMultiplier = _ctx.currentSpeedMultiplier;
+            _ctx.currentSpeedMultiplier = _ctx.stats.SpikesSpeedMultiplier;
+        }
 
         DamagePlayer();
     }
@@ -38,7 +42,7 @@ public class Spikes : MonoBehaviour
             return;
 
         if (_ctx != null)
-            _ctx.spikesSpeedMultiplier = 1f;
+            _ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
 
         _playerInside = false;
         _ctx = null;

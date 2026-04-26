@@ -31,7 +31,11 @@ public class DarknessZone : MonoBehaviour
     private float _dissipateTimer;
     private float _currentAlpha = 1f;
 
-    // Эффекты
+    // Скорость — save/restore через currentSpeedMultiplier
+    private bool _speedModified;
+    private float _savedSpeedMultiplier;
+
+    // Прочие эффекты
     private VignetteController _vignetteController;
     private Light2D _ambientLight;
     private float _ambientLightBaseIntensity;
@@ -96,15 +100,30 @@ public class DarknessZone : MonoBehaviour
     {
         _vignetteController?.SetDarknessActive(darknessActive);
 
-        if (_ctx != null)
-            _ctx.darknessSpeedMultiplier = darknessActive ? _ctx.stats.DarknessSpeedMultiplier : 1f;
+        UpdateSpeedMultiplier(darknessActive);
 
         if (_ambientLight == null) return;
-
         float targetAmbient = darknessActive ? 0f : _ambientLightBaseIntensity;
         float speed = 1f / Mathf.Max(0.001f, _fadeDuration);
         _currentAmbientIntensity = Mathf.MoveTowards(_currentAmbientIntensity, targetAmbient, speed * Time.deltaTime);
         _ambientLight.intensity = _currentAmbientIntensity;
+    }
+
+    private void UpdateSpeedMultiplier(bool darknessActive)
+    {
+        if (_ctx == null) return;
+
+        if (darknessActive && !_speedModified)
+        {
+            _savedSpeedMultiplier = _ctx.currentSpeedMultiplier;
+            _ctx.currentSpeedMultiplier = _ctx.stats.DarknessSpeedMultiplier;
+            _speedModified = true;
+        }
+        else if (!darknessActive && _speedModified)
+        {
+            _ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
+            _speedModified = false;
+        }
     }
 
     private void ApplyDamage(bool darknessActive)
@@ -126,7 +145,6 @@ public class DarknessZone : MonoBehaviour
             if (light.GetComponent<MirrorLightSource>() == null &&
                 light.GetComponent<PlayerLightSource>() == null) continue;
 
-            // Расстояние от ближайшей точки зоны до источника света.
             Vector2 closest = _col.ClosestPoint(light.transform.position);
             float dist = Vector2.Distance(closest, (Vector2)light.transform.position);
             if (dist <= _lightDetectionRadius)
@@ -149,8 +167,13 @@ public class DarknessZone : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-        if (_ctx != null)
-            _ctx.darknessSpeedMultiplier = 1f;
+
+        if (_ctx != null && _speedModified)
+        {
+            _ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
+            _speedModified = false;
+        }
+
         _playerInside = false;
         _ctx = null;
     }
@@ -172,10 +195,11 @@ public class DarknessZone : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Сброс эффектов при удалении зоны из сцены.
         _vignetteController?.SetDarknessActive(false);
-        if (_ctx != null)
-            _ctx.darknessSpeedMultiplier = 1f;
+
+        if (_ctx != null && _speedModified)
+            _ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
+
         if (_ambientLight != null)
             _ambientLight.intensity = _ambientLightBaseIntensity;
     }
