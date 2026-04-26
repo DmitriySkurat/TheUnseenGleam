@@ -76,6 +76,10 @@ public class PlayerContext
     public bool isInDarkness;
     public float darknessDamagePerSecond;
 
+    // ===== SPIKES =====
+    public bool isOnSpikes;
+    public float spikesDamage;
+
     // ===== GRABBED =====
     public bool isGrabbed;
     public bool isInDialog;
