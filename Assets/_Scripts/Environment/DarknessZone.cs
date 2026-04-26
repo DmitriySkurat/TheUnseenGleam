@@ -4,38 +4,46 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Collider2D))]
 public class DarknessZone : MonoBehaviour
 {
+    private const float FullAngle = 359.9f;
+
     [Header("Damage")]
     [SerializeField] private float _damagePerSecond = 20f;
 
     [Header("Light Detection")]
-    [Tooltip("Маска слоёв для стен, перекрывающих свет (как в AgentLightSensor)")]
+    [Tooltip("Маска слоёв для стен, перекрывающих свет")]
     [SerializeField] private LayerMask _occlusionMask;
+    [Tooltip("Радиус стирания тьмы вокруг точки попадания света (world units)")]
+    [SerializeField, Min(0.1f)] private float _eraseRadius = 1.5f;
+    [Tooltip("Если alpha пикселя под игроком выше этого — тьма активна")]
+    [SerializeField, Range(0f, 1f)] private float _darknessThreshold = 0.4f;
 
     [Header("Dissipation")]
-    [Tooltip("Сколько секунд тьма остаётся рассеянной после того, как свет пропал")]
-    [SerializeField] private float _dissipateDelay = 2f;
-    [Tooltip("Время fade-in/out оверлея и эффектов (секунды)")]
-    [SerializeField] private float _fadeDuration = 0.8f;
+    [Tooltip("Сколько секунд тьма восстанавливается от 0 до полной (после ухода света)")]
+    [SerializeField] private float _fadeDuration = 2f;
 
     [Header("Visual")]
-    [Tooltip("Чёрный SpriteRenderer-оверлей на дочернем объекте (сортировка: Darkness)")]
+    [Tooltip("SpriteRenderer-оверлей (спрайт будет заменён динамической текстурой)")]
     [SerializeField] private SpriteRenderer _overlay;
+    [Tooltip("Разрешение текстуры тьмы (пикселей на world unit)")]
+    [SerializeField] private float _pixelsPerUnit = 16f;
 
     private Collider2D _col;
+    private Bounds _zoneBounds;
 
-    // Состояние игрока
+    // Texture
+    private Texture2D _darknessTexture;
+    private Color32[] _pixels;
+    private int _texWidth, _texHeight;
+    private bool _textureDirty;
+    private bool _hasAnyCleared;
+
+    // Player state
     private bool _playerInside;
     private PlayerContext _ctx;
-
-    // Тьма
-    private float _dissipateTimer;
-    private float _currentAlpha = 1f;
-
-    // Скорость — save/restore через currentSpeedMultiplier
     private bool _speedModified;
     private float _savedSpeedMultiplier;
 
-    // Прочие эффекты
+    // Effects
     private VignetteController _vignetteController;
     private Light2D _ambientLight;
     private float _ambientLightBaseIntensity;
@@ -45,18 +53,12 @@ public class DarknessZone : MonoBehaviour
     {
         _col = GetComponent<Collider2D>();
         _col.isTrigger = true;
-
-        if (_overlay != null)
-        {
-            var c = _overlay.color;
-            c.a = 1f;
-            _overlay.color = c;
-        }
     }
 
     private void Start()
     {
         _vignetteController = FindObjectOfType<VignetteController>();
+        InitDarknessTexture();
     }
 
     private void Reset()
@@ -66,40 +68,227 @@ public class DarknessZone : MonoBehaviour
 
     private void Update()
     {
-        UpdateDissipation();
+        EraseWithActiveLights();
+        RestoreDarkness();
 
-        bool darknessActive = _playerInside && _dissipateTimer <= 0f;
+        if (_textureDirty)
+        {
+            _darknessTexture.SetPixels32(_pixels);
+            _darknessTexture.Apply();
+            _textureDirty = false;
+        }
 
-        UpdateOverlay();
+        bool darknessActive = _playerInside && IsPlayerInDarkness();
         UpdateEffects(darknessActive);
         ApplyDamage(darknessActive);
     }
 
-    private void UpdateDissipation()
-    {
-        if (IsPlayerLightPresent())
-            _dissipateTimer = _dissipateDelay;
-        else
-            _dissipateTimer = Mathf.Max(0f, _dissipateTimer - Time.deltaTime);
-    }
+    // ── Texture Init ─────────────────────────────────────────────────────────
 
-    private void UpdateOverlay()
+    private void InitDarknessTexture()
     {
         if (_overlay == null) return;
 
-        float target = _dissipateTimer > 0f ? 0f : 1f;
-        float speed = 1f / Mathf.Max(0.001f, _fadeDuration);
-        _currentAlpha = Mathf.MoveTowards(_currentAlpha, target, speed * Time.deltaTime);
+        _zoneBounds = _col.bounds;
+        _texWidth = Mathf.Max(1, Mathf.RoundToInt(_zoneBounds.size.x * _pixelsPerUnit));
+        _texHeight = Mathf.Max(1, Mathf.RoundToInt(_zoneBounds.size.y * _pixelsPerUnit));
 
-        var c = _overlay.color;
-        c.a = _currentAlpha;
-        _overlay.color = c;
+        _darknessTexture = new Texture2D(_texWidth, _texHeight, TextureFormat.RGBA32, false);
+        _darknessTexture.filterMode = FilterMode.Bilinear;
+        _darknessTexture.wrapMode = TextureWrapMode.Clamp;
+
+        _pixels = new Color32[_texWidth * _texHeight];
+        for (int i = 0; i < _pixels.Length; i++)
+            _pixels[i] = new Color32(0, 0, 0, 255);
+
+        _darknessTexture.SetPixels32(_pixels);
+        _darknessTexture.Apply();
+
+        Sprite sprite = Sprite.Create(
+            _darknessTexture,
+            new Rect(0, 0, _texWidth, _texHeight),
+            new Vector2(0.5f, 0.5f),
+            _pixelsPerUnit
+        );
+
+        _overlay.sprite = sprite;
+        _overlay.color = Color.white;
+        _overlay.transform.position = new Vector3(
+            _zoneBounds.center.x,
+            _zoneBounds.center.y,
+            _overlay.transform.position.z
+        );
+        _overlay.transform.localScale = Vector3.one;
     }
+
+    // ── Per-pixel darkness ────────────────────────────────────────────────────
+
+    private void RestoreDarkness()
+    {
+        if (!_hasAnyCleared || _fadeDuration <= 0f) return;
+
+        float restorePerFrame = (255f / _fadeDuration) * Time.deltaTime;
+        bool stillAnyCleared = false;
+
+        for (int i = 0; i < _pixels.Length; i++)
+        {
+            if (_pixels[i].a >= 255) continue;
+
+            int newAlpha = _pixels[i].a + Mathf.RoundToInt(restorePerFrame);
+            _pixels[i].a = (byte)Mathf.Min(255, newAlpha);
+            _textureDirty = true;
+
+            if (_pixels[i].a < 255)
+                stillAnyCleared = true;
+        }
+
+        _hasAnyCleared = stillAnyCleared;
+    }
+
+    private void EraseWithActiveLights()
+    {
+        if (!Services.IsRegistered<LightSystem>()) return;
+
+        var spotLights = Services.Get<LightSystem>().GetSpotLights();
+        for (int i = 0; i < spotLights.Count; i++)
+        {
+            var light = spotLights[i];
+            if (light == null || !light.enabled || !light.gameObject.activeInHierarchy) continue;
+            if (light.GetComponent<MirrorLightSource>() == null &&
+                light.GetComponent<PlayerLightSource>() == null) continue;
+
+            ProcessLightErase(light);
+        }
+    }
+
+    private void ProcessLightErase(Light2D light)
+    {
+        Vector2 lightPos = light.transform.position;
+        float outerRadius = light.pointLightOuterRadius;
+        if (outerRadius <= 0f) return;
+
+        float outerAngle = light.pointLightOuterAngle;
+
+        if (outerAngle >= FullAngle)
+        {
+            // 360° источник: стираем у ближайшей точки зоны
+            Vector2 center = IsInZoneBoundsXY(lightPos)
+                ? lightPos
+                : (Vector2)_col.ClosestPoint(lightPos);
+            TryEraseAtPoint(lightPos, center, outerRadius);
+        }
+        else
+        {
+            // Направленный источник (зеркало): сэмплируем лучи внутри конуса
+            Vector2 forward = ((Vector2)light.transform.up).normalized;
+            float halfAngle = outerAngle * 0.5f;
+
+            int numRays = Mathf.Clamp(Mathf.RoundToInt(halfAngle / 5f) * 2 + 1, 1, 9);
+            const int numSamples = 8;
+
+            for (int r = 0; r < numRays; r++)
+            {
+                float angle = numRays > 1
+                    ? Mathf.Lerp(-halfAngle, halfAngle, (float)r / (numRays - 1))
+                    : 0f;
+                Vector2 dir = Rotate2D(forward, angle);
+
+                for (int s = 0; s < numSamples; s++)
+                {
+                    float dist = outerRadius * (s + 1f) / numSamples;
+                    Vector2 samplePoint = lightPos + dir * dist;
+
+                    if (!IsInZoneBoundsXY(samplePoint)) continue;
+
+                    if (_occlusionMask.value != 0)
+                    {
+                        RaycastHit2D hit = Physics2D.Raycast(lightPos, dir, dist, _occlusionMask);
+                        if (hit.collider != null) break; // стена — дальше этот луч не идёт
+                    }
+
+                    EraseAt(samplePoint, _eraseRadius);
+                }
+            }
+        }
+    }
+
+    private void TryEraseAtPoint(Vector2 lightPos, Vector2 eraseCenter, float lightRadius)
+    {
+        Vector2 toCenter = eraseCenter - lightPos;
+        float dist = toCenter.magnitude;
+        if (dist > lightRadius) return;
+
+        if (_occlusionMask.value != 0 && dist > 0.01f)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(lightPos, toCenter.normalized, dist, _occlusionMask);
+            if (hit.collider != null) return;
+        }
+
+        EraseAt(eraseCenter, _eraseRadius);
+    }
+
+    private void EraseAt(Vector2 worldPos, float worldRadius)
+    {
+        float u = (worldPos.x - _zoneBounds.min.x) / _zoneBounds.size.x;
+        float v = (worldPos.y - _zoneBounds.min.y) / _zoneBounds.size.y;
+
+        int cx = Mathf.RoundToInt(u * (_texWidth - 1));
+        int cy = Mathf.RoundToInt(v * (_texHeight - 1));
+        int rPx = Mathf.CeilToInt(worldRadius * _pixelsPerUnit);
+        float innerFraction = 0.6f; // 60% радиуса — полностью прозрачная зона
+
+        for (int py = cy - rPx; py <= cy + rPx; py++)
+        {
+            if (py < 0 || py >= _texHeight) continue;
+            for (int px = cx - rPx; px <= cx + rPx; px++)
+            {
+                if (px < 0 || px >= _texWidth) continue;
+
+                float dist = Mathf.Sqrt((px - cx) * (px - cx) + (py - cy) * (py - cy));
+                if (dist > rPx) continue;
+
+                // Мягкий край: от innerFraction*rPx до rPx идёт градиент
+                float t = 1f - Mathf.Clamp01((dist - rPx * innerFraction) / Mathf.Max(1f, rPx * (1f - innerFraction)));
+                byte targetAlpha = (byte)(255 * (1f - t));
+
+                int idx = py * _texWidth + px;
+                if (_pixels[idx].a > targetAlpha)
+                {
+                    _pixels[idx].a = targetAlpha;
+                    _textureDirty = true;
+                    _hasAnyCleared = true;
+                }
+            }
+        }
+    }
+
+    private bool IsPlayerInDarkness()
+    {
+        if (_ctx == null) return false;
+        return GetAlphaAtWorldPos(_ctx.transform.position) > _darknessThreshold;
+    }
+
+    private float GetAlphaAtWorldPos(Vector2 worldPos)
+    {
+        float u = (worldPos.x - _zoneBounds.min.x) / _zoneBounds.size.x;
+        float v = (worldPos.y - _zoneBounds.min.y) / _zoneBounds.size.y;
+
+        int px = Mathf.Clamp(Mathf.RoundToInt(u * (_texWidth - 1)), 0, _texWidth - 1);
+        int py = Mathf.Clamp(Mathf.RoundToInt(v * (_texHeight - 1)), 0, _texHeight - 1);
+        return _pixels[py * _texWidth + px].a / 255f;
+    }
+
+    private bool IsInZoneBoundsXY(Vector2 point)
+    {
+        return point.x >= _zoneBounds.min.x && point.x <= _zoneBounds.max.x &&
+               point.y >= _zoneBounds.min.y && point.y <= _zoneBounds.max.y;
+    }
+
+    // ── Effects & Damage ──────────────────────────────────────────────────────
 
     private void UpdateEffects(bool darknessActive)
     {
         _vignetteController?.SetDarknessActive(darknessActive);
-
         UpdateSpeedMultiplier(darknessActive);
 
         if (_ambientLight == null) return;
@@ -132,70 +321,7 @@ public class DarknessZone : MonoBehaviour
         _ctx.health?.TakeDamage(_damagePerSecond * Time.deltaTime);
     }
 
-    private const float FullAngle = 359.9f;
-
-    private bool IsPlayerLightPresent()
-    {
-        if (!Services.IsRegistered<LightSystem>()) return false;
-
-        var spotLights = Services.Get<LightSystem>().GetSpotLights();
-        for (int i = 0; i < spotLights.Count; i++)
-        {
-            var light = spotLights[i];
-            if (light == null || !light.enabled || !light.gameObject.activeInHierarchy) continue;
-            if (light.GetComponent<MirrorLightSource>() == null &&
-                light.GetComponent<PlayerLightSource>() == null) continue;
-
-            if (IsLightHittingZone(light))
-                return true;
-        }
-        return false;
-    }
-
-    private bool IsLightHittingZone(Light2D light)
-    {
-        Vector2 lightPos = light.transform.position;
-
-        // Проверяем ближайшую точку зоны к источнику света и центр bounds
-        if (IsPointIlluminatedByLight(light, lightPos, _col.ClosestPoint(lightPos)))
-            return true;
-        if (IsPointIlluminatedByLight(light, lightPos, _col.bounds.center))
-            return true;
-
-        return false;
-    }
-
-    private bool IsPointIlluminatedByLight(Light2D light, Vector2 lightPos, Vector2 targetPoint)
-    {
-        float outerRadius = light.pointLightOuterRadius;
-        if (outerRadius <= 0f) return false;
-
-        Vector2 toTarget = targetPoint - lightPos;
-        float distance = toTarget.magnitude;
-        if (distance > outerRadius) return false;
-
-        // Проверка углового конуса (если не 360°)
-        float outerAngle = light.pointLightOuterAngle;
-        if (outerAngle < FullAngle)
-        {
-            Vector2 forward = light.transform.up;
-            if (forward.sqrMagnitude > 0f && distance > 0f)
-            {
-                float cosHalfAngle = Mathf.Cos(outerAngle * 0.5f * Mathf.Deg2Rad);
-                float dot = Vector2.Dot(forward.normalized, toTarget / distance);
-                if (dot < cosHalfAngle) return false;
-            }
-        }
-
-        // Raycast: проверяем, нет ли стены между светом и точкой
-        if (_occlusionMask.value != 0 && distance > 0f)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(lightPos, toTarget / distance, distance, _occlusionMask);
-            if (hit.collider != null) return false;
-        }
-
-        return true;
-    }
+    // ── Triggers ──────────────────────────────────────────────────────────────
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -237,6 +363,16 @@ public class DarknessZone : MonoBehaviour
         }
     }
 
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private static Vector2 Rotate2D(Vector2 v, float degrees)
+    {
+        float rad = degrees * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(rad);
+        float sin = Mathf.Sin(rad);
+        return new Vector2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
+    }
+
     private void OnDestroy()
     {
         _vignetteController?.SetDarknessActive(false);
@@ -246,5 +382,8 @@ public class DarknessZone : MonoBehaviour
 
         if (_ambientLight != null)
             _ambientLight.intensity = _ambientLightBaseIntensity;
+
+        if (_darknessTexture != null)
+            Destroy(_darknessTexture);
     }
 }
