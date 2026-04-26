@@ -30,6 +30,8 @@ namespace HSM
         protected override void OnExit()
         {
             ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
+            ctx.currentFootstepInterval = 0f;
+            ctx.currentNoiseRadius = 0f;
         }
 
         protected override void OnUpdate(float deltaTime)
@@ -81,6 +83,11 @@ namespace HSM
                 : ctx.stats.GroundDeceleration;
 
             ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, targetSpeed, accel * deltaTime);
+
+            // Нужно для HandlePeriodicDamage: движение = интервал шага, стоим = нет периодического урона
+            bool isMoving = Mathf.Abs(ctx.velocity.x) > 0.5f;
+            ctx.currentFootstepInterval = isMoving ? ctx.noiseStats.WalkFootstepInterval : 0f;
+            ctx.currentNoiseRadius      = isMoving ? ctx.noiseStats.WalkNoiseRadius      : 0f;
         }
 
         private void UpdateAnimation()
