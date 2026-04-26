@@ -13,4 +13,5 @@ public enum SortingOrder
     ForegroundEffects       =  60,
     CharacterOverlay        =  70,
     AlwaysOnTop             = 1000,
+    Darkness                = 1100,
 }
