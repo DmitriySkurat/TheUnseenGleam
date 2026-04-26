@@ -3,7 +3,6 @@ public enum SortingOrder
     FarBackground           = -30,
     Default                 =   0,
     Background              =  10,
-    Collision               =  15,
     Climable                =  16,
     Effects                 =  20,
     InteractablesInBack     =  25,
@@ -12,6 +11,7 @@ public enum SortingOrder
     Enemy                   =  50,
     ForegroundEffects       =  60,
     CharacterOverlay        =  70,
+    Darkness                =  80,
+    Collision               =  90,
     AlwaysOnTop             = 1000,
-    Darkness                = 1100,
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+public enum EdgeSoftAxes { All, Horizontal, Vertical }
+
 [RequireComponent(typeof(Collider2D))]
 public class DarknessZone : MonoBehaviour
 {
@@ -24,6 +26,10 @@ public class DarknessZone : MonoBehaviour
     [SerializeField] private float _pixelsPerUnit = 16f;
     [Tooltip("Сколько секунд тьма восстанавливается от 0 до полной")]
     [SerializeField] private float _fadeDuration = 2f;
+    [Tooltip("Ширина мягкого края (world units): 0 = жёсткая граница, 2+ = туманный переход")]
+    [SerializeField, Min(0f)] private float _edgeSoftness = 2f;
+    [Tooltip("По каким осям размывать края")]
+    [SerializeField] private EdgeSoftAxes _softAxes = EdgeSoftAxes.Horizontal;
 
     private Collider2D _col;
     private Bounds _zoneBounds;
@@ -31,6 +37,7 @@ public class DarknessZone : MonoBehaviour
     // Texture
     private Texture2D _darknessTexture;
     private Color32[] _pixels;
+    private byte[] _baseAlpha;  // максимальная тьма в каждом пикселе (с учётом мягких краёв)
     private int _texWidth, _texHeight;
     private bool _textureDirty;
     private bool _hasAnyCleared;
@@ -101,8 +108,8 @@ public class DarknessZone : MonoBehaviour
         _darknessTexture.wrapMode = TextureWrapMode.Clamp;
 
         _pixels = new Color32[_texWidth * _texHeight];
-        for (int i = 0; i < _pixels.Length; i++)
-            _pixels[i] = new Color32(0, 0, 0, 255);
+        _baseAlpha = new byte[_texWidth * _texHeight];
+        BakeEdgeSoftness();
 
         _darknessTexture.SetPixels32(_pixels);
         _darknessTexture.Apply();
@@ -126,6 +133,42 @@ public class DarknessZone : MonoBehaviour
 
     // ── Per-pixel darkness ────────────────────────────────────────────────────
 
+    private void BakeEdgeSoftness()
+    {
+        float softness = Mathf.Max(0.001f, _edgeSoftness);
+
+        for (int py = 0; py < _texHeight; py++)
+        {
+            for (int px = 0; px < _texWidth; px++)
+            {
+                // Расстояние до ближайшего края bounds в world units
+                float worldX = _zoneBounds.min.x + (px + 0.5f) / _pixelsPerUnit;
+                float worldY = _zoneBounds.min.y + (py + 0.5f) / _pixelsPerUnit;
+
+                float distLeft   = worldX - _zoneBounds.min.x;
+                float distRight  = _zoneBounds.max.x - worldX;
+                float distBottom = worldY - _zoneBounds.min.y;
+                float distTop    = _zoneBounds.max.y - worldY;
+
+                float edgeDist = _softAxes switch {
+                    EdgeSoftAxes.Horizontal => Mathf.Min(distLeft,   distRight),
+                    EdgeSoftAxes.Vertical   => Mathf.Min(distBottom, distTop),
+                    _                       => Mathf.Min(distLeft, Mathf.Min(distRight, Mathf.Min(distBottom, distTop))),
+                };
+
+                // Плавный переход: у краёв alpha=0, в центре alpha=255
+                float t = Mathf.Clamp01(edgeDist / softness);
+                // Используем smoothstep для более органичного тумана
+                t = t * t * (3f - 2f * t);
+
+                byte a = (byte)(t * 255f);
+                int idx = py * _texWidth + px;
+                _baseAlpha[idx] = a;
+                _pixels[idx] = new Color32(0, 0, 0, a);
+            }
+        }
+    }
+
     private void RestoreDarkness()
     {
         if (!_hasAnyCleared || _fadeDuration <= 0f) return;
@@ -135,13 +178,14 @@ public class DarknessZone : MonoBehaviour
 
         for (int i = 0; i < _pixels.Length; i++)
         {
-            if (_pixels[i].a >= 255) continue;
+            byte target = _baseAlpha[i];
+            if (_pixels[i].a >= target) continue;
 
             int newAlpha = _pixels[i].a + Mathf.RoundToInt(restorePerFrame);
-            _pixels[i].a = (byte)Mathf.Min(255, newAlpha);
+            _pixels[i].a = (byte)Mathf.Min(target, newAlpha);
             _textureDirty = true;
 
-            if (_pixels[i].a < 255)
+            if (_pixels[i].a < target)
                 stillAnyCleared = true;
         }
 
@@ -288,9 +332,11 @@ public class DarknessZone : MonoBehaviour
         int py = Mathf.Clamp(Mathf.RoundToInt(v * (_texHeight - 1)), 0, _texHeight - 1);
 
         int idx = py * _texWidth + px;
-        if (_pixels[idx].a > targetAlpha)
+        // Не применяем alpha выше базовой (край зоны остаётся прозрачным)
+        byte clamped = (byte)Mathf.Min(targetAlpha, _baseAlpha[idx]);
+        if (_pixels[idx].a > clamped)
         {
-            _pixels[idx].a = targetAlpha;
+            _pixels[idx].a = clamped;
             _textureDirty = true;
             _hasAnyCleared = true;
         }
