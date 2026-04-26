@@ -72,6 +72,10 @@ public class PlayerContext
     public float currentHealth; // брать из PlayerHealth
     public bool isAlive;
 
+    // ===== DARKNESS =====
+    public bool isInDarkness;
+    public float darknessDamagePerSecond;
+
     // ===== GRABBED =====
     public bool isGrabbed;
     public bool isInDialog;

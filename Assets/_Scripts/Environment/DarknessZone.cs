@@ -12,20 +12,18 @@ public class DarknessZone : MonoBehaviour
     [Header("Light Detection")]
     [Tooltip("Маска слоёв для стен, перекрывающих свет")]
     [SerializeField] private LayerMask _occlusionMask;
-    [Tooltip("Максимум лучей на один направленный источник (больше = точнее, но дороже)")]
+    [Tooltip("Максимум лучей на один направленный источник")]
     [SerializeField, Min(8)] private int _maxRaysPerLight = 60;
     [Tooltip("Если alpha пикселя под игроком выше этого — тьма активна")]
     [SerializeField, Range(0f, 1f)] private float _darknessThreshold = 0.4f;
-
-    [Header("Dissipation")]
-    [Tooltip("Сколько секунд тьма восстанавливается от 0 до полной (после ухода света)")]
-    [SerializeField] private float _fadeDuration = 2f;
 
     [Header("Visual")]
     [Tooltip("SpriteRenderer-оверлей (спрайт будет заменён динамической текстурой)")]
     [SerializeField] private SpriteRenderer _overlay;
     [Tooltip("Разрешение текстуры тьмы (пикселей на world unit)")]
     [SerializeField] private float _pixelsPerUnit = 16f;
+    [Tooltip("Сколько секунд тьма восстанавливается от 0 до полной")]
+    [SerializeField] private float _fadeDuration = 2f;
 
     private Collider2D _col;
     private Bounds _zoneBounds;
@@ -40,10 +38,8 @@ public class DarknessZone : MonoBehaviour
     // Player state
     private bool _playerInside;
     private PlayerContext _ctx;
-    private bool _speedModified;
-    private float _savedSpeedMultiplier;
 
-    // Effects
+    // Visual effects
     private VignetteController _vignetteController;
     private Light2D _ambientLight;
     private float _ambientLightBaseIntensity;
@@ -79,8 +75,15 @@ public class DarknessZone : MonoBehaviour
         }
 
         bool darknessActive = _playerInside && IsPlayerInDarkness();
-        UpdateEffects(darknessActive);
-        ApplyDamage(darknessActive);
+
+        // Устанавливаем флаги для HSM-стейта
+        if (_ctx != null)
+        {
+            _ctx.isInDarkness = darknessActive;
+            _ctx.darknessDamagePerSecond = _damagePerSecond;
+        }
+
+        UpdateVisualEffects(darknessActive);
     }
 
     // ── Texture Init ─────────────────────────────────────────────────────────
@@ -171,7 +174,6 @@ public class DarknessZone : MonoBehaviour
 
         if (outerAngle >= FullAngle)
         {
-            // 360° источник: стираем диск вокруг позиции
             Vector2 center = IsInZoneBoundsXY(lightPos)
                 ? lightPos
                 : (Vector2)_col.ClosestPoint(lightPos);
@@ -179,21 +181,18 @@ public class DarknessZone : MonoBehaviour
         }
         else
         {
-            // Направленный источник: поточечная закраска пикселей вдоль лучей конуса
             Vector2 forward = ((Vector2)light.transform.up).normalized;
             EraseLightCone(lightPos, forward, outerRadius, outerAngle,
                 light.pointLightInnerAngle, light.pointLightInnerRadius);
         }
     }
 
-    // Поточечная закраска вдоль лучей конуса — без видимых окружностей
     private void EraseLightCone(Vector2 lightPos, Vector2 forward,
         float outerRadius, float outerAngle, float innerAngle, float innerRadius)
     {
         float halfOuter = outerAngle * 0.5f;
         float halfInner = Mathf.Min(innerAngle * 0.5f, halfOuter);
 
-        // Шаг угла: чтобы на максимальной дальности между лучами не было щелей в пиксель
         float pixelWorld = 1f / _pixelsPerUnit;
         float autoStep = Mathf.Atan2(pixelWorld * 0.5f, outerRadius) * Mathf.Rad2Deg;
         float minStep = (halfOuter * 2f) / _maxRaysPerLight;
@@ -233,7 +232,6 @@ public class DarknessZone : MonoBehaviour
         }
     }
 
-    // Диск для 360° источника
     private void EraseDisc(Vector2 lightPos, Vector2 center, float outerRadius, float innerRadius)
     {
         Vector2 toCenter = center - lightPos;
@@ -320,41 +318,17 @@ public class DarknessZone : MonoBehaviour
                point.y >= _zoneBounds.min.y && point.y <= _zoneBounds.max.y;
     }
 
-    // ── Effects & Damage ──────────────────────────────────────────────────────
+    // ── Visual effects (vignette + ambient) ───────────────────────────────────
 
-    private void UpdateEffects(bool darknessActive)
+    private void UpdateVisualEffects(bool darknessActive)
     {
         _vignetteController?.SetDarknessActive(darknessActive);
-        UpdateSpeedMultiplier(darknessActive);
 
         if (_ambientLight == null) return;
         float targetAmbient = darknessActive ? 0f : _ambientLightBaseIntensity;
         float speed = 1f / Mathf.Max(0.001f, _fadeDuration);
         _currentAmbientIntensity = Mathf.MoveTowards(_currentAmbientIntensity, targetAmbient, speed * Time.deltaTime);
         _ambientLight.intensity = _currentAmbientIntensity;
-    }
-
-    private void UpdateSpeedMultiplier(bool darknessActive)
-    {
-        if (_ctx == null) return;
-
-        if (darknessActive && !_speedModified)
-        {
-            _savedSpeedMultiplier = _ctx.currentSpeedMultiplier;
-            _ctx.currentSpeedMultiplier = _ctx.stats.DarknessSpeedMultiplier;
-            _speedModified = true;
-        }
-        else if (!darknessActive && _speedModified)
-        {
-            _ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
-            _speedModified = false;
-        }
-    }
-
-    private void ApplyDamage(bool darknessActive)
-    {
-        if (!darknessActive || _ctx == null) return;
-        _ctx.health?.TakeDamage(_damagePerSecond * Time.deltaTime);
     }
 
     // ── Triggers ──────────────────────────────────────────────────────────────
@@ -374,10 +348,10 @@ public class DarknessZone : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        if (_ctx != null && _speedModified)
+        if (_ctx != null)
         {
-            _ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
-            _speedModified = false;
+            _ctx.isInDarkness = false;
+            _ctx.darknessDamagePerSecond = 0f;
         }
 
         _playerInside = false;
@@ -413,8 +387,11 @@ public class DarknessZone : MonoBehaviour
     {
         _vignetteController?.SetDarknessActive(false);
 
-        if (_ctx != null && _speedModified)
-            _ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
+        if (_ctx != null)
+        {
+            _ctx.isInDarkness = false;
+            _ctx.darknessDamagePerSecond = 0f;
+        }
 
         if (_ambientLight != null)
             _ambientLight.intensity = _ambientLightBaseIntensity;
