@@ -136,12 +136,12 @@ public class NewGameMenu : MonoBehaviour, ISceneLifecycle
             SaveManager.Delete(slot);
 
         // health=0 — признак «новой игры»; SaveLoader не будет читать эти значения.
-        SaveManager.Save(slot, 0f, 0f, SceneNames.Demo);
+        SaveManager.Save(slot, 0f, 0f, SceneNames.CutsceneVillage);
 
         SaveVariables.ActiveSlot = slot;
         SaveVariables.PendingSave = null;
 
-        Utility.SceneLoader.Load(SceneNames.Demo);
+        Utility.SceneLoader.Load(SceneNames.CutsceneVillage);
         // _sceneTransition.TransitionTo(SceneNames.Demo);
     }
 }
