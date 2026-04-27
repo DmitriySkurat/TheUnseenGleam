@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5788470019126106582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2351172227753660795}
+  - component: {fileID: 6273920881464614608}
+  m_Layer: 0
+  m_Name: CutsceneEntryPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2351172227753660795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5788470019126106582}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -206.20708, y: 6.15587, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6273920881464614608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5788470019126106582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62585ea8466babf479a39f88738b3c64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntryPoint.CutsceneEntryPoint
+  _registry: {fileID: 7147265164270630297, guid: 5b5d1cda5c7d8e34dadf9c8e2bf7b7ca, type: 3}
+  _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
+  gameServiceRegistry: {fileID: 3925677281339909014, guid: b6dfc778366e8c34ebe06266877319c0, type: 3}
+  _sessionBootstrap: {fileID: 667774903215871802, guid: 80cefb504db97fc4688871791a398af7, type: 3}
+  _vignetteIntensity: 0.1
+  _globalLightIntensity: 1

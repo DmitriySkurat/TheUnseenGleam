@@ -73,27 +73,14 @@ public class VignetteController : MonoBehaviour, ISceneLifecycle
 
         _timeInLight = 0f;
     }
-
-    public void ForceIntensity(float intensity)
-    {
-        currentIntensity = intensity;
-        if (_vignette != null)
-            _vignette.intensity.value = currentIntensity;
-    }
     
     public void Dispose() { }
 
     public void SetDarknessActive(bool active) => _darknessActive = active;
 
-    public void SetVignetteEnabled(bool active)
-    {
-        if (_vignette != null)
-            _vignette.active = active;
-    }
-
     private void Update()
     {
-        if (_vignette == null || _cameraFollow == null || _vignette.active == false) return;
+        if (_vignette == null || _cameraFollow == null) return;
 
         bool isLooking = _cameraFollow.IsLookingAround();
 

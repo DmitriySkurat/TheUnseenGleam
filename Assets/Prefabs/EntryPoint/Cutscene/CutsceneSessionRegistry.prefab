@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4730368610256857714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2210332869638105856}
+  - component: {fileID: 6216820512032289489}
+  m_Layer: 0
+  m_Name: CutsceneSessionRegistry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2210332869638105856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4730368610256857714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -159.80142, y: 2.73678, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6216820512032289489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4730368610256857714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58f6d4938670944f9e01d544f54ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SessionServiceRegistry
+  _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
+  _servicePrefabs:
+  - {fileID: 373454870045965411, guid: f36eaa91a41a3494a8e76e87dfd95118, type: 3}
+  - {fileID: 7760949569286643084, guid: 40055bc5306766d439a9e98549c1ec3f, type: 3}
+  - {fileID: 421477798087254921, guid: a4c6b63f99eb5f1489e1a359c8b7bc22, type: 3}
+  - {fileID: 3873025487628024407, guid: a25795bf1f7e74b4a94d45e1e364912f, type: 3}
+  _plainPrefabs:
+  - {fileID: 8758084810032045221, guid: 705527ac48db32947872a3e3e157763a, type: 3}
+  _persistAcrossScenes: 0
+  _stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
+  _noiseStats: {fileID: 11400000, guid: eccbd4ddfcc6644489d9aeffef87daa2, type: 2}
