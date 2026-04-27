@@ -24,7 +24,11 @@ namespace HSM {
             if (ctx.isHiding) return Machine != null ? Machine.GetState<Hide>() : null;
             if (ctx.WantsCrouch) return Machine != null ? Machine.GetState<Crouch>() : null;
             //if (Mathf.Abs(ctx.input.Move.x) <= 0.01f) return Machine != null ? Machine.GetState<Idle>() : null;      
-            if (!ctx.HasMovementIntent) return Machine != null ? Machine.GetState<Stopping>() : null;
+            if (!ctx.HasMovementIntent) {
+                bool isRunSpeed = Mathf.Abs(ctx.velocity.x) > ctx.stats.MaxSpeed * ctx.stats.WalkSpeedMultiplier;
+                if (isRunSpeed) return Machine != null ? Machine.GetState<Stopping>() : null;
+                return Machine != null ? Machine.GetState<Idle>() : null;
+            }
             
             return null;
         }
