@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce412e35f67f00e4f9da98d5aa825767, type: 3}
+  m_Name: CutsceneGraph
+  m_EditorClassIdentifier: Assembly-CSharp::PlatNav.PlatformNavGraphAsset
+  tilemapSize: {x: 209, y: 28}
+  tileOrigin: {x: -221, y: -32}
+  cellWorldOrigin: {x: 5.6100006, y: 26.130005}
+  segments:
+  - gravity: 1
+    axis: 0
+    line: -18
+    min: -220
+    max: -112
+    firstOut: 0
+    outCount: 0
+  links: []
+  horizontalBins:
+    axis: 0
+    binSize: 4
+    origin: -220
+    binCount: 28
+    first: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a0000001b000000
+    count: 0100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100010001000100
+    refs: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  verticalBins:
+    axis: 1
+    binSize: 4
+    origin: 0
+    binCount: 0
+    first: 
+    count: 
+    refs: 
