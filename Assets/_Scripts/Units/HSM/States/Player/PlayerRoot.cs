@@ -11,7 +11,7 @@ namespace HSM {
         public readonly LedgeClimb LedgeClimb;
         public readonly InDarkness InDarkness;
         public readonly OnSpikes OnSpikes;
-        public readonly PlayerStumble Stumble;
+        public readonly Stumble Stumble;
 
         readonly PlayerContext ctx;
         private float _footstepTimer;
@@ -30,7 +30,7 @@ namespace HSM {
             LedgeClimb  = new LedgeClimb(m, this, ctx);
             InDarkness  = new InDarkness(m, this, ctx);
             OnSpikes    = new OnSpikes(m, this, ctx);
-            Stumble     = new PlayerStumble(m, this, ctx);
+            Stumble     = new Stumble(m, this, ctx);
 
             _noiseSystem = Services.Get<NoiseSystem>();
         }
@@ -40,7 +40,7 @@ namespace HSM {
         {
             if (!ctx.isAlive)       return Machine?.GetState<Death>();
             if (ctx.isGrabbed)      return Machine?.GetState<PlayerGrabbed>();
-            if (ctx.stumblePending) return Machine?.GetState<PlayerStumble>();
+            if (ctx.stumblePending) return Machine?.GetState<Stumble>();
             if (ctx.OnClimbable) return null;
             if (ctx.isLedgeGrabbing) return null;
             if (ctx.isOnSpikes   && ctx.grounded) return Machine?.GetState<OnSpikes>();
