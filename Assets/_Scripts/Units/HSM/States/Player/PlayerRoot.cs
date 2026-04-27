@@ -62,8 +62,14 @@ namespace HSM {
             base.OnUpdate(deltaTime);
         }
 
-        void HandleJump() 
+        void HandleJump()
         {
+            if (ctx.isSceneEntry)
+            {
+                ctx.jumpToConsume = false;
+                return;
+            }
+
             if (ctx.isHiding)
             {
                 ctx.jumpToConsume = false;

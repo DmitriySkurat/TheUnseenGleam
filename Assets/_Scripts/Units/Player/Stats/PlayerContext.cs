@@ -93,7 +93,7 @@ public class PlayerContext
     
     // ===== TIMERS =====
     public float timeInteractWasPressed;
-    public float timeJumpWasPressed;
+    public float timeJumpWasPressed = float.MinValue;
     public float timeLastInteraction;
     public float frameLeftGrounded = float.MinValue;
     public float movementGraceTimer;
