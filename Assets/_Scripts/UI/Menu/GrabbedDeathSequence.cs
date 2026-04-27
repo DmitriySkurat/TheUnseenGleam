@@ -1,0 +1,96 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using EntryPoint;
+
+public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
+{
+    public InitializationOrder Order => InitializationOrder.UI;
+
+    [SerializeField] private Image fadeOverlay;
+    [SerializeField] private DeathMenu deathMenu;
+
+    [SerializeField] private float offScreenTimeout = 4f;
+    [SerializeField] private float fadeDuration = 1f;
+
+    private PlayerHealth _playerHealth;
+    private PlayerContext _playerCtx;
+    private Camera _camera;
+
+    public void Initialize()
+    {
+        if (!Services.IsRegistered<PlayerContext>())
+            return;
+
+        _playerCtx = Services.Get<PlayerContext>();
+        _playerHealth = _playerCtx.health;
+        _playerHealth.OnDied += OnPlayerDied;
+
+        _camera = Camera.main;
+
+        if (fadeOverlay != null)
+        {
+            var c = fadeOverlay.color;
+            c.a = 0f;
+            fadeOverlay.color = c;
+            fadeOverlay.gameObject.SetActive(false);
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_playerHealth != null)
+            _playerHealth.OnDied -= OnPlayerDied;
+    }
+
+    private void OnPlayerDied()
+    {
+        if (_playerCtx != null && _playerCtx.diedWhileGrabbed)
+            StartCoroutine(RunSequence());
+    }
+
+    private IEnumerator RunSequence()
+    {
+        // Шаг 1: Отвязываем камеру
+        if (_playerCtx.cameraFollow != null)
+            _playerCtx.cameraFollow.Freeze();
+
+        // Шаг 2: Ждём пока игрок (которого тащит агент) уйдёт за край экрана
+        float elapsed = 0f;
+        while (elapsed < offScreenTimeout)
+        {
+            elapsed += Time.deltaTime;
+            if (IsPlayerOffScreen())
+                break;
+            yield return null;
+        }
+
+        // Шаг 3: Затемнение
+        if (fadeOverlay != null)
+        {
+            fadeOverlay.gameObject.SetActive(true);
+            float t = 0f;
+            while (t < fadeDuration)
+            {
+                t += Time.deltaTime;
+                var c = fadeOverlay.color;
+                c.a = Mathf.Clamp01(t / fadeDuration);
+                fadeOverlay.color = c;
+                yield return null;
+            }
+        }
+
+        // Шаг 4: Экран смерти
+        if (deathMenu != null)
+            deathMenu.ShowNow();
+    }
+
+    private bool IsPlayerOffScreen()
+    {
+        if (_camera == null || _playerCtx?.transform == null)
+            return false;
+
+        Vector3 vp = _camera.WorldToViewportPoint(_playerCtx.transform.position);
+        return vp.x < -0.05f || vp.x > 1.05f || vp.y < -0.05f || vp.y > 1.05f;
+    }
+}

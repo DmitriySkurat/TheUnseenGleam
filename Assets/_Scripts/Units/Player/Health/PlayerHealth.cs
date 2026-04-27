@@ -75,6 +75,7 @@ public class PlayerHealth : MonoBehaviour, ISessionLifecycle
             return;
 
         _ctx.isAlive = false;
+        _ctx.diedWhileGrabbed = _ctx.isGrabbed;
         Debug.Log("Player died");
         OnDied?.Invoke();
     }

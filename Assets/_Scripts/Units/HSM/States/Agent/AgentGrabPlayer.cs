@@ -34,8 +34,22 @@ namespace HSM {
                 if (ctx.grabFirstHitTimer <= 0f)
                     StartGrab();
             }
+            else if (ctx.playerCtx != null && !ctx.playerCtx.isAlive)
+            {
+                DragBodyAway();
+            }
 
             base.OnUpdate(deltaTime);
+        }
+
+        void DragBodyAway()
+        {
+            float facingDir = ctx.transform.localScale.x >= 0f ? 1f : -1f;
+            ctx.rb.linearVelocity = new Vector2(facingDir * ctx.stats.ChaseSpeed, ctx.rb.linearVelocity.y);
+
+            Vector2 grabPos = (Vector2)ctx.transform.position + Vector2.right * (facingDir * ctx.stats.GrabPlayerOffset);
+            ctx.playerRb.position = grabPos;
+            ctx.playerCtx.velocity = Vector2.zero;
         }
 
         protected override void OnExit()
@@ -54,6 +68,10 @@ namespace HSM {
         protected override State GetTransition()
         {
             if (ctx.IsTraversingLink) return null;
+
+            // Игрок мёртв — агент уносит тело, не преследует
+            if (ctx.playerCtx != null && !ctx.playerCtx.isAlive)
+                return null;
 
             // Игрок вырвался — преследуем
             if (_isHolding && ctx.playerCtx != null && !ctx.playerCtx.isGrabbed)

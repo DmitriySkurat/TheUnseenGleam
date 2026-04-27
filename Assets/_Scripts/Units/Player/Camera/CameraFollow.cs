@@ -51,12 +51,15 @@ public class CameraFollow : MonoBehaviour, ISceneLifecycle
     private bool _wasLookingAround;
     private Vector2 _lookInputOrigin;
     private Vector3 _lookStartTotalOffset;
+    private bool _frozen;
 
     private PlayerContext _ctx;
     private Rigidbody2D _targetRb;
     private Collider2D _targetCollider;
 
     public bool IsLookingAround() => _isLookingAround;
+
+    public void Freeze() => _frozen = true;
 
     public void Initialize()
     {
@@ -77,7 +80,7 @@ public class CameraFollow : MonoBehaviour, ISceneLifecycle
     
     private void Update()
     {
-        if (target == null || _ctx == null)
+        if (target == null || _ctx == null || _frozen)
             return;
 
         float actualMoveX = _targetRb != null ? _targetRb.linearVelocity.x : 0f;
@@ -154,7 +157,7 @@ public class CameraFollow : MonoBehaviour, ISceneLifecycle
 
     private void LateUpdate()
     {
-        if (target == null) return;
+        if (target == null || _frozen) return;
 
         Vector3 followOffset = new Vector3(_currentFacingOffset + _currentMoveOffset, _currentEdgePeekOffsetY + _currentFallingOffsetY, 0f);
         Vector3 desiredPos = target.position + offset + followOffset + _currentOffset;

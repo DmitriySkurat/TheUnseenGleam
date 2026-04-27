@@ -9,6 +9,7 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
     [SerializeField] private GameObject deathGameMenu;
 
     private PlayerHealth _playerHealth;
+    private PlayerContext _playerCtx;
 
     private InputManager _inputManager;
 
@@ -19,7 +20,8 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
 
         _inputManager = Services.Get<InputManager>();
 
-        _playerHealth = Services.Get<PlayerContext>().health;
+        _playerCtx = Services.Get<PlayerContext>();
+        _playerHealth = _playerCtx.health;
         _playerHealth.OnDied += Show;
 
         deathGameMenu.SetActive(false);
@@ -32,6 +34,14 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
     }
 
     private void Show()
+    {
+        if (_playerCtx != null && _playerCtx.diedWhileGrabbed)
+            return;
+
+        ShowNow();
+    }
+
+    public void ShowNow()
     {
         deathGameMenu.SetActive(true);
         _inputManager.EnableUI();
