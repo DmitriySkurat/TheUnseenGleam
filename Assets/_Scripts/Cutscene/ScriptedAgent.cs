@@ -111,11 +111,21 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
 
     void TickCarry(float deltaTime)
     {
+        if (_nav.State == PlatNavState.Idle)
+        {
+            // PlatNav путь может закончиться на точке приземления после прыжка,
+            // не дойдя до exitPoint внутри целевого сегмента. Переиздаём MoveTo.
+            if (_exitPoint == null ||
+                Vector2.Distance(transform.position, _exitPoint.position) <= 0.5f)
+            {
+                _phase = Phase.Done;
+                return;
+            }
+            _nav.MoveTo(_exitPoint.position, _runSpeed);
+        }
+
         _nav.Tick(deltaTime);
         KeepNPCAttached();
-
-        if (_nav.State == PlatNavState.Idle)
-            _phase = Phase.Done;
     }
 
     void BeginGrab()
