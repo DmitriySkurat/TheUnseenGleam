@@ -1,3 +1,4 @@
+using PlatNav;
 using UnityEngine;
 
 namespace HSM {
@@ -6,6 +7,7 @@ namespace HSM {
         readonly AgentContext ctx;
 
         bool _isHolding;
+        bool _isDragging;
 
         public AgentGrabPlayer(StateMachine m, State parent, AgentContext ctx) : base(m, parent)
         {
@@ -23,6 +25,7 @@ namespace HSM {
                 ? 0f
                 : ctx.stats.AttackFirstHitDelay;
             _isHolding = false;
+            _isDragging = false;
             base.OnEnter();
         }
 
@@ -36,17 +39,34 @@ namespace HSM {
             }
             else if (ctx.playerCtx != null && !ctx.playerCtx.isAlive)
             {
-                DragBodyAway();
+                if (!_isDragging)
+                    StartDragging();
+
+                ctx.nav.SetSpeed(ctx.stats.ChaseSpeed);
+                ctx.nav.Tick(deltaTime);
+
+                // Если дошли до целевой точки — назначаем новую ещё дальше
+                if (ctx.nav.State == PlatNavState.Idle)
+                    StartDragging();
+
+                KeepPlayerAttached();
             }
 
             base.OnUpdate(deltaTime);
         }
 
-        void DragBodyAway()
+        void StartDragging()
+        {
+            _isDragging = true;
+            ctx.nav.SetTarget(null);
+            float facingDir = ctx.transform.localScale.x >= 0f ? 1f : -1f;
+            Vector2 farPoint = (Vector2)ctx.transform.position + Vector2.right * (facingDir * 60f);
+            ctx.nav.MoveTo(farPoint, ctx.stats.ChaseSpeed);
+        }
+
+        void KeepPlayerAttached()
         {
             float facingDir = ctx.transform.localScale.x >= 0f ? 1f : -1f;
-            ctx.rb.linearVelocity = new Vector2(facingDir * ctx.stats.ChaseSpeed, ctx.rb.linearVelocity.y);
-
             Vector2 grabPos = (Vector2)ctx.transform.position + Vector2.right * (facingDir * ctx.stats.GrabPlayerOffset);
             ctx.playerRb.position = grabPos;
             ctx.playerCtx.velocity = Vector2.zero;
@@ -54,6 +74,9 @@ namespace HSM {
 
         protected override void OnExit()
         {
+            if (_isDragging)
+                ctx.nav.Abort();
+
             ctx.isGrabbingPlayer = false;
 
             // Гарантированно снимаем захват при любом выходе из состояния
