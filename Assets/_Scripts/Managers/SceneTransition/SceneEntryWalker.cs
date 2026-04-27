@@ -1,9 +1,6 @@
 using UnityEngine;
+using EntryPoint;
 
-/// <summary>
-/// Place in a scene to make the player walk in automatically on load.
-/// Input is fully blocked until the walk completes.
-/// </summary>
 public class SceneEntryWalker : MonoBehaviour, ISceneLifecycle
 {
     public enum WalkDirection { Left = -1, Right = 1 }
@@ -23,15 +20,26 @@ public class SceneEntryWalker : MonoBehaviour, ISceneLifecycle
             return;
 
         _ctx = Services.Get<PlayerContext>();
-        _startX = _ctx.transform.position.x;
-        _ctx.sceneEntryMoveX = (float)_direction;
         _ctx.isSceneEntry = true;
-        _active = true;
+
+        GameplayEntryPoint.OnBootstrapComplete += StartWalk;
     }
 
     public void Dispose()
     {
+        GameplayEntryPoint.OnBootstrapComplete -= StartWalk;
         StopEntry();
+    }
+
+    private void StartWalk()
+    {
+        GameplayEntryPoint.OnBootstrapComplete -= StartWalk;
+
+        if (_ctx == null) return;
+
+        _startX = _ctx.transform.position.x;
+        _ctx.sceneEntryMoveX = (float)_direction;
+        _active = true;
     }
 
     void Update()

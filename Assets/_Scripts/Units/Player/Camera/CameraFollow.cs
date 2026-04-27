@@ -71,6 +71,9 @@ public class CameraFollow : MonoBehaviour, ISceneLifecycle
         target = _ctx.transform;
         _targetRb = target != null ? target.GetComponent<Rigidbody2D>() : null;
         _targetCollider = target != null ? target.GetComponent<Collider2D>() : null;
+
+        if (target != null)
+            transform.position = target.position + offset;
     }
 
     public void Dispose()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,13 +6,15 @@ namespace EntryPoint
 {
     public class GameplayEntryPoint : SceneBootstrap
     {
+        public static event Action OnBootstrapComplete;
+
         [SerializeField] private SessionBootstrap _sessionBootstrap;
 
         protected override IEnumerator Bootstrap()
         {
             // Сркываем курсор - перенести в отдельный сервис, который будет управлять состоянием курсора в зависимости от сцены и контекста
             // Cursor.visible = false;
-            
+
             if (!Services.IsRegistered<SessionBootstrap>())
             {
                 var sessionInstance = Instantiate(_sessionBootstrap);
@@ -30,6 +33,8 @@ namespace EntryPoint
             Services.Get<InputManager>().EnableGameplay();
 
             _logger?.Log("Gameplay scene initialization complete", this);
+
+            OnBootstrapComplete?.Invoke();
         }
 
         protected override void OnDestroy()
