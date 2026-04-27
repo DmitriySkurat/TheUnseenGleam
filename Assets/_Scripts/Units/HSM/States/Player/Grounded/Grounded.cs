@@ -5,6 +5,7 @@ namespace HSM {
         readonly PlayerContext ctx;
         
         public readonly Idle Idle;
+        public readonly Stopping Stopping;
         public readonly Crouch Crouch;
         public readonly Move Move;
         public readonly Hide Hide;
@@ -13,6 +14,7 @@ namespace HSM {
         public Grounded(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
             Idle        = new Idle(m, this, ctx);
+            Stopping    = new Stopping(m, this, ctx);
             Crouch      = new Crouch(m, this, ctx);
             Move        = new Move(m, this, ctx);
             Hide        = new Hide(m, this, ctx);
