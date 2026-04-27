@@ -51,7 +51,7 @@ MonoBehaviour:
   - {fileID: 421477798087254921, guid: a4c6b63f99eb5f1489e1a359c8b7bc22, type: 3}
   - {fileID: 3873025487628024407, guid: a25795bf1f7e74b4a94d45e1e364912f, type: 3}
   _plainPrefabs:
-  - {fileID: 8758084810032045221, guid: 705527ac48db32947872a3e3e157763a, type: 3}
+  - {fileID: 8758084810032045221, guid: 1dba743d862aaa4448e2db8379ebab4b, type: 3}
   _persistAcrossScenes: 0
   _stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
   _noiseStats: {fileID: 11400000, guid: eccbd4ddfcc6644489d9aeffef87daa2, type: 2}

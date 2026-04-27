@@ -27,9 +27,7 @@ namespace EntryPoint
             FindObjects();
             InitializeObjects();
 
-            var input = Services.Get<InputManager>();
-            input.EnableGameplay();
-            input.SetLookAroundEnabled(false);
+            Services.Get<InputManager>().EnableCutscene();
 
             _logger?.Log("Cutscene scene initialization complete", this);
 
@@ -38,6 +36,9 @@ namespace EntryPoint
 
         protected override void OnDestroy()
         {
+            if (Services.IsRegistered<SessionBootstrap>())
+                Services.Get<SessionBootstrap>().EndSession();
+
             base.OnDestroy();
         }
     }

@@ -155,11 +155,14 @@ public class InputManager : MonoBehaviour, IService
         SetCursorVisibility(false);
     }
 
-    public void SetLookAroundEnabled(bool enabled)
+    public void EnableCutscene()
     {
-        var action = _playerInput.actions["LookAround"];
-        if (enabled) action.Enable();
-        else action.Disable();
+        _playerInput.SwitchCurrentActionMap("Gameplay");
+        SetCursorVisibility(false);
+
+        var actions = _playerInput.actions;
+        actions["LookAround"].Disable();
+        actions["Attack"].Disable();
     }
 
     public void EnableUI()
