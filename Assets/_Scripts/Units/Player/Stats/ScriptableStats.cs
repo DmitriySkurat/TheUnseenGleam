@@ -178,6 +178,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float GrabDamagePerSecond = 20f;
 
+    [Tooltip("Rate at which grab progress drains per second when the player is not pressing buttons (in 0..1 units)")]
+    [Min(0f)]
+    public float GrabProgressDrainPerSecond = 0.15f;
+
     [Header("LANDING")]
     [Tooltip("How long before touching the ground a crouch input can still trigger a landing roll")]
     [Range(0f, 0.5f)]

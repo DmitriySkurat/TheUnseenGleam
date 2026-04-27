@@ -7,6 +7,7 @@ namespace HSM {
 
         int _progress;
         int _lastDir; // -1 = A, +1 = D, 0 = ещё не нажималось
+        float _progressFraction; // дробная часть прогресса для плавного убывания
 
         public PlayerGrabbed(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
@@ -20,6 +21,7 @@ namespace HSM {
             _progress = 0;
             _lastDir  = 0;
             ctx.grabProgress = 0f;
+            _progressFraction = 0f;
             ctx.currentStaminaDrainMultiplier = ctx.stats.GrabbedStaminaDrainMultiplier;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
             
@@ -40,14 +42,23 @@ namespace HSM {
             if (dir != 0 && dir != _lastDir)
             {
                 _lastDir = dir;
-                _progress++;
+                _progressFraction += 1f;
             }
 
+            // Постепенное убывание прогресса со временем
+            if (ctx.grabEscapeCount > 0)
+            {
+                float drainInSteps = ctx.stats.GrabProgressDrainPerSecond * ctx.grabEscapeCount * deltaTime;
+                _progressFraction = Mathf.Max(0f, _progressFraction - drainInSteps);
+            }
+
+            _progress = Mathf.FloorToInt(_progressFraction);
+
             ctx.grabProgress = ctx.grabEscapeCount > 0
-                ? Mathf.Clamp01((float)_progress / ctx.grabEscapeCount)
+                ? Mathf.Clamp01(_progressFraction / ctx.grabEscapeCount)
                 : 0f;
 
-            if (_progress >= ctx.grabEscapeCount)
+            if (_progressFraction >= ctx.grabEscapeCount)
                 ctx.isGrabbed = false; // сигнал агенту
 
             // Постепенный урон пока игрок схвачен
