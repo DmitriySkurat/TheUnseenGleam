@@ -2,9 +2,9 @@ using PlatNav;
 using UnityEngine;
 
 /// <summary>
-/// Cutscene-only agent: runs to the nearest free WanderingNPC, grabs it, then carries it to an exit point.
+/// Cutscene-only agent: runs to a target (WanderingNPC or Player), grabs it, carries it to an exit point.
 /// Uses PlatNav for pathfinding — supports jumping over obstacles.
-/// Multiple instances automatically avoid grabbing the same NPC.
+/// Multiple NPC-targeting instances automatically avoid grabbing the same NPC.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlatNavHandler))]
 public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
@@ -18,6 +18,10 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
     [SerializeField] private float _grabRadius = 1.2f;
     [SerializeField] private float _grabOffset = 0.6f;
 
+    [Header("Target")]
+    [Tooltip("Если true — агент хватает игрока, иначе — ближайшего WanderingNPC")]
+    [SerializeField] private bool _targetPlayer = false;
+
     [Header("Exit")]
     [SerializeField] private Transform _exitPoint;
 
@@ -28,7 +32,13 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
     private Rigidbody2D _rb;
     private Animator _anim;
 
+    // NPC target
     private WanderingNPC _target;
+
+    // Player target
+    private PlayerContext _playerCtx;
+    private Rigidbody2D  _playerRb;
+
     private bool _wasTraversing;
 
     private enum Phase { FindTarget, Chase, Carry, Done }
@@ -42,12 +52,17 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         if (_spriteTransform == null)
             _spriteTransform = _anim != null ? _anim.transform : transform;
 
+        if (_targetPlayer && Services.IsRegistered<PlayerContext>())
+        {
+            _playerCtx = Services.Get<PlayerContext>();
+            _playerRb  = _playerCtx?.rb;
+        }
+
         _phase = Phase.FindTarget;
     }
 
     public void Dispose() { }
 
-    // Флипает только sprite child — root трогать не нужно (им управляет PlatNav).
     void Flip(float dirX)
     {
         if (_spriteTransform == null || Mathf.Abs(dirX) < 0.01f) return;
@@ -80,25 +95,49 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         _wasTraversing = traversing;
     }
 
+    // ── FindTarget ──────────────────────────────────────────────────────────
+
     void TickFindTarget()
     {
-        _target = FindNearestFreeNPC();
-        if (_target == null) return;
+        if (_targetPlayer)
+        {
+            if (_playerCtx == null || !_playerCtx.isAlive) return;
+            // Ждём, пока игрок войдёт в Stumble (можно атаковать всегда — на усмотрение дизайнера)
+            _phase = Phase.Chase;
+            _anim?.Play(AgentAnimations.Run, 0, 0f);
+            _nav.SetSpeed(_runSpeed);
+            _nav.SetTarget(_playerCtx.transform);
+        }
+        else
+        {
+            _target = FindNearestFreeNPC();
+            if (_target == null) return;
 
-        _phase = Phase.Chase;
-        _anim?.Play(AgentAnimations.Run, 0, 0f);
-        _nav.SetSpeed(_runSpeed);
-        _nav.SetTarget(_target.transform);
+            _phase = Phase.Chase;
+            _anim?.Play(AgentAnimations.Run, 0, 0f);
+            _nav.SetSpeed(_runSpeed);
+            _nav.SetTarget(_target.transform);
+        }
     }
 
+    // ── Chase ────────────────────────────────────────────────────────────────
+
     void TickChase(float deltaTime)
+    {
+        if (_targetPlayer)
+            TickChasePlayer(deltaTime);
+        else
+            TickChaseNPC(deltaTime);
+    }
+
+    void TickChaseNPC(float deltaTime)
     {
         if (_target == null || _target.IsGrabbed)
         {
             _nav.SetTarget(null);
             _nav.Abort();
             _target = null;
-            _phase = Phase.FindTarget;
+            _phase  = Phase.FindTarget;
             return;
         }
 
@@ -106,15 +145,32 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
 
         float dist = Vector2.Distance(transform.position, _target.transform.position);
         if (dist <= _grabRadius && _nav.State != PlatNavState.TraversingLink)
-            BeginGrab();
+            BeginGrabNPC();
     }
+
+    void TickChasePlayer(float deltaTime)
+    {
+        if (_playerCtx == null || !_playerCtx.isAlive || _playerCtx.isGrabbed)
+        {
+            _nav.SetTarget(null);
+            _nav.Abort();
+            _phase = Phase.Done;
+            return;
+        }
+
+        _nav.Tick(deltaTime);
+
+        float dist = Vector2.Distance(transform.position, _playerCtx.transform.position);
+        if (dist <= _grabRadius && _nav.State != PlatNavState.TraversingLink)
+            BeginGrabPlayer();
+    }
+
+    // ── Carry ────────────────────────────────────────────────────────────────
 
     void TickCarry(float deltaTime)
     {
         if (_nav.State == PlatNavState.Idle)
         {
-            // PlatNav путь может закончиться на точке приземления после прыжка,
-            // не дойдя до exitPoint внутри целевого сегмента. Переиздаём MoveTo.
             if (_exitPoint == null ||
                 Vector2.Distance(transform.position, _exitPoint.position) <= 0.5f)
             {
@@ -125,10 +181,16 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         }
 
         _nav.Tick(deltaTime);
-        KeepNPCAttached();
+
+        if (_targetPlayer)
+            KeepPlayerAttached();
+        else
+            KeepNPCAttached();
     }
 
-    void BeginGrab()
+    // ── Grab ─────────────────────────────────────────────────────────────────
+
+    void BeginGrabNPC()
     {
         _nav.SetTarget(null);
         _nav.Abort();
@@ -141,20 +203,47 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
             _nav.MoveTo(_exitPoint.position, _runSpeed);
     }
 
+    void BeginGrabPlayer()
+    {
+        _nav.SetTarget(null);
+        _nav.Abort();
+
+        _playerCtx.velocity            = Vector2.zero;
+        _playerRb.linearVelocity       = Vector2.zero;
+        _playerCtx.isGrabbed           = true;
+        _playerCtx.isInDialog          = false;
+        _playerCtx.grabEscapeCount     = 10; // значение не важно — grabEscapeDisabled блокирует побег
+
+        _phase = Phase.Carry;
+        _anim?.Play(AgentAnimations.GrabPlayer, 0, 0f);
+
+        if (_exitPoint != null)
+            _nav.MoveTo(_exitPoint.position, _runSpeed);
+    }
+
+    // ── Attach ───────────────────────────────────────────────────────────────
+
     void KeepNPCAttached()
     {
         if (_target == null) return;
 
-        // Facing direction читается из root — им управляет PlatNav.
         float facingDir = transform.localScale.x >= 0f ? 1f : -1f;
-
         Vector2 grabPos = (Vector2)transform.position + Vector2.right * (facingDir * _grabOffset);
         _target.GetComponent<Rigidbody2D>().position = grabPos;
-
-        // NPC смотрит в сторону, противоположную агенту (его тащат).
-        // WanderingNPC.Grab() уже сбросил root.x = 1, поэтому Flip работает чисто.
         _target.Flip(-facingDir);
     }
+
+    void KeepPlayerAttached()
+    {
+        if (_playerCtx == null || _playerRb == null) return;
+
+        float facingDir = transform.localScale.x >= 0f ? 1f : -1f;
+        Vector2 grabPos = (Vector2)transform.position + Vector2.right * (facingDir * _grabOffset);
+        _playerRb.position     = grabPos;
+        _playerCtx.velocity    = Vector2.zero;
+    }
+
+    // ── NPC search ───────────────────────────────────────────────────────────
 
     WanderingNPC FindNearestFreeNPC()
     {
@@ -187,7 +276,7 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
 #if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
+        Gizmos.color = _targetPlayer ? Color.cyan : Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _grabRadius);
         if (_exitPoint != null)
         {
