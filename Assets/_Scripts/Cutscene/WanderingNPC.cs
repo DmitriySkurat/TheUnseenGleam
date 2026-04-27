@@ -1,0 +1,148 @@
+using PlatNav;
+using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(PlatNavHandler))]
+public class WanderingNPC : MonoBehaviour, ISceneLifecycle
+{
+    public InitializationOrder Order => InitializationOrder.Enemy;
+
+    [SerializeField] private Transform[] _waypoints;
+    [SerializeField] private float _walkSpeed = 2f;
+    [SerializeField] private float _waitTime = 1.5f;
+    [SerializeField] private Transform _spriteTransform;
+
+    private PlatNavHandler _nav;
+    private Rigidbody2D _rb;
+    private Animator _anim;
+
+    private int _waypointIndex;
+    private float _waitTimer;
+    private bool _navigating;
+    private bool _wasTraversing;
+
+    public bool IsGrabbed { get; private set; }
+
+    public void Initialize()
+    {
+        _nav  = GetComponent<PlatNavHandler>();
+        _rb   = GetComponent<Rigidbody2D>();
+        _anim = GetComponentInChildren<Animator>();
+        if (_spriteTransform == null)
+            _spriteTransform = _anim != null ? _anim.transform : transform;
+
+        _waypointIndex = 0;
+        NavigateToCurrentWaypoint();
+    }
+
+    // Флипает спрайт-чайлд. Вызывать только когда root не управляется PlatNav
+    // (т.е. после Grab(), который сбрасывает root.x = 1).
+    public void Flip(float dirX)
+    {
+        if (_spriteTransform == null || Mathf.Abs(dirX) < 0.01f) return;
+        Vector3 s = _spriteTransform.localScale;
+        s.x = dirX > 0f ? Mathf.Abs(s.x) : -Mathf.Abs(s.x);
+        _spriteTransform.localScale = s;
+    }
+
+    public void Dispose() { }
+
+    void FixedUpdate()
+    {
+        if (IsGrabbed) return;
+        if (_waypoints == null || _waypoints.Length == 0) return;
+
+        HandleTraversalAnimation();
+        Tick(Time.fixedDeltaTime);
+    }
+
+    void HandleTraversalAnimation()
+    {
+        bool traversing = _nav.State == PlatNavState.TraversingLink;
+        if (traversing == _wasTraversing) return;
+
+        int anim = traversing
+            ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
+            : AgentAnimations.Walk;
+        _anim?.Play(anim, 0, 0f);
+        _wasTraversing = traversing;
+    }
+
+    void Tick(float deltaTime)
+    {
+        if (_waitTimer > 0f)
+        {
+            _waitTimer -= deltaTime;
+            if (_waitTimer <= 0f)
+                AdvanceWaypoint();
+            return;
+        }
+
+        if (_navigating)
+        {
+            _nav.Tick(deltaTime);
+            if (_nav.State == PlatNavState.Idle)
+            {
+                _navigating = false;
+                _waitTimer = _waitTime;
+                _anim?.Play(AgentAnimations.Idle, 0, 0f);
+            }
+        }
+        else
+        {
+            NavigateToCurrentWaypoint();
+        }
+    }
+
+    void NavigateToCurrentWaypoint()
+    {
+        if (_waypoints == null || _waypoints.Length == 0) return;
+        _navigating = _nav.MoveTo(_waypoints[_waypointIndex].position, _walkSpeed);
+        if (_navigating)
+            _anim?.Play(AgentAnimations.Walk, 0, 0f);
+    }
+
+    void AdvanceWaypoint()
+    {
+        _waypointIndex = (_waypointIndex + 1) % _waypoints.Length;
+        NavigateToCurrentWaypoint();
+    }
+
+    public void Grab()
+    {
+        IsGrabbed = true;
+        _nav.Abort();
+        _navigating = false;
+        _waitTimer = 0f;
+        _rb.linearVelocity = Vector2.zero;
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+        _anim?.Play(AgentAnimations.Idle, 0, 0f);
+
+        // Сбрасываем root.x в 1, чтобы Flip() на sprite child стал единственным
+        // источником поворота (PlatNav больше не управляет этим объектом).
+        Vector3 rs = transform.localScale;
+        rs.x = Mathf.Abs(rs.x);
+        transform.localScale = rs;
+    }
+
+    public void Release()
+    {
+        IsGrabbed = false;
+        _rb.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        if (_waypoints == null) return;
+        Gizmos.color = new Color(0.2f, 0.8f, 0.2f, 0.6f);
+        for (int i = 0; i < _waypoints.Length; i++)
+        {
+            if (_waypoints[i] == null) continue;
+            Gizmos.DrawSphere(_waypoints[i].position, 0.15f);
+            int next = (i + 1) % _waypoints.Length;
+            if (_waypoints[next] != null)
+                Gizmos.DrawLine(_waypoints[i].position, _waypoints[next].position);
+        }
+    }
+#endif
+}
