@@ -78,9 +78,15 @@ public class VignetteController : MonoBehaviour, ISceneLifecycle
 
     public void SetDarknessActive(bool active) => _darknessActive = active;
 
+    public void SetVignetteEnabled(bool active)
+    {
+        if (_vignette != null)
+            _vignette.active = active;
+    }
+
     private void Update()
     {
-        if (_vignette == null || _cameraFollow == null) return;
+        if (_vignette == null || _cameraFollow == null || _vignette.active == false) return;
 
         bool isLooking = _cameraFollow.IsLookingAround();
 
