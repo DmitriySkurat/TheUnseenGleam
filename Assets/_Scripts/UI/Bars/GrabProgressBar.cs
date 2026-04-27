@@ -54,7 +54,7 @@ public class GrabProgressBar : MonoBehaviour, ISceneLifecycle
         if (_ctx == null)
             return;
 
-        bool grabbed = _ctx.isGrabbed;
+        bool grabbed = _ctx.isGrabbed && _ctx.isAlive;
 
         if (grabbed != _wasGrabbed)
         {
