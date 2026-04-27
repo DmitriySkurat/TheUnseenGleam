@@ -58,13 +58,19 @@ namespace HSM {
                 ? Mathf.Clamp01(_progressFraction / ctx.grabEscapeCount)
                 : 0f;
 
-            if (_progressFraction >= ctx.grabEscapeCount)
+            if (!ctx.grabEscapeDisabled && _progressFraction >= ctx.grabEscapeCount)
                 ctx.isGrabbed = false; // сигнал агенту
 
             // Постепенный урон пока игрок схвачен
             ctx.health?.TakeDamage(ctx.stats.GrabDamagePerSecond * deltaTime);
 
             base.OnUpdate(deltaTime);
+        }
+
+        protected override void OnExit()
+        {
+            ctx.grabEscapeDisabled = false;
+            base.OnExit();
         }
 
         protected override State GetTransition()

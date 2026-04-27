@@ -86,6 +86,7 @@ public class PlayerContext
 
     // ===== STUMBLE =====
     public bool stumblePending;
+    public bool grabEscapeDisabled;
 
     // ===== SCENE ENTRY =====
     public bool isSceneEntry;
