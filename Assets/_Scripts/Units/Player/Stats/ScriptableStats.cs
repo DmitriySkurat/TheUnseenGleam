@@ -173,6 +173,15 @@ public class PlayerScriptableStats : ScriptableObject
     [Range(0.2f, 1f)]
     public float PressToWallWidthMultiplier = 0.5f;
 
+    [Header("STUMBLE")]
+    [Tooltip("Сколько секунд длится анимация падения (скорость тормозит до нуля за это время)")]
+    [Min(0f)]
+    public float StumbleDuration = 1.2f;
+
+    [Tooltip("Множитель скорости во время хромания (после падения, до захвата)")]
+    [Range(0f, 1f)]
+    public float LimpSpeedMultiplier = 0.35f;
+
     [Header("GRAB")]
     [Tooltip("HP drained per second while the player is grabbed")]
     [Min(0f)]

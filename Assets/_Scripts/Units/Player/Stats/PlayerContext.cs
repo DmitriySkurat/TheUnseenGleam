@@ -84,6 +84,9 @@ public class PlayerContext
     public bool isGrabbed;
     public bool isInDialog;
 
+    // ===== STUMBLE =====
+    public bool stumblePending;
+
     // ===== SCENE ENTRY =====
     public bool isSceneEntry;
     public float sceneEntryMoveX;
