@@ -31,7 +31,9 @@ namespace EntryPoint
 
             ApplyCutsceneSettings();
 
-            Services.Get<InputManager>().EnableGameplay();
+            var input = Services.Get<InputManager>();
+            input.EnableGameplay();
+            input.SetLookAroundEnabled(false);
 
             _logger?.Log("Cutscene scene initialization complete", this);
 

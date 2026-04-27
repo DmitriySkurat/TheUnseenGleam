@@ -155,6 +155,13 @@ public class InputManager : MonoBehaviour, IService
         SetCursorVisibility(false);
     }
 
+    public void SetLookAroundEnabled(bool enabled)
+    {
+        var action = _playerInput.actions["LookAround"];
+        if (enabled) action.Enable();
+        else action.Disable();
+    }
+
     public void EnableUI()
     {
         _playerInput.SwitchCurrentActionMap("UI");
