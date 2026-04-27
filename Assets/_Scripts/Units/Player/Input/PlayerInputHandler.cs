@@ -10,6 +10,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     private PlayerContext _ctx;
 
     private bool IsInDialog => _ctx != null && _ctx.isInDialog;
+    private bool IsSceneEntry => _ctx != null && _ctx.isSceneEntry;
     
     
     public void Initialize()
@@ -65,6 +66,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         }
 
         _ctx.input = _frameInput;
+
+        if (_ctx.isSceneEntry)
+            _ctx.input = new FrameInput { Move = new Vector2(_ctx.sceneEntryMoveX, 0) };
     }
 
     void SubscribeInput() 
@@ -146,7 +150,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
 
     void HandleJumpStarted()
     {
-        if (IsInDialog) return;
+        if (IsInDialog || IsSceneEntry) return;
 
         _frameInput.JumpDown = true;
         _frameInput.JumpHeld = true;
@@ -165,7 +169,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
     void HandleCrouchInput(bool isCrouching)
     {
-        if (IsInDialog) return;
+        if (IsInDialog || IsSceneEntry) return;
         
         if (isCrouching && !_frameInput.CrouchHeld)
         {
@@ -192,9 +196,11 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
     void HandleInteractStarted()
     {
+        if (IsSceneEntry) return;
+
         _frameInput.InteractDown = true;
         _frameInput.InteractHeld = true;
-        
+
         _ctx.timeInteractWasPressed = Time.time;
         SyncContextInput();
     }
