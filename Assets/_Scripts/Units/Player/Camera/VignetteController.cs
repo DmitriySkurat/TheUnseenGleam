@@ -73,6 +73,13 @@ public class VignetteController : MonoBehaviour, ISceneLifecycle
 
         _timeInLight = 0f;
     }
+
+    public void ForceIntensity(float intensity)
+    {
+        currentIntensity = intensity;
+        if (_vignette != null)
+            _vignette.intensity.value = currentIntensity;
+    }
     
     public void Dispose() { }
 
