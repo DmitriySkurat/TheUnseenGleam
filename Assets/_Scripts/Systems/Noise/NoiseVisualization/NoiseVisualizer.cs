@@ -48,6 +48,7 @@ public class NoiseVisualizer : MonoBehaviour, ISceneLifecycle
 
     private void OnNoiseEmitted(NoiseEvent noise)
     {
+        if (!isActiveAndEnabled) return;
         if (!ShouldVisualize(noise)) return;
         if (RequiresEnemyCheck(noise) && !AnyEnemyInRange(noise)) return;
         if (IsOnCooldown(noise)) return;
