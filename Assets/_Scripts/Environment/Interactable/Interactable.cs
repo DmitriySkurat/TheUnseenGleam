@@ -39,13 +39,13 @@ public abstract class Interactable : MonoBehaviour, IInteractable, ISceneLifecyc
     public virtual void Initialize()
     {
         _sr = GetComponent<SpriteRenderer>();
-        
         if (_sr == null)
-        {
+            _sr = GetComponentInChildren<SpriteRenderer>();
+
+        if (_sr == null)
             Debug.LogWarning($"No SpriteRenderer found on {gameObject.name}. Highlighting will not work.", this);
-        }
-        
-        _defaultColor = _sr.color;
+
+        _defaultColor = _sr != null ? _sr.color : Color.white;
     }
     
     public virtual void Dispose()

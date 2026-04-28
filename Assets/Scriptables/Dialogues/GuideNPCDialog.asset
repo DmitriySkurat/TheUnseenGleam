@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d965b609d06c44599f59bc71c36117, type: 3}
+  m_Name: GuideNPCDialog
+  m_EditorClassIdentifier: Assembly-CSharp::DialogData
+  playerName: "\u041B\u0438\u0430\u043D"
+  playerSprite: {fileID: 3393699401562451319, guid: 0bad411d107959f4bb7c6a514bfb2ab5, type: 3}
+  npcSprite: {fileID: 7370158955753839994, guid: 4bd36f1b2d4eb2f44b41ca794f7ccd66, type: 3}
+  lines:
+  - speaker: 1
+    text: "\u041D\u0443\u0436\u043D\u043E \u0441\u043E\u0431\u0440\u0430\u0442\u044C
+      \u043F\u043E\u0434\u0441\u043E\u043B\u043D\u0443\u0445\u0438"
+  - speaker: 0
+    text: "\u042F \u0443\u0441\u0442\u0430\u043B\u0430"
+  - speaker: 1
+    text: "\u041D\u0423\u0416\u041D\u041E!!!"
+  - speaker: 0
+    text: "\u0425\u043E\u0440\u043E\u0448\u043E..."
