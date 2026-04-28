@@ -6,10 +6,14 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.Enemy;
 
+    [Header("Wander")]
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _walkSpeed = 2f;
     [SerializeField] private float _waitTime = 1.5f;
     [SerializeField] private Transform _spriteTransform;
+
+    [Header("Flee")]
+    [SerializeField] private float _fleeSpeed = 5f;
 
     private PlatNavHandler _nav;
     private Rigidbody2D _rb;
@@ -19,6 +23,8 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
     private float _waitTimer;
     private bool _navigating;
     private bool _wasTraversing;
+    private bool _fleeing;
+    private Vector2 _fleeFrom;
 
     public bool IsGrabbed { get; private set; }
 
@@ -46,13 +52,26 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
 
     public void Dispose() { }
 
+    public void StartFleeing(Vector2 threatPos)
+    {
+        if (IsGrabbed || _fleeing) return;
+        _fleeing  = true;
+        _fleeFrom = threatPos;
+        _waitTimer = 0f;
+        _nav.Abort();
+        NavigateToFarthestWaypoint();
+    }
+
     void FixedUpdate()
     {
         if (IsGrabbed) return;
         if (_waypoints == null || _waypoints.Length == 0) return;
 
         HandleTraversalAnimation();
-        Tick(Time.fixedDeltaTime);
+        if (_fleeing)
+            TickFlee(Time.fixedDeltaTime);
+        else
+            Tick(Time.fixedDeltaTime);
     }
 
     void HandleTraversalAnimation()
@@ -62,7 +81,7 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
 
         int anim = traversing
             ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
-            : AgentAnimations.Walk;
+            : (_fleeing ? AgentAnimations.Run : AgentAnimations.Walk);
         _anim?.Play(anim, 0, 0f);
         _wasTraversing = traversing;
     }
@@ -91,6 +110,32 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
         {
             NavigateToCurrentWaypoint();
         }
+    }
+
+    void TickFlee(float deltaTime)
+    {
+        _nav.Tick(deltaTime);
+        if (_nav.State == PlatNavState.Idle)
+        {
+            // Reached the safe spot — stay put until grabbed
+            _anim?.Play(AgentAnimations.Idle, 0, 0f);
+        }
+    }
+
+    void NavigateToFarthestWaypoint()
+    {
+        if (_waypoints == null || _waypoints.Length == 0) return;
+        float maxDist = -1f;
+        int best = _waypointIndex;
+        for (int i = 0; i < _waypoints.Length; i++)
+        {
+            if (_waypoints[i] == null) continue;
+            float d = Vector2.Distance(_fleeFrom, _waypoints[i].position);
+            if (d > maxDist) { maxDist = d; best = i; }
+        }
+        _waypointIndex = best;
+        bool started = _nav.MoveTo(_waypoints[_waypointIndex].position, _fleeSpeed);
+        _anim?.Play(started ? AgentAnimations.Run : AgentAnimations.Idle, 0, 0f);
     }
 
     void NavigateToCurrentWaypoint()

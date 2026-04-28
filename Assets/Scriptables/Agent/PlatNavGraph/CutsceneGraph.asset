@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlatNav.PlatformNavGraphAsset
   tilemapSize: {x: 276, y: 28}
   tileOrigin: {x: -288, y: -32}
-  cellWorldOrigin: {x: 5.6100006, y: 26.130005}
+  cellWorldOrigin: {x: 0.5, y: 0.5}
   segments:
   - gravity: 1
     axis: 0
@@ -54,9 +54,9 @@ MonoBehaviour:
     moveType: 0
     requiredAbilities: 1
     costFp: 2450
-    launchPos: {x: -173.39, y: 8.130005}
+    launchPos: {x: -178.5, y: -17.5}
     launchVelocity: {x: 1.6326911, y: 8.573894}
-    landPos: {x: -171.39, y: 11.130005}
+    landPos: {x: -176.5, y: -14.5}
     flightTime: 1.2249714
     linkGravity: 1
     gravityStrength: 10
@@ -69,9 +69,9 @@ MonoBehaviour:
     moveType: 0
     requiredAbilities: 1
     costFp: 1880
-    launchPos: {x: -175.39, y: 8.130005}
+    launchPos: {x: -180.5, y: -17.5}
     launchVelocity: {x: 4.2558327, y: 7.8913074}
-    landPos: {x: -171.39, y: 11.130005}
+    landPos: {x: -176.5, y: -14.5}
     flightTime: 0.93988657
     linkGravity: 1
     gravityStrength: 10
@@ -84,9 +84,9 @@ MonoBehaviour:
     moveType: 0
     requiredAbilities: 1
     costFp: 2450
-    launchPos: {x: -163.39, y: 8.130005}
+    launchPos: {x: -168.5, y: -17.5}
     launchVelocity: {x: -1.6326911, y: 8.573894}
-    landPos: {x: -165.39, y: 11.130005}
+    landPos: {x: -170.5, y: -14.5}
     flightTime: 1.2249714
     linkGravity: 1
     gravityStrength: 10
@@ -99,9 +99,9 @@ MonoBehaviour:
     moveType: 0
     requiredAbilities: 1
     costFp: 1880
-    launchPos: {x: -161.39, y: 8.130005}
+    launchPos: {x: -166.5, y: -17.5}
     launchVelocity: {x: -4.2558327, y: 7.8913074}
-    landPos: {x: -165.39, y: 11.130005}
+    landPos: {x: -170.5, y: -14.5}
     flightTime: 0.93988657
     linkGravity: 1
     gravityStrength: 10
@@ -114,9 +114,9 @@ MonoBehaviour:
     moveType: 1
     requiredAbilities: 0
     costFp: 280
-    launchPos: {x: -172.39, y: 11.130005}
+    launchPos: {x: -177.5, y: -14.5}
     launchVelocity: {x: -2, y: -0}
-    landPos: {x: -173.39, y: 8.130005}
+    landPos: {x: -178.5, y: -17.5}
     flightTime: 0.69999987
     linkGravity: 1
     gravityStrength: 10
@@ -129,9 +129,9 @@ MonoBehaviour:
     moveType: 1
     requiredAbilities: 0
     costFp: 280
-    launchPos: {x: -164.39, y: 11.130005}
+    launchPos: {x: -169.5, y: -14.5}
     launchVelocity: {x: 2, y: 0}
-    landPos: {x: -163.39, y: 8.130005}
+    landPos: {x: -168.5, y: -17.5}
     flightTime: 0.69999987
     linkGravity: 1
     gravityStrength: 10
