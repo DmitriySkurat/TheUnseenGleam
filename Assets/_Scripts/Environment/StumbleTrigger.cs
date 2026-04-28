@@ -1,10 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class StumbleTrigger : MonoBehaviour
 {
-    [Tooltip("Триггер срабатывает только один раз, после чего объект отключается")]
     [SerializeField] private bool _singleUse = true;
+    [SerializeField] private float _delay = 2f;
 
     private void Reset()
     {
@@ -19,10 +20,20 @@ public class StumbleTrigger : MonoBehaviour
         var ctx = Services.Get<PlayerContext>();
         if (ctx == null || !ctx.isAlive || ctx.isGrabbed) return;
 
-        ctx.stumblePending = true;
+        if (_singleUse) GetComponent<Collider2D>().enabled = false;
 
-        if (_singleUse)
-            gameObject.SetActive(false);
+        StartCoroutine(TriggerAfterDelay(ctx));
+    }
+
+    private IEnumerator TriggerAfterDelay(PlayerContext ctx)
+    {
+        yield return new WaitForSeconds(_delay);
+
+        while (!ctx.grounded)
+            yield return null;
+
+        if (ctx.isAlive && !ctx.isGrabbed)
+            ctx.stumblePending = true;
     }
 
 #if UNITY_EDITOR
