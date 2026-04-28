@@ -14,6 +14,8 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
 
     [Header("Flee")]
     [SerializeField] private float _fleeSpeed = 5f;
+    [Tooltip("Точка, к которой NPC убегает при панике. Если не задана — бежит к дальнейшей точке блуждания.")]
+    [SerializeField] private Transform _fleeTarget;
 
     private PlatNavHandler _nav;
     private Rigidbody2D _rb;
@@ -25,6 +27,7 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
     private bool _wasTraversing;
     private bool _fleeing;
     private Vector2 _fleeFrom;
+    private Vector2 _fleeDestination;
 
     public bool IsGrabbed { get; private set; }
 
@@ -59,7 +62,7 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
         _fleeFrom = threatPos;
         _waitTimer = 0f;
         _nav.Abort();
-        NavigateToFarthestWaypoint();
+        NavigateToFleeTarget();
     }
 
     void FixedUpdate()
@@ -114,27 +117,40 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
 
     void TickFlee(float deltaTime)
     {
-        _nav.Tick(deltaTime);
         if (_nav.State == PlatNavState.Idle)
         {
-            // Reached the safe spot — stay put until grabbed
-            _anim?.Play(AgentAnimations.Idle, 0, 0f);
+            if (Vector2.Distance(transform.position, _fleeDestination) > 0.5f)
+                _nav.MoveTo(_fleeDestination, _fleeSpeed); // пересчёт после прыжка
+            else
+                _anim?.Play(AgentAnimations.Idle, 0, 0f);
         }
+
+        _nav.Tick(deltaTime);
     }
 
-    void NavigateToFarthestWaypoint()
+    void NavigateToFleeTarget()
     {
-        if (_waypoints == null || _waypoints.Length == 0) return;
-        float maxDist = -1f;
-        int best = _waypointIndex;
-        for (int i = 0; i < _waypoints.Length; i++)
+        if (_fleeTarget != null)
         {
-            if (_waypoints[i] == null) continue;
-            float d = Vector2.Distance(_fleeFrom, _waypoints[i].position);
-            if (d > maxDist) { maxDist = d; best = i; }
+            _fleeDestination = _fleeTarget.position;
         }
-        _waypointIndex = best;
-        bool started = _nav.MoveTo(_waypoints[_waypointIndex].position, _fleeSpeed);
+        else
+        {
+            // Фолбэк: дальняя точка блуждания
+            if (_waypoints == null || _waypoints.Length == 0) return;
+            float maxDist = -1f;
+            int best = _waypointIndex;
+            for (int i = 0; i < _waypoints.Length; i++)
+            {
+                if (_waypoints[i] == null) continue;
+                float d = Vector2.Distance(_fleeFrom, _waypoints[i].position);
+                if (d > maxDist) { maxDist = d; best = i; }
+            }
+            _waypointIndex = best;
+            _fleeDestination = _waypoints[_waypointIndex].position;
+        }
+
+        bool started = _nav.MoveTo(_fleeDestination, _fleeSpeed);
         _anim?.Play(started ? AgentAnimations.Run : AgentAnimations.Idle, 0, 0f);
     }
 
@@ -178,15 +194,24 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        if (_waypoints == null) return;
-        Gizmos.color = new Color(0.2f, 0.8f, 0.2f, 0.6f);
-        for (int i = 0; i < _waypoints.Length; i++)
+        if (_waypoints != null)
         {
-            if (_waypoints[i] == null) continue;
-            Gizmos.DrawSphere(_waypoints[i].position, 0.15f);
-            int next = (i + 1) % _waypoints.Length;
-            if (_waypoints[next] != null)
-                Gizmos.DrawLine(_waypoints[i].position, _waypoints[next].position);
+            Gizmos.color = new Color(0.2f, 0.8f, 0.2f, 0.6f);
+            for (int i = 0; i < _waypoints.Length; i++)
+            {
+                if (_waypoints[i] == null) continue;
+                Gizmos.DrawSphere(_waypoints[i].position, 0.15f);
+                int next = (i + 1) % _waypoints.Length;
+                if (_waypoints[next] != null)
+                    Gizmos.DrawLine(_waypoints[i].position, _waypoints[next].position);
+            }
+        }
+
+        if (_fleeTarget != null)
+        {
+            Gizmos.color = new Color(1f, 0.4f, 0f, 0.8f);
+            Gizmos.DrawSphere(_fleeTarget.position, 0.25f);
+            Gizmos.DrawLine(transform.position, _fleeTarget.position);
         }
     }
 #endif
