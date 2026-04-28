@@ -13,6 +13,9 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
     [SerializeField] private float offScreenTimeout = 4f;
     [SerializeField] private float fadeDuration = 1f;
 
+    [Tooltip("Если задано — после затемнения загружается эта сцена вместо экрана смерти")]
+    [SerializeField] private string _nextScene;
+
     private PlayerHealth _playerHealth;
     private PlayerContext _playerCtx;
     private Camera _camera;
@@ -80,8 +83,10 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
             }
         }
 
-        // Шаг 4: Экран смерти
-        if (deathMenu != null)
+        // Шаг 4: Переход в следующую сцену или экран смерти
+        if (!string.IsNullOrEmpty(_nextScene))
+            Utility.SceneLoader.Load(_nextScene);
+        else if (deathMenu != null)
             deathMenu.ShowNow();
     }
 
