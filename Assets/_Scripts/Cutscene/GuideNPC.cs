@@ -26,6 +26,8 @@ public class GuideNPC : Interactable
     private enum Phase { Chase, InDialog, Walk, Done }
     private Phase _phase;
 
+    public bool HasArrived => _phase == Phase.Done;
+
     // ── Lifecycle ────────────────────────────────────────────────────────────
 
     public override void Initialize()
