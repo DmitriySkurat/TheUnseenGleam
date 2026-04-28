@@ -41,9 +41,6 @@ public class GuideNPC : Interactable
             _nav.SetSpeed(_chaseSpeed);
         }
 
-        if (Services.IsRegistered<DialogManager>())
-            _dialogManager = Services.Get<DialogManager>();
-
         _phase = Phase.Chase;
         _anim?.Play(AgentAnimations.Run, 0, 0f);
     }
@@ -137,11 +134,16 @@ public class GuideNPC : Interactable
         if (_phase != Phase.Chase) return;
         if (interactor is not PlayerInteractor) return;
 
+        if (_dialogManager == null && Services.IsRegistered<DialogManager>())
+            _dialogManager = Services.Get<DialogManager>();
+
+        if (_dialogManager == null) return;
+
         _nav.SetTarget(null);
         _nav.Abort();
         _anim?.Play(AgentAnimations.Idle, 0, 0f);
 
-        _dialogManager?.StartDialog(_dialogData, _npcName);
+        _dialogManager.StartDialog(_dialogData, _npcName);
         _phase = Phase.InDialog;
     }
 }
