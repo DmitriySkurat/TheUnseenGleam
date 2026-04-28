@@ -17,11 +17,7 @@ public class AgentSpawnDirector : MonoBehaviour, ISceneLifecycle
     [SerializeField] private float _agentSpawnDelay = 0f;
 
     [Header("Stumble Trigger")]
-    [SerializeField] private GameObject _stumbleTrigger;
-    [Tooltip("Смещение по X от текущей позиции игрока при появлении StumbleTrigger")]
-    [SerializeField] private float _stumbleTriggerOffsetX = 5f;
-    [Tooltip("Задержка после появления агентов перед появлением StumbleTrigger (сек)")]
-    [SerializeField] private float _stumbleTriggerDelay = 1f;
+    [SerializeField] private StumbleTriggerSpawner _stumbleTriggerSpawner;
 
     [Header("Activation")]
     [Tooltip("Запустить последовательность сразу при старте сцены")]
@@ -29,19 +25,12 @@ public class AgentSpawnDirector : MonoBehaviour, ISceneLifecycle
     [Tooltip("Запустить при входе любого объекта с тегом Player в коллайдер этого объекта")]
     [SerializeField] private bool _activateOnPlayerEnter = true;
 
-    private PlayerContext _playerCtx;
     private bool _activated;
 
     public void Initialize()
     {
-        if (Services.IsRegistered<PlayerContext>())
-            _playerCtx = Services.Get<PlayerContext>();
-
         foreach (var a in _agents)
             if (a != null) a.SetActive(false);
-
-        if (_stumbleTrigger != null)
-            _stumbleTrigger.SetActive(false);
     }
 
     public void Dispose() { }
@@ -74,19 +63,7 @@ public class AgentSpawnDirector : MonoBehaviour, ISceneLifecycle
         foreach (var a in _agents)
             if (a != null) a.SetActive(true);
 
-        if (_stumbleTrigger == null) yield break;
-
-        if (_stumbleTriggerDelay > 0f)
-            yield return new WaitForSeconds(_stumbleTriggerDelay);
-
-        if (_playerCtx?.transform != null)
-        {
-            Vector3 pos = _stumbleTrigger.transform.position;
-            pos.x = _playerCtx.transform.position.x + _stumbleTriggerOffsetX;
-            _stumbleTrigger.transform.position = pos;
-        }
-
-        _stumbleTrigger.SetActive(true);
+        _stumbleTriggerSpawner?.StartWatching();
     }
 
 #if UNITY_EDITOR
