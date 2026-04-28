@@ -70,6 +70,7 @@ namespace HSM {
         protected override void OnExit()
         {
             ctx.grabEscapeDisabled = false;
+            ctx.isStumbling        = false;
             base.OnExit();
         }
 

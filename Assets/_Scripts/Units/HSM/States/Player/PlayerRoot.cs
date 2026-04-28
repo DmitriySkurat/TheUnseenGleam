@@ -57,7 +57,11 @@ namespace HSM {
                 return;
             }
             
-            if (ctx.stats != null) 
+            // При приземлении после прыжка/падения во время Stumble — повторно запускаем Stumble
+            if (ctx.isStumbling && ctx.grounded && ActiveChild != Stumble)
+                ctx.stumblePending = true;
+
+            if (ctx.stats != null)
             {
                 HandleJump();
                 HandleFootsteps(deltaTime);
