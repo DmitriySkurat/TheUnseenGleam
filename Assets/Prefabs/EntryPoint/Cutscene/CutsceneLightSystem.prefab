@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LightSystem
   globalLightPrefab: {fileID: 6267015935030460569, guid: 81bdc27740fd99c4d8eed3036bedd91d, type: 3}
   _logger: {fileID: 1837411843657378475, guid: 4c498f62da25e5246ae5b94780ba0166, type: 3}
-  globalLightIntensity: 1
+  globalLightIntensity: 0.09
   globalLightColor: {r: 1, g: 1, b: 1, a: 1}
   includeInactiveSpotLights: 1
 --- !u!114 &4040237966744034866

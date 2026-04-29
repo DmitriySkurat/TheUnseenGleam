@@ -28,6 +28,8 @@ namespace EntryPoint
             InitializeObjects();
 
             Services.Get<InputManager>().EnableCutscene();
+            if (Services.IsRegistered<PlayerContext>())
+                Services.Get<PlayerContext>().isInCutscene = true;
 
             _logger?.Log("Cutscene scene initialization complete", this);
 

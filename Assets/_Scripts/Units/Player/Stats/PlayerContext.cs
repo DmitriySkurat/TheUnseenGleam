@@ -89,6 +89,9 @@ public class PlayerContext
     public bool isStumbling;
     public bool grabEscapeDisabled;
 
+    // ===== CUTSCENE =====
+    public bool isInCutscene;
+
     // ===== SCENE ENTRY =====
     public bool isSceneEntry;
     public float sceneEntryMoveX;

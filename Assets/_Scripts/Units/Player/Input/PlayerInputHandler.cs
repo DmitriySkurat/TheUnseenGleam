@@ -11,6 +11,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
 
     private bool IsInDialog => _ctx != null && _ctx.isInDialog;
     private bool IsSceneEntry => _ctx != null && _ctx.isSceneEntry;
+    private bool IsInCutscene => _ctx != null && _ctx.isInCutscene;
     
     
     public void Initialize()
@@ -57,11 +58,11 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
 
         
         
-        // Схваченный игрок не может использовать способности (ЛКМ и ПКМ)
-        if (_ctx.isGrabbed)
+        // Схваченный или споткнувшийся игрок не может использовать способности (ЛКМ и ПКМ)
+        if (_ctx.isGrabbed || _ctx.isStumbling || _ctx.isInCutscene)
         {
-            _frameInput.AttackDown    = false;
-            _frameInput.AttackHeld    = false;
+            _frameInput.AttackDown     = false;
+            _frameInput.AttackHeld     = false;
             _frameInput.LookAroundHeld = false;
         }
 
@@ -228,8 +229,8 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     
     void HandleLookAroundInput(bool isLookingAround)
     {
-        if (IsInDialog) return;
-        
+        if (IsInDialog || IsInCutscene) return;
+
         _frameInput.LookAroundHeld = isLookingAround;
         SyncContextInput();
     }
