@@ -171,9 +171,16 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         RaycastHit2D downHit = Physics2D.Raycast(downOrigin, Vector2.down,
             _ctx.stats.LedgeTopCheckOffset + 0.5f, _ctx.stats.GroundLayer);
 
+        // Третий луч: со стороны игрока вниз от уровня уступа — проверяем, что под висящим телом
+        // достаточно свободного пространства. Если рядом со стеной пол ближе высоты капсулы —
+        // уступ слишком низкий (1 тайл), хвататься нельзя: тело пройдёт сквозь нижний тайл.
+        float clearance = _col.bounds.size.y;
+        Vector2 sideDownOrigin = new Vector2(wallHit.point.x - dir * 0.05f, downHit ? downHit.point.y - 0.05f : topCheckY);
+        RaycastHit2D floorBelowHit = Physics2D.Raycast(sideDownOrigin, Vector2.down, clearance, _ctx.stats.GroundLayer);
+
         Physics2D.queriesStartInColliders = cachedQuery;
 
-        if (!wallHit || topHit || !downHit)
+        if (!wallHit || topHit || !downHit || floorBelowHit)
         {
             _ctx.canGrabLedge = false;
             return;
@@ -250,6 +257,24 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             if (_ctx.canGrabLedge)
             {
                 Gizmos.DrawWireSphere(_ctx.ledgeCornerPosition, 0.08f);
+            }
+
+            // Третий луч: проверка свободного пространства под висящим телом.
+            float dirInput = _ctx.input.Move.x;
+            float dirVel = _ctx.velocity.x;
+            float dir = 0f;
+            if (Mathf.Abs(dirInput) > _ctx.stats.HorizontalDeadZoneThreshold)
+                dir = Mathf.Sign(dirInput);
+            else if (Mathf.Abs(dirVel) > 0.1f)
+                dir = Mathf.Sign(dirVel);
+            if (dir != 0f)
+            {
+                float clearance = col.bounds.size.y;
+                float originY = _ctx.canGrabLedge ? _ctx.ledgeCornerPosition.y - 0.05f : topCheckY;
+                float originX = _ctx.canGrabLedge ? _ctx.ledgeCornerPosition.x - dir * 0.05f : col.bounds.center.x + dir * rayLength - dir * 0.05f;
+                Vector3 sideDownOrigin = new Vector3(originX, originY, 0f);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(sideDownOrigin, sideDownOrigin + Vector3.down * clearance);
             }
         }
 
