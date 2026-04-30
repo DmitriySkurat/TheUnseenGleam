@@ -30,7 +30,7 @@ MonoBehaviour:
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
-  WalkSpeedMultiplier: 1
+  WalkSpeedMultiplier: 0.6
   RunSpeedMultiplier: 1.5
   GraceTime: 0.08
   MaxStamina: 100
@@ -54,7 +54,7 @@ MonoBehaviour:
   CoyoteTime: 0.08
   JumpBuffer: 0.2
   InteractionCooldown: 0.25
-  CrouchSpeedMultiplier: 0.5
+  CrouchSpeedMultiplier: 0.3
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
   HideSpeedMultiplier: 0.4
