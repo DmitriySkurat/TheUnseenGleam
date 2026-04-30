@@ -9,6 +9,11 @@ namespace HSM {
             Add(new AnimatorPlayActivity(ctx.anim, PlayerAnimations.Stop));
         }
 
+        protected override void OnEnter() {
+            ctx.currentSpeedMultiplier = 0f;
+            base.OnEnter();
+        }
+
         protected override State GetTransition() {
             if (!IsStopAnimationFinished()) return null;
 
