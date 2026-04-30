@@ -179,25 +179,6 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             return;
         }
 
-        // Проверяем, хватает ли места для коллайдера над уступом (иначе не сможем встать).
-        // Используем OverlapCapsule с queriesStartInColliders=true, чтобы поймать потолок даже
-        // когда он вплотную прилегает к поверхности уступа (raycast стартовал бы внутри тайла).
-        float halfH = _col.size.y * 0.5f;
-        Vector2 standCenter = new Vector2(
-            wallHit.point.x + dir * (_col.size.x * 0.5f + _ctx.stats.LedgeStandOffsetX),
-            downHit.point.y + halfH + _ctx.stats.LedgeStandOffsetY
-        );
-
-        Physics2D.queriesStartInColliders = true;
-        Collider2D standOverlap = Physics2D.OverlapCapsule(standCenter, _col.size, _col.direction, 0f, _ctx.stats.GroundLayer);
-        Physics2D.queriesStartInColliders = false;
-
-        if (standOverlap != null)
-        {
-            _ctx.canGrabLedge = false;
-            return;
-        }
-
         _ctx.canGrabLedge        = true;
         _ctx.ledgeFacingRight    = dir > 0f;
         _ctx.ledgeCornerPosition = new Vector2(wallHit.point.x, downHit.point.y);
@@ -269,14 +250,6 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             if (_ctx.canGrabLedge)
             {
                 Gizmos.DrawWireSphere(_ctx.ledgeCornerPosition, 0.08f);
-                float dir2 = _ctx.ledgeFacingRight ? 1f : -1f;
-                float halfH2 = col.size.y * 0.5f;
-                Vector3 standCenter2 = new Vector3(
-                    _ctx.ledgeCornerPosition.x + dir2 * (col.size.x * 0.5f + _ctx.stats.LedgeStandOffsetX),
-                    _ctx.ledgeCornerPosition.y + halfH2 + _ctx.stats.LedgeStandOffsetY,
-                    0f);
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireCube(standCenter2, new Vector3(col.size.x, col.size.y, 0f));
             }
         }
 
