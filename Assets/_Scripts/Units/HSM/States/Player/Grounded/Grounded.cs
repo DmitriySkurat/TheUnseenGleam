@@ -25,7 +25,11 @@ namespace HSM {
             // });
         }
         
-        protected override State GetInitialState() => Idle;
+        protected override State GetInitialState() {
+            if (ctx.HasMovementIntent) return Move;
+            if (ctx.stats != null && Mathf.Abs(ctx.velocity.x) > ctx.stats.MaxSpeed * ctx.stats.WalkSpeedMultiplier) return Stopping;
+            return Idle;
+        }
 
         protected override State GetTransition()
         {
