@@ -15,9 +15,9 @@ namespace HSM
             DeathNormal  = new DeathNormal(m, this, ctx);
             DeathGrabbed = new DeathGrabbed(m, this, ctx);
 
-            Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.black,
-            });
+            // Add(new ColorPhaseActivity(ctx.renderer){
+            //     enterColor = Color.black,
+            // });
         }
 
         protected override State GetInitialState() =>

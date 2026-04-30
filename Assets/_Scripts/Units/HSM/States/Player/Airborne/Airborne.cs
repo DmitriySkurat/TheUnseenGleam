@@ -8,9 +8,9 @@ namespace HSM {
 
         public Airborne(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
-            Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.red,
-            });
+            // Add(new ColorPhaseActivity(ctx.renderer){
+            //     enterColor = Color.red,
+            // });
         }
         
         protected override State GetTransition()

@@ -9,9 +9,9 @@ namespace HSM
         public Climb(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
-            Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.purple,
-            });
+            // Add(new ColorPhaseActivity(ctx.renderer){
+            //     enterColor = Color.purple,
+            // });
         }
 
         protected override void OnEnter()

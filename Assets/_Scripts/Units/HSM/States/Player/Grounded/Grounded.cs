@@ -20,9 +20,9 @@ namespace HSM {
             Hide        = new Hide(m, this, ctx);
             PressToWall = new PressToWall(m, this, ctx);
             
-            Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.yellow,  // runs while Grounded is activating
-            });
+            // Add(new ColorPhaseActivity(ctx.renderer){
+            //     enterColor = Color.yellow,  // runs while Grounded is activating
+            // });
         }
         
         protected override State GetInitialState() => Idle;

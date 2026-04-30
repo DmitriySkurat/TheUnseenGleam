@@ -9,9 +9,9 @@ namespace HSM
         public Hide(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
-            Add(new ColorPhaseActivity(ctx.renderer){
-                enterColor = Color.cyan,
-            });
+            // Add(new ColorPhaseActivity(ctx.renderer){
+            //     enterColor = Color.cyan,
+            // });
             Add(new AnimatorBoolActivity(ctx.anim, PlayerAnimations.Hide, true, false));
         }
 
