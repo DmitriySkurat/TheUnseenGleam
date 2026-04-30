@@ -24,7 +24,7 @@ MonoBehaviour:
   MaxPlayerHealth: 100
   HealthRegenPerSecond: 2
   HealthRegenDelay: 5
-  MaxSpeed: 14
+  MaxSpeed: 10
   Acceleration: 120
   GroundDeceleration: 50
   AirDeceleration: 30
@@ -47,9 +47,9 @@ MonoBehaviour:
   HideStaminaBreathDrainMultiplier: 0.5
   PressToWallStaminaBreathDrainMultiplier: 1
   JumpClip: {fileID: 0}
-  JumpPower: 36
+  JumpPower: 29
   MaxFallSpeed: 40
-  FallAcceleration: 110
+  FallAcceleration: 125
   JumpEndEarlyGravityModifier: 3
   CoyoteTime: 0.15
   JumpBuffer: 0.2
