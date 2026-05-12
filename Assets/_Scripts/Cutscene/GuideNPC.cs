@@ -8,8 +8,9 @@ using UnityEngine;
 public class GuideNPC : Interactable
 {
     [Header("Guide")]
-    [SerializeField] private float _chaseSpeed = 5f;
-    [SerializeField] private float _walkSpeed  = 3f;
+    [SerializeField] private float _chaseSpeed   = 5f;
+    [SerializeField] private float _walkSpeed    = 3f;
+    [SerializeField] private float _stopDistance = 1.2f;
     [Tooltip("Точка у подсолнухов, к которой NPC идёт после диалога")]
     [SerializeField] private Transform _destination;
 
@@ -22,6 +23,7 @@ public class GuideNPC : Interactable
     private PlayerContext _playerCtx;
     private DialogManager _dialogManager;
     private bool _wasTraversing;
+    private bool _chaseStopped;
 
     private enum Phase { Chase, InDialog, Walk, Done }
     private Phase _phase;
@@ -76,7 +78,26 @@ public class GuideNPC : Interactable
 
     void TickChase(float deltaTime)
     {
-        _nav.Tick(deltaTime);
+        if (_playerCtx == null) { _nav.Tick(deltaTime); return; }
+
+        float dist = Vector2.Distance(transform.position, _playerCtx.transform.position);
+
+        if (!_chaseStopped && dist <= _stopDistance)
+        {
+            _nav.Abort();
+            _anim?.Play(AgentAnimations.Idle, 0, 0f);
+            _chaseStopped = true;
+        }
+        else if (_chaseStopped && dist > _stopDistance)
+        {
+            _nav.SetTarget(_playerCtx.transform);
+            _nav.SetSpeed(_chaseSpeed);
+            _anim?.Play(AgentAnimations.Run, 0, 0f);
+            _chaseStopped = false;
+        }
+
+        if (!_chaseStopped)
+            _nav.Tick(deltaTime);
     }
 
     void TickInDialog()
