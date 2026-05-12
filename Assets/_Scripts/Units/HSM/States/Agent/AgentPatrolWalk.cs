@@ -84,7 +84,7 @@ namespace HSM {
         protected override State GetTransition()
         {
             if (_triggerLookAround && !ctx.IsWaitingAtPoint && !ctx.IsTraversingLink
-                && !ctx.isBlindedByEnvironment)
+                && !ctx.isBlindedByEnvironment && !ctx.isBlindedByPlayer)
             {
                 _triggerLookAround = false;
                 return Machine?.GetState<AgentLookAround>();
