@@ -120,8 +120,8 @@ MonoBehaviour:
   maxLightStrength: 1
   minIntensityInLight: 0.05
   lightInfluence: 1
-  lightDecreaseDelay: 0.5
+  lightDecreaseDelay: 0.65
   minIntensityClamp: 0.25
   listenSaturation: -100
   listenSaturationSmooth: 4
-  smoothSpeed: 5
+  smoothSpeed: 0.5
