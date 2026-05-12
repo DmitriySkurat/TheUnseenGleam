@@ -1,0 +1,378 @@
+@startuml TheUnseenGleam
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam nodesep 35
+skinparam ranksep 40
+skinparam class {
+    FontSize 10
+    AttributeFontSize 9
+    HeaderBackgroundColor #DDEEFF
+    BackgroundColor White
+    BorderColor #445566
+    ArrowColor #445566
+}
+skinparam package {
+    FontSize 11
+    BorderColor #778899
+    BackgroundColor #F8F8FF
+}
+hide empty members
+
+' ══════════════════════════════════════════
+' UNITY BASE
+' ══════════════════════════════════════════
+class MonoBehaviour <<Unity>> #CCCCCC
+
+' ══════════════════════════════════════════
+' LIFECYCLE
+' ══════════════════════════════════════════
+class ILifecycle <<interface>> {
+    + Order : InitializationOrder
+    + Initialize() : void
+    + Dispose() : void
+}
+
+class ISceneLifecycle <<interface>>
+
+ILifecycle <|-- ISceneLifecycle
+
+class Services <<static>> {
+    - _services : Dictionary<Type, object>
+    --
+    + {static} Register<T>(T) : void
+    + {static} Unregister<T>() : void
+    + {static} IsRegistered<T>() : bool
+    + {static} Get<T>() : T
+    + {static} Clear() : void
+}
+
+' ══════════════════════════════════════════
+' HSM CORE
+' ══════════════════════════════════════════
+package "HSM — Иерархическая машина состояний" {
+
+    abstract class State {
+        + Machine : StateMachine
+        + Parent : State
+        + ActiveChild : State
+        + Activities : IReadOnlyList<IActivity>
+        --
+        + Add(IActivity) : void
+        + Leaf() : State
+        + PathToRoot() : IEnumerable<State>
+        # {virtual} GetInitialState() : State
+        # {virtual} GetTransition() : State
+        # {virtual} OnEnter() : void
+        # {virtual} OnExit() : void
+        # {virtual} OnUpdate(float) : void
+        ~ Enter() : void
+        ~ Exit() : void
+        ~ Update(float) : void
+    }
+
+    class StateMachine {
+        + Root : State
+        + Sequencer : TransitionSequencer
+        - started : bool
+        - statesByType : Dictionary<Type, State>
+        --
+        + Start() : void
+        + Tick(float) : void
+        + GetState<T>() : T
+        + ChangeState(State, State) : void
+        ~ RegisterState(State) : void
+        ~ InternalTick(float) : void
+    }
+
+    class StateMachineBuilder {
+        - root : State
+        --
+        + Build() : StateMachine
+        - Wire(State, StateMachine, HashSet<State>) : void
+    }
+
+    class TransitionSequencer {
+        + Machine : StateMachine
+        + IsTransitioning : bool
+        - pending : (State, State)?
+        - cts : CancellationTokenSource
+        --
+        + RequestTransition(State, State) : void
+        + Tick(float) : void
+        + {static} Lca(State, State) : State
+        - BeginTransition(State, State) : void
+        - EndTransition() : void
+        - {static} GatherPhaseSteps(List<State>, bool) : List<PhaseStep>
+        - {static} StatesToExit(State, State) : List<State>
+        - {static} StatesToEnter(State, State) : List<State>
+    }
+
+    class IActivity <<interface>> {
+        + Mode : ActivityMode
+        + ActivateAsync(CancellationToken) : Task
+        + DeactivateAsync(CancellationToken) : Task
+    }
+
+    ' Activity предоставляет базовую реализацию IActivity
+    abstract class Activity
+
+    class ActivityMode <<enumeration>> {
+        Inactive
+        Activating
+        Active
+        Deactivating
+    }
+
+    IActivity <|.. Activity
+    Activity --> ActivityMode
+    StateMachine *-- State
+    StateMachine *-- TransitionSequencer
+    State o-- IActivity
+    State --> State : parent / activeChild
+    StateMachineBuilder ..> StateMachine : «creates»
+}
+
+' ══════════════════════════════════════════
+' EXAMPLE STATES
+' ══════════════════════════════════════════
+class PlayerRoot {
+    # {override} GetInitialState() : State
+    # {override} GetTransition() : State
+    # {override} OnEnter() : void
+    # {override} OnUpdate(float) : void
+}
+
+class AgentRoot {
+    # {override} GetInitialState() : State
+    # {override} GetTransition() : State
+    # {override} OnEnter() : void
+    # {override} OnUpdate(float) : void
+}
+
+State <|-- PlayerRoot
+State <|-- AgentRoot
+
+' ══════════════════════════════════════════
+' INTERACTION SYSTEM
+' ══════════════════════════════════════════
+package "Interaction — Система взаимодействия" {
+
+    class IInteractable <<interface>> {
+        + InteractionPrompt : string
+        + CanBeInteractedBy(Interactor) : bool
+        + Select() : void
+        + Unselect() : void
+        + TryInteract(Interactor) : void
+        + OnInteract(Interactor) : void
+        + GetMissingItemsString(Interactor) : string
+    }
+
+    class Interactor {
+        # currentInteractable : IInteractable
+        + CurrentInteractable : IInteractable
+        --
+        # SetCurrentInteractable(IInteractable) : void
+        # {virtual} PerformInteraction() : void
+    }
+
+    abstract class Interactable {
+        + interactionPrompt : string
+        + highlightOnFocus : bool
+        + highlightColor : Color
+        + requiredItems : List<ItemRequirement>
+        # wasItemsConsumed : bool
+        # _sr : SpriteRenderer
+        # _defaultColor : Color
+        --
+        # {virtual} HasAllRequiredItems(PlayerInteractor) : bool
+        # {virtual} ConsumeRequiredItems(PlayerInteractor) : void
+        # {virtual} OnBeforeInteraction(PlayerInteractor) : void
+        # {virtual} OnAfterInteraction(PlayerInteractor) : void
+    }
+
+    class PlayerInteractor {
+        + interactRadius : float
+        + interactableLayer : LayerMask
+        + interactOrigin : Transform
+        + promptText : TextMeshProUGUI
+        + Context : PlayerContext
+        --
+        - Update() : void
+        - ScanForInteractable() : void
+        - AttemptInteract() : void
+        - UpdatePromptUI() : void
+    }
+
+    class DoorInteractable {
+        - isOpen : bool
+        + IsOpen : bool
+        - openDoorSprite : Sprite
+        - closedDoorSprite : Sprite
+        - visionBlocker : Collider2D
+        --
+        + SetOpen(bool) : void
+        - UpdateDoorVisuals() : void
+        # {override} OnAfterInteraction(PlayerInteractor) : void
+    }
+
+    class ItemInteractable {
+        - rewardItem : ItemData
+        - count : int
+        - respawnTime : float
+        --
+        - Respawn() : void
+    }
+
+    class DialogNpcInteractable {
+        - _dialogData : DialogData
+        - _npcName : string
+    }
+
+    IInteractable <|.. Interactable
+    Interactor --> IInteractable
+    Interactor <|-- PlayerInteractor
+    Interactable <|-- DoorInteractable
+    Interactable <|-- ItemInteractable
+    Interactable <|-- DialogNpcInteractable
+}
+
+' ══════════════════════════════════════════
+' DIALOG SYSTEM
+' ══════════════════════════════════════════
+package "Dialog — Система диалогов" {
+
+    class DialogManager {
+        - _dialogPanel : GameObject
+        - _playerPortrait : Image
+        - _npcPortrait : Image
+        - _speakerNameText : Text
+        - _dialogText : Text
+        - _continueIndicator : GameObject
+        - _typingSpeed : float
+        - _currentDialog : DialogData
+        - _currentNpcName : string
+        - _lineIndex : int
+        - _isTyping : bool
+        --
+        + StartDialog(DialogData, string) : void
+        - ShowLine() : void
+        - TypeLine(string) : IEnumerator
+        - OnAdvance() : void
+        - FinishLine() : void
+        - EndDialog() : void
+    }
+
+    class DialogData <<ScriptableObject>> {
+        + playerName : string
+        + playerSprite : Sprite
+        + npcSprite : Sprite
+        + lines : List<DialogLine>
+    }
+
+    class DialogLine {
+        + speaker : DialogSpeaker
+        + text : string
+    }
+
+    class DialogSpeaker <<enumeration>> {
+        Lian
+        Npc
+    }
+
+    DialogManager --> DialogData
+    DialogData *-- DialogLine
+    DialogLine --> DialogSpeaker
+    DialogNpcInteractable --> DialogManager : «uses»
+    DialogNpcInteractable --> DialogData
+}
+
+' ══════════════════════════════════════════
+' MONOBEHAVIOUR INHERITANCE
+' ══════════════════════════════════════════
+MonoBehaviour <|-- Interactor
+MonoBehaviour <|-- Interactable
+MonoBehaviour <|-- DialogManager
+
+' ══════════════════════════════════════════
+' LIFECYCLE IMPLEMENTATIONS
+' ══════════════════════════════════════════
+PlayerInteractor ..|> ISceneLifecycle
+DialogManager ..|> ISceneLifecycle
+Interactable ..|> ISceneLifecycle
+
+' ══════════════════════════════════════════
+' SERVICE DEPENDENCIES
+' ══════════════════════════════════════════
+DialogManager ..> Services : «uses»
+PlayerInteractor ..> Services : «uses»
+
+' ══════════════════════════════════════════
+' НОВЫЕ КЛАССЫ (правая часть)
+' ══════════════════════════════════════════
+
+class ISceneService <<interface>> {
+    + InitializeAsync() : Task
+}
+
+class NoiseSystem {
+    + NoiseEmitted : Action<NoiseEvent>
+    --
+    + EmitNoise(Vector3, float, GameObject, NoiseType) : void
+}
+
+class PlayerContext {
+    + input : FrameInput
+    + stats : PlayerScriptableStats
+    + rb : Rigidbody2D
+    + anim : Animator
+    + grounded : bool
+    + velocity : Vector2
+    + stamina : float
+    + isAlive : bool
+    + isInDialog : bool
+    + isGrabbed : bool
+    + isHiding : bool
+    + isInDarkness : bool
+}
+
+class PlayerStateDriver {
+    - _ctx : PlayerContext
+    - _machine : StateMachine
+    - _root : PlayerRoot
+    --
+    - FixedUpdate() : void
+}
+
+class AgentStateDriver {
+    - _ctx : AgentContext
+    - _machine : StateMachine
+    - _root : AgentRoot
+    --
+    - FixedUpdate() : void
+    - OnHeard(NoiseEvent) : void
+    - OnAlertReceived(Vector2) : void
+}
+
+' Связи новых классов
+MonoBehaviour <|-- NoiseSystem
+MonoBehaviour <|-- PlayerStateDriver
+MonoBehaviour <|-- AgentStateDriver
+
+NoiseSystem ..|> ISceneService
+NoiseSystem ..> Services : «uses»
+
+PlayerStateDriver ..|> ISceneLifecycle
+PlayerStateDriver *-- PlayerContext
+PlayerStateDriver *-- StateMachine
+PlayerStateDriver *-- PlayerRoot
+
+AgentStateDriver ..|> ISceneLifecycle
+AgentStateDriver *-- StateMachine
+AgentStateDriver *-- AgentRoot
+
+PlayerStateDriver ..> Services : «uses»
+AgentStateDriver ..> Services : «uses»
+
+@enduml

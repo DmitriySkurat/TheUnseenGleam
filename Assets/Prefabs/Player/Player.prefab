@@ -49,11 +49,11 @@ MonoBehaviour:
   mirrorLightPrefab: {fileID: 3001410656907869080, guid: 1c99589f4e4acb646920d154da8ba4dd, type: 3}
   maxCharge: 100
   initialCharge: 0
-  chargePerSecond: 15
+  chargePerSecond: 10
   minLightStrengthToCharge: 0.1
   chargeOnlyWhenGrounded: 1
-  chargeCostPerSecond: 10
-  flickerCharge: 20
+  chargeCostPerSecond: 20
+  flickerCharge: 40
   minLightIntensity: 5
   maxLightIntensity: 15
 --- !u!1 &4801114399454441880

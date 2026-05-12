@@ -54,7 +54,13 @@
       "PowerShell(pandoc --version 2>&1)",
       "Read(//d/BSUIR/Diploma/Записка/_diplom_unpacked/word/**)",
       "Read(//d/BSUIR/Diploma/Записка/_gatilo_unpacked/word/**)",
-      "PowerShell($env:PYTHONIOENCODING=\"utf-8\"; python \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_extract_text.py\" \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_diplom_unpacked\\\\word\\\\document.xml\" | Out-File -Encoding utf8 \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_diplom_text.txt\"; python \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_extract_text.py\" \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_gatilo_unpacked\\\\word\\\\document.xml\" | Out-File -Encoding utf8 \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_gatilo_text.txt\")"
+      "PowerShell($env:PYTHONIOENCODING=\"utf-8\"; python \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_extract_text.py\" \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_diplom_unpacked\\\\word\\\\document.xml\" | Out-File -Encoding utf8 \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_diplom_text.txt\"; python \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_extract_text.py\" \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_gatilo_unpacked\\\\word\\\\document.xml\" | Out-File -Encoding utf8 \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\_gatilo_text.txt\")",
+      "Bash(python scripts/office/unpack.py \"C:/Users/Dima/Downloads/Диплом_1.docx\" /tmp/diploma_unpacked/)",
+      "Bash(pandoc --track-changes=all \"C:/Users/Dima/Downloads/Диплом_1.docx\" -o /tmp/diploma.md)",
+      "Bash(node gen_33.js)",
+      "Bash(python -c ' *)",
+      "Bash(ls \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\\")",
+      "Bash(pandoc \"Диплом.docx\" -o _diplom_full.md)"
     ]
   }
 }

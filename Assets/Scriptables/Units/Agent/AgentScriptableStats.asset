@@ -19,20 +19,20 @@ MonoBehaviour:
   PatrolWaitTime: 2
   DefaultPatrolDistance: 4
   SuspicionTimeOnSight: 0.5
-  SuspicionTimeOnNoise: 1
+  SuspicionTimeOnNoise: 0.8
   SearchNoiseRadius: 3
-  ChaseSpeed: 5
+  ChaseSpeed: 9
   ChaseVisionGraceTime: 1.5
   ChaseMemoryTime: 2
   PredictionSearchTime: 6
-  SearchSpeed: 4
+  SearchSpeed: 6
   SearchWaitTime: 1.5
   SearchWanderDuration: 8
   SearchWanderDistance: 3
   BlindedByPlayerReactionTime: 0.5
   BlindDurationToStun: 2
   StunDuration: 3
-  BlindedByEnvironmentSpeed: 4
+  BlindedByEnvironmentSpeed: 5
   GrabProximityGraceWindow: 0.4
   AttackRange: 1.5
   AttackFirstHitDelay: 0.05
@@ -45,7 +45,7 @@ MonoBehaviour:
   LookAroundTurnDelay: 0.5
   LookAroundDuration: 1.5
   AlertDuration: 3
-  AlertRadius: 18
+  AlertRadius: 12
   AlertTurnTime: 1.5
   InteractableLayer:
     serializedVersion: 2

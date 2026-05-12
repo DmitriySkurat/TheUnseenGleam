@@ -34,10 +34,10 @@ MonoBehaviour:
   RunSpeedMultiplier: 1.5
   GraceTime: 0.08
   MaxStamina: 100
-  StaminaDrainPerSecond: 20
-  StaminaRegenPerSecond: 15
+  StaminaDrainPerSecond: 18
+  StaminaRegenPerSecond: 12
   StaminaRegenMovingMultiplier: 0.4
-  MinStaminaToRun: 35
+  MinStaminaToRun: 25
   RunStaminaDrainMultiplier: 1
   GrabbedStaminaDrainMultiplier: 0.5
   StaminaHoldBreathDrainPerSecond: 20
@@ -58,9 +58,14 @@ MonoBehaviour:
   CrouchHeightMultiplier: 0.5
   CeilingCheckDistance: 0.524
   HideSpeedMultiplier: 0.4
+  DarknessSpeedMultiplier: 0.4
+  SpikesSpeedMultiplier: 0.3
   PressToWallHeightMultiplier: 0.8
   PressToWallWidthMultiplier: 0.5
+  StumbleDuration: 1.2
+  LimpSpeedMultiplier: 0.35
   GrabDamagePerSecond: 20
+  GrabProgressDrainPerSecond: 0.15
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 3.3
   LandingRollMinHorizontalSpeed: 2
@@ -81,3 +86,4 @@ MonoBehaviour:
   LedgeStandOffsetX: 0
   LedgeStandOffsetY: 0
   LedgeClimbTeleportDelay: 0.65
+  WallGrabMaxDuration: 3

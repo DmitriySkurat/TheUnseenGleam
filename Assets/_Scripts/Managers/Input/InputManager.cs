@@ -176,10 +176,6 @@ public class InputManager : MonoBehaviour, IService
         Cursor.visible = visible;
     }
     
-    // void Update()
-    //     {
-    //         Services.Update();
-    //     }
 
     #region Input Handlers
     

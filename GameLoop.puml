@@ -1,0 +1,115 @@
+@startuml GameLoop
+title Игровой цикл — The Unseen Gleam
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam ArrowColor #445566
+skinparam ActivityBorderColor #445566
+skinparam ActivityBackgroundColor #DDEEFF
+skinparam ActivityDiamondBackgroundColor #FFF8DC
+skinparam ActivityDiamondBorderColor #8B7500
+skinparam ActivityStartColor #222222
+skinparam ActivityEndColor #222222
+skinparam NoteBackgroundColor #EEFFEE
+skinparam NoteBorderColor #336633
+
+start
+
+:Запуск приложения;
+note right: GameBootstrap\nGameServiceRegistry
+
+:Главное меню;
+note right: MenuEntryPoint\nInputManager (EnableUI)
+
+if (Действие игрока?) then (Выход)
+  stop
+else if (Настройки) then
+  :Применить настройки;
+  :Вернуться в главное меню;
+  stop
+else (Новая игра / Загрузить)
+endif
+
+if (Новая игра или Загрузить?) then (Новая игра)
+  :Создать новый слот сохранения;
+else (Загрузить)
+  :Загрузить данные слота\n(SaveManager.Load);
+  note right: здоровье, выносливость,\nимя сцены, инвентарь
+endif
+
+:Инициализация игровой сессии;
+note right: SessionBootstrap\nDontDestroyOnLoad
+
+repeat
+
+  :Загрузка сцены уровня;
+  note right: SceneTransitionManager\nGameplayEntryPoint\nGameplaySceneServiceRegistry
+
+  :Восстановление состояния игрока\nиз сохранения;
+
+  repeat
+
+    :Игрок перемещается по уровню;
+    note right: ходьба / бег / приседание\nпрыжок / карабканье / лианы
+
+    :Игрок взаимодействует\nс окружением и инвентарём;
+    note right: двери, рычаги, предметы,\nкамешек (отвлечение),\nволшебное зеркало
+
+    :Система шума фиксирует событие;
+    note right: NoiseSystem.EmitNoise\n(шаги, прыжок, падение)
+
+    :Система освещения вычисляет\nвидимость игрока;
+    note right: LightSystem\nPlayerLightSensor
+
+    if (Охранник слышит\nили видит игрока?) then (Да)
+
+      :Охранник переходит\nв Suspicious;
+      note right: AgentHearing\nAgentVision
+
+      if (Угроза\nподтверждена?) then (Да)
+
+        :Охранник сигналит союзникам;\nпереходит в Chase / Alert;
+        note right: AgentAlertSystem\n.BroadcastAlert
+
+        if (Охранник\nсхватил игрока?) then (Да)
+
+          :Игрок схвачен — гибель;
+          note right: PlayerGrabbed\nDeathGrabbed
+
+          :Загрузка с последнего\nчекпоинта;
+
+        else (Нет)
+
+          if (Игрок оглушил\nохранника?) then (Да)
+            :Охранник: BlindedByPlayer\nили Stunned;
+          else (Нет)
+            :Охранник: Search\nзатем ReturnToPatrol;
+          endif
+
+        endif
+
+      else (Нет)
+        :Охранник\nвозвращается к патрулю;
+      endif
+
+    else (Нет)
+      :Охранник патрулирует\nмаршрут;
+      note right: AgentPatrol
+    endif
+
+  repeat while (Игрок достиг\nзоны выхода?) is (Нет)
+  -> Да;
+
+  :Сохранение прогресса;
+  note right: SaveManager.Save\n(слот, здоровье, выносливость,\nсцена, инвентарь)
+
+repeat while (Есть следующий\nуровень?) is (Да)
+-> Нет;
+
+:Экран победы;
+
+:Возврат в главное меню;
+
+stop
+
+@enduml

@@ -58,10 +58,7 @@ namespace EntryPoint
             _registry?.Dispose();
         }
 
-        /// <summary>
-        /// Страховочный вызов: если Dispose уже был вызван явно (из TransitionManager или EntryPoint),
-        /// оба метода будут no-op благодаря флагу и пустым спискам реестра.
-        /// </summary>
+        // Страховочный вызов: если Dispose уже был вызван явно (из TransitionManager или EntryPoint)
         protected virtual void OnDestroy()
         {
             DisposeObjects();

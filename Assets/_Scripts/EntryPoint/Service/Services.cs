@@ -40,12 +40,6 @@ public static class Services
         throw new Exception($"Service {type.Name} not found");
     }
 
-    // public static void Update()
-    // {
-    //     foreach (var type in _services.Keys)
-    //         Debug.Log(type.Name);
-    // }
-
     public static void Clear()
     {
         _services.Clear();

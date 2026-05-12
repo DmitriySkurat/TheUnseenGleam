@@ -1,0 +1,30 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "Все файлы (*)",
+    "fileStates": {
+        "DungeonTileset.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "D:/BSUIR/Diploma/TheUnseenGleam/Assets/Sprites/Env/PlatformerSet1",
+    "map.height": 64,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 64,
+    "openFiles": [
+        "DungeonTileset.tsx"
+    ],
+    "project": "example.tiled-project",
+    "recentFiles": [
+        "DungeonTileset.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
