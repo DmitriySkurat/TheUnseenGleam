@@ -5051,8 +5051,8 @@ MonoBehaviour:
   minFallingSpeed: 32
   fallingDownOffset: 8
   fallingOffsetSmooth: 6
-  lookRange: 3
-  returnSpeed: 5
+  lookRange: 8
+  returnSpeed: 3
   lookSensivity: 0.01
 --- !u!114 &1997855480018989288
 MonoBehaviour:
