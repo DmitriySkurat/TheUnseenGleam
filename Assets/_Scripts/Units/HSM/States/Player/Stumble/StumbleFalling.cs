@@ -14,8 +14,15 @@ namespace HSM {
         protected override void OnEnter()
         {
             _timer = ctx.stats != null ? ctx.stats.StumbleDuration : 1.2f;
+            ctx.isStumbleFalling = true;
             ctx.anim?.Play(PlayerAnimations.Stumble, 0, 0f);
             base.OnEnter();
+        }
+
+        protected override void OnExit()
+        {
+            ctx.isStumbleFalling = false;
+            base.OnExit();
         }
 
         protected override void OnUpdate(float deltaTime)

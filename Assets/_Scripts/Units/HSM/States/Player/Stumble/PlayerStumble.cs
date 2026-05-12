@@ -28,7 +28,6 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
-            ctx.jumpToConsume = false;
             base.OnUpdate(deltaTime);
         }
 
