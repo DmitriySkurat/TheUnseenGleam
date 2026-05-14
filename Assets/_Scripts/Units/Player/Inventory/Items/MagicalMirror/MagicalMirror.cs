@@ -22,6 +22,7 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
     [Header("Usage")]
     [SerializeField, Min(0f)] private float chargeCostPerSecond = 10f;
     [SerializeField] private float flickerCharge = 20f;
+    [SerializeField, Min(0f)] private float minChargeToReactivate = 5f;
 
     
     [Header("Light Power")]
@@ -34,8 +35,9 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
     private LightSystem _lightSystem;
     private PlayerContext _ctx;
     private float _currentCharge;
-    
-    private bool HasEnoughChargeForUse => _currentCharge > 0;
+    private bool _depleted;
+
+    private bool HasEnoughChargeForUse => !_depleted && _currentCharge > 0;
     
     public float CurrentCharge => maxCharge <= 0f ? 0f : Mathf.Clamp01(_currentCharge / maxCharge);
     public bool IsFull => maxCharge > 0f && _currentCharge >= maxCharge;
@@ -92,7 +94,8 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
             return;
         }
 
-        if (_ctx.input.AttackHeld && HasEnoughChargeForUse)
+        bool isUsing = _ctx.input.AttackHeld && HasEnoughChargeForUse;
+        if (isUsing)
         {
             SetLightActive(true);
             UpdateLight();
@@ -102,7 +105,10 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
         else
         {
             StopUsingMirror();
-        }    
+        }
+
+        if (isUsing)
+            return;
 
         if (chargeOnlyWhenGrounded && !_ctx.grounded)
             return;
@@ -118,6 +124,9 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
             return;
 
         _currentCharge = Mathf.Min(maxCharge, _currentCharge + chargePerSecond * Time.deltaTime);
+
+        if (_depleted && _currentCharge >= minChargeToReactivate)
+            _depleted = false;
     }
 
     private void OnDisable()
@@ -172,7 +181,10 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
     {
         float cost = chargeCostPerSecond * Time.deltaTime;
         _currentCharge = Mathf.Max(0f, _currentCharge - cost);
-    
+
+        if (_currentCharge <= 0f)
+            _depleted = true;
+
         Debug.Log($"Use magical mirror. Current charge: {_currentCharge}/{maxCharge}");
     }
 
