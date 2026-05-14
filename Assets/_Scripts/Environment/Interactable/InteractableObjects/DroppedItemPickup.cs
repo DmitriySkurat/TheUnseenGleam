@@ -14,7 +14,6 @@ public class DroppedItemPickup : Interactable
     private ItemData _item;
     private int _count;
     private NoiseSystem _noiseSystem;
-    private bool _landed;
     private float _peakY;
 
     void Awake()
@@ -30,8 +29,7 @@ public class DroppedItemPickup : Interactable
 
     void Update()
     {
-        if (!_landed)
-            _peakY = Mathf.Max(_peakY, transform.position.y);
+        _peakY = Mathf.Max(_peakY, transform.position.y);
     }
 
     void Start()
@@ -90,9 +88,7 @@ public class DroppedItemPickup : Interactable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_landed) return;
         if ((groundMask.value & (1 << collision.gameObject.layer)) == 0) return;
-        _landed = true;
 
         Vector3 pos = collision.contactCount > 0
             ? (Vector3)collision.GetContact(0).point
@@ -101,6 +97,8 @@ public class DroppedItemPickup : Interactable
         float fallHeight = Mathf.Max(0f, _peakY - pos.y);
         float radius = EvaluateNoiseRadius(fallHeight);
         _noiseSystem?.EmitNoise(pos, radius, gameObject, NoiseType.ObjectImpact, noiseVariance);
+
+        _peakY = pos.y;
     }
 
     private float EvaluateNoiseRadius(float fallHeight)

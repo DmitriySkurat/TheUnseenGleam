@@ -111,7 +111,7 @@ PolygonCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4352
+    m_Bits: 4480
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -202,7 +202,10 @@ MonoBehaviour:
     m_Bits: 64
   interactableLayerName: Interactable
   destroyAfter: 60
-  noiseRadius: 1.5
+  minNoiseRadius: 3
+  maxNoiseRadius: 10
+  minFallHeight: 0.5
+  maxFallHeight: 5
   noiseVariance: 0.1
 --- !u!114 &-1783584664156519325
 MonoBehaviour:
