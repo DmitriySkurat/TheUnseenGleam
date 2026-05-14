@@ -93,4 +93,11 @@ public class NoiseScriptableStats : ScriptableObject
     [Tooltip("Noise radius emitted when a pebble hits a surface")]
     [Min(0f)]
     public float PebbleImpactNoiseRadius = 4f;
+
+
+
+    [Header("VARIANCE")]
+    [Tooltip("Random ±fraction applied to every emitted noise radius (0 = no variance, 0.15 = ±15%)")]
+    [Range(0f, 0.5f)]
+    public float RadiusVariance = 0.1f;
 }

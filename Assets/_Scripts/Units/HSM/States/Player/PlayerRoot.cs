@@ -119,7 +119,7 @@ namespace HSM {
             // Emit jump noise from the HSM when the jump is actually executed.
             if (ctx.transform != null)
             {
-                _noiseSystem.EmitNoise(ctx.transform.position, ctx.noiseStats.JumpStartNoiseRadius, ctx.transform.gameObject, NoiseType.Jump);
+                _noiseSystem.EmitNoise(ctx.transform.position, ctx.noiseStats.JumpStartNoiseRadius, ctx.transform.gameObject, NoiseType.Jump, ctx.noiseStats.RadiusVariance);
             }
         }
 
@@ -154,7 +154,7 @@ namespace HSM {
             if (_footstepTimer < ctx.currentFootstepInterval) return;
 
             _footstepTimer = 0f;
-            _noiseSystem.EmitNoise(ctx.transform.position, ctx.currentNoiseRadius, ctx.transform.gameObject, NoiseType.Footstep);
+            _noiseSystem.EmitNoise(ctx.transform.position, ctx.currentNoiseRadius, ctx.transform.gameObject, NoiseType.Footstep, ctx.noiseStats.RadiusVariance);
         }
     }
 }

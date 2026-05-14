@@ -117,7 +117,7 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             radius *= _ctx.noiseStats.LandingRollNoiseMultiplier;
         }
 
-        _noiseSystem.EmitNoise(_ctx.transform.position, radius, _ctx.transform.gameObject, NoiseType.Landing);
+        _noiseSystem.EmitNoise(_ctx.transform.position, radius, _ctx.transform.gameObject, NoiseType.Landing, _ctx.noiseStats.RadiusVariance);
     }
 
     float EvaluateLandingNoiseRadius(float fallHeight)

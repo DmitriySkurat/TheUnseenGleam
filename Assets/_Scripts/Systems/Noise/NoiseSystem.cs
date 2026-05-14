@@ -39,9 +39,12 @@ public class NoiseSystem : MonoBehaviour, ISceneService
         await Task.CompletedTask;
     }
 
-    public void EmitNoise(Vector3 position, float radius, GameObject source, NoiseType type)
+    public void EmitNoise(Vector3 position, float radius, GameObject source, NoiseType type, float variance = 0f)
     {
         if (radius <= 0f) return;
+
+        if (variance > 0f)
+            radius *= 1f + UnityEngine.Random.Range(-variance, variance);
 
         var noiseEvent = new NoiseEvent((Vector2)position, radius, source, type);
         NoiseEmitted?.Invoke(noiseEvent);

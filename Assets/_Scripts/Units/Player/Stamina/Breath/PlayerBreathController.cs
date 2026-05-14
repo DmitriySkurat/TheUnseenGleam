@@ -97,7 +97,8 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
             _ctx.transform.position,
             _ctx.noiseStats.BreathingNoiseRadius,
             _ctx.transform.gameObject,
-            NoiseType.Breathing
+            NoiseType.Breathing,
+            _ctx.noiseStats.RadiusVariance
         );
     }
 }

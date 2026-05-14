@@ -4,6 +4,7 @@ using UnityEngine;
 public class NoiseOnImpact : MonoBehaviour
 {
     [SerializeField, Min(0f)] private float radius = 4f;
+    [SerializeField, Range(0f, 0.5f)] private float radiusVariance = 0.1f;
     [SerializeField] private NoiseType noiseType = NoiseType.ObjectImpact;
     
     [SerializeField] private LayerMask groundMask;
@@ -27,7 +28,7 @@ public class NoiseOnImpact : MonoBehaviour
         }
 
         // Emit noise on impact (e.g., stone hits ground).
-        _noiseSystem.EmitNoise(position, radius, gameObject, noiseType);
+        _noiseSystem.EmitNoise(position, radius, gameObject, noiseType, radiusVariance);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -38,6 +39,6 @@ public class NoiseOnImpact : MonoBehaviour
         Vector3 position = other.ClosestPoint(transform.position);
 
         // Emit noise on trigger impact (e.g., projectile with trigger collider).
-        _noiseSystem.EmitNoise(position, radius, gameObject, noiseType);
+        _noiseSystem.EmitNoise(position, radius, gameObject, noiseType, radiusVariance);
     }
 }

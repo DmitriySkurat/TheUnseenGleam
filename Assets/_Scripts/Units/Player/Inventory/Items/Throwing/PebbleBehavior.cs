@@ -10,6 +10,7 @@ public class PebbleBehavior : MonoBehaviour
     [SerializeField] private NoiseType impactNoiseType = NoiseType.ObjectImpact;
 
     private float impactNoiseRadius;
+    private float _noiseVariance;
     private Rigidbody2D _rb;
     private NoiseSystem _noiseSystem;
 
@@ -21,6 +22,7 @@ public class PebbleBehavior : MonoBehaviour
             return;
         var playerCtx = Services.Get<PlayerContext>();
         impactNoiseRadius = playerCtx.noiseStats.PebbleImpactNoiseRadius;
+        _noiseVariance = playerCtx.noiseStats.RadiusVariance;
         
         SetDestroyTime();
         
@@ -44,7 +46,7 @@ public class PebbleBehavior : MonoBehaviour
             if (impactNoiseRadius > 0f)
             {
                 Vector2 point = collision.ClosestPoint(transform.position);
-                _noiseSystem.EmitNoise(point, impactNoiseRadius, gameObject, impactNoiseType);
+                _noiseSystem.EmitNoise(point, impactNoiseRadius, gameObject, impactNoiseType, _noiseVariance);
             }
             
             Destroy(gameObject);
