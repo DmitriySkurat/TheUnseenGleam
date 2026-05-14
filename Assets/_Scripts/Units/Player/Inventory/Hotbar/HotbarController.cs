@@ -8,8 +8,15 @@ public class HotbarController : MonoBehaviour, ISessionLifecycle
     [SerializeField] private int slotCount = 5;
     [SerializeField] private List<InventoryEntry> _slots;
 
+    [Header("Drop")]
+    [SerializeField] private GameObject _droppedItemPrefab;
+    [SerializeField] private float _dropHorizontalSpeed = 3f;
+    [SerializeField] private float _dropVerticalSpeed = 2f;
+
     public IReadOnlyList<InventoryEntry> Slots => _slots;
     public int selectedHotbarSlot = -1;
+
+    private float _facingSign = 1f;
     public InventoryEntry selectedHotbarEntry;
     public ItemData SelectedHotbarItem => selectedHotbarEntry?.item;
 
@@ -41,9 +48,13 @@ public class HotbarController : MonoBehaviour, ISessionLifecycle
         if (_ctx == null)
             return;
 
+        if (Mathf.Abs(_ctx.velocity.x) > 0.01f)
+            _facingSign = Mathf.Sign(_ctx.velocity.x);
+
         OnSlotSelected(_ctx.input.SlotPressed);
         SyncSelectedSlot();
         HandlePrimaryAction();
+        HandleDropAction();
     }
 
     private void OnSlotSelected(int pressedSlot)
@@ -78,6 +89,26 @@ public class HotbarController : MonoBehaviour, ISessionLifecycle
                 _ctx.inventory.TryUse(selectedHotbarEntry, _ctx);
                 break;
         }
+    }
+
+    private void HandleDropAction()
+    {
+        if (!_ctx.input.DropDown) return;
+        if (_droppedItemPrefab == null) return;
+        if (selectedHotbarEntry == null || SelectedHotbarItem == null) return;
+
+        var item = SelectedHotbarItem;
+        _ctx.inventory.Remove(selectedHotbarEntry, 1);
+
+        Vector3 spawnPos = _ctx.transform.position + Vector3.up * 0.5f;
+        var go = Instantiate(_droppedItemPrefab, spawnPos, Quaternion.identity);
+        var pickup = go.GetComponent<DroppedItemPickup>();
+        if (pickup != null)
+            pickup.Setup(item, 1);
+
+        var rb = go.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.linearVelocity = new Vector2(_facingSign * _dropHorizontalSpeed, _dropVerticalSpeed);
     }
 
     // Returns true if the given item (count units) can fit into existing or free hotbar slots.

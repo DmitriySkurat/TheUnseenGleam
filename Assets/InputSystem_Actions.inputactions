@@ -515,8 +515,8 @@
                 },
                 {
                     "name": "",
-                    "id": "1de5a4d4-1f05-42b0-bd24-e8b5077395cf",
-                    "path": "<Keyboard>/q",
+                    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -615,7 +615,7 @@
                 {
                     "name": "",
                     "id": "8b7c6d5e-4f3a-2b1c-0d9e-8f7a6b5c4d3e",
-                    "path": "<Keyboard>/g",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",

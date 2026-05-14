@@ -22,7 +22,9 @@ public class InputManager : MonoBehaviour, IService
     public event Action OnSlot3;
     public event Action OnSlot4;
     public event Action OnSlot5;
-    
+
+    public event Action OnDrop;
+
     public event Action OnEscape;
     public event Action OnCloseWindow;
     
@@ -89,7 +91,9 @@ public class InputManager : MonoBehaviour, IService
         actions["Slot3"].performed += HandleSlot3;
         actions["Slot4"].performed += HandleSlot4;
         actions["Slot5"].performed += HandleSlot5;
-        
+
+        actions["Drop"].performed += HandleDrop;
+
         actions["Escape"].performed += HandleOnEscape;
         actions["CloseWindow"].performed += HandleOnCloseWindow;
         
@@ -132,7 +136,9 @@ public class InputManager : MonoBehaviour, IService
         actions["Slot3"].performed -= HandleSlot3;
         actions["Slot4"].performed -= HandleSlot4;
         actions["Slot5"].performed -= HandleSlot5;
-        
+
+        actions["Drop"].performed -= HandleDrop;
+
         actions["Escape"].performed -= HandleOnEscape;
         actions["CloseWindow"].performed -= HandleOnCloseWindow;
         
@@ -196,6 +202,7 @@ public class InputManager : MonoBehaviour, IService
     private void HandleSlot3(InputAction.CallbackContext ctx) => OnSlot3?.Invoke();
     private void HandleSlot4(InputAction.CallbackContext ctx) => OnSlot4?.Invoke();
     private void HandleSlot5(InputAction.CallbackContext ctx) => OnSlot5?.Invoke();
+    private void HandleDrop(InputAction.CallbackContext ctx) => OnDrop?.Invoke();
     
     private void HandleOnEscape(InputAction.CallbackContext ctx) => OnEscape?.Invoke();
     private void HandleOnCloseWindow(InputAction.CallbackContext ctx) => OnCloseWindow?.Invoke();

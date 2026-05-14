@@ -192,12 +192,18 @@ MonoBehaviour:
   canEnemyInteract: 0
   consumeRequiredItems: 0
   wasItemsConsumed: 0
+  usePhysics: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
   requiredItems: []
   groundMask:
     serializedVersion: 2
     m_Bits: 64
   interactableLayerName: Interactable
   destroyAfter: 60
+  noiseRadius: 1.5
+  noiseVariance: 0.1
 --- !u!114 &-1783584664156519325
 MonoBehaviour:
   m_ObjectHideFlags: 0

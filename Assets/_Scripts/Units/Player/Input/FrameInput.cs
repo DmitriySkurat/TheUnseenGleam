@@ -19,4 +19,6 @@ public struct FrameInput
     public bool LookAroundHeld;
     public bool AttackHeld;
     public bool AttackDown;
+
+    public bool DropDown;
 }

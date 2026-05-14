@@ -46,6 +46,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _frameInput.JumpDown = false;
         _frameInput.InteractDown = false;
         _frameInput.AttackDown = false;
+        _frameInput.DropDown = false;
         _frameInput.SlotPressed = 0;
 
         SyncContextInput();
@@ -64,6 +65,7 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
             _frameInput.AttackDown     = false;
             _frameInput.AttackHeld     = false;
             _frameInput.LookAroundHeld = false;
+            _frameInput.DropDown       = false;
         }
 
         _ctx.input = _frameInput;
@@ -92,7 +94,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnSlot3 += HandleSlot3;
         _inputManager.OnSlot4 += HandleSlot4;
         _inputManager.OnSlot5 += HandleSlot5;
-        
+
+        _inputManager.OnDrop += HandleDrop;
+
         _inputManager.OnMousePositionChanged += HandleMousePosition;
         _inputManager.OnLookAroundToggled += HandleLookAroundInput;
         _inputManager.OnLMBStarted += HandleLMBStarted;
@@ -120,7 +124,9 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         _inputManager.OnSlot3 -= HandleSlot3;
         _inputManager.OnSlot4 -= HandleSlot4;
         _inputManager.OnSlot5 -= HandleSlot5;
-        
+
+        _inputManager.OnDrop -= HandleDrop;
+
         _inputManager.OnMousePositionChanged -= HandleMousePosition;
         _inputManager.OnLookAroundToggled -= HandleLookAroundInput;
         _inputManager.OnLMBStarted -= HandleLMBStarted;
@@ -218,6 +224,13 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
     void HandleSlot3() { _frameInput.SlotPressed = 3; SyncContextInput(); }
     void HandleSlot4() { _frameInput.SlotPressed = 4; SyncContextInput(); }
     void HandleSlot5() { _frameInput.SlotPressed = 5; SyncContextInput(); }
+
+    void HandleDrop()
+    {
+        if (IsSceneEntry || IsInDialog) return;
+        _frameInput.DropDown = true;
+        SyncContextInput();
+    }
     
     
     // Mouse

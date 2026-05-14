@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HotbarController
   slotCount: 3
   _slots: []
-  droppedItemPrefab: {fileID: 3973433118769081135, guid: dec304cc406f5704aad4e0036b8b9090, type: 3}
-  dropHorizontalSpeed: 2.5
-  dropVerticalSpeed: 3
+  _droppedItemPrefab: {fileID: 3973433118769081135, guid: dec304cc406f5704aad4e0036b8b9090, type: 3}
+  _dropHorizontalSpeed: 3
+  _dropVerticalSpeed: 2
   selectedHotbarSlot: -1
   selectedHotbarEntry:
     item: {fileID: 0}
