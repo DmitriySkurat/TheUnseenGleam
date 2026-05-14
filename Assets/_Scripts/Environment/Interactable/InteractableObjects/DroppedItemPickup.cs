@@ -39,7 +39,33 @@ public class DroppedItemPickup : Interactable
         _item = item;
         _count = count;
         if (_sr != null && item?.sprite != null)
+        {
             _sr.sprite = item.sprite;
+            FitColliderToSprite(item.sprite);
+        }
+    }
+
+    private void FitColliderToSprite(Sprite sprite)
+    {
+        var poly = GetComponent<PolygonCollider2D>();
+        if (poly != null && sprite.GetPhysicsShapeCount() > 0)
+        {
+            var points = new System.Collections.Generic.List<Vector2>();
+            poly.pathCount = sprite.GetPhysicsShapeCount();
+            for (int i = 0; i < sprite.GetPhysicsShapeCount(); i++)
+            {
+                sprite.GetPhysicsShape(i, points);
+                poly.SetPath(i, points);
+            }
+            return;
+        }
+
+        var box = GetComponent<BoxCollider2D>();
+        if (box != null)
+        {
+            box.size = sprite.bounds.size;
+            box.offset = sprite.bounds.center;
+        }
     }
 
     public override void OnInteract(Interactor interactor)
