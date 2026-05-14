@@ -263,6 +263,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251a30f084e23624eb12a018720ecc59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CosmeticLight
+  enableProximityDimming: 1
+  fullDimAtStrength: 1
+  minIntensityMultiplier: 0
+  dimmingSpeed: 3
 --- !u!114 &605033210090209207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -712,7 +716,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2

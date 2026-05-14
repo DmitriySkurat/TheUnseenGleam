@@ -73,10 +73,11 @@ namespace HSM
             if (!_isClimbingUp)
                 _hangTimer += deltaTime;
 
-            if (!_isClimbingUp && ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold)
+            if (!_isClimbingUp && (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold || ctx.jumpToConsume))
             {
                 _isClimbingUp = true;
                 _climbStartTime = Time.time;
+                ctx.jumpToConsume = false;
                 ctx.anim.Play(PlayerAnimations.WallgrabClime);
             }
 

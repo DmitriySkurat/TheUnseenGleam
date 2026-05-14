@@ -89,6 +89,9 @@ namespace HSM {
                 return;
             }
 
+            if (ctx.isLedgeGrabbing)
+                return;
+
             if (!ctx.endedJumpEarly && !ctx.grounded && !ctx.input.JumpHeld && ctx.velocity.y > 0) ctx.endedJumpEarly = true;
             
             if (ctx.ceilingAbove && ctx.isCrouching)
