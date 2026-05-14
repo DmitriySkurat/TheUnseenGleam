@@ -5,13 +5,17 @@ public class DroppedItemPickup : Interactable
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private string interactableLayerName = "Interactable";
     [SerializeField] private float destroyAfter = 60f;
-    [SerializeField] private float noiseRadius = 1.5f;
+    [SerializeField] private float minNoiseRadius = 0.5f;
+    [SerializeField] private float maxNoiseRadius = 3f;
+    [SerializeField] private float minFallHeight = 0.5f;
+    [SerializeField] private float maxFallHeight = 5f;
     [SerializeField, Range(0f, 0.5f)] private float noiseVariance = 0.1f;
 
     private ItemData _item;
     private int _count;
     private NoiseSystem _noiseSystem;
     private bool _landed;
+    private float _peakY;
 
     void Awake()
     {
@@ -21,6 +25,13 @@ public class DroppedItemPickup : Interactable
         _defaultColor = _sr != null ? _sr.color : Color.white;
         _rb = GetComponent<Rigidbody2D>();
         gameObject.layer = LayerMask.NameToLayer(interactableLayerName);
+        _peakY = transform.position.y;
+    }
+
+    void Update()
+    {
+        if (!_landed)
+            _peakY = Mathf.Max(_peakY, transform.position.y);
     }
 
     void Start()
@@ -82,10 +93,22 @@ public class DroppedItemPickup : Interactable
         if (_landed) return;
         if ((groundMask.value & (1 << collision.gameObject.layer)) == 0) return;
         _landed = true;
+
         Vector3 pos = collision.contactCount > 0
             ? (Vector3)collision.GetContact(0).point
             : transform.position;
-        _noiseSystem?.EmitNoise(pos, noiseRadius, gameObject, NoiseType.ObjectImpact, noiseVariance);
+
+        float fallHeight = Mathf.Max(0f, _peakY - pos.y);
+        float radius = EvaluateNoiseRadius(fallHeight);
+        _noiseSystem?.EmitNoise(pos, radius, gameObject, NoiseType.ObjectImpact, noiseVariance);
+    }
+
+    private float EvaluateNoiseRadius(float fallHeight)
+    {
+        if (fallHeight < minFallHeight) return minNoiseRadius;
+        float maxH = Mathf.Max(minFallHeight + 0.01f, maxFallHeight);
+        float t = Mathf.InverseLerp(minFallHeight, maxH, fallHeight);
+        return Mathf.Lerp(minNoiseRadius, maxNoiseRadius, t);
     }
 
     private void SelfDestroy() => Destroy(gameObject);
