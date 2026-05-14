@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public abstract class Interactable : MonoBehaviour, IInteractable, ISceneLifecycle {
     public InitializationOrder Order => InitializationOrder.Interactable;
 
@@ -21,6 +22,11 @@ public abstract class Interactable : MonoBehaviour, IInteractable, ISceneLifecyc
     
     [SerializeField] protected bool wasItemsConsumed = false;
     
+    [Header("Physics")]
+    [SerializeField] private bool usePhysics = false;
+    [SerializeField] private LayerMask groundLayer;
+
+    protected Rigidbody2D _rb;
     protected SpriteRenderer _sr;
     protected Color _defaultColor;
 
@@ -46,6 +52,18 @@ public abstract class Interactable : MonoBehaviour, IInteractable, ISceneLifecyc
             Debug.LogWarning($"No SpriteRenderer found on {gameObject.name}. Highlighting will not work.", this);
 
         _defaultColor = _sr != null ? _sr.color : Color.white;
+
+        _rb = GetComponent<Rigidbody2D>();
+        if (usePhysics)
+        {
+            _rb.bodyType = RigidbodyType2D.Dynamic;
+            _rb.includeLayers = groundLayer;
+        }
+        else
+        {
+            _rb.bodyType = RigidbodyType2D.Kinematic;
+            _rb.gravityScale = 0f;
+        }
     }
     
     public virtual void Dispose()

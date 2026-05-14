@@ -94,6 +94,11 @@ public class NoiseScriptableStats : ScriptableObject
     [Min(0f)]
     public float PebbleImpactNoiseRadius = 4f;
 
+    [Header("DROP")]
+    [Tooltip("Noise radius emitted when a dropped item hits the ground")]
+    [Min(0f)]
+    public float ItemDropNoiseRadius = 1.5f;
+
 
 
     [Header("VARIANCE")]
