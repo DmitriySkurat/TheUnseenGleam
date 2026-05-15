@@ -264,8 +264,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CosmeticLight
   enableProximityDimming: 1
-  fullDimAtStrength: 1
-  minIntensityMultiplier: 0
+  fullDimAtStrength: 3
+  minIntensityMultiplier: 0.4
   dimmingSpeed: 3
 --- !u!114 &605033210090209207
 MonoBehaviour:
