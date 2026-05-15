@@ -51,6 +51,8 @@ public class ScreenFader : MonoBehaviour, IService
             FadeIn();
     }
 
+    public bool IsTransitioning => _overlay != null && _overlay.color.a > 0f;
+
     public void FadeIn(float duration = -1f)
     {
         float d = duration < 0f ? _defaultDuration : duration;

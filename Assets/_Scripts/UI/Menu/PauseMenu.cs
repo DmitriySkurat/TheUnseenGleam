@@ -60,7 +60,12 @@ public class PauseMenu : MonoBehaviour, ISceneLifecycle
         }
     }
 
-    private void HandleEscapeGameplay() => Pause();
+    private void HandleEscapeGameplay()
+    {
+        if (Services.IsRegistered<ScreenFader>() && Services.Get<ScreenFader>().IsTransitioning)
+            return;
+        Pause();
+    }
 
     private void HandleEscapeUI()
     {
