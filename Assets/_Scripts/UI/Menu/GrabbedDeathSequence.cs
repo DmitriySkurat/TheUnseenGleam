@@ -1,17 +1,14 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using EntryPoint;
 
 public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.UI;
 
-    [SerializeField] private Image fadeOverlay;
     [SerializeField] private DeathMenu deathMenu;
 
     [SerializeField] private float offScreenTimeout = 4f;
-    [SerializeField] private float fadeDuration = 1f;
 
     [Tooltip("Если задано — после затемнения загружается эта сцена вместо экрана смерти")]
     [SerializeField] private string _nextScene;
@@ -30,14 +27,6 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
         _playerHealth.OnDied += OnPlayerDied;
 
         _camera = Camera.main;
-
-        if (fadeOverlay != null)
-        {
-            var c = fadeOverlay.color;
-            c.a = 0f;
-            fadeOverlay.color = c;
-            fadeOverlay.gameObject.SetActive(false);
-        }
     }
 
     public void Dispose()
@@ -54,11 +43,9 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
 
     private IEnumerator RunSequence()
     {
-        // Шаг 1: Отвязываем камеру
         if (_playerCtx.cameraFollow != null)
             _playerCtx.cameraFollow.Freeze();
 
-        // Шаг 2: Ждём пока игрок (которого тащит агент) уйдёт за край экрана
         float elapsed = 0f;
         while (elapsed < offScreenTimeout)
         {
@@ -68,24 +55,15 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
             yield return null;
         }
 
-        // Шаг 3: Затемнение
-        if (fadeOverlay != null)
+        if (Services.IsRegistered<ScreenFader>())
         {
-            fadeOverlay.gameObject.SetActive(true);
-            float t = 0f;
-            while (t < fadeDuration)
-            {
-                t += Time.deltaTime;
-                var c = fadeOverlay.color;
-                c.a = Mathf.Clamp01(t / fadeDuration);
-                fadeOverlay.color = c;
-                yield return null;
-            }
+            bool done = false;
+            Services.Get<ScreenFader>().FadeOut(onComplete: () => done = true);
+            while (!done) yield return null;
         }
 
-        // Шаг 4: Переход в следующую сцену или экран смерти
         if (!string.IsNullOrEmpty(_nextScene))
-            Utility.SceneLoader.Load(_nextScene);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(_nextScene);
         else if (deathMenu != null)
             deathMenu.ShowNow();
     }

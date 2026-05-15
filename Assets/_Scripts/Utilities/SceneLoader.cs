@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Utility
@@ -7,7 +6,10 @@ namespace Utility
     {
         public static void Load(string sceneName)
         {
-            SceneManager.LoadScene(sceneName);
+            if (Services.IsRegistered<ScreenFader>())
+                Services.Get<ScreenFader>().FadeOutAndLoad(sceneName);
+            else
+                SceneManager.LoadScene(sceneName);
         }
     }
 }

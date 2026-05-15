@@ -49,5 +49,6 @@ MonoBehaviour:
   - {fileID: -8763163762646409491, guid: 8f49e04fe160ffb448dbb6bfb6a550d7, type: 3}
   - {fileID: 2697390914540577186, guid: dbd8401b3da2e0f4b8c6d98f616ea0c2, type: 3}
   - {fileID: 9078426006806687675, guid: e1a7b25b9157470419ef469ba782b3b3, type: 3}
+  - {fileID: 2676136863291870555, guid: 6b6a8ef0c77607b409aeb062e2641b57, type: 3}
   _plainPrefabs: []
   _persistAcrossScenes: 1
