@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using EntryPoint;
 
 public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
 {
     public InitializationOrder Order => InitializationOrder.UI;
 
+    [SerializeField] private Image fadeOverlay;
     [SerializeField] private DeathMenu deathMenu;
 
     [SerializeField] private float offScreenTimeout = 4f;
+    [SerializeField] private float fadeDuration = 1f;
 
     [Tooltip("Если задано — после затемнения загружается эта сцена вместо экрана смерти")]
     [SerializeField] private string _nextScene;
@@ -27,6 +30,14 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
         _playerHealth.OnDied += OnPlayerDied;
 
         _camera = Camera.main;
+
+        if (fadeOverlay != null)
+        {
+            var c = fadeOverlay.color;
+            c.a = 0f;
+            fadeOverlay.color = c;
+            fadeOverlay.gameObject.SetActive(false);
+        }
     }
 
     public void Dispose()
@@ -55,15 +66,22 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
             yield return null;
         }
 
-        if (Services.IsRegistered<ScreenFader>())
+        if (fadeOverlay != null)
         {
-            bool done = false;
-            Services.Get<ScreenFader>().FadeOut(onComplete: () => done = true);
-            while (!done) yield return null;
+            fadeOverlay.gameObject.SetActive(true);
+            float t = 0f;
+            while (t < fadeDuration)
+            {
+                t += Time.deltaTime;
+                var c = fadeOverlay.color;
+                c.a = Mathf.Clamp01(t / fadeDuration);
+                fadeOverlay.color = c;
+                yield return null;
+            }
         }
 
         if (!string.IsNullOrEmpty(_nextScene))
-            UnityEngine.SceneManagement.SceneManager.LoadScene(_nextScene);
+            Utility.SceneLoader.Load(_nextScene);
         else if (deathMenu != null)
             deathMenu.ShowNow();
     }
