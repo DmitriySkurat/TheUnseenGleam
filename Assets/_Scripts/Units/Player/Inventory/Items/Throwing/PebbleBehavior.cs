@@ -39,6 +39,14 @@ public class PebbleBehavior : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.TryGetComponent(out BreakableVase vase))
+        {
+            Vector2 point = collision.ClosestPoint(transform.position);
+            vase.OnHitByProjectile(point, gameObject);
+            Destroy(gameObject);
+            return;
+        }
+
         if((whatDestroysPebble.value & (1 << collision.gameObject.layer)) > 0)
         {
             // spawn particles
@@ -48,7 +56,7 @@ public class PebbleBehavior : MonoBehaviour
                 Vector2 point = collision.ClosestPoint(transform.position);
                 _noiseSystem.EmitNoise(point, impactNoiseRadius, gameObject, impactNoiseType, _noiseVariance);
             }
-            
+
             Destroy(gameObject);
         }
     }
