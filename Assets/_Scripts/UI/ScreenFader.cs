@@ -36,6 +36,7 @@ public class ScreenFader : MonoBehaviour, IService
 
         _overlay = imageGO.AddComponent<Image>();
         _overlay.color = new Color(0f, 0f, 0f, 0f);
+        _overlay.raycastTarget = false;
 
         var rt = _overlay.rectTransform;
         rt.anchorMin = Vector2.zero;
