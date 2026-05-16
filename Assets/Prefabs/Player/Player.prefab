@@ -54,6 +54,7 @@ MonoBehaviour:
   chargeOnlyWhenGrounded: 1
   chargeCostPerSecond: 20
   flickerCharge: 40
+  minChargeToReactivate: 5
   minLightIntensity: 5
   maxLightIntensity: 15
 --- !u!1 &4801114399454441880
@@ -363,6 +364,7 @@ GameObject:
   - component: {fileID: 7939062093050313681}
   - component: {fileID: 4049510902069182745}
   - component: {fileID: 1627415003069123074}
+  - component: {fileID: 1030392281791562805}
   m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
@@ -434,7 +436,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 30
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: bd3cb4af8406d4436a2ae8c2aafe1f8d, type: 3}
+  m_Sprite: {fileID: 6335445804323567298, guid: 177f548fafb9d9d4e9c7b6761106c3a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -532,6 +534,19 @@ MonoBehaviour:
     - rid: 8363858946034237509
       type: {class: ShadowShape2DProvider_SpriteRenderer, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
+--- !u!210 &1030392281791562805
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8381137467430842625}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 30
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &8683501935639828607
 GameObject:
   m_ObjectHideFlags: 0

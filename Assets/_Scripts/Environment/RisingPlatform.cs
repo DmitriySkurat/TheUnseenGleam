@@ -1,0 +1,94 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
+
+[RequireComponent(typeof(Rigidbody2D))]
+public class RisingPlatform : MonoBehaviour
+{
+    [Header("Movement")]
+    [SerializeField] private float riseDistance = 3f;
+    [SerializeField] private float riseDuration = 1.5f;
+    [SerializeField] private float lowerDuration = 1.5f;
+    [SerializeField] private AnimationCurve moveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+    [Header("Auto-return")]
+    [SerializeField] private bool returnAfterRise = false;
+    [SerializeField] private float holdDuration = 2f;
+
+    [Header("Events")]
+    public UnityEvent onRiseComplete;
+    public UnityEvent onLowerComplete;
+
+    private Rigidbody2D _rb;
+    private Vector2 _startPosition;
+    private Vector2 _raisedPosition;
+    private bool _isRaised;
+    private Coroutine _moveCoroutine;
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+        _rb.gravityScale = 0f;
+
+        _startPosition = _rb.position;
+        _raisedPosition = _startPosition + Vector2.up * riseDistance;
+    }
+
+    public void Rise()
+    {
+        if (_isRaised) return;
+        RestartMove(MoveRoutine(_raisedPosition, riseDuration, rising: true));
+    }
+
+    public void Lower()
+    {
+        if (!_isRaised) return;
+        RestartMove(MoveRoutine(_startPosition, lowerDuration, rising: false));
+    }
+
+    public void Toggle()
+    {
+        if (_isRaised) Lower();
+        else Rise();
+    }
+
+    private void RestartMove(IEnumerator routine)
+    {
+        if (_moveCoroutine != null)
+            StopCoroutine(_moveCoroutine);
+        _moveCoroutine = StartCoroutine(routine);
+    }
+
+    private IEnumerator MoveRoutine(Vector2 target, float duration, bool rising)
+    {
+        Vector2 from = _rb.position;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.fixedDeltaTime;
+            float t = moveCurve.Evaluate(Mathf.Clamp01(elapsed / duration));
+            _rb.MovePosition(Vector2.LerpUnclamped(from, target, t));
+            yield return new WaitForFixedUpdate();
+        }
+
+        _rb.MovePosition(target);
+        _isRaised = rising;
+
+        if (rising)
+        {
+            onRiseComplete?.Invoke();
+            if (returnAfterRise)
+            {
+                if (holdDuration > 0f)
+                    yield return new WaitForSeconds(holdDuration);
+                Lower();
+            }
+        }
+        else
+        {
+            onLowerComplete?.Invoke();
+        }
+    }
+}

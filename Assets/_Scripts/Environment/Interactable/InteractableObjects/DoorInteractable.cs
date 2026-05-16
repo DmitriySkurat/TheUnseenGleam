@@ -6,7 +6,7 @@ public class DoorInteractable : Interactable
     [SerializeField] private bool isOpen = false;
 
     public bool IsOpen => isOpen;
-    
+
     [SerializeField] private Sprite openDoorSprite;
     [SerializeField] private Sprite closedDoorSprite;
 
@@ -26,14 +26,14 @@ public class DoorInteractable : Interactable
         // Для начального состояния
         UpdateDoorVisuals();
     }
-    public void SetOpen(bool state) 
+    public void SetOpen(bool state)
     {
         if (isOpen == state) return;
 
         isOpen = state;
-        UpdateDoorVisuals(); 
+        UpdateDoorVisuals();
     }
-    
+
     private void UpdateDoorVisuals() {
         if (_sr != null) {
             if (isOpen && openDoorSprite != null) _sr.sprite = openDoorSprite;
