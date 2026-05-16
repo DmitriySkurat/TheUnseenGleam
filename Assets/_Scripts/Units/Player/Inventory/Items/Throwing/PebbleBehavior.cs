@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PebbleBehavior : MonoBehaviour
@@ -17,6 +19,7 @@ public class PebbleBehavior : MonoBehaviour
     private NoiseSystem _noiseSystem;
     private int _bouncesLeft;
     private bool _bouncedThisFrame;
+    private readonly HashSet<int> _ignoredColliders = new HashSet<int>();
 
     private void Start()
     {
@@ -43,6 +46,7 @@ public class PebbleBehavior : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (_bouncedThisFrame) return;
+        if (_ignoredColliders.Contains(collision.GetInstanceID())) return;
 
         if (collision.TryGetComponent(out IRockActivatable activatable))
         {
@@ -85,15 +89,28 @@ public class PebbleBehavior : MonoBehaviour
 
         Vector2 velocity = _rb.linearVelocity;
         Vector2 normal = GetSurfaceNormal(velocity.normalized, collision);
-        _rb.linearVelocity = Vector2.Reflect(velocity, normal) * bounciness;
+        Vector2 reflected = Vector2.Reflect(velocity, normal) * bounciness;
+
+        _rb.linearVelocity = reflected;
+        // Выталкиваем камень за пределы поверхности, чтобы триггер не сработал повторно
+        _rb.position += normal * 0.12f;
+
+        int id = collision.GetInstanceID();
+        _ignoredColliders.Add(id);
+        StartCoroutine(RemoveIgnore(id));
     }
 
-    // Casts a ray from slightly behind the pebble toward the surface to read the contact normal.
-    // Falls back to the closest-point direction if the cast misses.
+    private IEnumerator RemoveIgnore(int id)
+    {
+        yield return new WaitForSeconds(0.15f);
+        _ignoredColliders.Remove(id);
+    }
+
+    // Raycast немного позади камня в направлении движения, чтобы получить нормаль поверхности.
     private Vector2 GetSurfaceNormal(Vector2 direction, Collider2D col)
     {
-        Vector2 origin = (Vector2)transform.position - direction * 0.2f;
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, 0.4f);
+        Vector2 origin = (Vector2)transform.position - direction * 0.3f;
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, 0.6f);
         if (hit.collider == col)
             return hit.normal;
 
