@@ -69,11 +69,17 @@ public class PebbleBehavior : MonoBehaviour
             if (impactNoiseRadius > 0f)
             {
                 Vector2 point = collision.ClosestPoint(transform.position);
-                _noiseSystem.EmitNoise(point, impactNoiseRadius, gameObject, impactNoiseType, _noiseVariance);
+                _noiseSystem.EmitNoise(point, CurrentNoiseRadius(), gameObject, impactNoiseType, _noiseVariance);
             }
 
             Bounce(collision);
         }
+    }
+
+    private float CurrentNoiseRadius()
+    {
+        float speedRatio = _rb.linearVelocity.magnitude / pebbleSpeed;
+        return impactNoiseRadius * Mathf.Clamp01(speedRatio);
     }
 
     private void Bounce(Collider2D collision)
