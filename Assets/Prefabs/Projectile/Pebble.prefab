@@ -151,7 +151,7 @@ MonoBehaviour:
     m_Bits: 8256
   impactNoiseType: 3
   maxBounces: 4
-  bounciness: 0.45
+  bounciness: 0.56
 --- !u!50 &7871949925516048877
 Rigidbody2D:
   serializedVersion: 5

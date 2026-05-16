@@ -7,6 +7,7 @@ public class RisingPlatform : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float riseDistance = 3f;
+    [SerializeField] private float lowerDistance = 3f;
     [SerializeField] private float riseDuration = 1.5f;
     [SerializeField] private float lowerDuration = 1.5f;
     [SerializeField] private AnimationCurve moveCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
@@ -22,6 +23,7 @@ public class RisingPlatform : MonoBehaviour
     private Rigidbody2D _rb;
     private Vector2 _startPosition;
     private Vector2 _raisedPosition;
+    private Vector2 _loweredPosition;
     private bool _isRaised;
     private Coroutine _moveCoroutine;
 
@@ -33,18 +35,17 @@ public class RisingPlatform : MonoBehaviour
 
         _startPosition = _rb.position;
         _raisedPosition = _startPosition + Vector2.up * riseDistance;
+        _loweredPosition = _startPosition - Vector2.up * lowerDistance;
     }
 
     public void Rise()
     {
-        if (_isRaised) return;
         RestartMove(MoveRoutine(_raisedPosition, riseDuration, rising: true));
     }
 
     public void Lower()
     {
-        if (!_isRaised) return;
-        RestartMove(MoveRoutine(_startPosition, lowerDuration, rising: false));
+        RestartMove(MoveRoutine(_loweredPosition, lowerDuration, rising: false));
     }
 
     public void Toggle()
