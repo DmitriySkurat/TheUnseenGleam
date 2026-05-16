@@ -4,63 +4,106 @@ public class PebbleBehavior : MonoBehaviour
 {
     public float pebbleSpeed = 5f;
     public float pebbleGravity = 3f;
-    
-    [SerializeField] private float destroyTime = 3f;
+
+    [SerializeField] private float destroyTime = 5f;
     [SerializeField] private LayerMask whatDestroysPebble;
     [SerializeField] private NoiseType impactNoiseType = NoiseType.ObjectImpact;
+    [SerializeField] private int maxBounces = 5;
+    [SerializeField, Range(0f, 1f)] private float bounciness = 0.65f;
 
     private float impactNoiseRadius;
     private float _noiseVariance;
     private Rigidbody2D _rb;
     private NoiseSystem _noiseSystem;
+    private int _bouncesLeft;
+    private bool _bouncedThisFrame;
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _noiseSystem = Services.Get<NoiseSystem>();
+        _bouncesLeft = maxBounces;
+
         if (!Services.IsRegistered<PlayerContext>())
             return;
         var playerCtx = Services.Get<PlayerContext>();
         impactNoiseRadius = playerCtx.noiseStats.PebbleImpactNoiseRadius;
         _noiseVariance = playerCtx.noiseStats.RadiusVariance;
-        
-        SetDestroyTime();
-        
+
+        Destroy(gameObject, destroyTime);
         InitializeBulletStats();
     }
-    
+
     private void FixedUpdate()
     {
-       // rotate pebble
-       
-       transform.up = _rb.linearVelocity;
+        transform.up = _rb.linearVelocity;
+        _bouncedThisFrame = false;
     }
 
-
-    void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_bouncedThisFrame) return;
+
+        if (collision.TryGetComponent(out IRockActivatable activatable))
+        {
+            Vector2 point = collision.ClosestPoint(transform.position);
+            activatable.OnHitByRock(point, gameObject);
+            Bounce(collision);
+            return;
+        }
+
         if (collision.TryGetComponent(out BreakableVase vase))
         {
             Vector2 point = collision.ClosestPoint(transform.position);
             vase.OnHitByProjectile(point, gameObject);
-            Destroy(gameObject);
+            Bounce(collision);
             return;
         }
 
-        if((whatDestroysPebble.value & (1 << collision.gameObject.layer)) > 0)
+        if ((whatDestroysPebble.value & (1 << collision.gameObject.layer)) > 0)
         {
-            // spawn particles
-            // play fx
             if (impactNoiseRadius > 0f)
             {
                 Vector2 point = collision.ClosestPoint(transform.position);
                 _noiseSystem.EmitNoise(point, impactNoiseRadius, gameObject, impactNoiseType, _noiseVariance);
             }
 
-            Destroy(gameObject);
+            Bounce(collision);
         }
     }
-    
+
+    private void Bounce(Collider2D collision)
+    {
+        _bouncesLeft--;
+        if (_bouncesLeft <= 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _bouncedThisFrame = true;
+
+        Vector2 velocity = _rb.linearVelocity;
+        Vector2 normal = GetSurfaceNormal(velocity.normalized, collision);
+        _rb.linearVelocity = Vector2.Reflect(velocity, normal) * bounciness;
+    }
+
+    // Casts a ray from slightly behind the pebble toward the surface to read the contact normal.
+    // Falls back to the closest-point direction if the cast misses.
+    private Vector2 GetSurfaceNormal(Vector2 direction, Collider2D col)
+    {
+        Vector2 origin = (Vector2)transform.position - direction * 0.2f;
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, 0.4f);
+        if (hit.collider == col)
+            return hit.normal;
+
+        Vector2 toSurface = col.ClosestPoint(transform.position) - (Vector2)transform.position;
+        if (toSurface.sqrMagnitude > 0.001f)
+            return -toSurface.normalized;
+
+        return -direction;
+    }
+
     private void InitializeBulletStats()
     {
         _rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
@@ -76,10 +119,5 @@ public class PebbleBehavior : MonoBehaviour
 
         _rb.linearVelocity = (Vector2)transform.up * pebbleSpeed;
         _rb.gravityScale = pebbleGravity;
-    }
-    
-    private void SetDestroyTime() 
-    {
-        Destroy(gameObject, destroyTime);
     }
 }
