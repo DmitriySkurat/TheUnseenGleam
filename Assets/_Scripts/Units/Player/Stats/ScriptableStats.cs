@@ -182,6 +182,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float StumbleDuration = 1.2f;
 
+    [Tooltip("Сколько секунд игрок хромает перед восстановлением")]
+    [Min(0f)]
+    public float LimpDuration = 3f;
+
     [Tooltip("Множитель скорости во время хромания (после падения, до захвата)")]
     [Range(0f, 1f)]
     public float LimpSpeedMultiplier = 0.35f;

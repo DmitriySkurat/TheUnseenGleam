@@ -4,6 +4,7 @@ namespace HSM {
     public class StumbleLimping : State
     {
         readonly PlayerContext ctx;
+        float _timer;
 
         public StumbleLimping(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
@@ -13,12 +14,15 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.currentSpeedMultiplier = ctx.stats.LimpSpeedMultiplier;
+            _timer = ctx.stats != null ? ctx.stats.LimpDuration : 3f;
             ctx.anim?.Play(PlayerAnimations.Limp, 0, 0f);
             base.OnEnter();
         }
 
         protected override void OnUpdate(float deltaTime)
         {
+            _timer -= deltaTime;
+
             float targetX = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.stats.LimpSpeedMultiplier;
             float accel   = Mathf.Abs(ctx.input.Move.x) > 0.01f
                 ? ctx.stats.Acceleration
@@ -28,7 +32,10 @@ namespace HSM {
             base.OnUpdate(deltaTime);
         }
 
-        // Выход только через родителя Stumble → PlayerRoot (grab / death)
-        protected override State GetTransition() => null;
+        protected override State GetTransition()
+        {
+            if (_timer <= 0f) return Machine?.GetState<Grounded>();
+            return null;
+        }
     }
 }
