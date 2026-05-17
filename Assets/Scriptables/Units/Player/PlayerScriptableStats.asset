@@ -62,7 +62,9 @@ MonoBehaviour:
   SpikesSpeedMultiplier: 0.3
   PressToWallHeightMultiplier: 0.8
   PressToWallWidthMultiplier: 0.5
-  StumbleDuration: 1.2
+  StumbleMinFallHeight: 6
+  StumbleDuration: 3
+  LimpDuration: 3
   LimpSpeedMultiplier: 0.35
   GrabDamagePerSecond: 20
   GrabProgressDrainPerSecond: 0.15

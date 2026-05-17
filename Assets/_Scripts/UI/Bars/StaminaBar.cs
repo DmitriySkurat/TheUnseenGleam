@@ -42,8 +42,9 @@ public class StaminaBar : MonoBehaviour, ISceneLifecycle
             && !_playerCtx.isHoldingBreath
             && _playerCtx.CanHoldBreath
             && _playerCtx.stamina < _playerCtx.stats.MinStaminaToHoldBreath;
+        bool insufficientForJump   = _playerCtx.input.JumpHeld && !_playerCtx.CanJump && _playerCtx.grounded;
 
-        if (insufficientForRun || insufficientForBreath)
+        if (insufficientForRun || insufficientForBreath || insufficientForJump)
         {
             _flashTimer += Time.deltaTime;
             bool showFlash = (int)(_flashTimer / _flashInterval) % 2 == 0;

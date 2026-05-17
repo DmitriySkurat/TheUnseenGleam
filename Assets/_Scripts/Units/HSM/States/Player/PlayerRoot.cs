@@ -102,7 +102,7 @@ namespace HSM {
 
             if (!ctx.jumpToConsume && !ctx.HasBufferedJump) return;
 
-            if (ctx.grounded || ctx.CanUseCoyote) ExecuteJump();
+            if ((ctx.grounded || ctx.CanUseCoyote) && ctx.CanJump) ExecuteJump();
 
             ctx.jumpToConsume = false;
         }
@@ -115,6 +115,7 @@ namespace HSM {
             ctx.landingRollEndTime = float.MinValue;
             ctx.landingRollDirection = 0f;
             ctx.velocity.y = ctx.stats.JumpPower;
+            ctx.stamina = Mathf.Max(0f, ctx.stamina - ctx.stats.JumpStaminaCost);
 
             // Emit jump noise from the HSM when the jump is actually executed.
             if (ctx.transform != null)
