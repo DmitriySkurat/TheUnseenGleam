@@ -142,6 +142,12 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             return;
         }
 
+        if (_ctx.velocity.y < -_ctx.stats.LedgeGrabMaxFallSpeed)
+        {
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
         float dirInput = _ctx.input.Move.x;
         float dirVel   = _ctx.velocity.x;
         float dir = 0f;

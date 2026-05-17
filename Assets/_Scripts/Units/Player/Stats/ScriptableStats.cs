@@ -291,6 +291,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float WallGrabMaxDuration = 3f;
 
+    [Tooltip("Maximum downward speed (positive value) at which ledge grab is allowed. Faster falling cancels the grab.")]
+    [Min(0f)]
+    public float LedgeGrabMaxFallSpeed = 8f;
+
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]
     // public float SlideDuration = 2f;

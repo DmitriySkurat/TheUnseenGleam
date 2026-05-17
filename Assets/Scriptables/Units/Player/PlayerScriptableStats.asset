@@ -40,6 +40,7 @@ MonoBehaviour:
   MinStaminaToRun: 25
   RunStaminaDrainMultiplier: 1
   GrabbedStaminaDrainMultiplier: 0.5
+  JumpStaminaCost: 9
   StaminaHoldBreathDrainPerSecond: 20
   MinStaminaToHoldBreath: 25
   IdleStaminaBreathDrainMultiplier: 1
@@ -63,7 +64,7 @@ MonoBehaviour:
   PressToWallHeightMultiplier: 0.8
   PressToWallWidthMultiplier: 0.5
   StumbleMinFallHeight: 6
-  StumbleDuration: 3
+  StumbleDuration: 5
   LimpDuration: 3
   LimpSpeedMultiplier: 0.35
   GrabDamagePerSecond: 20
@@ -89,3 +90,4 @@ MonoBehaviour:
   LedgeStandOffsetY: 0
   LedgeClimbTeleportDelay: 0.65
   WallGrabMaxDuration: 3
+  LedgeGrabMaxFallSpeed: 8
