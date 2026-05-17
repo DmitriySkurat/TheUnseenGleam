@@ -174,6 +174,10 @@ public class PlayerScriptableStats : ScriptableObject
     public float PressToWallWidthMultiplier = 0.5f;
 
     [Header("STUMBLE")]
+    [Tooltip("Минимальная высота падения без кувырка, после которой игрок спотыкается")]
+    [Min(0f)]
+    public float StumbleMinFallHeight = 3.5f;
+
     [Tooltip("Сколько секунд длится анимация падения (скорость тормозит до нуля за это время)")]
     [Min(0f)]
     public float StumbleDuration = 1.2f;

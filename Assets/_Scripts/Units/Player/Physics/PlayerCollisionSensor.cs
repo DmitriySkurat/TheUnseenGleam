@@ -94,6 +94,10 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         _ctx.landingRollDirection = didRoll ? Mathf.Sign(_ctx.velocity.x != 0f ? _ctx.velocity.x : _ctx.input.Move.x) : 0f;
 
         EmitLandingNoise(fallHeight, didRoll);
+
+        if (!didRoll && _ctx.stats != null && fallHeight >= _ctx.stats.StumbleMinFallHeight)
+            _ctx.stumblePending = true;
+
         _ctx.airborneStartY = landingY;
     }
 
