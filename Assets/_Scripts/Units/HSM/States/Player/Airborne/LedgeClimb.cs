@@ -75,10 +75,13 @@ namespace HSM
 
             if (!_isClimbingUp && (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold || ctx.jumpToConsume))
             {
-                _isClimbingUp = true;
-                _climbStartTime = Time.time;
                 ctx.jumpToConsume = false;
-                ctx.anim.Play(PlayerAnimations.WallgrabClime);
+                if (HasEnoughSpaceToStand())
+                {
+                    _isClimbingUp = true;
+                    _climbStartTime = Time.time;
+                    ctx.anim.Play(PlayerAnimations.WallgrabClime);
+                }
             }
 
             base.OnUpdate(deltaTime);
@@ -101,6 +104,17 @@ namespace HSM
             }
 
             return null;
+        }
+
+        bool HasEnoughSpaceToStand()
+        {
+            var capsule = ctx.coll as CapsuleCollider2D;
+            if (capsule == null) return true;
+
+            // Сдвиг вверх на 0.05f, чтобы нижний край капсулы не касался пола уступа
+            // и OverlapCapsule не давал ложный хит по поверхности, на которой стоит игрок.
+            Vector2 center = _standPosition + new Vector2(0f, capsule.offset.y + 0.05f);
+            return !Physics2D.OverlapCapsule(center, capsule.size, capsule.direction, 0f, ctx.stats.GroundLayer);
         }
 
         void SnapToPosition(Vector2 position)
