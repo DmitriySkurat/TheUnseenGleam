@@ -40,7 +40,6 @@ namespace HSM {
         {
             if (!ctx.isAlive)       return Machine?.GetState<Death>();
             if (ctx.isGrabbed)      return Machine?.GetState<PlayerGrabbed>();
-            if (ctx.stumblePending) return Machine?.GetState<Stumble>();
             if (ctx.OnClimbable) return null;
             if (ctx.isLedgeGrabbing) return null;
             if (ctx.isOnSpikes   && ctx.grounded) return Machine?.GetState<OnSpikes>();
@@ -49,17 +48,21 @@ namespace HSM {
             return null;
         }
 
-        protected override void OnUpdate(float deltaTime) 
+        protected override void OnUpdate(float deltaTime)
         {
             if (!ctx.isAlive)
             {
                 base.OnUpdate(deltaTime);
                 return;
             }
-            
+
             // При приземлении после прыжка/падения во время Stumble — повторно запускаем Stumble
             if (ctx.isStumbling && ctx.grounded && ActiveChild != Stumble)
                 ctx.stumblePending = true;
+
+            // Вызываем до base.OnUpdate, чтобы не пропустить из-за IsTransitioning при разгоне
+            if (ctx.stumblePending && !ctx.isGrabbed && Machine != null)
+                Machine.Sequencer.RequestTransition(this, Machine.GetState<Stumble>());
 
             if (ctx.stats != null)
             {

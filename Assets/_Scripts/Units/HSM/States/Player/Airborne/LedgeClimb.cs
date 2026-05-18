@@ -95,7 +95,9 @@ namespace HSM
             if (_isClimbingUp && Time.time >= _climbStartTime + ctx.stats.LedgeClimbTeleportDelay)
             {
                 _completedClimb = true;
-                return Machine?.GetState<Grounded>();
+                return ctx.isStumbling
+                    ? Machine?.GetState<StumbleLimping>()
+                    : Machine?.GetState<Grounded>();
             }
 
             return null;

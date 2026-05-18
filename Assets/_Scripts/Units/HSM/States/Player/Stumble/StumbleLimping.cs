@@ -34,7 +34,12 @@ namespace HSM {
 
         protected override State GetTransition()
         {
-            if (_timer <= 0f) return Machine?.GetState<Grounded>();
+            if (_timer <= 0f)
+            {
+                ctx.isStumbling        = false;
+                ctx.grabEscapeDisabled = false;
+                return Machine?.GetState<Grounded>();
+            }
             return null;
         }
     }
