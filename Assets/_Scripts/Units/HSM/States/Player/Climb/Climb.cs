@@ -5,10 +5,12 @@ namespace HSM
     public class Climb : State
     {
         private PlayerContext ctx;
+        private NoiseSystem _noiseSystem;
 
         public Climb(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
             this.ctx = ctx;
+            _noiseSystem = Services.Get<NoiseSystem>();
             // Add(new ColorPhaseActivity(ctx.renderer){
             //     enterColor = Color.purple,
             // });
@@ -55,6 +57,20 @@ namespace HSM
 
         protected override State GetTransition()
         {
+            if (ctx.jumpToConsume && ctx.CanJump)
+            {
+                ctx.jumpToConsume = false;
+                ctx.endedJumpEarly = false;
+                ctx.timeJumpWasPressed = 0;
+                ctx.bufferedJumpUsable = false;
+                ctx.coyoteUsable = false;
+                ctx.velocity.y = ctx.stats.JumpPower;
+                ctx.stamina = Mathf.Max(0f, ctx.stamina - ctx.stats.JumpStaminaCost);
+                if (ctx.transform != null)
+                    _noiseSystem.EmitNoise(ctx.transform.position, ctx.noiseStats.JumpStartNoiseRadius, ctx.transform.gameObject, NoiseType.Jump, ctx.noiseStats.RadiusVariance);
+                return Machine.GetState<Airborne>();
+            }
+
             if (ctx.grounded && ctx.input.Move.y <= 0)
                 return Machine.GetState<Grounded>();
 
