@@ -424,6 +424,7 @@ GameObject:
   - component: {fileID: 9049922902160105476}
   - component: {fileID: 539852994959041351}
   - component: {fileID: 605033210090209207}
+  - component: {fileID: 5617153745282724127}
   m_Layer: 8
   m_Name: PlayerAmbientLight
   m_TagString: Untagged
@@ -514,6 +515,18 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &5617153745282724127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5761061422304542093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3994fd34491f05046a0598770c69b99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CosmeticOffsetFollower
 --- !u!1 &7034514579166929484
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,6 +612,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3259829526639471719}
   - component: {fileID: 8478363652820722883}
+  - component: {fileID: 8541753283285322042}
   m_Layer: 5
   m_Name: SpeechBubble
   m_TagString: Untagged
@@ -640,6 +654,18 @@ MonoBehaviour:
   _defaultDuration: 3
   _sortingLayerName: UI
   _sortingOrder: 100
+--- !u!114 &8541753283285322042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7520969120339589308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3994fd34491f05046a0598770c69b99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CosmeticOffsetFollower
 --- !u!1 &7546731848710115455
 GameObject:
   m_ObjectHideFlags: 0

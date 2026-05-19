@@ -26,6 +26,7 @@ namespace HSM
             _climbStartTime = float.MinValue;
             _hangTimer = 0f;
 
+            ctx.cosmeticOffset = Vector3.zero;
             ctx.isLedgeGrabbing = true;
             ctx.velocity = Vector2.zero;
             ctx.currentStaminaDrainMultiplier = 0f;
@@ -55,6 +56,7 @@ namespace HSM
         protected override void OnExit()
         {
             ctx.isLedgeGrabbing = false;
+            ctx.cosmeticOffset = Vector3.zero;
 
             if (_completedClimb)
             {
@@ -69,6 +71,12 @@ namespace HSM
         {
             ctx.velocity = Vector2.zero;
             SnapToPosition(_hangPosition);
+
+            if (_isClimbingUp)
+            {
+                float t = Mathf.Clamp01((Time.time - _climbStartTime) / ctx.stats.LedgeClimbTeleportDelay);
+                ctx.cosmeticOffset = new Vector3(0f, Mathf.Lerp(0f, _standPosition.y - _hangPosition.y, t), 0f);
+            }
 
             if (!_isClimbingUp)
                 _hangTimer += deltaTime;

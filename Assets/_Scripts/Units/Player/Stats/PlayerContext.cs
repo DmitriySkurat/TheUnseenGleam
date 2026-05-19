@@ -90,6 +90,9 @@ public class PlayerContext
     public bool isStumbleFalling;
     public bool grabEscapeDisabled;
 
+    // ===== COSMETIC =====
+    public Vector3 cosmeticOffset;
+
     // ===== CUTSCENE =====
     public bool isInCutscene;
 
