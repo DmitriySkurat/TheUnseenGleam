@@ -35,6 +35,7 @@ namespace HSM {
 
             ctx.alertSystem?.BroadcastAlert(ctx.transform.position);
 
+            ctx.SayRandom(ctx.stats.AlertLines);
             base.OnEnter();
         }
 

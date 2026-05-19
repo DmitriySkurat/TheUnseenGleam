@@ -30,6 +30,7 @@ namespace HSM {
             _ctx.hearing = GetComponent<AgentHearing>();
             _ctx.interactor = GetComponent<AgentInteractor>();
             _ctx.lightSensor = GetComponent<AgentLightSensor>();
+            _ctx.speechBubble = GetComponentInChildren<SpeechBubble>(true);
             if (_ctx.interactor != null)
                 _ctx.interactor.Initialize(_ctx);
             _ctx.spawnPosition = transform.position;

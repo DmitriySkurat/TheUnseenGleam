@@ -89,5 +89,6 @@ MonoBehaviour:
   LedgeStandOffsetX: 0
   LedgeStandOffsetY: 0
   LedgeClimbTeleportDelay: 0.65
-  WallGrabMaxDuration: 3
-  LedgeGrabMaxFallSpeed: 8
+  WallGrabMaxDuration: 7
+  WallGrabPassiveDuration: 2
+  LedgeGrabMaxFallSpeed: 25

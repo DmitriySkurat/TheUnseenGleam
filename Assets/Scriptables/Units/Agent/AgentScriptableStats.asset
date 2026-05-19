@@ -52,3 +52,17 @@ MonoBehaviour:
     m_Bits: 128
   InteractRange: 1.5
   InteractCooldown: 1.5
+  SuspicionLines:
+  - "\u0427\u0442\u043E \u044D\u0442\u043E?"
+  - "\u0425\u043C?"
+  - "\u041A\u0442\u043E \u0442\u0430\u043C?"
+  AlertLines:
+  - "\u041D\u0430 \u043F\u043E\u043C\u043E\u0449\u044C!"
+  - "\u0412\u0441\u0435 \u0441\u044E\u0434\u0430!"
+  LookAroundLines:
+  - "\u0425\u043C..."
+  - "\u0422\u0438\u0445\u043E..."
+  SearchLines:
+  - "\u041F\u0440\u043E\u0432\u0435\u0440\u044E!.."
+  - "\u0413\u0434\u0435 \u0442\u044B?.."
+  SpeechDuration: 2.5

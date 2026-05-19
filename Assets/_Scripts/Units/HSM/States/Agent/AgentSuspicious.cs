@@ -34,6 +34,7 @@ namespace HSM {
             // Consume the pending noise that triggered the transition
             ctx.pendingNoiseAlert = false;
 
+            ctx.SayRandom(ctx.stats.SuspicionLines);
             base.OnEnter();
         }
 

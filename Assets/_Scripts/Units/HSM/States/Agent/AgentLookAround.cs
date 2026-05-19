@@ -30,6 +30,7 @@ namespace HSM {
             _phase      = Phase.WaitBeforeTurn;
             _phaseTimer = ctx.stats.LookAroundTurnDelay;
 
+            ctx.SayRandom(ctx.stats.LookAroundLines);
             base.OnEnter();
         }
 

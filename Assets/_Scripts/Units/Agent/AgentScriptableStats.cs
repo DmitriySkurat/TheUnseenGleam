@@ -155,4 +155,21 @@ public class AgentScriptableStats : ScriptableObject
     [Tooltip("Minimum time between consecutive interactions")]
     [Min(0f)]
     public float InteractCooldown = 1f;
+
+    [Header("SPEECH")]
+    [Tooltip("Реплики при обнаружении подозрительного (Suspicious)")]
+    public string[] SuspicionLines = { "Что это?" };
+
+    [Tooltip("Реплики при вызове подмоги (Alert)")]
+    public string[] AlertLines = { "На помощь!" };
+
+    [Tooltip("Реплики при осмотре в патруле (LookAround)")]
+    public string[] LookAroundLines = { "Хм..." };
+
+    [Tooltip("Реплики при начале поиска (Search)")]
+    public string[] SearchLines = { "Иду проверить" };
+
+    [Tooltip("Длительность реплики на экране")]
+    [Min(0.5f)]
+    public float SpeechDuration = 2.5f;
 }

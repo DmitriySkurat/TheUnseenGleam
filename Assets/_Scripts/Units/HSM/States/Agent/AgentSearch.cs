@@ -40,6 +40,7 @@ namespace HSM {
             _wanderIndex             = 0;
             _sectorIndex             = ctx.searchCoordinator?.Register(ctx) ?? 0;
 
+            ctx.SayRandom(ctx.stats.SearchLines);
             StartNavigatingToSearchPoint();
             base.OnEnter();
         }

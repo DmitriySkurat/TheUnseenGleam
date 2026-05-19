@@ -93,6 +93,15 @@ public class AgentContext
     // ===== SEARCH COORDINATION =====
     public AgentSearchCoordinator searchCoordinator;
 
+    // ===== UI =====
+    public SpeechBubble speechBubble;
+
+    public void SayRandom(string[] lines)
+    {
+        if (speechBubble == null || lines == null || lines.Length == 0) return;
+        speechBubble.Say(lines[UnityEngine.Random.Range(0, lines.Length)], stats.SpeechDuration);
+    }
+
     // ===== DERIVED =====
     public bool IsTraversingLink => nav != null && nav.State == PlatNavState.TraversingLink;
     public bool IsWaitingAtPoint => patrolWaitTimer > 0f;
