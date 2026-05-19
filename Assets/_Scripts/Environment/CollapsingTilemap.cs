@@ -8,6 +8,7 @@ public class CollapsingTilemap : MonoBehaviour
 {
     [SerializeField] private float _collapseDelay    = 0.6f;
     [SerializeField] private float _shakeAmplitude   = 0.06f;
+    [SerializeField] private float _waveStepDelay    = 0.08f; // задержка между соседними тайлами
     [SerializeField] private float _respawnDelay     = 0f;
 
     [Header("Crumble")]
@@ -49,19 +50,21 @@ public class CollapsingTilemap : MonoBehaviour
         if (_tilemap.GetTile(cell) == null) return;
         if (_pending.Contains(cell)) return;
 
-        var group = FloodFill(cell);
-        foreach (var c in group)
+        // BFS с расстояниями от точки наступания
+        var distances = FloodFill(cell);
+        foreach (var c in distances.Keys)
             _pending.Add(c);
 
-        StartCoroutine(CollapseGroupRoutine(group));
+        foreach (var (c, dist) in distances)
+            StartCoroutine(CollapseTile(c, dist * _waveStepDelay));
     }
 
-    HashSet<Vector3Int> FloodFill(Vector3Int start)
+    // Возвращает cell → расстояние от start в тайлах
+    Dictionary<Vector3Int, int> FloodFill(Vector3Int start)
     {
-        var visited = new HashSet<Vector3Int>();
-        var queue   = new Queue<Vector3Int>();
+        var dist  = new Dictionary<Vector3Int, int> { [start] = 0 };
+        var queue = new Queue<Vector3Int>();
         queue.Enqueue(start);
-        visited.Add(start);
 
         while (queue.Count > 0)
         {
@@ -69,74 +72,62 @@ public class CollapsingTilemap : MonoBehaviour
             foreach (var dir in Dirs)
             {
                 var next = current + dir;
-                if (visited.Contains(next)) continue;
+                if (dist.ContainsKey(next)) continue;
                 if (_tilemap.GetTile(next) == null) continue;
-                visited.Add(next);
+                dist[next] = dist[current] + 1;
                 queue.Enqueue(next);
             }
         }
 
-        return visited;
+        return dist;
     }
 
-    IEnumerator CollapseGroupRoutine(HashSet<Vector3Int> group)
+    IEnumerator CollapseTile(Vector3Int cell, float startDelay)
     {
-        // Сохраняем исходные матрицы и снимаем блокировку трансформа
-        var cellData = new List<(Vector3Int cell, TileBase tile, Sprite sprite, Matrix4x4 matrix)>();
-        foreach (var cell in group)
-        {
-            _tilemap.SetTileFlags(cell, TileFlags.None);
-            cellData.Add((
-                cell,
-                _tilemap.GetTile(cell),
-                _tilemap.GetSprite(cell),
-                _tilemap.GetTransformMatrix(cell)
-            ));
-        }
+        if (startDelay > 0f)
+            yield return new WaitForSeconds(startDelay);
 
-        // Тряска через SetTransformMatrix — тайл остаётся в тайлмапе, освещение не меняется
+        if (_tilemap.GetTile(cell) == null) yield break;
+
+        _tilemap.SetTileFlags(cell, TileFlags.None);
+        var origMatrix = _tilemap.GetTransformMatrix(cell);
+        var tile       = _tilemap.GetTile(cell);
+        var sprite     = _tilemap.GetSprite(cell);
+        var origin     = _tilemap.GetCellCenterWorld(cell);
+
+        // Тряска — тайл остаётся в тайлмапе, освещение не меняется
         float elapsed = 0f;
         while (elapsed < _collapseDelay)
         {
             elapsed += Time.deltaTime;
             float t     = elapsed / _collapseDelay;
             float shake = Mathf.Sin(elapsed * 45f) * _shakeAmplitude * (1f - t);
-            foreach (var (cell, _, _, origMatrix) in cellData)
-                _tilemap.SetTransformMatrix(cell, Matrix4x4.Translate(new Vector3(shake, 0f, 0f)) * origMatrix);
+            _tilemap.SetTransformMatrix(cell, Matrix4x4.Translate(new Vector3(shake, 0f, 0f)) * origMatrix);
             yield return null;
         }
 
-        // Убрать тайлы и рассыпать осколки
-        foreach (var (cell, _, sprite, _) in cellData)
-        {
-            var origin = _tilemap.GetCellCenterWorld(cell);
-            _tilemap.SetTile(cell, null);
-            _pending.Remove(cell);
-            SpawnCrumble(origin, sprite);
-        }
+        _tilemap.SetTransformMatrix(cell, origMatrix);
+        _tilemap.SetTile(cell, null);
+        _pending.Remove(cell);
+        SpawnCrumble(origin, sprite);
 
         if (_respawnDelay > 0f)
         {
             yield return new WaitForSeconds(_respawnDelay);
-            foreach (var (cell, tile, _, origMatrix) in cellData)
-            {
-                _tilemap.SetTile(cell, tile);
-                _tilemap.SetTileFlags(cell, TileFlags.None);
-                _tilemap.SetTransformMatrix(cell, origMatrix);
-            }
+            _tilemap.SetTile(cell, tile);
+            _tilemap.SetTileFlags(cell, TileFlags.None);
+            _tilemap.SetTransformMatrix(cell, origMatrix);
         }
     }
 
     void SpawnCrumble(Vector3 origin, Sprite sprite)
     {
-        // Основной кусок
         SpawnFragment(origin, sprite,
             scale:      1f,
             velocity:   new Vector2(Random.Range(-0.8f, 0.8f), Random.Range(-0.5f, 0.5f)),
             angularVel: Random.Range(-120f, 120f),
             lifetime:   _fragmentLifetime);
 
-        // Мелкие осколки
         for (int i = 0; i < _fragmentCount; i++)
         {
             var offset = new Vector3(Random.Range(-0.35f, 0.35f), Random.Range(-0.2f, 0.2f), 0f);
@@ -164,8 +155,8 @@ public class CollapsingTilemap : MonoBehaviour
         sr.sortingOrder   = _tilemapRenderer.sortingOrder + 1;
         sr.color          = _tilemap.color;
 
-        var col      = go.AddComponent<CircleCollider2D>();
-        col.radius   = 0.15f;
+        var col    = go.AddComponent<CircleCollider2D>();
+        col.radius = 0.15f;
         if (_fragmentMaterial) col.sharedMaterial = _fragmentMaterial;
 
         var rb                    = go.AddComponent<Rigidbody2D>();
