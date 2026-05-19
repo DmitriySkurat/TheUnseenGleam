@@ -196,6 +196,7 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
     private bool CanUseSelectedMirror()
     {
         return _ctx != null
+            && !_ctx.isLedgeGrabbing
             && _ctx.SelectedHotbarItem != null
             && _ctx.SelectedHotbarItem.itemName == ItemName.Mirror
             && _ctx.inventory != null

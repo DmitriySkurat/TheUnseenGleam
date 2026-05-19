@@ -57,6 +57,7 @@ namespace HSM
         {
             ctx.isLedgeGrabbing = false;
             ctx.cosmeticOffset = Vector3.zero;
+            ctx.currentStaminaDrainMultiplier = 0f;
 
             if (_completedClimb)
             {
@@ -79,7 +80,12 @@ namespace HSM
             }
 
             if (!_isClimbingUp)
+            {
                 _hangTimer += deltaTime;
+                ctx.currentStaminaDrainMultiplier = _hangTimer >= ctx.stats.WallGrabPassiveDuration
+                    ? ctx.stats.GrabbedStaminaDrainMultiplier
+                    : 0f;
+            }
 
             if (!_isClimbingUp && (ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold || ctx.jumpToConsume))
             {
@@ -100,8 +106,15 @@ namespace HSM
             if (!_isClimbingUp && ctx.input.Move.y < -ctx.stats.VerticalDeadZoneThreshold)
                 return Machine?.GetState<Airborne>();
 
-            if (!_isClimbingUp && ctx.stats.WallGrabMaxDuration > 0f && _hangTimer >= ctx.stats.WallGrabMaxDuration)
-                return Machine?.GetState<Airborne>();
+            if (!_isClimbingUp)
+            {
+                float limit = ctx.input.InteractHeld ? ctx.stats.WallGrabMaxDuration : ctx.stats.WallGrabPassiveDuration;
+                if (limit > 0f && _hangTimer >= limit)
+                    return Machine?.GetState<Airborne>();
+
+                if (_hangTimer >= ctx.stats.WallGrabPassiveDuration && ctx.stamina <= 0f)
+                    return Machine?.GetState<Airborne>();
+            }
 
             if (_isClimbingUp && Time.time >= _climbStartTime + ctx.stats.LedgeClimbTeleportDelay)
             {

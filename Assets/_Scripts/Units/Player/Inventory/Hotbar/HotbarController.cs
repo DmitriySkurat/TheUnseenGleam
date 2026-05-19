@@ -72,7 +72,7 @@ public class HotbarController : MonoBehaviour, ISessionLifecycle
 
     private void HandlePrimaryAction()
     {
-        if (!_ctx.input.AttackDown)
+        if (!_ctx.input.AttackDown || _ctx.isLedgeGrabbing)
             return;
 
         var selectedItem = SelectedHotbarItem;
@@ -93,7 +93,7 @@ public class HotbarController : MonoBehaviour, ISessionLifecycle
 
     private void HandleDropAction()
     {
-        if (!_ctx.input.DropDown) return;
+        if (!_ctx.input.DropDown || _ctx.isLedgeGrabbing) return;
         if (_droppedItemPrefab == null) return;
         if (selectedHotbarEntry == null || SelectedHotbarItem == null) return;
 

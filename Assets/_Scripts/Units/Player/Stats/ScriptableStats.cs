@@ -287,9 +287,13 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float LedgeClimbTeleportDelay = 0.4f;
 
-    [Tooltip("How long the player can hang on a ledge before automatically falling (0 = infinite)")]
+    [Tooltip("How long the player can hang on a ledge while holding the grab button (0 = infinite)")]
     [Min(0f)]
-    public float WallGrabMaxDuration = 3f;
+    public float WallGrabMaxDuration = 7f;
+
+    [Tooltip("How long the player can hang on a ledge without holding the grab button")]
+    [Min(0f)]
+    public float WallGrabPassiveDuration = 2f;
 
     [Tooltip("Maximum downward speed (positive value) at which ledge grab is allowed. Faster falling cancels the grab.")]
     [Min(0f)]

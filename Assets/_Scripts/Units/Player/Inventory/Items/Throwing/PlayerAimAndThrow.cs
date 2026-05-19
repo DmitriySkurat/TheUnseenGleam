@@ -128,6 +128,7 @@ public class PlayerAimAndThrow : MonoBehaviour, ISceneLifecycle
     private bool CanUseSelectedPebble()
     {
         return _ctx != null
+            && !_ctx.isLedgeGrabbing
             && _ctx.SelectedHotbarItem != null
             && _ctx.SelectedHotbarItem.itemName == ItemName.Pebble
             && _ctx.inventory != null
