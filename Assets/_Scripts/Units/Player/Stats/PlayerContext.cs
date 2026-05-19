@@ -47,6 +47,7 @@ public class PlayerContext
     // ===== HIDING =====
     public bool isHiding;
     public bool isPressedToWall;
+    public bool isInNiche;
     
     // ===== STAMINA =====
     public float stamina;

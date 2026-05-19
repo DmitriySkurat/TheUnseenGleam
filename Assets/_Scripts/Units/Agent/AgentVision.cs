@@ -52,9 +52,11 @@ public class AgentVision : MonoBehaviour, ISceneLifecycle
     /// <summary>
     /// Игрок прижат к стене и находится в свету — агент не видит его визуально,
     /// но игрок «открыт»: звук может выдать его местоположение.
+    /// В углублении (isInNiche) свет не считается обнажающим — физическое укрытие перекрывает.
     /// </summary>
     public bool IsPlayerExposedInLight =>
-        _playerContext != null && _playerContext.isPressedToWall && IsPlayerInLight();
+        _playerContext != null && _playerContext.isPressedToWall
+        && !_playerContext.isInNiche && IsPlayerInLight();
 
     /// <summary>
     /// Игрок спрятался (Hide или PressToWall), оставаясь в геометрически видимой зоне агента.
@@ -158,6 +160,14 @@ public class AgentVision : MonoBehaviour, ISceneLifecycle
 
         if (_playerContext != null && _playerContext.isHiding && !_canSeeWhilePlayerHidden)
             return false;
+
+        // В углублении + прижатие к стене: скрыт вне зависимости от света,
+        // но агент всё равно обнаружит игрока войдя в detectionRadius.
+        if (_playerContext != null && _playerContext.isPressedToWall && _playerContext.isInNiche)
+        {
+            Vector2 toPlayer = targetPosition - (Vector2)transform.position;
+            return detectionRadius > 0f && toPlayer.sqrMagnitude <= detectionRadius * detectionRadius;
+        }
 
         if (_playerContext != null && _playerContext.isPressedToWall && IsPlayerInLight())
             return false;
