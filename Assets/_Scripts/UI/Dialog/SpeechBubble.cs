@@ -26,13 +26,11 @@ public class SpeechBubble : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Prevent bubble from flipping when character faces left (scale.x < 0)
+        // Counter-flip: if the parent is flipped in world space, flip _bubbleRoot back
+        float parentWorldX = transform.lossyScale.x;
         var s = _bubbleRoot.transform.localScale;
-        if (s.x < 0f)
-        {
-            s.x = -s.x;
-            _bubbleRoot.transform.localScale = s;
-        }
+        s.x = parentWorldX < 0f ? -Mathf.Abs(s.x) : Mathf.Abs(s.x);
+        _bubbleRoot.transform.localScale = s;
     }
 
     public void Say(string text, float duration = -1f)
