@@ -15,7 +15,6 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.isStumbleFalling = false;
-            ctx.currentSpeedMultiplier = ctx.stats.LimpSpeedMultiplier;
             _timer = ctx.limpTimeRemaining > 0f
                 ? ctx.limpTimeRemaining
                 : (ctx.stats != null ? ctx.stats.LimpDuration : 3f);
@@ -29,7 +28,10 @@ namespace HSM {
             _timer -= deltaTime;
             ctx.limpTimeRemaining = _timer;
 
-            float targetX = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.stats.LimpSpeedMultiplier;
+            float t = Mathf.Clamp01(1f - (_timer / 0.5f));
+            ctx.currentSpeedMultiplier = Mathf.Lerp(ctx.stats.LimpSpeedMultiplier, ctx.stats.WalkSpeedMultiplier, t);
+
+            float targetX = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.currentSpeedMultiplier;
             float accel   = Mathf.Abs(ctx.input.Move.x) > 0.01f
                 ? ctx.stats.Acceleration
                 : ctx.stats.GroundDeceleration;
