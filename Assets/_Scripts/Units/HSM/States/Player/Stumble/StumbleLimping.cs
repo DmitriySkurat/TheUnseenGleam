@@ -16,7 +16,10 @@ namespace HSM {
         {
             ctx.isStumbleFalling = false;
             ctx.currentSpeedMultiplier = ctx.stats.LimpSpeedMultiplier;
-            _timer = ctx.stats != null ? ctx.stats.LimpDuration : 3f;
+            _timer = ctx.limpTimeRemaining > 0f
+                ? ctx.limpTimeRemaining
+                : (ctx.stats != null ? ctx.stats.LimpDuration : 3f);
+            ctx.limpTimeRemaining = 0f;
             _currentAnimHash = 0;
             base.OnEnter();
         }
@@ -24,6 +27,7 @@ namespace HSM {
         protected override void OnUpdate(float deltaTime)
         {
             _timer -= deltaTime;
+            ctx.limpTimeRemaining = _timer;
 
             float targetX = ctx.input.Move.x * ctx.stats.MaxSpeed * ctx.stats.LimpSpeedMultiplier;
             float accel   = Mathf.Abs(ctx.input.Move.x) > 0.01f
@@ -49,6 +53,9 @@ namespace HSM {
 
         protected override State GetTransition()
         {
+            if (ctx.OnClimbable && Mathf.Abs(ctx.input.Move.y) > ctx.stats.VerticalDeadZoneThreshold)
+                return Machine?.GetState<Climb>();
+
             if (_timer <= 0f)
             {
                 ctx.isStumbling        = false;

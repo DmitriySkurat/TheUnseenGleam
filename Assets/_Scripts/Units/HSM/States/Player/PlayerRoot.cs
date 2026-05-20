@@ -56,9 +56,14 @@ namespace HSM {
                 return;
             }
 
-            // При приземлении после прыжка/падения во время Stumble — повторно запускаем Stumble
+            // При возврате на землю во время хромания — восстанавливаем нужную фазу
             if (ctx.isStumbling && ctx.grounded && ActiveChild != Stumble)
-                ctx.stumblePending = true;
+            {
+                if (ctx.limpTimeRemaining > 0f)
+                    Machine?.Sequencer.RequestTransition(this, Machine.GetState<StumbleLimping>());
+                else
+                    ctx.stumblePending = true;
+            }
 
             // Вызываем до base.OnUpdate, чтобы не пропустить из-за IsTransitioning при разгоне
             if (ctx.stumblePending && !ctx.isGrabbed && Machine != null)

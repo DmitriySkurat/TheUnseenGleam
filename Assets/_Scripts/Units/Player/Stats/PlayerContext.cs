@@ -95,6 +95,7 @@ public class PlayerContext
     public bool isStumbling;
     public bool isStumbleFalling;
     public bool grabEscapeDisabled;
+    public float limpTimeRemaining;
 
     // ===== COSMETIC =====
     public Vector3 cosmeticOffset;
