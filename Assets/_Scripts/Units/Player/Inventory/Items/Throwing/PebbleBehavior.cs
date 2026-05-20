@@ -18,7 +18,6 @@ public class PebbleBehavior : MonoBehaviour
     private Rigidbody2D _rb;
     private NoiseSystem _noiseSystem;
     private int _bouncesLeft;
-    private bool _bouncedThisFrame;
     private readonly HashSet<int> _ignoredColliders = new HashSet<int>();
 
     private void Start()
@@ -40,12 +39,10 @@ public class PebbleBehavior : MonoBehaviour
     private void FixedUpdate()
     {
         transform.up = _rb.linearVelocity;
-        _bouncedThisFrame = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_bouncedThisFrame) return;
         if (_ignoredColliders.Contains(collision.GetInstanceID())) return;
 
         if (collision.TryGetComponent(out IRockActivatable activatable))
@@ -98,15 +95,14 @@ public class PebbleBehavior : MonoBehaviour
             return;
         }
 
-        _bouncedThisFrame = true;
-
         Vector2 velocity = _rb.linearVelocity;
         Vector2 normal = GetSurfaceNormal(velocity.normalized, collision);
         Vector2 reflected = Vector2.Reflect(velocity, normal) * bounciness;
 
         _rb.linearVelocity = reflected;
-        // Выталкиваем камень за пределы поверхности, чтобы триггер не сработал повторно
-        _rb.position += normal * 0.12f;
+        Vector2 surfacePoint = collision.ClosestPoint(_rb.position);
+        float overlapDepth = Vector2.Distance(_rb.position, surfacePoint);
+        _rb.position += normal * (overlapDepth + 0.05f);
 
         int id = collision.GetInstanceID();
         _ignoredColliders.Add(id);
