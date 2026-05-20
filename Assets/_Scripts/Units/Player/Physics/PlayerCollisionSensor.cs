@@ -203,7 +203,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         }
 
         var collapsingTilemap = wallHit.collider.GetComponent<CollapsingTilemap>();
-        if (collapsingTilemap != null && collapsingTilemap.IsCollapsing)
+        if (collapsingTilemap != null && collapsingTilemap.IsShakingAt(
+                new Vector3(wallHit.point.x + dir * 0.05f, wallHit.point.y, 0f)))
         {
             _ctx.canGrabLedge = false;
             return;

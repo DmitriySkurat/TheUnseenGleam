@@ -18,12 +18,17 @@ public class CollapsingTilemap : MonoBehaviour
     [SerializeField] private string _fragmentLayer   = "Ground";
     [SerializeField] private PhysicsMaterial2D _fragmentMaterial;
 
-    public bool IsCollapsing => _pending.Count > 0;
-
     private Tilemap         _tilemap;
     private TilemapRenderer _tilemapRenderer;
     private PlayerContext   _playerCtx;
     private readonly HashSet<Vector3Int> _pending = new();
+    private readonly HashSet<Vector3Int> _shaking = new();
+
+    public bool IsShakingAt(Vector3 worldPos)
+    {
+        var cell = _tilemap.WorldToCell(worldPos);
+        return _shaking.Contains(cell);
+    }
 
     static readonly Vector3Int[] Dirs = { Vector3Int.right, Vector3Int.left };
 
@@ -97,6 +102,8 @@ public class CollapsingTilemap : MonoBehaviour
         var sprite     = _tilemap.GetSprite(cell);
         var origin     = _tilemap.GetCellCenterWorld(cell);
 
+        _shaking.Add(cell);
+
         // Тряска — тайл остаётся в тайлмапе, освещение не меняется
         float elapsed = 0f;
         while (elapsed < _collapseDelay)
@@ -108,6 +115,7 @@ public class CollapsingTilemap : MonoBehaviour
             yield return null;
         }
 
+        _shaking.Remove(cell);
         _tilemap.SetTransformMatrix(cell, origMatrix);
         _tilemap.SetTile(cell, null);
         _pending.Remove(cell);
