@@ -202,6 +202,18 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float GrabProgressDrainPerSecond = 0.15f;
 
+    [Tooltip("Stamina regen multiplier during adrenaline burst triggered by being grabbed")]
+    [Min(1f)]
+    public float AdrenalineRegenMultiplier = 3f;
+
+    [Tooltip("How long (seconds) the adrenaline burst lasts after being grabbed")]
+    [Min(0f)]
+    public float AdrenalineDuration = 8f;
+
+    [Tooltip("Cooldown (seconds) after adrenaline expires before it can trigger again")]
+    [Min(0f)]
+    public float AdrenalineCooldown = 60f;
+
     [Header("LANDING")]
     [Tooltip("How long before touching the ground a crouch input can still trigger a landing roll")]
     [Range(0f, 0.5f)]

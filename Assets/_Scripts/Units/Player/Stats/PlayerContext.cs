@@ -86,6 +86,10 @@ public class PlayerContext
     public bool isGrabbed;
     public bool isInDialog;
 
+    // ===== ADRENALINE =====
+    public float adrenalineEndTime = float.MinValue;
+    public float adrenalineCooldownEndTime = float.MinValue;
+
     // ===== STUMBLE =====
     public bool stumblePending;
     public bool isStumbling;
@@ -123,6 +127,8 @@ public class PlayerContext
     public bool CanJump => stamina >= stats.JumpStaminaCost;
     public bool CanHoldBreath => currentStaminaBreathDrainMultiplier > 0f && currentStaminaDrainMultiplier == 0f;
     public bool HasMovementIntent => movementGraceTimer > 0f;
+    public bool IsAdrenalineActive => Time.time < adrenalineEndTime;
+    public bool IsAdrenalineOnCooldown => Time.time < adrenalineCooldownEndTime;
     public bool HasLandingRollBuffered => stats != null && Time.time < timeCrouchWasPressed + stats.LandingRollBuffer;
     public bool IsLandingRollActive => Time.time < landingRollEndTime;
     public bool WantsCrouch => input.CrouchHeld || IsLandingRollActive;

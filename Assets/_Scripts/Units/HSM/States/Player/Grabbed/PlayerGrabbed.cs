@@ -24,7 +24,13 @@ namespace HSM {
             _progressFraction = 0f;
             ctx.currentStaminaDrainMultiplier = ctx.stats.GrabbedStaminaDrainMultiplier;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
-            
+
+            if (!ctx.IsAdrenalineOnCooldown)
+            {
+                ctx.adrenalineEndTime = Time.time + ctx.stats.AdrenalineDuration;
+                ctx.adrenalineCooldownEndTime = ctx.adrenalineEndTime + ctx.stats.AdrenalineCooldown;
+            }
+
             base.OnEnter();
         }
 

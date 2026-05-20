@@ -61,6 +61,8 @@ public class PlayerStaminaController : MonoBehaviour, ISessionLifecycle
     {
         bool isMoving = Mathf.Abs(_ctx.velocity.x) > 0.1f;
         float multiplier = isMoving ? _ctx.stats.StaminaRegenMovingMultiplier : 1f;
+        if (_ctx.IsAdrenalineActive)
+            multiplier *= _ctx.stats.AdrenalineRegenMultiplier;
         float regeneration = _ctx.stats.StaminaRegenPerSecond * multiplier * deltaTime;
 
         _ctx.stamina = Mathf.Min(_ctx.stats.MaxStamina, _ctx.stamina + regeneration);
