@@ -59,8 +59,15 @@ public class PebbleBehavior : MonoBehaviour
         if (collision.TryGetComponent(out BreakableVase vase))
         {
             Vector2 point = collision.ClosestPoint(transform.position);
-            vase.OnHitByProjectile(point, gameObject);
-            Bounce(collision);
+            if (_rb.linearVelocity.magnitude >= vase.BreakMinSpeed)
+            {
+                vase.OnHitByProjectile(point, gameObject);
+                Destroy(gameObject);
+            }
+            else
+            {
+                Bounce(collision);
+            }
             return;
         }
 
