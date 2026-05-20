@@ -5,6 +5,7 @@ namespace HSM {
     {
         readonly PlayerContext ctx;
         float _timer;
+        int _currentAnimHash;
 
         public StumbleLimping(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
         {
@@ -16,7 +17,7 @@ namespace HSM {
             ctx.isStumbleFalling = false;
             ctx.currentSpeedMultiplier = ctx.stats.LimpSpeedMultiplier;
             _timer = ctx.stats != null ? ctx.stats.LimpDuration : 3f;
-            ctx.anim?.Play(PlayerAnimations.Limp, 0, 0f);
+            _currentAnimHash = 0;
             base.OnEnter();
         }
 
@@ -30,7 +31,20 @@ namespace HSM {
                 : ctx.stats.GroundDeceleration;
             ctx.velocity.x = Mathf.MoveTowards(ctx.velocity.x, targetX, accel * deltaTime);
 
+            UpdateAnimation();
+
             base.OnUpdate(deltaTime);
+        }
+
+        void UpdateAnimation()
+        {
+            if (ctx.anim == null) return;
+            int target = Mathf.Abs(ctx.velocity.x) > 0.5f
+                ? PlayerAnimations.WalkAfterStumble
+                : PlayerAnimations.Idle;
+            if (target == _currentAnimHash) return;
+            _currentAnimHash = target;
+            ctx.anim.Play(target, 0, 0f);
         }
 
         protected override State GetTransition()
