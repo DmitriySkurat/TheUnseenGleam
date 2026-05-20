@@ -64,6 +64,7 @@ public class NoiseVisualizer : MonoBehaviour, ISceneLifecycle
         NoiseType.Jump         => true,
         NoiseType.Landing      => true,
         NoiseType.ObjectImpact => true,
+        NoiseType.LoudNoise    => true,
         _                      => false
     };
 
