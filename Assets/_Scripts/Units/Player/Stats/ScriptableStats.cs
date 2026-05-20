@@ -299,6 +299,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float LedgeGrabMaxFallSpeed = 8f;
 
+    [Tooltip("Cooldown after releasing a ledge before the player can grab it again. Prevents instant re-grab when holding direction.")]
+    [Min(0f)]
+    public float LedgeGrabCooldown = 0.3f;
+
     // [Header("SLIDE")]
     // [Tooltip("Duration of the slide movement in seconds")]
     // public float SlideDuration = 2f;

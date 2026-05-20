@@ -64,6 +64,10 @@ namespace HSM
                 SnapToPosition(_standPosition);
                 ctx.grounded = true;
             }
+            else
+            {
+                ctx.ledgeGrabCooldownEndTime = Time.time + ctx.stats.LedgeGrabCooldown;
+            }
 
             base.OnExit();
         }
