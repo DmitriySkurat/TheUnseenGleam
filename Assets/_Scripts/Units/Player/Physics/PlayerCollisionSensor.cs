@@ -202,6 +202,20 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             return;
         }
 
+        var collapsingTilemap = wallHit.collider.GetComponent<CollapsingTilemap>();
+        if (collapsingTilemap != null && collapsingTilemap.IsCollapsing)
+        {
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
+        var collapsingFloor = wallHit.collider.GetComponent<CollapsingFloor>();
+        if (collapsingFloor != null && collapsingFloor.IsCollapsing)
+        {
+            _ctx.canGrabLedge = false;
+            return;
+        }
+
         _ctx.canGrabLedge        = true;
         _ctx.ledgeFacingRight    = dir > 0f;
         _ctx.ledgeCornerPosition = new Vector2(wallHit.point.x, downHit.point.y);

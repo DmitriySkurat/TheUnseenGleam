@@ -8,6 +8,8 @@ public class CollapsingFloor : MonoBehaviour
     [SerializeField] private float _shakeAmplitude = 0.06f;
     [SerializeField] private float _respawnDelay = 0f;  // 0 = не восстанавливается
 
+    public bool IsCollapsing => _triggered;
+
     private Collider2D _collider;
     private Vector3 _originPos;
     private bool _triggered;

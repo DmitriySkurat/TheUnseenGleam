@@ -18,6 +18,8 @@ public class CollapsingTilemap : MonoBehaviour
     [SerializeField] private string _fragmentLayer   = "Ground";
     [SerializeField] private PhysicsMaterial2D _fragmentMaterial;
 
+    public bool IsCollapsing => _pending.Count > 0;
+
     private Tilemap         _tilemap;
     private TilemapRenderer _tilemapRenderer;
     private PlayerContext   _playerCtx;

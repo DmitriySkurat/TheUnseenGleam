@@ -63,12 +63,15 @@ MonoBehaviour:
   SpikesSpeedMultiplier: 0.3
   PressToWallHeightMultiplier: 0.8
   PressToWallWidthMultiplier: 0.5
-  StumbleMinFallHeight: 6
-  StumbleDuration: 5
-  LimpDuration: 3
+  StumbleMinFallHeight: 8
+  StumbleDuration: 1
+  LimpDuration: 8
   LimpSpeedMultiplier: 0.35
   GrabDamagePerSecond: 20
   GrabProgressDrainPerSecond: 0.15
+  AdrenalineRegenMultiplier: 3
+  AdrenalineDuration: 8
+  AdrenalineCooldown: 60
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 3.3
   LandingRollMinHorizontalSpeed: 2
@@ -92,3 +95,4 @@ MonoBehaviour:
   WallGrabMaxDuration: 7
   WallGrabPassiveDuration: 2
   LedgeGrabMaxFallSpeed: 25
+  LedgeGrabCooldown: 0.3
