@@ -19,10 +19,11 @@ namespace HSM {
 
         protected override void OnEnter()
         {
-            ctx.stumblePending     = false;
-            ctx.isStumbling        = true;
-            ctx.jumpToConsume      = false;
-            ctx.grabEscapeDisabled = true;
+            ctx.stumblePending       = false;
+            ctx.isStumbling          = true;
+            ctx.jumpToConsume        = false;
+            ctx.bufferedJumpUsable   = false;
+            ctx.grabEscapeDisabled   = true;
             base.OnEnter();
         }
 

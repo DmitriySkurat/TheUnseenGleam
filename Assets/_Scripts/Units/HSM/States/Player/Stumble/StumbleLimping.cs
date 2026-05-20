@@ -13,6 +13,7 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            ctx.isStumbleFalling = false;
             ctx.currentSpeedMultiplier = ctx.stats.LimpSpeedMultiplier;
             _timer = ctx.stats != null ? ctx.stats.LimpDuration : 3f;
             ctx.anim?.Play(PlayerAnimations.Limp, 0, 0f);

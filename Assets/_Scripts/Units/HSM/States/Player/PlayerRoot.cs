@@ -86,7 +86,7 @@ namespace HSM {
                 return;
             }
 
-            if (ctx.isStumbleFalling)
+            if (ctx.isStumbleFalling || ctx.stumblePending)
             {
                 ctx.jumpToConsume = false;
                 return;
