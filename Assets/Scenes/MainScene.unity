@@ -5389,15 +5389,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8470333243190596905, guid: bbedf023968d95b4a8dd4d964d07c59a, type: 3}
       propertyPath: onLeverToggle.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8470333243190596905, guid: bbedf023968d95b4a8dd4d964d07c59a, type: 3}
       propertyPath: onLeverToggle.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
+      value:
       objectReference: {fileID: 556071402}
     - target: {fileID: 8470333243190596905, guid: bbedf023968d95b4a8dd4d964d07c59a, type: 3}
       propertyPath: onLeverToggle.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
+      value:
       objectReference: {fileID: 1410045698}
     - target: {fileID: 8470333243190596905, guid: bbedf023968d95b4a8dd4d964d07c59a, type: 3}
       propertyPath: onLeverToggle.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -5405,7 +5405,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8470333243190596905, guid: bbedf023968d95b4a8dd4d964d07c59a, type: 3}
       propertyPath: onLeverToggle.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: Rise
+      value: SetRaised
       objectReference: {fileID: 0}
     - target: {fileID: 8470333243190596905, guid: bbedf023968d95b4a8dd4d964d07c59a, type: 3}
       propertyPath: onLeverToggle.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName

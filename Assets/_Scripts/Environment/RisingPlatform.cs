@@ -65,6 +65,23 @@ public class RisingPlatform : MonoBehaviour
         else Rise();
     }
 
+    public void SetRaised(bool raised)
+    {
+        if (raised) Rise();
+        else ReturnToStart();
+    }
+
+    public void SetLowered(bool lowered)
+    {
+        if (lowered) Lower();
+        else ReturnToStart();
+    }
+
+    public void ReturnToStart()
+    {
+        RestartMove(MoveRoutine(_startPosition, lowerDuration, rising: false));
+    }
+
     private void RestartMove(IEnumerator routine)
     {
         if (_moveCoroutine != null)
