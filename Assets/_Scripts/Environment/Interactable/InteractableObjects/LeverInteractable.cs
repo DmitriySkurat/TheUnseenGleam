@@ -1,37 +1,41 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class LeverInteractable : Interactable {
     [SerializeField] private bool isOn = false;
+    [SerializeField] private float animationDuration = 0.3f;
 
-    [SerializeField] private Sprite leverOnSprite;
-    [SerializeField] private Sprite leverOffSprite;
-    
-    
+    private Animator _animator;
+    private static readonly int LeverTime = Animator.StringToHash("LeverTime");
+
     public UnityEvent<bool> onLeverToggle;
-    
+
     public override void Initialize() {
         base.Initialize();
-        
-        UpdateVisuals();
+        _animator = GetComponent<Animator>();
+        if (_animator != null)
+            _animator.SetFloat(LeverTime, isOn ? 1f : 0f);
     }
-    
-    public override void OnInteract(Interactor interactor)
-    {
+
+    public override void OnInteract(Interactor interactor) {
         isOn = !isOn;
-
-        UpdateVisuals();
-
+        StopAllCoroutines();
+        StartCoroutine(AnimateLever(isOn));
         onLeverToggle?.Invoke(isOn);
-
-        Debug.Log($"Lever toggled: {isOn}");
     }
-    
-    private void UpdateVisuals() {
-        if (_sr == null) return;
-        
-        if (isOn && leverOnSprite != null) _sr.sprite = leverOnSprite;
-        else if (!isOn && leverOffSprite != null) _sr.sprite = leverOffSprite;
+
+    private IEnumerator AnimateLever(bool turningOn) {
+        float current = _animator.GetFloat(LeverTime);
+        float target = turningOn ? 1f : 0f;
+        float elapsed = 0f;
+        float duration = Mathf.Abs(target - current) * animationDuration;
+
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            _animator.SetFloat(LeverTime, Mathf.Lerp(current, target, elapsed / duration));
+            yield return null;
+        }
+        _animator.SetFloat(LeverTime, target);
     }
 }
