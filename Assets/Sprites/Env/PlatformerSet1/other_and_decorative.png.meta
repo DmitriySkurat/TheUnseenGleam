@@ -293,15 +293,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: other_and_decorative_8
+      name: Chain_1
       rect:
         serializedVersion: 2
-        x: 224
-        y: 608
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 230
+        y: 590
+        width: 3
+        height: 34
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -777,28 +777,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: other_and_decorative_30
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 592
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b19c9883705186c4cb7922a4adbc37f0
-      internalID: 1874043054
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: other_and_decorative_31
       rect:
         serializedVersion: 2
@@ -1168,28 +1146,6 @@ TextureImporter:
       bones: []
       spriteID: 0af068bba327f8f439a943cf39b705e8
       internalID: 61849054
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: other_and_decorative_48
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 576
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 21c8173e41d3b73469f9eb06ef163583
-      internalID: 812208206
       vertices: []
       indices: 
       edges: []
@@ -11345,7 +11301,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -11367,7 +11323,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -11389,7 +11345,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -11419,6 +11375,7 @@ TextureImporter:
       B: -137703594
       BigBookshelf_other_and_decorative_224: 2091751734
       Bookshelf_other_and_decorative: -137703594
+      Chain_1: -1860345701
       EmptyBookshelf_other_and_decorative_143: -1736293536
       other_and_decorative_0: -1281831366
       other_and_decorative_1: -277222885
@@ -11908,7 +11865,6 @@ TextureImporter:
       other_and_decorative_77: -903227872
       other_and_decorative_78: 400562949
       other_and_decorative_79: 1821738127
-      other_and_decorative_8: -1860345701
       other_and_decorative_80: 111514435
       other_and_decorative_81: -521687630
       other_and_decorative_82: -2029454649

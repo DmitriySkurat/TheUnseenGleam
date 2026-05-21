@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4434618772670703242}
   - component: {fileID: 5736371440639049099}
   - component: {fileID: 2913348769162366068}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RisingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RisingPlatform
   riseDistance: 3
+  lowerDistance: 3
   riseDuration: 1.5
   lowerDuration: 1.5
   moveCurve:
@@ -104,6 +105,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   returnAfterRise: 0
   holdDuration: 2
+  chainRenderer: {fileID: 0}
+  platformHalfHeight: 0.5
   onRiseComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -203,7 +206,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 40
+  m_SortingOrder: 90
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -227,4 +230,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e40835e8eac88fc4e971b4636f155aeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SortingOrderSetter
-  _order: 40
+  _order: 90

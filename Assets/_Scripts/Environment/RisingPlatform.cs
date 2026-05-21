@@ -16,6 +16,10 @@ public class RisingPlatform : MonoBehaviour
     [SerializeField] private bool returnAfterRise = false;
     [SerializeField] private float holdDuration = 2f;
 
+    [Header("Chain")]
+    [SerializeField] private SpriteRenderer chainRenderer;
+    [SerializeField] private float platformHalfHeight = 0.5f;
+
     [Header("Events")]
     public UnityEvent onRiseComplete;
     public UnityEvent onLowerComplete;
@@ -36,6 +40,8 @@ public class RisingPlatform : MonoBehaviour
         _startPosition = _rb.position;
         _raisedPosition = _startPosition + Vector2.up * riseDistance;
         _loweredPosition = _startPosition - Vector2.up * lowerDistance;
+
+        UpdateChain(_startPosition);
     }
 
     public void Rise()
@@ -70,11 +76,14 @@ public class RisingPlatform : MonoBehaviour
         {
             elapsed += Time.fixedDeltaTime;
             float t = moveCurve.Evaluate(Mathf.Clamp01(elapsed / duration));
-            _rb.MovePosition(Vector2.LerpUnclamped(from, target, t));
+            Vector2 pos = Vector2.LerpUnclamped(from, target, t);
+            _rb.MovePosition(pos);
+            UpdateChain(pos);
             yield return new WaitForFixedUpdate();
         }
 
         _rb.MovePosition(target);
+        UpdateChain(target);
         _isRaised = rising;
 
         if (rising)
@@ -91,5 +100,13 @@ public class RisingPlatform : MonoBehaviour
         {
             onLowerComplete?.Invoke();
         }
+    }
+
+    private void UpdateChain(Vector2 platformPos)
+    {
+        if (chainRenderer == null) return;
+        float anchorY = chainRenderer.transform.position.y;
+        float chainLength = Mathf.Max(0f, anchorY - (platformPos.y + platformHalfHeight));
+        chainRenderer.size = new Vector2(chainRenderer.size.x, chainLength);
     }
 }
