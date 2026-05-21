@@ -12,7 +12,7 @@ public class RockActivatableObject : MonoBehaviour, IRockActivatable
     private bool _activated;
     private bool _isOn;
 
-    public void OnHitByRock(Vector2 hitPoint, GameObject rockSource)
+    public virtual void OnHitByRock(Vector2 hitPoint, GameObject rockSource)
     {
         if (activateOnlyOnce && _activated) return;
 

@@ -49,7 +49,10 @@ public class PebbleBehavior : MonoBehaviour
         {
             Vector2 point = collision.ClosestPoint(transform.position);
             activatable.OnHitByRock(point, gameObject);
-            Bounce(collision);
+            if (!collision.enabled)
+                Destroy(gameObject);
+            else
+                Bounce(collision);
             return;
         }
 
