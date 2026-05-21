@@ -17,7 +17,8 @@ public class RisingPlatform : MonoBehaviour
     [SerializeField] private float holdDuration = 2f;
 
     [Header("Chain")]
-    [SerializeField] private SpriteRenderer chainRenderer;
+    [SerializeField] private SpriteRenderer chainRendererLeft;
+    [SerializeField] private SpriteRenderer chainRendererRight;
     [SerializeField] private float platformHalfHeight = 0.5f;
 
     [Header("Events")]
@@ -104,9 +105,15 @@ public class RisingPlatform : MonoBehaviour
 
     private void UpdateChain(Vector2 platformPos)
     {
-        if (chainRenderer == null) return;
-        float anchorY = chainRenderer.transform.position.y;
+        UpdateSingleChain(chainRendererLeft, platformPos);
+        UpdateSingleChain(chainRendererRight, platformPos);
+    }
+
+    private void UpdateSingleChain(SpriteRenderer chain, Vector2 platformPos)
+    {
+        if (chain == null) return;
+        float anchorY = chain.transform.position.y;
         float chainLength = Mathf.Max(0f, anchorY - (platformPos.y + platformHalfHeight));
-        chainRenderer.size = new Vector2(chainRenderer.size.x, chainLength);
+        chain.size = new Vector2(chain.size.x, chainLength);
     }
 }
