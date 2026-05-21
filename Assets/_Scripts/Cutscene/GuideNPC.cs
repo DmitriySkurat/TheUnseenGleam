@@ -22,7 +22,6 @@ public class GuideNPC : Interactable
     private Animator _anim;
     private PlayerContext _playerCtx;
     private DialogManager _dialogManager;
-    private bool _wasTraversing;
     private bool _chaseStopped;
 
     private enum Phase { Chase, InDialog, Walk, Done }
@@ -46,34 +45,19 @@ public class GuideNPC : Interactable
         }
 
         _phase = Phase.Chase;
-        _anim?.Play(AgentAnimations.Run, 0, 0f);
+        _anim?.Play(AgentAnimations.Walk, 0, 0f);
     }
 
     // ── Update ───────────────────────────────────────────────────────────────
 
     void FixedUpdate()
     {
-        HandleTraversalAnimation();
-
         switch (_phase)
         {
             case Phase.Chase:    TickChase(Time.fixedDeltaTime);    break;
             case Phase.InDialog: TickInDialog();                    break;
             case Phase.Walk:     TickWalk(Time.fixedDeltaTime);     break;
         }
-    }
-
-    void HandleTraversalAnimation()
-    {
-        bool traversing = _nav.State == PlatNavState.TraversingLink;
-        if (traversing == _wasTraversing) return;
-
-        int idleOrMove = _phase == Phase.Walk ? AgentAnimations.Walk : AgentAnimations.Run;
-        int anim = traversing
-            ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
-            : idleOrMove;
-        _anim?.Play(anim, 0, 0f);
-        _wasTraversing = traversing;
     }
 
     void TickChase(float deltaTime)
@@ -92,7 +76,7 @@ public class GuideNPC : Interactable
         {
             _nav.SetTarget(_playerCtx.transform);
             _nav.SetSpeed(_chaseSpeed);
-            _anim?.Play(AgentAnimations.Run, 0, 0f);
+            _anim?.Play(AgentAnimations.Walk, 0, 0f);
             _chaseStopped = false;
         }
 
@@ -131,7 +115,7 @@ public class GuideNPC : Interactable
             if (_destination != null &&
                 Vector2.Distance(transform.position, _destination.position) > 0.5f)
             {
-                _nav.MoveTo(_destination.position, _walkSpeed); // пересчёт после прыжка
+                _nav.MoveTo(_destination.position, _walkSpeed);
             }
             else
             {

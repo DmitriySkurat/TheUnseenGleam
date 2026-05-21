@@ -24,7 +24,6 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
     private int _waypointIndex;
     private float _waitTimer;
     private bool _navigating;
-    private bool _wasTraversing;
     private bool _fleeing;
     private Vector2 _fleeFrom;
     private Vector2 _fleeDestination;
@@ -70,23 +69,10 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
         if (IsGrabbed) return;
         if (_waypoints == null || _waypoints.Length == 0) return;
 
-        HandleTraversalAnimation();
         if (_fleeing)
             TickFlee(Time.fixedDeltaTime);
         else
             Tick(Time.fixedDeltaTime);
-    }
-
-    void HandleTraversalAnimation()
-    {
-        bool traversing = _nav.State == PlatNavState.TraversingLink;
-        if (traversing == _wasTraversing) return;
-
-        int anim = traversing
-            ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
-            : (_fleeing ? AgentAnimations.Run : AgentAnimations.Walk);
-        _anim?.Play(anim, 0, 0f);
-        _wasTraversing = traversing;
     }
 
     void Tick(float deltaTime)
@@ -120,7 +106,7 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
         if (_nav.State == PlatNavState.Idle)
         {
             if (Vector2.Distance(transform.position, _fleeDestination) > 0.5f)
-                _nav.MoveTo(_fleeDestination, _fleeSpeed); // пересчёт после прыжка
+                _nav.MoveTo(_fleeDestination, _fleeSpeed);
             else
                 _anim?.Play(AgentAnimations.Idle, 0, 0f);
         }
@@ -136,7 +122,6 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
         }
         else
         {
-            // Фолбэк: дальняя точка блуждания
             if (_waypoints == null || _waypoints.Length == 0) return;
             float maxDist = -1f;
             int best = _waypointIndex;
@@ -151,7 +136,7 @@ public class WanderingNPC : MonoBehaviour, ISceneLifecycle
         }
 
         bool started = _nav.MoveTo(_fleeDestination, _fleeSpeed);
-        _anim?.Play(started ? AgentAnimations.Run : AgentAnimations.Idle, 0, 0f);
+        _anim?.Play(started ? AgentAnimations.Walk : AgentAnimations.Idle, 0, 0f);
     }
 
     void NavigateToCurrentWaypoint()

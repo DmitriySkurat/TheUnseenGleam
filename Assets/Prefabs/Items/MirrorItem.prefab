@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7421991058859981606}
   - component: {fileID: 5555143538891137713}
   m_Layer: 7
-  m_Name: ItemMirror
+  m_Name: MirrorItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
