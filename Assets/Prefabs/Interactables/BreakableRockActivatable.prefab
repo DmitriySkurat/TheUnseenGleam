@@ -108,6 +108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BreakableRockActivatable
   toggleable: 0
   activateOnlyOnce: 1
+  nudgeDistance: 0
+  nudgeDuration: 0
   onActivated:
     m_PersistentCalls:
       m_Calls:
