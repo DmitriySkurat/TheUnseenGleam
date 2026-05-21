@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class DoorInteractable : Interactable
 {
@@ -17,13 +18,14 @@ public class DoorInteractable : Interactable
     [SerializeField] private Collider2D visionBlocker;
 
     private Collider2D _doorCollider;
+    private ShadowCaster2D _shadowCaster;
 
     public override void Initialize() {
         base.Initialize();
 
         _doorCollider = GetComponent<Collider2D>();
+        _shadowCaster = GetComponent<ShadowCaster2D>();
 
-        // Для начального состояния
         UpdateDoorVisuals();
     }
     public void SetOpen(bool state)
@@ -35,6 +37,10 @@ public class DoorInteractable : Interactable
     }
 
     private void UpdateDoorVisuals() {
+        // Включаем до смены спрайта — провайдер ShadowCaster2D обновит кэш формы при изменении
+        if (!isOpen && _shadowCaster != null)
+            _shadowCaster.enabled = true;
+
         if (_sr != null) {
             if (isOpen && openDoorSprite != null) _sr.sprite = openDoorSprite;
             else if (!isOpen && closedDoorSprite != null) _sr.sprite = closedDoorSprite;
@@ -47,6 +53,9 @@ public class DoorInteractable : Interactable
 
         if (visionBlocker != null)
             visionBlocker.enabled = !isOpen;
+
+        if (isOpen && _shadowCaster != null)
+            _shadowCaster.enabled = false;
     }
 
     public override void OnInteract(Interactor interactor)

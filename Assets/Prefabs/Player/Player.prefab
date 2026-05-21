@@ -242,7 +242,7 @@ MonoBehaviour:
   lightSpawnPoint: {fileID: 7762092777318196455}
   mirrorLightPrefab: {fileID: 3001410656907869080, guid: 1c99589f4e4acb646920d154da8ba4dd, type: 3}
   maxCharge: 100
-  initialCharge: 0
+  initialCharge: 1
   chargePerSecond: 10
   minLightStrengthToCharge: 0.1
   chargeOnlyWhenGrounded: 1
@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 5304274441437318728}
   - component: {fileID: 1480382827159482670}
   - component: {fileID: 3301244294937794446}
+  - component: {fileID: 6563247886447760126}
   m_Layer: 11
   m_Name: TrajectoryLine
   m_TagString: Untagged
@@ -331,7 +332,7 @@ LineRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_MaskInteraction: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -413,6 +414,19 @@ MonoBehaviour:
     m_Bits: 64
   _segmentCount: 50
   _curveLenght: 3.5
+--- !u!114 &6563247886447760126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4801114399454441880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e40835e8eac88fc4e971b4636f155aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SortingOrderSetter
+  _order: 1000
 --- !u!1 &5761061422304542093
 GameObject:
   m_ObjectHideFlags: 0
