@@ -19,7 +19,8 @@ public class RisingPlatform : MonoBehaviour
     [Header("Chain")]
     [SerializeField] private SpriteRenderer chainRendererLeft;
     [SerializeField] private SpriteRenderer chainRendererRight;
-    [SerializeField] private float platformHalfHeight = 0.5f;
+
+    private float _platformHalfHeight;
 
     [Header("Events")]
     public UnityEvent onRiseComplete;
@@ -37,6 +38,9 @@ public class RisingPlatform : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _rb.bodyType = RigidbodyType2D.Kinematic;
         _rb.gravityScale = 0f;
+
+        var col = GetComponent<Collider2D>();
+        _platformHalfHeight = col != null ? col.bounds.extents.y : 0f;
 
         _startPosition = _rb.position;
         _raisedPosition = _startPosition + Vector2.up * riseDistance;
@@ -113,7 +117,7 @@ public class RisingPlatform : MonoBehaviour
     {
         if (chain == null) return;
         float anchorY = chain.transform.position.y;
-        float chainLength = Mathf.Max(0f, anchorY - (platformPos.y + platformHalfHeight));
+        float chainLength = Mathf.Max(0f, anchorY - (platformPos.y + _platformHalfHeight));
         chain.size = new Vector2(chain.size.x, chainLength);
     }
 }
