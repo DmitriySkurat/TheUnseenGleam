@@ -4,8 +4,8 @@ public class PrisonCellDoor : DoorInteractable
 {
     [Header("On Open: Permanent Changes")]
     [SerializeField] private Collider2D[] collidersToDisable;
-    [SerializeField] private Renderer[] barsRenderers;
-    [SerializeField] private string openedSortingLayer = "InteractablesInBack";
+    [SerializeField] private SortingOrderSetter[] barsOrderSetters;
+    [SerializeField] private SortingOrder openedSortingOrder = SortingOrder.InteractablesInBack;
 
     private bool _cellOpened;
 
@@ -26,7 +26,7 @@ public class PrisonCellDoor : DoorInteractable
         foreach (var col in collidersToDisable)
             if (col != null) col.enabled = false;
 
-        foreach (var r in barsRenderers)
-            if (r != null) r.sortingLayerName = openedSortingLayer;
+        foreach (var setter in barsOrderSetters)
+            if (setter != null) setter.SetOrder((int)openedSortingOrder);
     }
 }
