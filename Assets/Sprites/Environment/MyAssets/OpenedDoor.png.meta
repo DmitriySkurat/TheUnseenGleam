@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d7ecc946792027e448be1d8a2a5507e6
+guid: 2718f1626e4ba5a41b14d87d4d200958
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -392884139184349392
-    second: PrisonDoor1_0
+      213: 4473968003029412709
+    second: OpenedDoor_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PrisonDoor1_0
+      name: OpenedDoor_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 8
         width: 32
-        height: 64
+        height: 72
       alignment: 2
       pivot: {x: 0.5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 03f180ef4f13c8af0800000000000000
-      internalID: -392884139184349392
+      spriteID: 56b2805d13ab61e30800000000000000
+      internalID: 4473968003029412709
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 19ec3026da84cf443b195b4759e1b813
+    spriteID: 5eb3845aca687884daeab435be786d35
     internalID: 0
     vertices: []
     indices: 
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PrisonDoor1_0: -392884139184349392
+      OpenedDoor_0: 4473968003029412709
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

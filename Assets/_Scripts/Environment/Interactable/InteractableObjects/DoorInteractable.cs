@@ -73,7 +73,7 @@ public class DoorInteractable : Interactable
 
     public override void OnInteract(Interactor interactor)
     {
-        if (lockedHintBubble != null && interactor is PlayerInteractor player && !base.CanBeInteractedBy(player))
+        if (lockedHintBubble != null && !wasItemsConsumed && interactor is PlayerInteractor player && !base.CanBeInteractedBy(player))
         {
             lockedHintBubble.Say(lockedHintText);
             return;
@@ -87,6 +87,7 @@ public class DoorInteractable : Interactable
     protected override void OnAfterInteraction(PlayerInteractor player)
     {
         if (wasItemsConsumed) return;
+        if (lockedHintBubble != null && !base.CanBeInteractedBy(player)) return;
 
         base.OnAfterInteraction(player);
     }
