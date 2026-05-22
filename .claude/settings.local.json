@@ -61,7 +61,8 @@
       "Bash(python -c ' *)",
       "Bash(ls \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\\")",
       "Bash(pandoc \"Диплом.docx\" -o _diplom_full.md)",
-      "PowerShell(Get-ChildItem -Path \"d:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -Directory | ForEach-Object { Write-Host \"$\\($_.Name\\)\" })"
+      "PowerShell(Get-ChildItem -Path \"d:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -Directory | ForEach-Object { Write-Host \"$\\($_.Name\\)\" })",
+      "Bash(awk 'NR>=31076{print NR\": \"$0} /m_TileColorArray/ && NR>31076{exit}' Assets/Scenes/PrisonBeginning.unity)"
     ]
   }
 }
