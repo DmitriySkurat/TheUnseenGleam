@@ -28,6 +28,7 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
     public event Action<NoiseEvent> OnHeard;
 
     private NoiseSystem _noiseSystem;
+    private PlayerContext _playerContext;
     private Vector2? _lastHeardPosition;
     private Vector2? _lastNoisePosition;
     private Vector2? _lastListenerPosition;
@@ -37,6 +38,9 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
     {
         _noiseSystem = Services.Get<NoiseSystem>();
         _noiseSystem.NoiseEmitted += HandleNoiseEmitted;
+
+        if (Services.IsRegistered<PlayerContext>())
+            _playerContext = Services.Get<PlayerContext>();
     }
 
     public void Dispose()
@@ -46,6 +50,9 @@ public class AgentHearing : MonoBehaviour, ISceneLifecycle
 
     private void HandleNoiseEmitted(NoiseEvent noiseEvent)
     {
+        if (_playerContext != null && _playerContext.isInDetectionSafeZone)
+            return;
+
         Vector2 listenerPos = transform.position;
         Vector2 noisePos = noiseEvent.Position;
 

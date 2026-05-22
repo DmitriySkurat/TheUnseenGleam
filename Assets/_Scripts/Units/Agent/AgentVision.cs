@@ -158,6 +158,9 @@ public class AgentVision : MonoBehaviour, ISceneLifecycle
         if (_playerContext != null && _playerContext.isGrabbed)
             return false;
 
+        if (_playerContext != null && _playerContext.isInDetectionSafeZone)
+            return false;
+
         if (_playerContext != null && _playerContext.isHiding && !_canSeeWhilePlayerHidden)
             return false;
 

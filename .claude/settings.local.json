@@ -60,7 +60,8 @@
       "Bash(node gen_33.js)",
       "Bash(python -c ' *)",
       "Bash(ls \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\\")",
-      "Bash(pandoc \"Диплом.docx\" -o _diplom_full.md)"
+      "Bash(pandoc \"Диплом.docx\" -o _diplom_full.md)",
+      "PowerShell(Get-ChildItem -Path \"d:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\\\\Assets\\\\_Scripts\" -Directory | ForEach-Object { Write-Host \"$\\($_.Name\\)\" })"
     ]
   }
 }

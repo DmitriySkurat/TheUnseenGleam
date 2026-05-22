@@ -1,0 +1,649 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce412e35f67f00e4f9da98d5aa825767, type: 3}
+  m_Name: PrisonBeginningGraph
+  m_EditorClassIdentifier: Assembly-CSharp::PlatNav.PlatformNavGraphAsset
+  tilemapSize: {x: 224, y: 47}
+  tileOrigin: {x: -84, y: -51}
+  cellWorldOrigin: {x: 5.6100006, y: 26.130005}
+  segments:
+  - gravity: 1
+    axis: 0
+    line: -16
+    min: -81
+    max: -81
+    firstOut: 0
+    outCount: 0
+  - gravity: 1
+    axis: 0
+    line: -13
+    min: -80
+    max: -80
+    firstOut: 0
+    outCount: 1
+  - gravity: 1
+    axis: 0
+    line: -11
+    min: -79
+    max: -79
+    firstOut: 1
+    outCount: 1
+  - gravity: 1
+    axis: 0
+    line: -10
+    min: -78
+    max: -78
+    firstOut: 2
+    outCount: 1
+  - gravity: 1
+    axis: 0
+    line: -9
+    min: -77
+    max: -77
+    firstOut: 3
+    outCount: 2
+  - gravity: 1
+    axis: 0
+    line: -8
+    min: -76
+    max: -75
+    firstOut: 5
+    outCount: 3
+  - gravity: 1
+    axis: 0
+    line: -8
+    min: -59
+    max: -41
+    firstOut: 8
+    outCount: 2
+  - gravity: 1
+    axis: 0
+    line: -8
+    min: -24
+    max: 12
+    firstOut: 10
+    outCount: 2
+  - gravity: 1
+    axis: 0
+    line: -8
+    min: 15
+    max: 20
+    firstOut: 12
+    outCount: 3
+  - gravity: 1
+    axis: 0
+    line: -7
+    min: -74
+    max: -71
+    firstOut: 15
+    outCount: 3
+  - gravity: 1
+    axis: 0
+    line: -7
+    min: -66
+    max: -60
+    firstOut: 18
+    outCount: 2
+  - gravity: 1
+    axis: 0
+    line: -7
+    min: -40
+    max: -25
+    firstOut: 20
+    outCount: 4
+  - gravity: 1
+    axis: 0
+    line: -7
+    min: 13
+    max: 14
+    firstOut: 24
+    outCount: 4
+  - gravity: 1
+    axis: 0
+    line: -6
+    min: -70
+    max: -67
+    firstOut: 28
+    outCount: 2
+  - gravity: 1
+    axis: 0
+    line: -28
+    min: -65
+    max: -15
+    firstOut: 30
+    outCount: 1
+  - gravity: 1
+    axis: 0
+    line: -27
+    min: -14
+    max: 104
+    firstOut: 31
+    outCount: 2
+  - gravity: 1
+    axis: 0
+    line: -30
+    min: 105
+    max: 105
+    firstOut: 0
+    outCount: 0
+  links:
+  - fromSeg: 1
+    toSeg: 0
+    fromMin: -80
+    fromMax: -80
+    toMin: -81
+    toMax: -81
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 280
+    launchPos: {x: -75.39, y: 13.130005}
+    launchVelocity: {x: -0, y: -0}
+    landPos: {x: -75.39, y: 10.130005}
+    flightTime: 0.69999987
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 2
+    toSeg: 1
+    fromMin: -79
+    fromMax: -79
+    toMin: -80
+    toMax: -80
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 216
+    launchPos: {x: -74.39, y: 15.130005}
+    launchVelocity: {x: -0, y: -0}
+    landPos: {x: -74.39, y: 13.130005}
+    flightTime: 0.54
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 3
+    toSeg: 2
+    fromMin: -78
+    fromMax: -78
+    toMin: -79
+    toMax: -79
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -73.39, y: 16.130005}
+    launchVelocity: {x: -1.2, y: -0}
+    landPos: {x: -73.39, y: 15.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 4
+    toSeg: 2
+    fromMin: -77
+    fromMax: -77
+    toMin: -79
+    toMax: -79
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 216
+    launchPos: {x: -72.39, y: 17.130005}
+    launchVelocity: {x: -2.4, y: -0}
+    landPos: {x: -73.39, y: 15.130005}
+    flightTime: 0.54
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 4
+    toSeg: 3
+    fromMin: -77
+    fromMax: -77
+    toMin: -78
+    toMax: -78
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -72.39, y: 17.130005}
+    launchVelocity: {x: -1.2, y: -0}
+    landPos: {x: -72.39, y: 16.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 5
+    toSeg: 3
+    fromMin: -76
+    fromMax: -76
+    toMin: -78
+    toMax: -78
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 216
+    launchPos: {x: -71.39, y: 18.130005}
+    launchVelocity: {x: -2.4, y: -0}
+    landPos: {x: -72.39, y: 16.130005}
+    flightTime: 0.54
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 5
+    toSeg: 4
+    fromMin: -76
+    fromMax: -76
+    toMin: -77
+    toMax: -77
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -71.39, y: 18.130005}
+    launchVelocity: {x: -1.2, y: -0}
+    landPos: {x: -71.39, y: 17.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 5
+    toSeg: 9
+    fromMin: -76
+    fromMax: -76
+    toMin: -74
+    toMax: -74
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -70.39, y: 18.130005}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: -68.39, y: 19.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 6
+    toSeg: 11
+    fromMin: -42
+    fromMax: -42
+    toMin: -40
+    toMax: -40
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -36.39, y: 18.130005}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: -34.39, y: 19.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 6
+    toSeg: 10
+    fromMin: -58
+    fromMax: -58
+    toMin: -60
+    toMax: -60
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -52.39, y: 18.130005}
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: -54.39, y: 19.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 7
+    toSeg: 12
+    fromMin: 11
+    fromMax: 11
+    toMin: 13
+    toMax: 13
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 16.61, y: 18.130005}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: 18.61, y: 19.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 7
+    toSeg: 11
+    fromMin: -23
+    fromMax: -23
+    toMin: -25
+    toMax: -25
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -17.39, y: 18.130005}
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: -19.39, y: 19.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 8
+    toSeg: 12
+    fromMin: 19
+    fromMax: 19
+    toMin: 14
+    toMax: 14
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1809
+    launchPos: {x: 24.61, y: 18.130005}
+    launchVelocity: {x: -5.527534, y: 5.6283193}
+    landPos: {x: 19.61, y: 19.130005}
+    flightTime: 0.9045625
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 8
+    toSeg: 12
+    fromMin: 16
+    fromMax: 16
+    toMin: 14
+    toMax: 14
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 21.61, y: 18.130005}
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: 19.61, y: 19.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 8
+    toSeg: 15
+    fromMin: 20
+    fromMax: 20
+    toMin: 27
+    toMax: 27
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 768
+    launchPos: {x: 26.61, y: 18.130005}
+    launchVelocity: {x: 3, y: 0}
+    landPos: {x: 32.61, y: -0.8699951}
+    flightTime: 1.9199988
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 9
+    toSeg: 5
+    fromMin: -72
+    fromMax: -72
+    toMin: -76
+    toMax: -76
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1816
+    launchPos: {x: -66.39, y: 19.130005}
+    launchVelocity: {x: -4.4048667, y: 3.4392161}
+    landPos: {x: -70.39, y: 18.130005}
+    flightTime: 0.90808654
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 9
+    toSeg: 5
+    fromMin: -74
+    fromMax: -74
+    toMin: -76
+    toMax: -76
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -68.39, y: 19.130005}
+    launchVelocity: {x: -2.9906974, y: 1.8483529}
+    landPos: {x: -70.39, y: 18.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 9
+    toSeg: 5
+    fromMin: -74
+    fromMax: -74
+    toMin: -76
+    toMax: -76
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -69.39, y: 19.130005}
+    launchVelocity: {x: -3, y: -0}
+    landPos: {x: -70.39, y: 18.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 10
+    toSeg: 6
+    fromMin: -60
+    fromMax: -60
+    toMin: -58
+    toMax: -58
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -54.39, y: 19.130005}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: -52.39, y: 18.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 10
+    toSeg: 6
+    fromMin: -60
+    fromMax: -60
+    toMin: -58
+    toMax: -58
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -53.39, y: 19.130005}
+    launchVelocity: {x: 3, y: 0}
+    landPos: {x: -52.39, y: 18.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 11
+    toSeg: 6
+    fromMin: -40
+    fromMax: -40
+    toMin: -42
+    toMax: -42
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -34.39, y: 19.130005}
+    launchVelocity: {x: -2.9906974, y: 1.8483529}
+    landPos: {x: -36.39, y: 18.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 11
+    toSeg: 6
+    fromMin: -40
+    fromMax: -40
+    toMin: -42
+    toMax: -42
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -35.39, y: 19.130005}
+    launchVelocity: {x: -3, y: -0}
+    landPos: {x: -36.39, y: 18.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 11
+    toSeg: 7
+    fromMin: -25
+    fromMax: -25
+    toMin: -23
+    toMax: -23
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -19.39, y: 19.130005}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: -17.39, y: 18.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 11
+    toSeg: 7
+    fromMin: -25
+    fromMax: -25
+    toMin: -23
+    toMax: -23
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -18.39, y: 19.130005}
+    launchVelocity: {x: 3, y: 0}
+    landPos: {x: -17.39, y: 18.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 12
+    toSeg: 8
+    fromMin: 14
+    fromMax: 14
+    toMin: 16
+    toMax: 16
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 19.61, y: 19.130005}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: 21.61, y: 18.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 12
+    toSeg: 7
+    fromMin: 13
+    fromMax: 13
+    toMin: 11
+    toMax: 11
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 18.61, y: 19.130005}
+    launchVelocity: {x: -2.9906974, y: 1.8483529}
+    landPos: {x: 16.61, y: 18.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 12
+    toSeg: 8
+    fromMin: 14
+    fromMax: 14
+    toMin: 16
+    toMax: 16
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 20.61, y: 19.130005}
+    launchVelocity: {x: 3, y: 0}
+    landPos: {x: 21.61, y: 18.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 12
+    toSeg: 7
+    fromMin: 13
+    fromMax: 13
+    toMin: 11
+    toMax: 11
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 17.61, y: 19.130005}
+    launchVelocity: {x: -3, y: -0}
+    landPos: {x: 16.61, y: 18.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 13
+    toSeg: 9
+    fromMin: -70
+    fromMax: -70
+    toMin: -72
+    toMax: -72
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -65.39, y: 20.130005}
+    launchVelocity: {x: -3, y: -0}
+    landPos: {x: -66.39, y: 19.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 13
+    toSeg: 10
+    fromMin: -67
+    fromMax: -67
+    toMin: -65
+    toMax: -65
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -60.39, y: 20.130005}
+    launchVelocity: {x: 3, y: 0}
+    landPos: {x: -59.39, y: 19.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 14
+    toSeg: 15
+    fromMin: -16
+    fromMax: -16
+    toMin: -14
+    toMax: -14
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -10.389999, y: -1.8699951}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: -8.389999, y: -0.8699951}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 15
+    toSeg: 14
+    fromMin: -14
+    fromMax: -14
+    toMin: -16
+    toMax: -16
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -9.389999, y: -0.8699951}
+    launchVelocity: {x: -3, y: -0}
+    landPos: {x: -10.389999, y: -1.8699951}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 15
+    toSeg: 14
+    fromMin: -14
+    fromMax: -14
+    toMin: -16
+    toMax: -16
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -8.389999, y: -0.8699951}
+    launchVelocity: {x: -2.9906974, y: 1.8483529}
+    landPos: {x: -10.389999, y: -1.8699951}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  horizontalBins:
+    axis: 0
+    binSize: 4
+    origin: -81
+    binCount: 47
+    first: 000000000400000007000000090000000b0000000d00000010000000120000001400000016000000180000001b0000001d0000001f000000210000002400000026000000290000002b0000002d0000002f000000310000003300000035000000380000003a0000003c0000003d0000003e0000003f000000400000004100000042000000430000004400000045000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f00000050000000
+    count: 04000300020002000200030002000200020002000300020002000200030002000300020002000200020002000200030002000200010001000100010001000100010001000100010001000100010001000100010001000100010001000200
+    refs: 00000000010000000200000003000000040000000500000009000000090000000d0000000a0000000d0000000a0000000e000000060000000a0000000e000000060000000e000000060000000e000000060000000e000000060000000e000000060000000b0000000e0000000b0000000e0000000b0000000e0000000b0000000e000000070000000b0000000e000000070000000e000000070000000e0000000f000000070000000f000000070000000f000000070000000f000000070000000f000000070000000f000000070000000f000000070000000c0000000f000000080000000f000000080000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f0000000f00000010000000
+  verticalBins:
+    axis: 1
+    binSize: 4
+    origin: 0
+    binCount: 0
+    first: 
+    count: 
+    refs: 

@@ -100,6 +100,9 @@ public class PlayerContext
     // ===== COSMETIC =====
     public Vector3 cosmeticOffset;
 
+    // ===== SAFE ZONE =====
+    public bool isInDetectionSafeZone;
+
     // ===== CUTSCENE =====
     public bool isInCutscene;
 
