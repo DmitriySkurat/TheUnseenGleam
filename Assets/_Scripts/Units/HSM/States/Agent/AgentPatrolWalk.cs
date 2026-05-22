@@ -64,13 +64,21 @@ namespace HSM {
                 ctx.nav.Tick(deltaTime);
                 if (ctx.nav.State == PlatNavState.Idle)
                 {
-                    _navigating = false;
-                    ctx.patrolWaitTimer = ctx.stats.PatrolWaitTime;
+                    if (ctx.nav.PathCompleted)
+                    {
+                        _navigating = false;
+                        ctx.patrolWaitTimer = ctx.stats.PatrolWaitTime;
+                    }
+                    else
+                    {
+                        // Path was aborted mid-way (e.g. blocked traversal) — retry
+                        StartNavigatingToCurrentPoint();
+                    }
                 }
             }
             else
             {
-                // Path failed on previous attempt — retry
+                // Path failed to start on previous attempt — retry
                 StartNavigatingToCurrentPoint();
             }
 

@@ -100,10 +100,12 @@ namespace PlatNav
         private int   _lastTargetSeg = -1;
         private bool _hasManualDestination;
         private Vector2 _manualDestination;
+        private bool _pathCompleted;
 
         public PlatNavState State => _state;
         public bool HasPath => _path.Count > 0;
         public bool IsTraversingFall => _state == PlatNavState.TraversingLink && _linkIsEuler;
+        public bool PathCompleted => _pathCompleted;
 
         public void SetTarget(Transform t)
         {
@@ -131,6 +133,7 @@ namespace PlatNav
             _pathIndex = 0;
             _lastTargetSeg = -1;
             _hasManualDestination = false;
+            _pathCompleted = false;
 
             if (_state == PlatNavState.TraversingLink)
                 return;
@@ -144,7 +147,8 @@ namespace PlatNav
         public bool MoveTo(Vector2 targetPosition, float speed)
         {
             walkSpeed = speed;
-            
+            _pathCompleted = false;
+
             // Keep a fixed destination only when there is no tracked target.
             // When target is assigned, segment walking should follow live target position.
             if (target == null)
@@ -379,6 +383,7 @@ namespace PlatNav
         {
             if (_pathIndex >= _path.Count)
             {
+                _pathCompleted = true;
                 _state = PlatNavState.Idle;
                 _path.Clear();
                 if (debugLog) Debug.Log("[PlatNav] Path complete");
@@ -756,7 +761,6 @@ namespace PlatNav
 
             while (cur.parentSeg >= 0)
             {
-                // Push: first the link to arrive, then insert the walk-on-segment before it
                 steps.Add(new PathStep { segIndex = cur.segIndex, linkIndex = cur.linkUsed });
                 cur = nodeMap[cur.parentSeg];
             }
@@ -764,6 +768,19 @@ namespace PlatNav
             // Add start segment walk (no link)
             steps.Add(new PathStep { segIndex = cur.segIndex, linkIndex = -1 });
             steps.Reverse();
+
+            // Between consecutive link-steps the agent must first walk to the next link's
+            // launch point. Insert a segment-walk step so ComputeSegmentWalkTarget can do that.
+            for (int i = steps.Count - 1; i > 0; i--)
+            {
+                if (steps[i].linkIndex >= 0 && steps[i - 1].linkIndex >= 0)
+                    steps.Insert(i, new PathStep { segIndex = steps[i - 1].segIndex, linkIndex = -1 });
+            }
+
+            // Always end with a segment walk so the agent walks to the exact destination
+            // on the final segment rather than stopping at the link landing position.
+            if (steps[steps.Count - 1].linkIndex >= 0)
+                steps.Add(new PathStep { segIndex = steps[steps.Count - 1].segIndex, linkIndex = -1 });
 
             if (debugLog) Debug.Log($"[PlatNav] Path: {steps.Count} steps");
             return steps;
