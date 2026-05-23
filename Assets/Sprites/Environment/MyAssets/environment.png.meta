@@ -4877,13 +4877,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_208
+      name: Box1
       rect:
         serializedVersion: 2
         x: 0
-        y: 144
-        width: 16
-        height: 16
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -4899,32 +4899,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_209
+      name: Box3
       rect:
         serializedVersion: 2
-        x: 16
-        y: 144
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f29ab242dd19cf04eaa811925d3e20e5
-      internalID: 657879869
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: environment_210
-      rect:
-        serializedVersion: 2
-        x: 48
+        x: 56
         y: 144
         width: 16
         height: 16
@@ -4938,28 +4916,6 @@ TextureImporter:
       bones: []
       spriteID: 5ed051110ae1d7149b326a114cc12c21
       internalID: 1714252000
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: environment_211
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 144
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3071cdeeb995619429fc47fafd49726f
-      internalID: -1447399975
       vertices: []
       indices: 
       edges: []
@@ -5207,51 +5163,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_223
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 128
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c4cc4471ea02b6a4285e961681f5fe12
-      internalID: 1475348656
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: environment_224
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 128
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f8873079eccad86419c655856130c2e5
-      internalID: -1245606578
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: environment_225
+      name: Box2
       rect:
         serializedVersion: 2
         x: 48
@@ -5278,7 +5190,7 @@ TextureImporter:
         serializedVersion: 2
         x: 80
         y: 128
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -5295,34 +5207,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_227
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 128
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: acdb6687e8b571c4c8d3b6baa17b5564
-      internalID: 1524197770
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: environment_228
       rect:
         serializedVersion: 2
-        x: 112
+        x: 116
         y: 128
-        width: 16
+        width: 24
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -5334,28 +5224,6 @@ TextureImporter:
       bones: []
       spriteID: ba2248bbd7329fe41bf606c380021f8e
       internalID: -661536681
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: environment_229
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 128
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9b164c89f3a3d264e83bab0ef48ecc6f
-      internalID: -1030957661
       vertices: []
       indices: 
       edges: []
@@ -5669,7 +5537,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_244
+      name: Vase1
       rect:
         serializedVersion: 2
         x: 0
@@ -5691,7 +5559,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_245
+      name: Vase2
       rect:
         serializedVersion: 2
         x: 32
@@ -5713,7 +5581,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_246
+      name: Vase3
       rect:
         serializedVersion: 2
         x: 64
@@ -5840,50 +5708,6 @@ TextureImporter:
       bones: []
       spriteID: efc394913a81c574b8216a0c6dbb33bd
       internalID: -1156472876
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: environment_252
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 437228ea74c949141887e1fb1b67be04
-      internalID: -1091530625
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: environment_253
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f09aca44d2905c94bb50e4959aacf64d
-      internalID: 156971360
       vertices: []
       indices: 
       edges: []
@@ -6065,7 +5889,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_262
+      name: Vase4
       rect:
         serializedVersion: 2
         x: 0
@@ -6087,7 +5911,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_263
+      name: Vase5
       rect:
         serializedVersion: 2
         x: 32
@@ -6109,7 +5933,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_264
+      name: Vase6
       rect:
         serializedVersion: 2
         x: 64
@@ -6131,13 +5955,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_265
+      name: BigVase1
       rect:
         serializedVersion: 2
         x: 96
         y: 48
         width: 16
-        height: 16
+        height: 27
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -6153,13 +5977,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: environment_266
+      name: BigVase2
       rect:
         serializedVersion: 2
         x: 112
         y: 48
         width: 16
-        height: 16
+        height: 27
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -7576,6 +7400,17 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
+      BigVase1: 1913868631
+      BigVase2: -723200880
+      Box1: 1464455287
+      Box2: 460520393
+      Box3: 1714252000
+      Vase1: 1740596064
+      Vase2: 908873086
+      Vase3: 642637383
+      Vase4: 444293760
+      Vase5: 1759746423
+      Vase6: 713991158
       environment_0: 7672064755138430786
       environment_1: -2744459860488241012
       environment_10: 4165128164306938461
@@ -7698,10 +7533,8 @@ TextureImporter:
       environment_205: 1645245956
       environment_206: 937176557
       environment_207: 83977604
-      environment_208: 1464455287
       environment_209: 657879869
       environment_21: 4100768849177070629
-      environment_210: 1714252000
       environment_211: -1447399975
       environment_212: 1014273722
       environment_213: 1309687426
@@ -7717,7 +7550,6 @@ TextureImporter:
       environment_222: -1854013268
       environment_223: 1475348656
       environment_224: -1245606578
-      environment_225: 460520393
       environment_226: -1823658193
       environment_227: 1524197770
       environment_228: -661536681
@@ -7738,9 +7570,6 @@ TextureImporter:
       environment_241: 1303931135
       environment_242: -231387259
       environment_243: 162646452
-      environment_244: 1740596064
-      environment_245: 908873086
-      environment_246: 642637383
       environment_247: 1663890311
       environment_248: -2010099012
       environment_249: -1278763805
@@ -7758,11 +7587,6 @@ TextureImporter:
       environment_26: 3961262200826768655
       environment_260: 471423808
       environment_261: -728537044
-      environment_262: 444293760
-      environment_263: 1759746423
-      environment_264: 713991158
-      environment_265: 1913868631
-      environment_266: -723200880
       environment_267: 1366499391
       environment_268: -1100350651
       environment_269: -1808198789
