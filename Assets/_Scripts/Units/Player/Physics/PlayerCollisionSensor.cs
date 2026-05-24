@@ -142,7 +142,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             return;
         }
 
-        if (_ctx.velocity.y < -_ctx.stats.LedgeGrabMaxFallSpeed)
+        float currentY = _ctx.transform != null ? _ctx.transform.position.y : transform.position.y;
+        if (_ctx.airborneStartY - currentY > _ctx.stats.LedgeGrabMaxFallTiles)
         {
             _ctx.canGrabLedge = false;
             return;

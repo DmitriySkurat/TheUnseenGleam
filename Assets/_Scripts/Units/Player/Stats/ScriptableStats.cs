@@ -311,9 +311,9 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float WallGrabPassiveDuration = 2f;
 
-    [Tooltip("Maximum downward speed (positive value) at which ledge grab is allowed. Faster falling cancels the grab.")]
+    [Tooltip("Maximum fall distance in tiles (Unity units) at which ledge grab is still allowed.")]
     [Min(0f)]
-    public float LedgeGrabMaxFallSpeed = 8f;
+    public float LedgeGrabMaxFallTiles = 3f;
 
     [Tooltip("Cooldown after releasing a ledge before the player can grab it again. Prevents instant re-grab when holding direction.")]
     [Min(0f)]
