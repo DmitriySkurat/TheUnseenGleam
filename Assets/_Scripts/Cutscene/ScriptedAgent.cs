@@ -60,6 +60,7 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         }
 
         _phase = Phase.FindTarget;
+        _anim?.Play(AgentAnimations.Walk, 0, 0f);
     }
 
     public void Dispose() { }
@@ -93,16 +94,15 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         {
             int anim = traversing
                 ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
-                : (_phase == Phase.Carry ? AgentAnimations.GrabPlayer : AgentAnimations.Run);
+                : AgentAnimations.Walk;
             _anim?.Play(anim, 0, 0f);
             _wasTraversing = traversing;
         }
-        else if (!traversing && _phase == Phase.Chase
-                 && _prevNavState == PlatNavState.Idle
+        else if (!traversing && _prevNavState == PlatNavState.Idle
                  && navState == PlatNavState.WalkingSegment)
         {
-            // Nav resumed walking after a brief Idle between segments — restore Run
-            _anim?.Play(AgentAnimations.Run, 0, 0f);
+            // Nav resumed walking after a brief Idle — restore movement animation
+            _anim?.Play(AgentAnimations.Walk, 0, 0f);
         }
 
         _prevNavState = navState;
@@ -117,7 +117,7 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
             if (_playerCtx == null || !_playerCtx.isAlive) return;
             // Ждём, пока игрок войдёт в Stumble (можно атаковать всегда — на усмотрение дизайнера)
             _phase = Phase.Chase;
-            _anim?.Play(AgentAnimations.Run, 0, 0f);
+            _anim?.Play(AgentAnimations.Walk, 0, 0f);
             _nav.SetSpeed(_runSpeed);
             _nav.SetTarget(_playerCtx.transform);
         }
@@ -127,7 +127,7 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
             if (_target == null) return;
 
             _phase = Phase.Chase;
-            _anim?.Play(AgentAnimations.Run, 0, 0f);
+            _anim?.Play(AgentAnimations.Walk, 0, 0f);
             _nav.SetSpeed(_runSpeed);
             _nav.SetTarget(_target.transform);
         }
@@ -190,7 +190,8 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
                 _phase = Phase.Done;
                 return;
             }
-            _nav.MoveTo(_exitPoint.position, _runSpeed);
+            if (_nav.MoveTo(_exitPoint.position, _runSpeed))
+                _anim?.Play(AgentAnimations.Walk, 0, 0f);
         }
 
         _nav.Tick(deltaTime);
@@ -210,10 +211,9 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
 
         _target.Grab();
         _phase = Phase.Carry;
-        _anim?.Play(AgentAnimations.GrabPlayer, 0, 0f);
 
-        if (_exitPoint != null)
-            _nav.MoveTo(_exitPoint.position, _runSpeed);
+        bool willMove = _exitPoint != null && _nav.MoveTo(_exitPoint.position, _runSpeed);
+        _anim?.Play(willMove ? AgentAnimations.Walk : AgentAnimations.GrabPlayer, 0, 0f);
     }
 
     void BeginGrabPlayer()
@@ -228,10 +228,9 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         _playerCtx.grabEscapeCount     = 10; // значение не важно — grabEscapeDisabled блокирует побег
 
         _phase = Phase.Carry;
-        _anim?.Play(AgentAnimations.GrabPlayer, 0, 0f);
 
-        if (_exitPoint != null)
-            _nav.MoveTo(_exitPoint.position, _runSpeed);
+        bool willMove = _exitPoint != null && _nav.MoveTo(_exitPoint.position, _runSpeed);
+        _anim?.Play(willMove ? AgentAnimations.Walk : AgentAnimations.GrabPlayer, 0, 0f);
     }
 
     // ── Attach ───────────────────────────────────────────────────────────────
