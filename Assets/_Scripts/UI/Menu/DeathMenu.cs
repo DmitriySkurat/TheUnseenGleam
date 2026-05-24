@@ -7,6 +7,8 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
     public InitializationOrder Order => InitializationOrder.UI;
 
     [SerializeField] private GameObject deathGameMenu;
+    [Tooltip("Если задано — Respawn грузит эту сцену вместо сохранённой (используется в катсценах)")]
+    [SerializeField] private string _respawnScene;
 
     private PlayerHealth _playerHealth;
     private PlayerContext _playerCtx;
@@ -54,9 +56,11 @@ public class DeathMenu : MonoBehaviour, ISceneLifecycle
         deathGameMenu.SetActive(false);
         if (Services.IsRegistered<SessionBootstrap>())
             Services.Get<SessionBootstrap>().EndSession();
-        var sceneName = SaveVariables.PendingSave?.sceneName ?? SceneManager.GetActiveScene().name;
+        var sceneName = !string.IsNullOrEmpty(_respawnScene)
+            ? _respawnScene
+            : (SaveVariables.PendingSave?.sceneName ?? SceneManager.GetActiveScene().name);
         Utility.SceneLoader.Load(sceneName);
-        
+
         _inputManager.EnableGameplay();
     }
 

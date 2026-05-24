@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecd6191d3e06ead4f8afebe1b54515ac, type: 3}
+  m_Name: PlayerCutsceneSctiptables
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableStats
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  SnapInput: 1
+  VerticalDeadZoneThreshold: 0.3
+  HorizontalDeadZoneThreshold: 0.1
+  MaxPlayerHealth: 100
+  HealthRegenPerSecond: 2
+  HealthRegenDelay: 5
+  MaxSpeed: 10
+  Acceleration: 120
+  GroundDeceleration: 50
+  AirDeceleration: 30
+  GroundingForce: -1.5
+  GrounderDistance: 0.05
+  WalkSpeedMultiplier: 0.6
+  RunSpeedMultiplier: 1.5
+  GraceTime: 0.08
+  MaxStamina: 1000
+  StaminaDrainPerSecond: 18
+  StaminaRegenPerSecond: 12
+  StaminaRegenMovingMultiplier: 0.4
+  MinStaminaToRun: 25
+  RunStaminaDrainMultiplier: 1
+  GrabbedStaminaDrainMultiplier: 0.5
+  JumpStaminaCost: 9
+  StaminaHoldBreathDrainPerSecond: 20
+  MinStaminaToHoldBreath: 25
+  IdleStaminaBreathDrainMultiplier: 1
+  CrouchStaminaBreathDrainMultiplier: 0.8
+  HideStaminaBreathDrainMultiplier: 0.5
+  PressToWallStaminaBreathDrainMultiplier: 1
+  JumpClip: {fileID: 0}
+  JumpPower: 29
+  MaxFallSpeed: 40
+  FallAcceleration: 125
+  JumpEndEarlyGravityModifier: 3
+  CoyoteTime: 0.08
+  JumpBuffer: 0.2
+  InteractionCooldown: 0.25
+  CrouchSpeedMultiplier: 0.3
+  CrouchHeightMultiplier: 0.5
+  CeilingCheckDistance: 0.524
+  HideSpeedMultiplier: 0.4
+  DarknessSpeedMultiplier: 0.4
+  SpikesSpeedMultiplier: 0.3
+  PressToWallHeightMultiplier: 0.8
+  PressToWallWidthMultiplier: 0.5
+  StumbleMinFallHeight: 8
+  StumbleDuration: 1
+  LimpDuration: 1000
+  LimpSpeedMultiplier: 0.25
+  GrabDamagePerSecond: 30
+  GrabProgressDrainPerSecond: 100
+  AdrenalineRegenMultiplier: 3
+  AdrenalineDuration: 8
+  AdrenalineCooldown: 60
+  LandingRollBuffer: 0.2
+  LandingRollMinFallHeight: 3.3
+  LandingRollMinHorizontalSpeed: 2
+  LandingRollDuration: 0.35
+  LandingRollDeceleration: 45
+  FallDamageMinHeight: 10
+  FallDamagePerUnit: 5
+  FallDamageLethalHeight: 40
+  FallDamageRollMultiplier: 0.35
+  ClimbVerticalSpeedMultiplier: 0.5
+  ClimbHorizontalSpeedMultiplier: 0.5
+  VinesSlipSpeed: 2
+  VinesSlipAcceleration: 12
+  LedgeWallCheckHeight: 1
+  LedgeTopCheckOffset: 1.08
+  LedgeCheckDistance: 0.46
+  LedgeHangOffsetX: 0.05
+  LedgeStandOffsetX: 0
+  LedgeStandOffsetY: 0
+  LedgeClimbTeleportDelay: 0.65
+  WallGrabMaxDuration: 7
+  WallGrabPassiveDuration: 2
+  LedgeGrabMaxFallSpeed: 25
+  LedgeGrabCooldown: 0.3

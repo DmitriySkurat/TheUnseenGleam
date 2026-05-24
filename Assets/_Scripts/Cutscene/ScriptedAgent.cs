@@ -40,6 +40,7 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
     private Rigidbody2D  _playerRb;
 
     private bool _wasTraversing;
+    private PlatNavState _prevNavState;
 
     private enum Phase { FindTarget, Chase, Carry, Done }
     private Phase _phase;
@@ -85,14 +86,26 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
 
     void UpdateTraversalAnimation()
     {
-        bool traversing = _nav.State == PlatNavState.TraversingLink;
-        if (traversing == _wasTraversing) return;
+        var navState = _nav.State;
+        bool traversing = navState == PlatNavState.TraversingLink;
 
-        int anim = traversing
-            ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
-            : (_phase == Phase.Carry ? AgentAnimations.GrabPlayer : AgentAnimations.Run);
-        _anim?.Play(anim, 0, 0f);
-        _wasTraversing = traversing;
+        if (traversing != _wasTraversing)
+        {
+            int anim = traversing
+                ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
+                : (_phase == Phase.Carry ? AgentAnimations.GrabPlayer : AgentAnimations.Run);
+            _anim?.Play(anim, 0, 0f);
+            _wasTraversing = traversing;
+        }
+        else if (!traversing && _phase == Phase.Chase
+                 && _prevNavState == PlatNavState.Idle
+                 && navState == PlatNavState.WalkingSegment)
+        {
+            // Nav resumed walking after a brief Idle between segments — restore Run
+            _anim?.Play(AgentAnimations.Run, 0, 0f);
+        }
+
+        _prevNavState = navState;
     }
 
     // ── FindTarget ──────────────────────────────────────────────────────────

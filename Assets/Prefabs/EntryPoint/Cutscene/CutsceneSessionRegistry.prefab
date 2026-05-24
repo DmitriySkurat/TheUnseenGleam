@@ -53,5 +53,5 @@ MonoBehaviour:
   _plainPrefabs:
   - {fileID: 8758084810032045221, guid: 1dba743d862aaa4448e2db8379ebab4b, type: 3}
   _persistAcrossScenes: 0
-  _stats: {fileID: 11400000, guid: eb8284160c67cf74d8a99be5d5e40235, type: 2}
+  _stats: {fileID: 11400000, guid: cafae166c93358e40840b73416e9173c, type: 2}
   _noiseStats: {fileID: 11400000, guid: eccbd4ddfcc6644489d9aeffef87daa2, type: 2}

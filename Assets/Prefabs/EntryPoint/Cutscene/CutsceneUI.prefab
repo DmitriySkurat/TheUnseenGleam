@@ -571,6 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathMenu
   deathGameMenu: {fileID: 7854475527136577345}
+  _respawnScene: 
 --- !u!114 &2203858873551775096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3837,6 +3838,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaminaBar
   staminaBarFill: {fileID: 4816533849762270776}
+  _flashColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashInterval: 0.15
 --- !u!1 &6424466919000066959
 GameObject:
   m_ObjectHideFlags: 0
@@ -4434,7 +4437,7 @@ MonoBehaviour:
   deathMenu: {fileID: 4098424559768892234}
   offScreenTimeout: 4
   fadeDuration: 1
-  _nextScene: Demo
+  _nextScene: PrisonBeginning
 --- !u!1 &7233835601795995480
 GameObject:
   m_ObjectHideFlags: 0
@@ -5094,6 +5097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DeathMenu
   deathGameMenu: {fileID: 7854475527136577345}
+  _respawnScene: 
 --- !u!1 &7899420191297955514
 GameObject:
   m_ObjectHideFlags: 0

@@ -437,7 +437,9 @@ namespace PlatNav
 
             // Fallback: walk toward target position projected onto this segment
             if (_hasManualDestination)
-                _walkTarget = ProjectOntoSegment(_curSegIndex, _manualDestination);
+                _walkTarget = _pathIndex == _path.Count - 1
+                    ? ProjectOntoSegmentUnclamped(_curSegIndex, _manualDestination)
+                    : ProjectOntoSegment(_curSegIndex, _manualDestination);
             else if (target != null)
                 _walkTarget = ProjectOntoSegment(_curSegIndex, target.position);
             else
@@ -466,7 +468,7 @@ namespace PlatNav
             
             if (_pathIndex == _path.Count - 1 && _hasManualDestination)
             {
-                _walkTarget = ProjectOntoSegment(_curSegIndex, _manualDestination);
+                _walkTarget = ProjectOntoSegmentUnclamped(_curSegIndex, _manualDestination);
             }
             else if (_pathIndex == _path.Count - 1 && target != null && behaviour == PlatNavBehaviour.FollowTarget)
             {
@@ -886,6 +888,22 @@ namespace PlatNav
             if (len2 < 0.001f) return a;
 
             float t = Mathf.Clamp01(Vector2.Dot(worldPos - a, ab) / len2);
+            return a + ab * t;
+        }
+
+        // Like ProjectOntoSegment but allows the result to extend beyond segment endpoints.
+        // Used on the final path step so the agent walks to the exact destination X rather
+        // than stopping at the segment edge.
+        private Vector2 ProjectOntoSegmentUnclamped(int segIdx, Vector2 worldPos)
+        {
+            var s = graph.segments[segIdx];
+            Vector2 a = SegmentWorldPos(s, s.min);
+            Vector2 b = SegmentWorldPos(s, s.max);
+            Vector2 ab = b - a;
+            float len2 = ab.sqrMagnitude;
+            if (len2 < 0.001f) return a;
+
+            float t = Vector2.Dot(worldPos - a, ab) / len2;
             return a + ab * t;
         }
 

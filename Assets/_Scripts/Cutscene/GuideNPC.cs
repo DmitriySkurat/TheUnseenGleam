@@ -112,8 +112,11 @@ public class GuideNPC : Interactable
     {
         if (_nav.State == PlatNavState.Idle)
         {
-            if (_destination != null &&
-                Vector2.Distance(transform.position, _destination.position) > 0.5f)
+            // PathCompleted means nav walked to the closest reachable point — accept it.
+            bool closeEnough = _destination == null ||
+                               Vector2.Distance(transform.position, _destination.position) <= 0.5f;
+
+            if (!_nav.PathCompleted && !closeEnough)
             {
                 _nav.MoveTo(_destination.position, _walkSpeed);
             }

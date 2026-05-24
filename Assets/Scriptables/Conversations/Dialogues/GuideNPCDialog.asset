@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogData
   playerName: "\u041B\u0438\u0430\u043D"
   playerSprite: {fileID: 3393699401562451319, guid: 0bad411d107959f4bb7c6a514bfb2ab5, type: 3}
-  npcSprite: {fileID: 7370158955753839994, guid: 4bd36f1b2d4eb2f44b41ca794f7ccd66, type: 3}
+  npcSprite: {fileID: 7599611432461533966, guid: 5755b7d3097ea4d4eaadcb50dba24e8a, type: 3}
   lines:
   - speaker: 1
     text: "\u041D\u0443\u0436\u043D\u043E \u0441\u043E\u0431\u0440\u0430\u0442\u044C
