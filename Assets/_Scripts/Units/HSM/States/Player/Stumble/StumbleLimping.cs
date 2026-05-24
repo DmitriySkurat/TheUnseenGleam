@@ -25,6 +25,9 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            if (!ctx.grounded && ctx.velocity.y > 0f)
+                ctx.endedJumpEarly = true;
+
             _timer -= deltaTime;
             ctx.limpTimeRemaining = _timer;
 
