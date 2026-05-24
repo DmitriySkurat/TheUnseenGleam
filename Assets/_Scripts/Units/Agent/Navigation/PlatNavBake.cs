@@ -14,6 +14,7 @@ namespace PlatNav
         [Header("References")]
         [SerializeField] private Tilemap wallTM;
         [SerializeField] private Tilemap spikesTM;
+        [SerializeField] private Tilemap[] extraNavTilemaps;
         [SerializeField] private PlatformNavGraphAsset graph;
 
         [Header("Entity")]
@@ -101,7 +102,12 @@ namespace PlatNav
                     bool wall  = wallTM.HasTile(cell);
                     bool spike = spikesTM != null && spikesTM.HasTile(cell);
 
-                    _solid[gx, gy] = wall || spike;
+                    bool extraNav = false;
+                    if (extraNavTilemaps != null)
+                        foreach (var tm in extraNavTilemaps)
+                            if (tm != null && tm.HasTile(cell)) { extraNav = true; break; }
+
+                    _solid[gx, gy] = wall || spike || extraNav;
                     _spike[gx, gy] = spike;
                 }
             }

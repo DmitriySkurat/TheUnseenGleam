@@ -4,6 +4,7 @@ public enum SortingOrder
     Default                 =   0,
     Background              =  10,
     Climable                =  16,
+    Niches                  =  18,
     Effects                 =  20,
     InteractablesInBack     =  25,
     Character               =  30,

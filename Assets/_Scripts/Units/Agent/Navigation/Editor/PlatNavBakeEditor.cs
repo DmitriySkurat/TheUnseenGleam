@@ -7,7 +7,7 @@ namespace PlatNav
     [CustomEditor(typeof(PlatNavBake))]
     public class PlatNavBakeEditor : Editor
     {
-        SerializedProperty wallTM, spikesTM, graph, entitySize;
+        SerializedProperty wallTM, spikesTM, extraNavTilemaps, graph, entitySize;
         SerializedProperty minPos, maxPos;
         SerializedProperty maxJumpVelocity, gravityStrength, walkSpeed;
         SerializedProperty jumpSearchRadius, numTrajectoriesToTest, trajectoryStep, maxFallTime, allowJumpDownTiles;
@@ -49,9 +49,10 @@ namespace PlatNav
 
         void OnEnable()
         {
-            wallTM    = serializedObject.FindProperty("wallTM");
-            spikesTM  = serializedObject.FindProperty("spikesTM");
-            graph     = serializedObject.FindProperty("graph");
+            wallTM           = serializedObject.FindProperty("wallTM");
+            spikesTM         = serializedObject.FindProperty("spikesTM");
+            extraNavTilemaps = serializedObject.FindProperty("extraNavTilemaps");
+            graph            = serializedObject.FindProperty("graph");
             entitySize = serializedObject.FindProperty("entitySize");
 
             minPos = serializedObject.FindProperty("minPos");
@@ -90,9 +91,10 @@ namespace PlatNav
             if (foldRefs)
             {
                 EditorGUILayout.BeginVertical(BoxStyle);
-                EditorGUILayout.PropertyField(wallTM,    new GUIContent("Wall Tilemap"));
-                EditorGUILayout.PropertyField(spikesTM,  new GUIContent("Spikes Tilemap"));
-                EditorGUILayout.PropertyField(graph,     new GUIContent("Graph Asset"));
+                EditorGUILayout.PropertyField(wallTM,           new GUIContent("Wall Tilemap"));
+                EditorGUILayout.PropertyField(spikesTM,         new GUIContent("Spikes Tilemap"));
+                EditorGUILayout.PropertyField(extraNavTilemaps, new GUIContent("Extra Nav Tilemaps"), true);
+                EditorGUILayout.PropertyField(graph,            new GUIContent("Graph Asset"));
                 EditorGUILayout.Space(4);
                 EditorGUILayout.PropertyField(entitySize, new GUIContent("Entity Size"));
                 EditorGUILayout.Space(4);
