@@ -9,7 +9,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
     
     private CapsuleCollider2D _col;
     private bool _cachedQueryStartInColliders;
-    
+    private int _playerLayerMask;
+
     private bool _ceilingHit;
     private bool _groundHit;
     
@@ -24,7 +25,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         _col = GetComponent<CapsuleCollider2D>();
         _ctx.coll = _col;
         _ctx.airborneStartY = transform.position.y;
-        
+        _playerLayerMask = 1 << gameObject.layer;
+
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
     }
     
@@ -47,8 +49,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         bool wasGrounded = _ctx.grounded;
         float currentY = _ctx.transform != null ? _ctx.transform.position.y : transform.position.y;
 
-        _groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.down, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
-        _ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
+        _groundHit = CapsuleCastFiltered(Vector2.down, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
+        _ceilingHit = CapsuleCastFiltered(Vector2.up, _ctx.stats.GrounderDistance, _ctx.stats.GroundLayer);
 
         if (_ceilingHit) _ctx.velocity.y = Mathf.Min(0, _ctx.velocity.y);
 
@@ -74,12 +76,24 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         
         if (_ctx.isCrouching)
         {
-            _ctx.ceilingAbove = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0f, Vector2.up, _ctx.stats.CeilingCheckDistance, _ctx.stats.GroundLayer);
+            _ctx.ceilingAbove = CapsuleCastFiltered(Vector2.up, _ctx.stats.CeilingCheckDistance, _ctx.stats.GroundLayer);
         }
 
         CheckLedgeGrab();
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
+    }
+
+    // Returns true only if there's a hit on a collider that does NOT exclude the player layer.
+    // This lets colliders with excludeLayers containing Player stay enabled for other entities
+    // (e.g. agents walking on open hatches) without blocking player physics queries.
+    private bool CapsuleCastFiltered(Vector2 direction, float distance, LayerMask mask)
+    {
+        var hits = Physics2D.CapsuleCastAll(_col.bounds.center, _col.size, _col.direction, 0f, direction, distance, mask);
+        foreach (var hit in hits)
+            if (hit.collider != null && (hit.collider.excludeLayers & _playerLayerMask) == 0)
+                return true;
+        return false;
     }
 
     void HandleLanding(float landingY)

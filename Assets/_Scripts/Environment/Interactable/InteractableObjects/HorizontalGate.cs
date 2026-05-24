@@ -84,7 +84,9 @@ public class HorizontalGate : Interactable
         if (platformCollider != null)
         {
             if (_playerCollider != null)
-                Physics2D.IgnoreCollision(platformCollider, _playerCollider, isOpen);
+                platformCollider.excludeLayers = isOpen
+                    ? (LayerMask)(1 << _playerCollider.gameObject.layer)
+                    : default;
             else
                 platformCollider.enabled = !isOpen;
         }

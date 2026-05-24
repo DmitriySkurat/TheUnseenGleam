@@ -149,8 +149,8 @@ public class PlayerScriptableStats : ScriptableObject
     public float CrouchHeightMultiplier = 0.5f;
 
     [Tooltip("Distance to check above the standing height for obstacles")]
-    [Range(0f, 1f)]
-    public float CeilingCheckDistance = 0.05f;
+    [Range(0f, 2f)]
+    public float CeilingCheckDistance = 1f;
 
     [Header("HIDE")]
     [Tooltip("Multiplier applied to MaxSpeed while hiding")]
