@@ -9,15 +9,16 @@ public class SunflowerInteractable : Interactable
     [Tooltip("Директор спавна агентов — вызывается при первом сборе любого подсолнуха")]
     [SerializeField] private AgentSpawnDirector _agentSpawnDirector;
 
-    [Tooltip("Подсолнух нельзя собрать пока этот NPC не дошёл до места")]
+    [Tooltip("GuideNPC, которому сообщается о сборе этого подсолнуха")]
     [SerializeField] private GuideNPC _requiredGuide;
 
     private bool _collected;
 
+    public GuideNPC GuideNpc => _requiredGuide;
+
     public override bool CanBeInteractedBy(Interactor interactor)
     {
         if (_collected) return false;
-        if (_requiredGuide != null && !_requiredGuide.HasArrived) return false;
         return base.CanBeInteractedBy(interactor);
     }
 
@@ -31,8 +32,9 @@ public class SunflowerInteractable : Interactable
         if (_sr != null && _collectedSprite != null)
             _sr.sprite = _collectedSprite;
 
-        Unselect(); // сбрасываем подсветку
+        Unselect();
 
         _agentSpawnDirector?.Activate();
+        _requiredGuide?.OnSunflowerCollected();
     }
 }

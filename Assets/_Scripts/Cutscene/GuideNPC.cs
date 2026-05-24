@@ -2,7 +2,8 @@ using PlatNav;
 using UnityEngine;
 
 /// <summary>
-/// NPC-проводник: бежит к игроку → ждёт диалога → идёт к точке назначения.
+/// NPC-проводник: бежит к игроку → диалог → идёт к точке назначения.
+/// После сбора всех подсолнухов становится интерактивным ещё раз — хвалит игрока.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D), typeof(PlatNavHandler))]
 public class GuideNPC : Interactable
@@ -16,6 +17,7 @@ public class GuideNPC : Interactable
 
     [Header("Dialog")]
     [SerializeField] private DialogData _dialogData;
+    [SerializeField] private DialogData _congratsDialogData;
     [SerializeField] private string _npcName = "Villager";
 
     private PlatNavHandler _nav;
@@ -24,10 +26,14 @@ public class GuideNPC : Interactable
     private DialogManager _dialogManager;
     private bool _chaseStopped;
 
-    private enum Phase { Chase, InDialog, Walk, Done }
+    private int _totalSunflowers;
+    private int _collectedSunflowers;
+
+    private enum Phase { Chase, InDialog, Walk, Done, Praise, PraiseDialog, Finished }
     private Phase _phase;
 
-    public bool HasArrived => _phase == Phase.Done;
+    public bool HasArrived => _phase == Phase.Done   || _phase == Phase.Praise
+                           || _phase == Phase.PraiseDialog || _phase == Phase.Finished;
 
     // ── Lifecycle ────────────────────────────────────────────────────────────
 
@@ -44,8 +50,29 @@ public class GuideNPC : Interactable
             _nav.SetSpeed(_chaseSpeed);
         }
 
+        // Count sunflowers that belong to this guide
+        var sunflowers = Object.FindObjectsByType<SunflowerInteractable>(FindObjectsSortMode.None);
+        foreach (var sf in sunflowers)
+            if (sf.GuideNpc == this)
+                _totalSunflowers++;
+
         _phase = Phase.Chase;
         _anim?.Play(AgentAnimations.Walk, 0, 0f);
+    }
+
+    // ── Sunflower notifications ──────────────────────────────────────────────
+
+    public void OnSunflowerCollected()
+    {
+        _collectedSunflowers++;
+        TryEnterPraise();
+    }
+
+    private void TryEnterPraise()
+    {
+        if (_phase != Phase.Done) return;
+        if (_totalSunflowers <= 0 || _collectedSunflowers < _totalSunflowers) return;
+        _phase = Phase.Praise;
     }
 
     // ── Update ───────────────────────────────────────────────────────────────
@@ -54,9 +81,10 @@ public class GuideNPC : Interactable
     {
         switch (_phase)
         {
-            case Phase.Chase:    TickChase(Time.fixedDeltaTime);    break;
-            case Phase.InDialog: TickInDialog();                    break;
-            case Phase.Walk:     TickWalk(Time.fixedDeltaTime);     break;
+            case Phase.Chase:       TickChase(Time.fixedDeltaTime); break;
+            case Phase.InDialog:    TickInDialog();                 break;
+            case Phase.Walk:        TickWalk(Time.fixedDeltaTime);  break;
+            case Phase.PraiseDialog: TickPraiseDialog();            break;
         }
     }
 
@@ -86,16 +114,7 @@ public class GuideNPC : Interactable
 
     void TickInDialog()
     {
-        // Разворачиваемся к игроку пока идёт диалог
-        if (_playerCtx?.transform != null)
-        {
-            float dir = _playerCtx.transform.position.x - transform.position.x;
-            Vector3 s = transform.localScale;
-            if (Mathf.Abs(dir) > 0.05f)
-                s.x = dir > 0f ? Mathf.Abs(s.x) : -Mathf.Abs(s.x);
-            transform.localScale = s;
-        }
-
+        FacePlayer();
         if (_playerCtx != null && !_playerCtx.isInDialog)
             BeginWalk();
     }
@@ -112,7 +131,6 @@ public class GuideNPC : Interactable
     {
         if (_nav.State == PlatNavState.Idle)
         {
-            // PathCompleted means nav walked to the closest reachable point — accept it.
             bool closeEnough = _destination == null ||
                                Vector2.Distance(transform.position, _destination.position) <= 0.5f;
 
@@ -124,6 +142,7 @@ public class GuideNPC : Interactable
             {
                 _phase = Phase.Done;
                 _anim?.Play(AgentAnimations.Idle, 0, 0f);
+                TryEnterPraise();
                 return;
             }
         }
@@ -131,29 +150,52 @@ public class GuideNPC : Interactable
         _nav.Tick(deltaTime);
     }
 
+    void TickPraiseDialog()
+    {
+        FacePlayer();
+        if (_playerCtx != null && !_playerCtx.isInDialog)
+            _phase = Phase.Finished;
+    }
+
+    void FacePlayer()
+    {
+        if (_playerCtx?.transform == null) return;
+        float dir = _playerCtx.transform.position.x - transform.position.x;
+        Vector3 s = transform.localScale;
+        if (Mathf.Abs(dir) > 0.05f)
+            s.x = dir > 0f ? Mathf.Abs(s.x) : -Mathf.Abs(s.x);
+        transform.localScale = s;
+    }
+
     // ── Interaction ──────────────────────────────────────────────────────────
 
     public override bool CanBeInteractedBy(Interactor interactor)
     {
-        if (_phase != Phase.Chase) return false;
+        if (_phase != Phase.Chase && _phase != Phase.Praise) return false;
         return base.CanBeInteractedBy(interactor);
     }
 
     public override void OnInteract(Interactor interactor)
     {
-        if (_phase != Phase.Chase) return;
+        if (_phase != Phase.Chase && _phase != Phase.Praise) return;
         if (interactor is not PlayerInteractor) return;
 
         if (_dialogManager == null && Services.IsRegistered<DialogManager>())
             _dialogManager = Services.Get<DialogManager>();
-
         if (_dialogManager == null) return;
 
-        _nav.SetTarget(null);
-        _nav.Abort();
-        _anim?.Play(AgentAnimations.Idle, 0, 0f);
-
-        _dialogManager.StartDialog(_dialogData, _npcName);
-        _phase = Phase.InDialog;
+        if (_phase == Phase.Chase)
+        {
+            _nav.SetTarget(null);
+            _nav.Abort();
+            _anim?.Play(AgentAnimations.Idle, 0, 0f);
+            _dialogManager.StartDialog(_dialogData, _npcName);
+            _phase = Phase.InDialog;
+        }
+        else // Praise
+        {
+            _dialogManager.StartDialog(_congratsDialogData, _npcName);
+            _phase = Phase.PraiseDialog;
+        }
     }
 }
