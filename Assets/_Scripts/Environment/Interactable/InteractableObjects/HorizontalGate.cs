@@ -10,7 +10,7 @@ public class HorizontalGate : Interactable
     [SerializeField] private bool disableColliderWhenOpen = true;
 
     [Header("Platform")]
-    [Tooltip("Коллайдер на слое Ground (дочерний объект). Игрок стоит на нём. Выключается когда люк открыт.")]
+    [Tooltip("Коллайдер на слое Ground (дочерний объект). Игрок стоит на нём. Только игрок исключается через IgnoreCollision когда люк открыт.")]
     [SerializeField] private Collider2D platformCollider;
 
     public bool IsOpen => isOpen;
@@ -18,12 +18,17 @@ public class HorizontalGate : Interactable
     private Collider2D _gateCollider;
     private ShadowCaster2D _shadowCaster;
     private PlayerInteractor _playerWatcher;
+    private Collider2D _playerCollider;
 
     public override void Initialize()
     {
         base.Initialize();
         _gateCollider = GetComponent<Collider2D>();
         _shadowCaster = GetComponent<ShadowCaster2D>();
+
+        if (Services.IsRegistered<PlayerContext>())
+            _playerCollider = Services.Get<PlayerContext>().coll;
+
         UpdateVisuals();
     }
 
@@ -77,6 +82,11 @@ public class HorizontalGate : Interactable
             _gateCollider.isTrigger = isOpen;
 
         if (platformCollider != null)
-            platformCollider.enabled = !isOpen;
+        {
+            if (_playerCollider != null)
+                Physics2D.IgnoreCollision(platformCollider, _playerCollider, isOpen);
+            else
+                platformCollider.enabled = !isOpen;
+        }
     }
 }
