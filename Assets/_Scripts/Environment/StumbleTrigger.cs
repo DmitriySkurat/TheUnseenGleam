@@ -32,6 +32,12 @@ public class StumbleTrigger : MonoBehaviour
         while (!ctx.grounded)
             yield return null;
 
+        while (Mathf.Abs(ctx.velocity.x) < 0.1f)
+        {
+            if (!ctx.isAlive || ctx.isGrabbed) yield break;
+            yield return null;
+        }
+
         if (ctx.isAlive && !ctx.isGrabbed)
             ctx.stumblePending = true;
     }

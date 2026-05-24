@@ -126,7 +126,7 @@ public class PlayerContext
     // ===== DERIVED PROPERTIES =====
     public bool HasBufferedJump => bufferedJumpUsable && stats != null && Time.time < timeJumpWasPressed + stats.JumpBuffer;
     public bool CanUseCoyote => coyoteUsable && !grounded && stats != null && Time.time < frameLeftGrounded + stats.CoyoteTime;
-    public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown && grounded; // Запрет на взаимодействие в воздухе
+    public bool CanInteract => Time.time > timeLastInteraction + stats.InteractionCooldown;
     public bool CanRun => stamina > stats.MinStaminaToRun;
     public bool CanJump => stamina >= stats.JumpStaminaCost;
     public bool CanHoldBreath => currentStaminaBreathDrainMultiplier > 0f && currentStaminaDrainMultiplier == 0f;

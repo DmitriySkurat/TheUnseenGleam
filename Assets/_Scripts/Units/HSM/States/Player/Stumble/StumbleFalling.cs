@@ -15,7 +15,8 @@ namespace HSM {
         {
             _timer = ctx.stats != null ? ctx.stats.StumbleDuration : 1.2f;
             ctx.isStumbleFalling = true;
-            ctx.velocity.x = 0f;
+            float facing = ctx.velocity.x != 0f ? Mathf.Sign(ctx.velocity.x) : 1f;
+            ctx.velocity.x = facing * (ctx.stats != null ? ctx.stats.StumbleImpulse : 3f);
             ctx.anim?.Play(PlayerAnimations.Stumble, 0, 0f);
             base.OnEnter();
         }

@@ -185,6 +185,10 @@ public class PlayerScriptableStats : ScriptableObject
     [Min(0f)]
     public float StumbleDuration = 1.2f;
 
+    [Tooltip("Импульс по горизонтали вперёд в момент начала спотыкания")]
+    [Min(0f)]
+    public float StumbleImpulse = 3f;
+
     [Tooltip("Сколько секунд игрок хромает перед восстановлением")]
     [Min(0f)]
     public float LimpDuration = 3f;
