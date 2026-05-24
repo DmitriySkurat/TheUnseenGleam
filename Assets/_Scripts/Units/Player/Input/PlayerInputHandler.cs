@@ -59,13 +59,15 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
 
         
         
-        // Схваченный или споткнувшийся игрок не может использовать способности (ЛКМ и ПКМ)
         if (_ctx.isGrabbed || _ctx.isStumbling || _ctx.isInCutscene)
         {
-            _frameInput.AttackDown     = false;
-            _frameInput.AttackHeld     = false;
+            _frameInput.AttackDown = false;
+            _frameInput.AttackHeld = false;
+            _frameInput.DropDown   = false;
+        }
+        if (_ctx.isGrabbed || _ctx.isStumbleFalling || _ctx.isInCutscene)
+        {
             _frameInput.LookAroundHeld = false;
-            _frameInput.DropDown       = false;
         }
 
         _ctx.input = _frameInput;
