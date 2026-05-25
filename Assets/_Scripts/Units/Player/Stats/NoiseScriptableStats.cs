@@ -18,6 +18,9 @@ public class NoiseScriptableStats : ScriptableObject
 
 
 
+    [Header("FOOTSTEP AUDIO")]
+    public AudioClip[] FootstepClips;
+
     [Header("FOOTSTEPS")]
     [Tooltip("Minimum horizontal input required to emit footstep noise")]
     [Range(0.01f, 1f)]

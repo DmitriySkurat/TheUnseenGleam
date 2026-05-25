@@ -17,6 +17,7 @@ namespace HSM {
         private float _footstepTimer;
 
         private NoiseSystem _noiseSystem;
+        private AudioManager _audioManager;
 
 
         public PlayerRoot(StateMachine m, PlayerContext ctx) : base(m, null) {
@@ -33,6 +34,7 @@ namespace HSM {
             Stumble     = new Stumble(m, this, ctx);
 
             _noiseSystem = Services.Get<NoiseSystem>();
+            _audioManager = Services.Get<AudioManager>();
         }
         
         protected override State GetInitialState() => Grounded;
@@ -167,6 +169,13 @@ namespace HSM {
 
             _footstepTimer = 0f;
             _noiseSystem.EmitNoise(ctx.transform.position, ctx.currentNoiseRadius, ctx.transform.gameObject, NoiseType.Footstep, ctx.noiseStats.RadiusVariance);
+
+            var clips = ctx.noiseStats.FootstepClips;
+            if (_audioManager != null && clips != null && clips.Length > 0)
+            {
+                var clip = clips[UnityEngine.Random.Range(0, clips.Length)];
+                _audioManager.PlaySfx(clip, 1f, UnityEngine.Random.Range(0.9f, 1.1f));
+            }
         }
     }
 }

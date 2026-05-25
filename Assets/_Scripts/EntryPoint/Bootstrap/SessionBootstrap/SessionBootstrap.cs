@@ -6,6 +6,8 @@ namespace EntryPoint
 {
     public class SessionBootstrap : LifecycleBootstrap<ISessionLifecycle>
     {
+        [SerializeField] private AudioClip _gameplayMusic;
+
         private bool _disposed;
 
         protected override void Awake() { }
@@ -20,6 +22,9 @@ namespace EntryPoint
 
             FindObjects();
             InitializeObjects();
+
+            if (_gameplayMusic != null && Services.IsRegistered<AudioManager>())
+                Services.Get<AudioManager>().PlayMusic(_gameplayMusic);
 
             _logger?.Log("Session started", this);
         }

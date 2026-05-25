@@ -53,11 +53,13 @@ public class AudioManager : MonoBehaviour, IService
 
     public void PlayMusic(AudioClip clip, bool fade = true)
     {
+        if (clip == null) { _logger?.Log("PlayMusic: clip is null", this); return; }
+        if (_musicSource == null) { _logger?.Log("PlayMusic: _musicSource is null", this); return; }
         if (_musicSource.clip == clip) return;
-        
+
         _musicSource.clip = clip;
         _musicSource.Play();
-        // Добавить логику плавного затухания (fade)?
+        _logger?.Log($"PlayMusic: {clip.name}", this);
     }
 
     //бПример - PlaySfx(jumpClip, 0.8f, Random.Range(0.9f, 1.1f));

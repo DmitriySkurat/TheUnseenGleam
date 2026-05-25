@@ -4,7 +4,9 @@ using System.Collections;
 namespace EntryPoint
 {
     public class MenuEntryPoint : SceneBootstrap
-    {        
+    {
+        [SerializeField] private AudioClip _menuMusic;
+
         protected override IEnumerator Bootstrap()
         {
             // Возвращаем курсор
@@ -29,6 +31,10 @@ namespace EntryPoint
             InitializeObjects();
 
             Services.Get<InputManager>().EnableUI();
+
+            _logger?.Log($"_menuMusic={((_menuMusic != null) ? _menuMusic.name : "NULL")}, AudioManager registered={Services.IsRegistered<AudioManager>()}", this);
+            if (_menuMusic != null && Services.IsRegistered<AudioManager>())
+                Services.Get<AudioManager>().PlayMusic(_menuMusic);
 
             _logger?.Log("Menu scene initialization complete", this);
         }

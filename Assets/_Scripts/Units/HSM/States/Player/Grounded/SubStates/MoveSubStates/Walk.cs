@@ -29,7 +29,7 @@ namespace HSM {
             ctx.currentFootstepInterval = 0f;
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
-            
+
             base.OnExit();
         }
 

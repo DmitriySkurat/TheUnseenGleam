@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntryPoint.SessionBootstrap
   _registry: {fileID: 6216820512032289489, guid: 33bef1ca4cb05cb49a770522d2edf383, type: 3}
   _logger: {fileID: 6116342076006612869, guid: 72b54fc1bad979c4eaa412773d6ecc33, type: 3}
+  _gameplayMusic: {fileID: 8300000, guid: 5c40e627da6a8104cb802b252d315bae, type: 3}
