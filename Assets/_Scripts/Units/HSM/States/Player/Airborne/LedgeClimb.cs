@@ -8,6 +8,7 @@ namespace HSM
 
         bool _isClimbingUp;
         bool _completedClimb;
+        bool _climbIntoCrouch;
         float _climbStartTime;
         float _hangTimer;
         Vector2 _hangPosition;
@@ -23,6 +24,7 @@ namespace HSM
         {
             _isClimbingUp = false;
             _completedClimb = false;
+            _climbIntoCrouch = false;
             _climbStartTime = float.MinValue;
             _hangTimer = 0f;
 
@@ -97,6 +99,14 @@ namespace HSM
                 if (HasEnoughSpaceToStand())
                 {
                     _isClimbingUp = true;
+                    _climbIntoCrouch = false;
+                    _climbStartTime = Time.time;
+                    ctx.anim.Play(PlayerAnimations.WallgrabClime);
+                }
+                else if (HasEnoughSpaceToCrouch())
+                {
+                    _isClimbingUp = true;
+                    _climbIntoCrouch = true;
                     _climbStartTime = Time.time;
                     ctx.anim.Play(PlayerAnimations.WallgrabClime);
                 }
@@ -123,6 +133,7 @@ namespace HSM
             if (_isClimbingUp && Time.time >= _climbStartTime + ctx.stats.LedgeClimbTeleportDelay)
             {
                 _completedClimb = true;
+                ctx.postClimbForcesCrouch = _climbIntoCrouch;
                 return ctx.isStumbling
                     ? Machine?.GetState<StumbleLimping>()
                     : Machine?.GetState<Grounded>();
@@ -136,10 +147,20 @@ namespace HSM
             var capsule = ctx.coll as CapsuleCollider2D;
             if (capsule == null) return true;
 
-            // Сдвиг вверх на 0.05f, чтобы нижний край капсулы не касался пола уступа
-            // и OverlapCapsule не давал ложный хит по поверхности, на которой стоит игрок.
             Vector2 center = _standPosition + new Vector2(0f, capsule.offset.y + 0.05f);
             return !Physics2D.OverlapCapsule(center, capsule.size, capsule.direction, 0f, ctx.stats.GroundLayer);
+        }
+
+        bool HasEnoughSpaceToCrouch()
+        {
+            var capsule = ctx.coll as CapsuleCollider2D;
+            if (capsule == null || ctx.stats == null) return true;
+
+            float crouchH = ctx.standingColliderSize.y * ctx.stats.CrouchHeightMultiplier;
+            float crouchOffsetY = ctx.standingColliderOffset.y - (ctx.standingColliderSize.y - crouchH) * 0.5f;
+            Vector2 crouchSize = new Vector2(ctx.standingColliderSize.x, crouchH);
+            Vector2 center = _standPosition + new Vector2(0f, crouchOffsetY + 0.05f);
+            return !Physics2D.OverlapCapsule(center, crouchSize, capsule.direction, 0f, ctx.stats.GroundLayer);
         }
 
         void SnapToPosition(Vector2 position)

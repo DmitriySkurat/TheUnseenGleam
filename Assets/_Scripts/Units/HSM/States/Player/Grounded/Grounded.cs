@@ -26,6 +26,7 @@ namespace HSM {
         }
         
         protected override State GetInitialState() {
+            if (ctx.postClimbForcesCrouch) { ctx.postClimbForcesCrouch = false; return Crouch; }
             if (ctx.HasMovementIntent) return Move;
             if (ctx.stats != null && Mathf.Abs(ctx.velocity.x) > ctx.stats.MaxSpeed * ctx.stats.WalkSpeedMultiplier) return Stopping;
             return Idle;

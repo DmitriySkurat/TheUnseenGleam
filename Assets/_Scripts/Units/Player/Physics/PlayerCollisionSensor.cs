@@ -244,10 +244,9 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         RaycastHit2D downHit = Physics2D.Raycast(downOrigin, Vector2.down,
             _ctx.stats.LedgeTopCheckOffset + 0.5f, _ctx.stats.GroundLayer);
 
-        // Третий луч: со стороны игрока вниз от уровня уступа — проверяем, что под висящим телом
-        // достаточно свободного пространства. Если рядом со стеной пол ближе высоты капсулы —
-        // уступ слишком низкий (1 тайл), хвататься нельзя: тело пройдёт сквозь нижний тайл.
-        float clearance = _col.bounds.size.y;
+        // Третий луч: достаточно пространства под висящим телом? Минимум — crouched-высота,
+        // это позволяет захват при коридорах в 1.5 тайла (подъём выполнится с приседанием).
+        float clearance = _ctx.standingColliderSize.y * _ctx.stats.CrouchHeightMultiplier;
         Vector2 sideDownOrigin = new Vector2(wallHit.point.x - dir * 0.05f, downHit ? downHit.point.y - 0.05f : topCheckY);
         RaycastHit2D floorBelowHit = Physics2D.Raycast(sideDownOrigin, Vector2.down, clearance, _ctx.stats.GroundLayer);
 

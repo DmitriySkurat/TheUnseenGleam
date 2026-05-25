@@ -72,6 +72,7 @@ public class PlayerContext
     public Vector2 ledgeCornerPosition;
     public bool ledgeFacingRight;
     public float ledgeGrabCooldownEndTime = float.MinValue;
+    public bool postClimbForcesCrouch;
 
     // ===== HEALTH =====
     public PlayerHealth health;
