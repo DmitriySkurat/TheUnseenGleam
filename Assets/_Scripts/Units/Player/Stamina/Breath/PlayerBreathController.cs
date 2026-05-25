@@ -55,7 +55,6 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
 
         UpdateBreath(Time.fixedDeltaTime);
         EmitBreathingNoise(Time.fixedDeltaTime);
-        UpdateBreathingAudio();
     }
 
     private void UpdateBreath(float deltaTime)
@@ -114,6 +113,7 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
             _ctx.noiseStats.RadiusVariance
         );
 
+        UpdateBreathingAudio();
     }
 
     private void UpdateBreathingAudio()

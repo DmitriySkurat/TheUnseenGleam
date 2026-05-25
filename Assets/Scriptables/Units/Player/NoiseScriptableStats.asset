@@ -41,6 +41,8 @@ MonoBehaviour:
   LandingRollNoiseMultiplier: 0.432
   BreathingNoiseInterval: 0.75
   BreathingNoiseRadius: 3.5
+  BreathingEnemyProximityRadius: 10
+  BreathingClip: {fileID: 8300000, guid: 458cd52d86eadfd4f8bb1db0482e31c3, type: 3}
   PebbleImpactNoiseRadius: 10
   ItemDropNoiseRadius: 1.5
   RadiusVariance: 0.1
