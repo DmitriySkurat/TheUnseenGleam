@@ -84,7 +84,7 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             _ctx.ceilingAbove = CapsuleCastFiltered(Vector2.up, _ctx.stats.CeilingCheckDistance, _ctx.stats.GroundLayer);
         }
 
-        _ctx.forcedCrouchAbove = CheckForcedCrouchZone();
+        _ctx.forcedCrouchAbove = _ctx.grounded && CheckForcedCrouchZone();
 
         CheckLedgeGrab();
 
@@ -110,14 +110,19 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         if (_ctx.stats == null || _ctx.standingColliderSize == Vector2.zero) return false;
 
         float mult = _ctx.stats.CrouchHeightMultiplier;
-        // Zone center in world space: starts at crouched-top, ends at standing-top
+        // Inset the zone slightly: sides to avoid adjacent walls, top so that a ceiling
+        // flush with the standing-collider top doesn't false-trigger (e.g. in 2-tile tunnels).
+        const float wallInset   = 0.05f;
+        const float topInset    = 0.04f;
+        // Zone spans from crouched-top to (standing-top - topInset).
+        // Shrinking from the top shifts the center down by topInset/2.
         Vector2 zoneCenter = new Vector2(
             transform.position.x + _ctx.standingColliderOffset.x,
-            transform.position.y + _ctx.standingColliderOffset.y + _ctx.standingColliderSize.y * mult * 0.5f
+            transform.position.y + _ctx.standingColliderOffset.y + _ctx.standingColliderSize.y * mult * 0.5f - topInset * 0.5f
         );
         Vector2 zoneSize = new Vector2(
-            _ctx.standingColliderSize.x,
-            _ctx.standingColliderSize.y * (1f - mult)
+            Mathf.Max(0f, _ctx.standingColliderSize.x - wallInset * 2f),
+            Mathf.Max(0f, _ctx.standingColliderSize.y * (1f - mult) - topInset)
         );
 
         var filter = new ContactFilter2D();
@@ -333,7 +338,7 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
                 transform.position.y + _ctx.standingColliderOffset.y + _ctx.standingColliderSize.y * mult * 0.5f,
                 0f
             );
-            Vector3 zoneSize = new Vector3(_ctx.standingColliderSize.x, _ctx.standingColliderSize.y * (1f - mult), 0.1f);
+            Vector3 zoneSize = new Vector3(Mathf.Max(0f, _ctx.standingColliderSize.x - 0.05f * 2f), Mathf.Max(0f, _ctx.standingColliderSize.y * (1f - mult) - 0.04f), 0.1f);
             Gizmos.color = _ctx.forcedCrouchAbove ? Color.magenta : new Color(1f, 0f, 1f, 0.3f);
             Gizmos.DrawWireCube(zoneCenter, zoneSize);
         }
