@@ -24,6 +24,12 @@ public class NoiseScriptableStats : ScriptableObject
     [Range(0f, 0.5f)]
     public float FootstepPitchVariance = 0.1f;
 
+    [Range(0f, 1f)]
+    public float FootstepVolumeMin = 0.3f;
+
+    [Range(0f, 1f)]
+    public float FootstepVolumeMax = 1.0f;
+
     [Header("FOOTSTEPS")]
     [Tooltip("Minimum horizontal input required to emit footstep noise")]
     [Range(0.01f, 1f)]

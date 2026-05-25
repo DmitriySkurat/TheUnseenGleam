@@ -171,8 +171,10 @@ namespace HSM {
             var clips = ctx.noiseStats.FootstepClips;
             if (_audioManager != null && clips != null && clips.Length > 0)
             {
+                float t = Mathf.InverseLerp(ctx.noiseStats.CrouchNoiseRadius, ctx.noiseStats.RunNoiseRadius, ctx.currentNoiseRadius);
+                float volume = Mathf.Lerp(ctx.noiseStats.FootstepVolumeMin, ctx.noiseStats.FootstepVolumeMax, t);
                 float variance = ctx.noiseStats.FootstepPitchVariance;
-                _audioManager.PlaySfx(clips[UnityEngine.Random.Range(0, clips.Length)], 1f, UnityEngine.Random.Range(1f - variance, 1f + variance));
+                _audioManager.PlaySfx(clips[UnityEngine.Random.Range(0, clips.Length)], volume, UnityEngine.Random.Range(1f - variance, 1f + variance));
             }
         }
     }
