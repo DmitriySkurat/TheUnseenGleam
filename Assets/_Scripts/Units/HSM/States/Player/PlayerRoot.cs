@@ -174,7 +174,8 @@ namespace HSM {
             if (_audioManager != null && clips != null && clips.Length > 0)
             {
                 var clip = clips[UnityEngine.Random.Range(0, clips.Length)];
-                _audioManager.PlaySfx(clip, 1f, UnityEngine.Random.Range(0.9f, 1.1f));
+                float variance = ctx.noiseStats.FootstepPitchVariance;
+                _audioManager.PlaySfx(clip, 1f, UnityEngine.Random.Range(1f - variance, 1f + variance));
             }
         }
     }
