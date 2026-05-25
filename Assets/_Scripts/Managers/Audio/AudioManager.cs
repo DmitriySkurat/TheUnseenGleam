@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour, IService
     [Header("Settings")]
     [SerializeField] private AudioMixer mainMixer;
     [SerializeField] private int poolSize = 10;
+    [Tooltip("minDistance для 3D SFX. В 2D играх ставь равным дистанции камеры по Z (обычно 10).")]
+    [SerializeField] private float _sfxMinDistance = 10f;
     
     [Header("Mixer Groups")]
     [SerializeField] private AudioMixerGroup musicGroup;
@@ -82,6 +84,7 @@ public class AudioManager : MonoBehaviour, IService
 
         source.transform.position = worldPosition;
         source.spatialBlend = 1f;
+        source.minDistance = _sfxMinDistance;
         source.pitch = pitch;
         source.PlayOneShot(clip, volume);
     }

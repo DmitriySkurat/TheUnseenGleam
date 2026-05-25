@@ -17,6 +17,8 @@ public class PebbleBehavior : MonoBehaviour
     private float _noiseVariance;
     private Rigidbody2D _rb;
     private NoiseSystem _noiseSystem;
+    private AudioManager _audioManager;
+    private NoiseScriptableStats _noiseStats;
     private int _bouncesLeft;
     private readonly HashSet<int> _ignoredColliders = new HashSet<int>();
 
@@ -24,13 +26,16 @@ public class PebbleBehavior : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _noiseSystem = Services.Get<NoiseSystem>();
+        if (Services.IsRegistered<AudioManager>())
+            _audioManager = Services.Get<AudioManager>();
         _bouncesLeft = maxBounces;
 
         if (!Services.IsRegistered<PlayerContext>())
             return;
         var playerCtx = Services.Get<PlayerContext>();
         impactNoiseRadius = playerCtx.noiseStats.PebbleImpactNoiseRadius;
-        _noiseVariance = playerCtx.noiseStats.RadiusVariance;
+        _noiseVariance    = playerCtx.noiseStats.RadiusVariance;
+        _noiseStats       = playerCtx.noiseStats;
 
         Destroy(gameObject, destroyTime);
         InitializeBulletStats();
@@ -91,6 +96,12 @@ public class PebbleBehavior : MonoBehaviour
 
     private void Bounce(Collider2D collision)
     {
+        if (_noiseStats != null && _noiseStats.PebbleImpactClip != null && _audioManager != null)
+        {
+            float volume = Mathf.Clamp01(_rb.linearVelocity.magnitude / pebbleSpeed);
+            _audioManager.PlaySfxAtPoint(_noiseStats.PebbleImpactClip, transform.position, volume);
+        }
+
         _bouncesLeft--;
         if (_bouncesLeft <= 0)
         {

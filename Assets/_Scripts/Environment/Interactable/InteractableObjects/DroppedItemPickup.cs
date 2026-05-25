@@ -13,7 +13,9 @@ public class DroppedItemPickup : Interactable
 
     private ItemData _item;
     private int _count;
-    private NoiseSystem _noiseSystem;
+    private NoiseSystem          _noiseSystem;
+    private AudioManager         _audioManager;
+    private NoiseScriptableStats _noiseStats;
     private float _peakY;
 
     void Awake()
@@ -35,6 +37,10 @@ public class DroppedItemPickup : Interactable
     void Start()
     {
         _noiseSystem = Services.Get<NoiseSystem>();
+        if (Services.IsRegistered<AudioManager>())
+            _audioManager = Services.Get<AudioManager>();
+        if (Services.IsRegistered<PlayerContext>())
+            _noiseStats = Services.Get<PlayerContext>().noiseStats;
         if (destroyAfter > 0f)
             Invoke(nameof(SelfDestroy), destroyAfter);
     }
@@ -97,6 +103,12 @@ public class DroppedItemPickup : Interactable
         float fallHeight = Mathf.Max(0f, _peakY - pos.y);
         float radius = EvaluateNoiseRadius(fallHeight);
         _noiseSystem?.EmitNoise(pos, radius, gameObject, NoiseType.ObjectImpact, noiseVariance);
+
+        if (_noiseStats != null && _noiseStats.ItemLandClip != null && _audioManager != null)
+        {
+            float volume = Mathf.Lerp(0.6f, 1f, Mathf.InverseLerp(minFallHeight, maxFallHeight, fallHeight));
+            _audioManager.PlaySfxAtPoint(_noiseStats.ItemLandClip, pos, volume);
+        }
 
         _peakY = pos.y;
     }

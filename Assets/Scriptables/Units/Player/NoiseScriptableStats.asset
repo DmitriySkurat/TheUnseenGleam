@@ -15,10 +15,21 @@ MonoBehaviour:
   MinFootstepVisualizationRadius: 7
   VisualizationEnemyDetectionRadius: 10
   MaxSimultaneousWaves: 8
+  FootstepClips:
+  - {fileID: 8300000, guid: 14193c104d1308741a5d01d5cd0c26e3, type: 3}
+  - {fileID: 8300000, guid: 6e4c8b2da66c7a34dbbd8faf4090e08a, type: 3}
+  - {fileID: 8300000, guid: 3f453c8d5c873f54d98859ba82899e44, type: 3}
+  - {fileID: 8300000, guid: 0496a567d6c7c2e479d77d81d698c7e6, type: 3}
+  PebbleImpactClip: {fileID: 8300000, guid: 4c12c2a261d2a104db73c0196e42afe3, type: 3}
+  VaseBreakClip: {fileID: 8300000, guid: 924f873a885038743886cceb5d52d09c, type: 3}
+  ItemLandClip: {fileID: 8300000, guid: 4c12c2a261d2a104db73c0196e42afe3, type: 3}
+  FootstepPitchVariance: 0.1
+  FootstepVolumeMin: 0.3
+  FootstepVolumeMax: 1
   NoiseMoveThreshold: 0.1
-  WalkFootstepInterval: 0.5
-  RunFootstepInterval: 0.35
-  CrouchFootstepInterval: 0.7
+  WalkFootstepInterval: 0.44
+  RunFootstepInterval: 0.3
+  CrouchFootstepInterval: 0.55
   WalkNoiseRadius: 6
   RunNoiseRadius: 9
   CrouchNoiseRadius: 4
@@ -31,3 +42,5 @@ MonoBehaviour:
   BreathingNoiseInterval: 0.75
   BreathingNoiseRadius: 3.5
   PebbleImpactNoiseRadius: 10
+  ItemDropNoiseRadius: 1.5
+  RadiusVariance: 0.1

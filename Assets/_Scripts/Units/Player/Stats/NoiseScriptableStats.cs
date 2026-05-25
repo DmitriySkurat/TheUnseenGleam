@@ -18,8 +18,11 @@ public class NoiseScriptableStats : ScriptableObject
 
 
 
-    [Header("FOOTSTEP AUDIO")]
+    [Header("AUDIO")]
     public AudioClip[] FootstepClips;
+    public AudioClip PebbleImpactClip;
+    public AudioClip VaseBreakClip;
+    public AudioClip ItemLandClip;
 
     [Range(0f, 0.5f)]
     public float FootstepPitchVariance = 0.1f;

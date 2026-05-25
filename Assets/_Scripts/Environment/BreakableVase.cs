@@ -17,16 +17,22 @@ public class BreakableVase : MonoBehaviour
     [SerializeField] private string _fragmentLayer   = "Ground";
     [SerializeField] private PhysicsMaterial2D _fragmentMaterial;
 
-    private NoiseSystem    _noiseSystem;
-    private SpriteRenderer _sr;
-    private Collider2D     _collider;
-    private bool           _broken;
+    private NoiseSystem         _noiseSystem;
+    private AudioManager        _audioManager;
+    private NoiseScriptableStats _noiseStats;
+    private SpriteRenderer      _sr;
+    private Collider2D          _collider;
+    private bool                _broken;
 
     private void Start()
     {
         _noiseSystem = Services.Get<NoiseSystem>();
-        _sr          = GetComponent<SpriteRenderer>();
-        _collider    = GetComponent<Collider2D>();
+        if (Services.IsRegistered<AudioManager>())
+            _audioManager = Services.Get<AudioManager>();
+        if (Services.IsRegistered<PlayerContext>())
+            _noiseStats = Services.Get<PlayerContext>().noiseStats;
+        _sr       = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<Collider2D>();
     }
 
     public void OnHitByProjectile(Vector2 hitPoint, GameObject source)
@@ -35,6 +41,8 @@ public class BreakableVase : MonoBehaviour
         _broken = true;
 
         _noiseSystem?.EmitNoise(hitPoint, breakNoiseRadius, gameObject, noiseType, noiseVariance);
+        if (_noiseStats != null && _noiseStats.VaseBreakClip != null)
+            _audioManager?.PlaySfxAtPoint(_noiseStats.VaseBreakClip, hitPoint);
 
         _collider.enabled = false;
         SpawnCrumble(transform.position, _sr.sprite);
