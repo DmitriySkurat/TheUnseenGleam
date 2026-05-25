@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
 {
@@ -8,16 +9,27 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
     [Tooltip("Минимальная сила освещённости, при которой задержка дыхания скрывает игрока от ослеплённого агента")]
     [SerializeField, Min(0f)] private float _hidingLightThreshold = 0.5f;
 
+    [Header("Audio")]
+    [SerializeField] private LayerMask        _enemyMask;
+    [SerializeField] private AudioMixerGroup  _sfxGroup;
+
     private PlayerContext _ctx;
-    private NoiseSystem _noiseSystem;
+    private NoiseSystem   _noiseSystem;
+    private AudioSource   _breathingSource;
     private float _breathingNoiseTimer;
 
     public void Initialize()
     {
         if (!Services.IsRegistered<PlayerContext>())
             return;
-        _ctx = Services.Get<PlayerContext>();
+        _ctx         = Services.Get<PlayerContext>();
         _noiseSystem = Services.Get<NoiseSystem>();
+
+        _breathingSource                    = gameObject.AddComponent<AudioSource>();
+        _breathingSource.loop               = true;
+        _breathingSource.playOnAwake        = false;
+        _breathingSource.spatialBlend       = 0f;
+        _breathingSource.outputAudioMixerGroup = _sfxGroup;
 
         if (_ctx == null || _ctx.stats == null)
             return;
@@ -43,6 +55,7 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
 
         UpdateBreath(Time.fixedDeltaTime);
         EmitBreathingNoise(Time.fixedDeltaTime);
+        UpdateBreathingAudio();
     }
 
     private void UpdateBreath(float deltaTime)
@@ -100,5 +113,28 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
             NoiseType.Breathing,
             _ctx.noiseStats.RadiusVariance
         );
+
+    }
+
+    private void UpdateBreathingAudio()
+    {
+        if (_breathingSource == null || _ctx.noiseStats == null) return;
+
+        var clip = _ctx.noiseStats.BreathingClip;
+        if (clip == null) return;
+
+        float radius = _ctx.noiseStats.BreathingEnemyProximityRadius;
+        bool enemyNearby = radius > 0f &&
+            Physics2D.OverlapCircle(_ctx.transform.position, radius, _enemyMask) != null;
+
+        if (enemyNearby && !_breathingSource.isPlaying)
+        {
+            _breathingSource.clip = clip;
+            _breathingSource.Play();
+        }
+        else if (!enemyNearby && _breathingSource.isPlaying)
+        {
+            _breathingSource.Stop();
+        }
     }
 }

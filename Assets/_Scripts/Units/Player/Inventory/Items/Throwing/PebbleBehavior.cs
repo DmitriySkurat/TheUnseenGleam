@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PebbleBehavior : MonoBehaviour
 {
-    public float pebbleSpeed = 5f;
+    public float pebbleSpeed = 9f;
     public float pebbleGravity = 3f;
 
     [SerializeField] private float destroyTime = 5f;

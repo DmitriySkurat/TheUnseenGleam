@@ -102,6 +102,12 @@ public class NoiseScriptableStats : ScriptableObject
     [Min(0f)]
     public float BreathingNoiseRadius = 1.2f;
 
+    [Tooltip("Радиус поиска врагов для воспроизведения звука дыхания")]
+    [Min(0f)]
+    public float BreathingEnemyProximityRadius = 10f;
+
+    public AudioClip BreathingClip;
+
     
 
     [Header("PEBBLE")]

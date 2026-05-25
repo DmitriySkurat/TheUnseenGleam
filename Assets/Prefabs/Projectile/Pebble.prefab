@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e682206c0ecbaf646aacd245c42039b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PebbleBehaviour
-  pebbleSpeed: 8
+  pebbleSpeed: 10
   pebbleGravity: 3
   destroyTime: 3
   whatDestroysPebble:
