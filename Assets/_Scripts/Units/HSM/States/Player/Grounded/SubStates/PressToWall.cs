@@ -26,6 +26,9 @@ namespace HSM {
             ctx.isPressedToWall = true;
             ctx.velocity        = Vector2.zero;
 
+            var p = ctx.transform.position;
+            ctx.transform.position = new Vector3(p.x, p.y, 2f);
+
             ctx.currentNoiseRadius      = 0f;
             ctx.currentFootstepInterval = 0f;
             ctx.currentStaminaDrainMultiplier           = 0f;
@@ -51,6 +54,9 @@ namespace HSM {
 
         protected override void OnExit() {
             ctx.isPressedToWall = false;
+
+            var p = ctx.transform.position;
+            ctx.transform.position = new Vector3(p.x, p.y, 0f);
 
             if (col != null) {
                 col.size   = originalColliderSize;

@@ -97,7 +97,7 @@ public class CameraFollow : MonoBehaviour, ISceneLifecycle
             _facingSign = Mathf.Sign(actualMoveX);
         }
 
-        bool canLookAround = !isActuallyMovingHorizontally && _ctx.grounded;
+        bool canLookAround = !isActuallyMovingHorizontally && _ctx.grounded && !_ctx.isPressedToWall;
         _isLookingAround = canLookAround && _ctx.input.LookAroundHeld;
 
         float targetFacingOffset = _facingSign * facingOffset;
