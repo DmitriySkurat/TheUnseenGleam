@@ -15,6 +15,7 @@ namespace HSM {
 
         readonly PlayerContext ctx;
         private float _footstepTimer;
+        private bool _footstepActive;
 
         private NoiseSystem _noiseSystem;
         private AudioManager _audioManager;
@@ -140,27 +141,19 @@ namespace HSM {
 
         void HandleFootsteps(float deltaTime)
         {
-            if (ctx.transform == null || ctx.stats == null)
+            if (ctx.transform == null || ctx.stats == null || ctx.IsLandingRollActive ||
+                !ctx.grounded || ctx.currentNoiseRadius <= 0f || ctx.currentFootstepInterval <= 0f ||
+                Mathf.Abs(ctx.input.Move.x) < ctx.noiseStats.NoiseMoveThreshold)
             {
                 _footstepTimer = 0f;
+                _footstepActive = false;
                 return;
             }
 
-            if (ctx.IsLandingRollActive)
+            if (!_footstepActive)
             {
-                _footstepTimer = 0f;
-                return;
-            }
-
-            if (!ctx.grounded || ctx.currentNoiseRadius <= 0f || ctx.currentFootstepInterval <= 0f)
-            {
-                _footstepTimer = 0f;
-                return;
-            }
-
-            if (Mathf.Abs(ctx.input.Move.x) < ctx.noiseStats.NoiseMoveThreshold)
-            {
-                _footstepTimer = 0f;
+                _footstepActive = true;
+                EmitFootstep();
                 return;
             }
 
@@ -168,14 +161,18 @@ namespace HSM {
             if (_footstepTimer < ctx.currentFootstepInterval) return;
 
             _footstepTimer = 0f;
+            EmitFootstep();
+        }
+
+        void EmitFootstep()
+        {
             _noiseSystem.EmitNoise(ctx.transform.position, ctx.currentNoiseRadius, ctx.transform.gameObject, NoiseType.Footstep, ctx.noiseStats.RadiusVariance);
 
             var clips = ctx.noiseStats.FootstepClips;
             if (_audioManager != null && clips != null && clips.Length > 0)
             {
-                var clip = clips[UnityEngine.Random.Range(0, clips.Length)];
                 float variance = ctx.noiseStats.FootstepPitchVariance;
-                _audioManager.PlaySfx(clip, 1f, UnityEngine.Random.Range(1f - variance, 1f + variance));
+                _audioManager.PlaySfx(clips[UnityEngine.Random.Range(0, clips.Length)], 1f, UnityEngine.Random.Range(1f - variance, 1f + variance));
             }
         }
     }
