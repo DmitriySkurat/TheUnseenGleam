@@ -63,6 +63,7 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         } else if (wasGrounded && !_groundHit) {
             _ctx.grounded = false;
             _ctx.frameLeftGrounded = Time.time;
+            if (_ctx.velocity.y <= 0f) _ctx.coyoteUsable = true;
             _ctx.airborneStartY = currentY;
             _ctx.landingRollEndTime = float.MinValue;
             _ctx.landingRollDirection = 0f;
