@@ -5,7 +5,6 @@ namespace HSM
     public class InDarkness : State
     {
         private readonly PlayerContext ctx;
-        private float _savedSpeedMultiplier;
         private int _currentAnimHash;
 
         public InDarkness(StateMachine m, State parent, PlayerContext ctx) : base(m, parent)
@@ -15,7 +14,6 @@ namespace HSM
 
         protected override void OnEnter()
         {
-            _savedSpeedMultiplier = ctx.currentSpeedMultiplier;
             ctx.currentSpeedMultiplier = ctx.stats.DarknessSpeedMultiplier;
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
@@ -24,7 +22,6 @@ namespace HSM
 
         protected override void OnExit()
         {
-            ctx.currentSpeedMultiplier = _savedSpeedMultiplier;
         }
 
         protected override void OnUpdate(float deltaTime)

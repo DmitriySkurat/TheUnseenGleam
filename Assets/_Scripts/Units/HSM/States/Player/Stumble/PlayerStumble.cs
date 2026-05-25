@@ -34,7 +34,6 @@ namespace HSM {
 
         protected override void OnExit()
         {
-            ctx.currentSpeedMultiplier = 1f;
             base.OnExit();
         }
 

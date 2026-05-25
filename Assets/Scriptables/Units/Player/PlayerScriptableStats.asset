@@ -48,7 +48,7 @@ MonoBehaviour:
   HideStaminaBreathDrainMultiplier: 0.5
   PressToWallStaminaBreathDrainMultiplier: 1
   JumpClip: {fileID: 0}
-  JumpPower: 29
+  JumpPower: 31
   MaxFallSpeed: 40
   FallAcceleration: 125
   JumpEndEarlyGravityModifier: 3
@@ -57,7 +57,7 @@ MonoBehaviour:
   InteractionCooldown: 0.25
   CrouchSpeedMultiplier: 0.3
   CrouchHeightMultiplier: 0.5
-  CeilingCheckDistance: 0.524
+  CeilingCheckDistance: 1
   HideSpeedMultiplier: 0.4
   DarknessSpeedMultiplier: 0.4
   SpikesSpeedMultiplier: 0.3
@@ -65,6 +65,7 @@ MonoBehaviour:
   PressToWallWidthMultiplier: 0.5
   StumbleMinFallHeight: 8
   StumbleDuration: 1
+  StumbleImpulse: 3
   LimpDuration: 8
   LimpSpeedMultiplier: 0.25
   GrabDamagePerSecond: 20
@@ -86,7 +87,7 @@ MonoBehaviour:
   VinesSlipSpeed: 2
   VinesSlipAcceleration: 12
   LedgeWallCheckHeight: 1
-  LedgeTopCheckOffset: 1.08
+  LedgeTopCheckOffset: 0.54
   LedgeCheckDistance: 0.46
   LedgeHangOffsetX: 0.05
   LedgeStandOffsetX: 0
@@ -94,5 +95,5 @@ MonoBehaviour:
   LedgeClimbTeleportDelay: 0.65
   WallGrabMaxDuration: 7
   WallGrabPassiveDuration: 2
-  LedgeGrabMaxFallSpeed: 25
+  LedgeGrabMaxFallTiles: 3
   LedgeGrabCooldown: 0.3
