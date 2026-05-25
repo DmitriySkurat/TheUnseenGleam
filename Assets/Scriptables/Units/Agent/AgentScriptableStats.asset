@@ -24,14 +24,14 @@ MonoBehaviour:
   ChaseSpeed: 9
   ChaseVisionGraceTime: 1.5
   ChaseMemoryTime: 2
-  PredictionSearchTime: 6
+  PredictionSearchTime: 12
   SearchSpeed: 6
   SearchWaitTime: 1.5
   SearchWanderDuration: 8
   SearchWanderDistance: 3
   BlindedByPlayerReactionTime: 0.5
   BlindDurationToStun: 2
-  StunDuration: 3
+  StunDuration: 5
   BlindedByEnvironmentSpeed: 5
   GrabProximityGraceWindow: 0.4
   AttackRange: 1.5
@@ -44,9 +44,9 @@ MonoBehaviour:
   LookAroundMaxInterval: 12
   LookAroundTurnDelay: 0.5
   LookAroundDuration: 1.5
-  AlertDuration: 3
+  AlertDuration: 1
   AlertRadius: 12
-  AlertTurnTime: 1.5
+  AlertTurnTime: 0.75
   InteractableLayer:
     serializedVersion: 2
     m_Bits: 128

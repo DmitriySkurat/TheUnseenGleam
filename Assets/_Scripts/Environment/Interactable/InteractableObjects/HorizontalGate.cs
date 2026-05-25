@@ -19,6 +19,8 @@ public class HorizontalGate : Interactable
     private ShadowCaster2D _shadowCaster;
     private PlayerInteractor _playerWatcher;
     private Collider2D _playerCollider;
+    private PlayerContext _playerCtx;
+    private bool _pendingGoSolid;
 
     public override void Initialize()
     {
@@ -27,13 +29,35 @@ public class HorizontalGate : Interactable
         _shadowCaster = GetComponent<ShadowCaster2D>();
 
         if (Services.IsRegistered<PlayerContext>())
-            _playerCollider = Services.Get<PlayerContext>().coll;
+        {
+            _playerCtx = Services.Get<PlayerContext>();
+            _playerCollider = _playerCtx.coll;
+        }
 
         UpdateVisuals();
     }
 
     private void Update()
     {
+        if (_pendingGoSolid && _gateCollider != null && _playerCollider != null)
+        {
+            if (_playerCtx != null) _playerCtx.gateBlocksStanding = true;
+
+            if (!_gateCollider.bounds.Intersects(_playerCollider.bounds))
+            {
+                _gateCollider.isTrigger = false;
+                _pendingGoSolid = false;
+                if (_playerCtx != null) _playerCtx.gateBlocksStanding = false;
+                if (platformCollider != null)
+                {
+                    if (_playerCollider != null)
+                        platformCollider.excludeLayers = default;
+                    else
+                        platformCollider.enabled = true;
+                }
+            }
+        }
+
         if (!isOpen || _playerWatcher == null) return;
 
         Vector2 origin = _playerWatcher.interactOrigin != null
@@ -79,16 +103,41 @@ public class HorizontalGate : Interactable
             _shadowCaster.enabled = false;
 
         if (_gateCollider != null && disableColliderWhenOpen)
-            _gateCollider.isTrigger = isOpen;
+        {
+            if (isOpen)
+            {
+                _gateCollider.isTrigger = true;
+                _pendingGoSolid = false;
+                if (_playerCtx != null) _playerCtx.gateBlocksStanding = false;
+            }
+            else
+            {
+                bool playerOverlaps = _playerCollider != null && _gateCollider.bounds.Intersects(_playerCollider.bounds);
+                if (playerOverlaps)
+                {
+                    // Keep gate as trigger until player crouches clear of it
+                    _gateCollider.isTrigger = true;
+                    _pendingGoSolid = true;
+                    if (_playerCtx != null) _playerCtx.gateBlocksStanding = true;
+                }
+                else
+                {
+                    _gateCollider.isTrigger = false;
+                    _pendingGoSolid = false;
+                }
+            }
+        }
 
         if (platformCollider != null)
         {
+            // Delay platform change while pending to avoid physics depenetration push during crouch.
+            bool treatAsOpen = isOpen || _pendingGoSolid;
             if (_playerCollider != null)
-                platformCollider.excludeLayers = isOpen
+                platformCollider.excludeLayers = treatAsOpen
                     ? (LayerMask)(1 << _playerCollider.gameObject.layer)
                     : default;
             else
-                platformCollider.enabled = !isOpen;
+                platformCollider.enabled = !treatAsOpen;
         }
     }
 }

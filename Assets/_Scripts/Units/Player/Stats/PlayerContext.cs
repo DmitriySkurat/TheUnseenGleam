@@ -35,6 +35,10 @@ public class PlayerContext
     public float landingRollDirection;
     
     public bool isCrouching;
+    public bool forcedCrouchAbove;
+    public bool gateBlocksStanding;
+    public Vector2 standingColliderSize;
+    public Vector2 standingColliderOffset;
 
     public bool ceilingAbove;
     public bool isInteracting; // for Complex interactables (may be in future)
@@ -135,6 +139,6 @@ public class PlayerContext
     public bool IsAdrenalineOnCooldown => Time.time < adrenalineCooldownEndTime;
     public bool HasLandingRollBuffered => stats != null && Time.time < timeCrouchWasPressed + stats.LandingRollBuffer;
     public bool IsLandingRollActive => Time.time < landingRollEndTime;
-    public bool WantsCrouch => input.CrouchHeld || IsLandingRollActive;
+    public bool WantsCrouch => input.CrouchHeld || IsLandingRollActive || forcedCrouchAbove || gateBlocksStanding;
     public ItemData SelectedHotbarItem => hotbar?.SelectedHotbarItem;
 }

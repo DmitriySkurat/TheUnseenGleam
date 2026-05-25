@@ -13,6 +13,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
 
     private bool _ceilingHit;
     private bool _groundHit;
+
+    private readonly Collider2D[] _forceCrouchResults = new Collider2D[8];
     
     
     public void Initialize()
@@ -24,6 +26,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         
         _col = GetComponent<CapsuleCollider2D>();
         _ctx.coll = _col;
+        _ctx.standingColliderSize = _col.size;
+        _ctx.standingColliderOffset = _col.offset;
         _ctx.airborneStartY = transform.position.y;
         _playerLayerMask = 1 << gameObject.layer;
 
@@ -80,6 +84,8 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
             _ctx.ceilingAbove = CapsuleCastFiltered(Vector2.up, _ctx.stats.CeilingCheckDistance, _ctx.stats.GroundLayer);
         }
 
+        _ctx.forcedCrouchAbove = CheckForcedCrouchZone();
+
         CheckLedgeGrab();
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
@@ -94,6 +100,36 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         foreach (var hit in hits)
             if (hit.collider != null && (hit.collider.excludeLayers & _playerLayerMask) == 0)
                 return true;
+        return false;
+    }
+
+    // Checks the zone between crouched-top and standing-top for any solid obstacle.
+    // If something solid is in this zone the player cannot stand up without hitting it.
+    private bool CheckForcedCrouchZone()
+    {
+        if (_ctx.stats == null || _ctx.standingColliderSize == Vector2.zero) return false;
+
+        float mult = _ctx.stats.CrouchHeightMultiplier;
+        // Zone center in world space: starts at crouched-top, ends at standing-top
+        Vector2 zoneCenter = new Vector2(
+            transform.position.x + _ctx.standingColliderOffset.x,
+            transform.position.y + _ctx.standingColliderOffset.y + _ctx.standingColliderSize.y * mult * 0.5f
+        );
+        Vector2 zoneSize = new Vector2(
+            _ctx.standingColliderSize.x,
+            _ctx.standingColliderSize.y * (1f - mult)
+        );
+
+        var filter = new ContactFilter2D();
+        filter.SetLayerMask(_ctx.stats.GroundLayer);
+        filter.useTriggers = false;
+
+        int count = Physics2D.OverlapBox(zoneCenter, zoneSize, 0f, filter, _forceCrouchResults);
+        for (int i = 0; i < count; i++)
+        {
+            if (_forceCrouchResults[i] != null && (_forceCrouchResults[i].excludeLayers & _playerLayerMask) == 0)
+                return true;
+        }
         return false;
     }
 
@@ -287,6 +323,20 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         Gizmos.color = _ctx.ceilingAbove ? Color.red : Color.green;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance);
         Gizmos.DrawWireSphere(transform.position + Vector3.up * _ctx.stats.CeilingCheckDistance, 0.05f);
+
+        // ForcedCrouchZone (between crouched-top and standing-top)
+        if (_ctx.standingColliderSize != Vector2.zero && _ctx.stats != null)
+        {
+            float mult = _ctx.stats.CrouchHeightMultiplier;
+            Vector3 zoneCenter = new Vector3(
+                transform.position.x + _ctx.standingColliderOffset.x,
+                transform.position.y + _ctx.standingColliderOffset.y + _ctx.standingColliderSize.y * mult * 0.5f,
+                0f
+            );
+            Vector3 zoneSize = new Vector3(_ctx.standingColliderSize.x, _ctx.standingColliderSize.y * (1f - mult), 0.1f);
+            Gizmos.color = _ctx.forcedCrouchAbove ? Color.magenta : new Color(1f, 0f, 1f, 0.3f);
+            Gizmos.DrawWireCube(zoneCenter, zoneSize);
+        }
 
         // Ledge detection rays
         if (_ctx.stats != null)
