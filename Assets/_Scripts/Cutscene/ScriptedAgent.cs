@@ -224,7 +224,8 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         _playerCtx.velocity            = Vector2.zero;
         _playerRb.linearVelocity       = Vector2.zero;
         _playerCtx.isGrabbed           = true;
-        _playerCtx.isInDialog          = false;
+        if (Services.IsRegistered<DialogManager>())
+            Services.Get<DialogManager>().Cancel();
         _playerCtx.grabEscapeCount     = 10; // значение не важно — grabEscapeDisabled блокирует побег
 
         _phase = Phase.Carry;

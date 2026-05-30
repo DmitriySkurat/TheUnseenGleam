@@ -125,6 +125,12 @@ public class DialogManager : MonoBehaviour, ISceneLifecycle
         if (_continueIndicator) _continueIndicator.SetActive(true);
     }
 
+    public void Cancel()
+    {
+        if (_playerCtx == null || !_playerCtx.isInDialog) return;
+        EndDialog();
+    }
+
     private void EndDialog()
     {
         if (_playerCtx != null)
