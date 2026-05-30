@@ -65,7 +65,17 @@
       "Bash(awk 'NR>=31076{print NR\": \"$0} /m_TileColorArray/ && NR>31076{exit}' Assets/Scenes/PrisonBeginning.unity)",
       "Bash(Get-ChildItem -Path \"d:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\" -Recurse -Directory)",
       "Bash(Select-Object -First 20)",
-      "PowerShell(Get-ChildItem -Path \"d:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\" -Recurse -Directory -ErrorAction SilentlyContinue | Select-Object -First 30 | ForEach-Object { $_.FullName })"
+      "PowerShell(Get-ChildItem -Path \"d:\\\\BSUIR\\\\Diploma\\\\TheUnseenGleam\" -Recurse -Directory -ErrorAction SilentlyContinue | Select-Object -First 30 | ForEach-Object { $_.FullName })",
+      "Bash(ls \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\unpacked_diploma\\\\word\\\\\")",
+      "Bash(node generate_chapters.js)",
+      "Bash(node -e \"const JSZip=require\\('jszip'\\),fs=require\\('fs'\\); JSZip.loadAsync\\(fs.readFileSync\\('Правки_2.2_2.3_v2.docx'\\)\\).then\\(z=>z.file\\('word/document.xml'\\).async\\('string'\\)\\).then\\(xml=>{const m=xml.match\\(/<w:t[^>]*>[^<]+<\\\\/w:t>/g\\)||[];console.log\\('text runs:',m.length\\);const size=fs.statSync\\('Правки_2.2_2.3_v2.docx'\\).size;console.log\\('size:',size,'bytes'\\)}\\)\")",
+      "Bash(Out-File -Encoding utf8 -FilePath \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\stp_extract.txt\")",
+      "Bash(Get-Content \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\stp_extract.txt\")",
+      "Bash(Select-Object -First 200)",
+      "Read(//c/Users/Dima/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/785efe0d-06db-4d3f-80b8-9d4c6b205e53/67b16118-27f6-416f-9fd9-de8817a885ad/skills/pdf/**)",
+      "Bash(python scripts/office/unpack.py \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\Диплом.docx\" \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\unpacked_diplom\")",
+      "Bash(python scripts/office/unpack.py \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\Референсы\\\\Base.docx\" \"D:\\\\BSUIR\\\\Diploma\\\\Записка\\\\unpacked_base\")",
+      "Bash(Select-String -Path \"Assets/Scenes/PrisonBeginning.unity\" -Pattern \"PauseMenu\")"
     ]
   }
 }

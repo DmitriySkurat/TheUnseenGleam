@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492ec692af9cf8346b60203dd68c3de9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BreakableVase
-  breakNoiseRadius: 15
+  breakNoiseRadius: 20
   noiseVariance: 0.1
   noiseType: 4
   BreakMinSpeed: 7

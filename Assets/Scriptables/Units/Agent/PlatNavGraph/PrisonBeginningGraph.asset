@@ -505,188 +505,195 @@ MonoBehaviour:
     min: 29
     max: 39
     firstOut: 177
-    outCount: 4
+    outCount: 3
   - gravity: 1
     axis: 0
     line: -33
     min: 61
     max: 73
-    firstOut: 181
+    firstOut: 180
     outCount: 4
   - gravity: 1
     axis: 0
     line: 0
     min: 12
     max: 13
-    firstOut: 185
+    firstOut: 184
     outCount: 1
   - gravity: 1
     axis: 0
     line: -1
     min: 14
     max: 14
-    firstOut: 186
+    firstOut: 185
     outCount: 2
   - gravity: 1
     axis: 0
     line: -1
     min: 93
     max: 94
-    firstOut: 188
+    firstOut: 187
     outCount: 1
   - gravity: 1
     axis: 0
     line: -1
     min: 143
     max: 143
-    firstOut: 189
+    firstOut: 188
     outCount: 1
   - gravity: 1
     axis: 0
     line: -2
     min: 15
     max: 16
-    firstOut: 190
+    firstOut: 189
     outCount: 2
   - gravity: 1
     axis: 0
     line: -32
     min: 20
     max: 21
-    firstOut: 192
+    firstOut: 191
     outCount: 1
   - gravity: 1
     axis: 0
     line: -32
     min: 24
-    max: 28
-    firstOut: 193
-    outCount: 4
+    max: 26
+    firstOut: 192
+    outCount: 2
   - gravity: 1
     axis: 0
     line: -47
     min: 21
     max: 21
-    firstOut: 197
+    firstOut: 194
     outCount: 2
   - gravity: 1
     axis: 0
     line: -45
     min: 22
     max: 32
-    firstOut: 199
+    firstOut: 196
     outCount: 6
   - gravity: 1
     axis: 0
     line: -31
-    min: 22
+    min: 23
     max: 23
-    firstOut: 205
+    firstOut: 202
     outCount: 3
+  - gravity: 1
+    axis: 0
+    line: -31
+    min: 27
+    max: 28
+    firstOut: 205
+    outCount: 5
   - gravity: 1
     axis: 0
     line: -11
     min: 26
     max: 28
-    firstOut: 208
+    firstOut: 210
     outCount: 2
   - gravity: 1
     axis: 0
     line: -11
     min: 118
     max: 129
-    firstOut: 210
+    firstOut: 212
     outCount: 3
   - gravity: 1
     axis: 0
     line: -12
     min: 29
     max: 29
-    firstOut: 213
+    firstOut: 215
     outCount: 1
   - gravity: 1
     axis: 0
     line: -12
     min: 130
     max: 130
-    firstOut: 214
+    firstOut: 216
     outCount: 2
   - gravity: 1
     axis: 0
     line: -13
     min: 30
     max: 30
-    firstOut: 216
+    firstOut: 218
     outCount: 1
   - gravity: 1
     axis: 0
     line: -13
     min: 131
     max: 134
-    firstOut: 217
+    firstOut: 219
     outCount: 6
   - gravity: 1
     axis: 0
     line: -44
     min: 33
     max: 33
-    firstOut: 223
+    firstOut: 225
     outCount: 3
   - gravity: 1
     axis: 0
     line: -44
     min: 127
     max: 141
-    firstOut: 226
+    firstOut: 228
     outCount: 1
   - gravity: 1
     axis: 0
     line: -16
     min: 37
     max: 39
-    firstOut: 227
+    firstOut: 229
     outCount: 7
   - gravity: 1
     axis: 0
     line: -16
     min: 45
     max: 51
-    firstOut: 234
+    firstOut: 236
     outCount: 6
   - gravity: 1
     axis: 0
     line: -16
     min: 54
     max: 58
-    firstOut: 240
+    firstOut: 242
     outCount: 1
   - gravity: 1
     axis: 0
     line: -16
     min: 136
     max: 141
-    firstOut: 241
+    firstOut: 243
     outCount: 7
   - gravity: 1
     axis: 0
     line: -17
     min: 40
     max: 40
-    firstOut: 248
+    firstOut: 250
     outCount: 4
   - gravity: 1
     axis: 0
     line: -17
     min: 43
     max: 44
-    firstOut: 252
+    firstOut: 254
     outCount: 5
   - gravity: 1
     axis: 0
     line: -18
     min: 41
     max: 42
-    firstOut: 257
+    firstOut: 259
     outCount: 4
   - gravity: 1
     axis: 0
@@ -714,7 +721,7 @@ MonoBehaviour:
     line: -6
     min: 57
     max: 69
-    firstOut: 261
+    firstOut: 263
     outCount: 4
   - gravity: 1
     axis: 0
@@ -742,21 +749,21 @@ MonoBehaviour:
     line: -30
     min: 74
     max: 84
-    firstOut: 265
+    firstOut: 267
     outCount: 3
   - gravity: 1
     axis: 0
     line: -22
     min: 74
     max: 95
-    firstOut: 268
+    firstOut: 270
     outCount: 2
   - gravity: 1
     axis: 0
     line: -22
     min: 99
     max: 103
-    firstOut: 270
+    firstOut: 272
     outCount: 3
   - gravity: 1
     axis: 0
@@ -770,7 +777,7 @@ MonoBehaviour:
     line: -14
     min: 105
     max: 105
-    firstOut: 273
+    firstOut: 275
     outCount: 1
   - gravity: 1
     axis: 0
@@ -784,7 +791,7 @@ MonoBehaviour:
     line: -59
     min: 140
     max: 140
-    firstOut: 274
+    firstOut: 276
     outCount: 1
   - gravity: 1
     axis: 0
@@ -812,42 +819,42 @@ MonoBehaviour:
     line: -15
     min: 104
     max: 104
-    firstOut: 275
+    firstOut: 277
     outCount: 1
   - gravity: 1
     axis: 0
     line: -15
     min: 135
     max: 135
-    firstOut: 276
+    firstOut: 278
     outCount: 2
   - gravity: 1
     axis: 0
     line: -25
     min: 107
     max: 112
-    firstOut: 278
+    firstOut: 280
     outCount: 6
   - gravity: 1
     axis: 0
     line: -25
     min: 117
     max: 127
-    firstOut: 284
+    firstOut: 286
     outCount: 4
   - gravity: 1
     axis: 0
     line: -21
     min: 113
     max: 116
-    firstOut: 288
+    firstOut: 290
     outCount: 2
   - gravity: 1
     axis: 0
     line: -26
     min: 128
     max: 142
-    firstOut: 290
+    firstOut: 292
     outCount: 3
   - gravity: 1
     axis: 0
@@ -1098,7 +1105,7 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 4
-    toSeg: 99
+    toSeg: 100
     fromMin: 55
     fromMax: 55
     toMin: 57
@@ -1128,7 +1135,7 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 5
-    toSeg: 99
+    toSeg: 100
     fromMin: 71
     fromMax: 71
     toMin: 69
@@ -1188,7 +1195,7 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 7
-    toSeg: 88
+    toSeg: 89
     fromMin: 126
     fromMax: 126
     toMin: 128
@@ -1203,7 +1210,7 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 7
-    toSeg: 88
+    toSeg: 89
     fromMin: 126
     fromMax: 126
     toMin: 128
@@ -1413,7 +1420,7 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 13
-    toSeg: 104
+    toSeg: 105
     fromMin: 92
     fromMax: 92
     toMin: 94
@@ -1683,18 +1690,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 25
-    toSeg: 21
+    toSeg: 24
     fromMin: 72
     fromMax: 72
-    toMin: 70
-    toMax: 70
+    toMin: 69
+    toMax: 69
     moveType: 0
     requiredAbilities: 1
-    costFp: 1337
+    costFp: 1549
     launchPos: {x: 77.609985, y: -27.869995}
-    launchVelocity: {x: -2.9906974, y: 1.8483529}
-    landPos: {x: 75.609985, y: -28.869995}
-    flightTime: 0.66874033
+    launchVelocity: {x: -3.8729832, y: 3.8729835}
+    landPos: {x: 74.609985, y: -27.869995}
+    flightTime: 0.7745967
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 25
@@ -1713,18 +1720,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 25
-    toSeg: 24
+    toSeg: 21
     fromMin: 72
     fromMax: 72
-    toMin: 69
-    toMax: 69
+    toMin: 70
+    toMax: 70
     moveType: 0
     requiredAbilities: 1
-    costFp: 1549
+    costFp: 1337
     launchPos: {x: 77.609985, y: -27.869995}
-    launchVelocity: {x: -3.8729832, y: 3.8729835}
-    landPos: {x: 74.609985, y: -27.869995}
-    flightTime: 0.7745967
+    launchVelocity: {x: -2.9906974, y: 1.8483529}
+    landPos: {x: 75.609985, y: -28.869995}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 25
@@ -1740,36 +1747,6 @@ MonoBehaviour:
     launchVelocity: {x: -2, y: -0}
     landPos: {x: 75.609985, y: -28.869995}
     flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 27
-    toSeg: 30
-    fromMin: -45
-    fromMax: -45
-    toMin: -42
-    toMax: -42
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1562
-    launchPos: {x: -39.39, y: -14.869994}
-    launchVelocity: {x: 3.841048, y: 5.1855335}
-    landPos: {x: -36.39, y: -13.869994}
-    flightTime: 0.78103685
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 27
-    toSeg: 30
-    fromMin: -44
-    fromMax: -44
-    toMin: -42
-    toMax: -42
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: -38.39, y: -14.869994}
-    launchVelocity: {x: 2.9906974, y: 4.8390503}
-    landPos: {x: -36.39, y: -13.869994}
-    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 27
@@ -1802,19 +1779,34 @@ MonoBehaviour:
     flightTime: 0.85373515
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 28
-    toSeg: 87
-    fromMin: 34
-    fromMax: 34
-    toMin: 33
-    toMax: 33
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 280
-    launchPos: {x: 38.61, y: -14.869994}
-    launchVelocity: {x: -0, y: -0}
-    landPos: {x: 38.61, y: -17.869995}
-    flightTime: 0.69999987
+  - fromSeg: 27
+    toSeg: 30
+    fromMin: -45
+    fromMax: -45
+    toMin: -42
+    toMax: -42
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1562
+    launchPos: {x: -39.39, y: -14.869994}
+    launchVelocity: {x: 3.841048, y: 5.1855335}
+    landPos: {x: -36.39, y: -13.869994}
+    flightTime: 0.78103685
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 27
+    toSeg: 30
+    fromMin: -44
+    fromMax: -44
+    toMin: -42
+    toMax: -42
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: -38.39, y: -14.869994}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: -36.39, y: -13.869994}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 28
@@ -1833,18 +1825,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 28
-    toSeg: 32
+    toSeg: 88
     fromMin: 34
     fromMax: 34
-    toMin: 36
-    toMax: 36
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 39.61, y: -14.869994}
-    launchVelocity: {x: 2.9906974, y: 4.8390503}
-    landPos: {x: 41.61, y: -13.869994}
-    flightTime: 0.66874033
+    toMin: 33
+    toMax: 33
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 280
+    launchPos: {x: 38.61, y: -14.869994}
+    launchVelocity: {x: -0, y: -0}
+    landPos: {x: 38.61, y: -17.869995}
+    flightTime: 0.69999987
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 28
@@ -1860,6 +1852,51 @@ MonoBehaviour:
     launchVelocity: {x: -5.527534, y: 5.6283193}
     landPos: {x: 34.61, y: -13.869994}
     flightTime: 0.9045625
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 28
+    toSeg: 32
+    fromMin: 34
+    fromMax: 34
+    toMin: 36
+    toMax: 36
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 39.61, y: -14.869994}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: 41.61, y: -13.869994}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 29
+    toSeg: 32
+    fromMin: 104
+    fromMax: 104
+    toMin: 101
+    toMax: 101
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1562
+    launchPos: {x: 109.609985, y: -14.869994}
+    launchVelocity: {x: -3.841048, y: 5.1855335}
+    landPos: {x: 106.609985, y: -13.869994}
+    flightTime: 0.78103685
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 29
+    toSeg: 7
+    fromMin: 105
+    fromMax: 105
+    toMin: 107
+    toMax: 107
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 216
+    launchPos: {x: 111.609985, y: -14.869994}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 112.609985, y: -16.869995}
+    flightTime: 0.54
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 29
@@ -1894,21 +1931,6 @@ MonoBehaviour:
     gravityStrength: 10
   - fromSeg: 29
     toSeg: 32
-    fromMin: 104
-    fromMax: 104
-    toMin: 101
-    toMax: 101
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1562
-    launchPos: {x: 109.609985, y: -14.869994}
-    launchVelocity: {x: -3.841048, y: 5.1855335}
-    landPos: {x: 106.609985, y: -13.869994}
-    flightTime: 0.78103685
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 29
-    toSeg: 32
     fromMin: 103
     fromMax: 103
     toMin: 101
@@ -1922,19 +1944,19 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 29
-    toSeg: 7
-    fromMin: 105
-    fromMax: 105
-    toMin: 107
-    toMax: 107
+  - fromSeg: 30
+    toSeg: 27
+    fromMin: -42
+    fromMax: -42
+    toMin: -44
+    toMax: -44
     moveType: 1
     requiredAbilities: 0
-    costFp: 216
-    launchPos: {x: 111.609985, y: -14.869994}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 112.609985, y: -16.869995}
-    flightTime: 0.54
+    costFp: 128
+    launchPos: {x: -37.39, y: -13.869994}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: -38.39, y: -14.869994}
+    flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 30
@@ -1967,19 +1989,19 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 30
-    toSeg: 27
-    fromMin: -42
-    fromMax: -42
-    toMin: -44
-    toMax: -44
+  - fromSeg: 31
+    toSeg: 79
+    fromMin: 29
+    fromMax: 29
+    toMin: 32
+    toMax: 32
     moveType: 1
     requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: -37.39, y: -13.869994}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: -38.39, y: -14.869994}
-    flightTime: 0.32
+    costFp: 376
+    launchPos: {x: 35.61, y: -13.869994}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 37.61, y: -18.869995}
+    flightTime: 0.93999964
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 31
@@ -1997,19 +2019,19 @@ MonoBehaviour:
     flightTime: 0.92427903
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 31
-    toSeg: 79
-    fromMin: 29
-    fromMax: 29
-    toMin: 32
-    toMax: 32
+  - fromSeg: 32
+    toSeg: 28
+    fromMin: 36
+    fromMax: 36
+    toMin: 34
+    toMax: 34
     moveType: 1
     requiredAbilities: 0
-    costFp: 376
-    launchPos: {x: 35.61, y: -13.869994}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 37.61, y: -18.869995}
-    flightTime: 0.93999964
+    costFp: 128
+    launchPos: {x: 40.61, y: -13.869994}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 39.61, y: -14.869994}
+    flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 32
@@ -2028,6 +2050,21 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 32
+    toSeg: 57
+    fromMin: 49
+    fromMax: 49
+    toMin: 47
+    toMax: 47
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 3025
+    launchPos: {x: 54.609985, y: -13.869994}
+    launchVelocity: {x: -1.322442, y: 10.206653}
+    landPos: {x: 52.609985, y: -9.869994}
+    flightTime: 1.5123537
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 32
     toSeg: 61
     fromMin: 49
     fromMax: 49
@@ -2040,21 +2077,6 @@ MonoBehaviour:
     launchVelocity: {x: 1.3048389, y: 10.925879}
     landPos: {x: 56.609985, y: -8.869994}
     flightTime: 1.5327563
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 32
-    toSeg: 28
-    fromMin: 36
-    fromMax: 36
-    toMin: 34
-    toMax: 34
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 40.61, y: -13.869994}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 39.61, y: -14.869994}
-    flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 32
@@ -2085,21 +2107,6 @@ MonoBehaviour:
     launchVelocity: {x: 2.9906974, y: 1.8483529}
     landPos: {x: 108.609985, y: -14.869994}
     flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 32
-    toSeg: 57
-    fromMin: 49
-    fromMax: 49
-    toMin: 47
-    toMax: 47
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 3025
-    launchPos: {x: 54.609985, y: -13.869994}
-    launchVelocity: {x: -1.322442, y: 10.206653}
-    landPos: {x: 52.609985, y: -9.869994}
-    flightTime: 1.5123537
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 33
@@ -2193,21 +2200,6 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 36
-    toSeg: 88
-    fromMin: 142
-    fromMax: 142
-    toMin: 139
-    toMax: 139
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 416
-    launchPos: {x: 146.60999, y: -11.869994}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 144.60999, y: -17.869995}
-    flightTime: 1.0399996
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 36
     toSeg: 34
     fromMin: 142
     fromMax: 142
@@ -2222,19 +2214,19 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 37
-    toSeg: 22
-    fromMin: -31
-    fromMax: -31
-    toMin: -33
-    toMax: -33
+  - fromSeg: 36
+    toSeg: 89
+    fromMin: 142
+    fromMax: 142
+    toMin: 139
+    toMax: 139
     moveType: 1
     requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: -26.39, y: -26.869995}
+    costFp: 416
+    launchPos: {x: 146.60999, y: -11.869994}
     launchVelocity: {x: -2, y: -0}
-    landPos: {x: -27.39, y: -27.869995}
-    flightTime: 0.32
+    landPos: {x: 144.60999, y: -17.869995}
+    flightTime: 1.0399996
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 37
@@ -2250,6 +2242,21 @@ MonoBehaviour:
     launchVelocity: {x: -2.9906974, y: 1.8483529}
     landPos: {x: -27.39, y: -27.869995}
     flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 37
+    toSeg: 22
+    fromMin: -31
+    fromMax: -31
+    toMin: -33
+    toMax: -33
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -26.39, y: -26.869995}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: -27.39, y: -27.869995}
+    flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 38
@@ -2343,21 +2350,6 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 42
-    toSeg: 37
-    fromMin: -30
-    fromMax: -30
-    toMin: -31
-    toMax: -31
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: -25.39, y: -25.869995}
-    launchVelocity: {x: -0.8, y: -0}
-    landPos: {x: -25.39, y: -26.869995}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 42
     toSeg: 22
     fromMin: -30
     fromMax: -30
@@ -2370,6 +2362,21 @@ MonoBehaviour:
     launchVelocity: {x: -3.534206, y: 1.8880978}
     landPos: {x: -27.39, y: -27.869995}
     flightTime: 0.848847
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 42
+    toSeg: 37
+    fromMin: -30
+    fromMax: -30
+    toMin: -31
+    toMax: -31
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: -25.39, y: -25.869995}
+    launchVelocity: {x: -0.8, y: -0}
+    landPos: {x: -25.39, y: -26.869995}
+    flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 43
@@ -2438,13 +2445,13 @@ MonoBehaviour:
     fromMax: 137
     toMin: 139
     toMax: 139
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 142.60999, y: -25.869995}
-    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 143.60999, y: -25.869995}
+    launchVelocity: {x: 2, y: 0}
     landPos: {x: 144.60999, y: -26.869995}
-    flightTime: 0.66874033
+    flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 46
@@ -2453,13 +2460,13 @@ MonoBehaviour:
     fromMax: 137
     toMin: 139
     toMax: 139
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 143.60999, y: -25.869995}
-    launchVelocity: {x: 2, y: 0}
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 142.60999, y: -25.869995}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
     landPos: {x: 144.60999, y: -26.869995}
-    flightTime: 0.32
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 46
@@ -2478,33 +2485,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 47
-    toSeg: 46
-    fromMin: 142
-    fromMax: 142
-    toMin: 136
-    toMax: 136
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1024
-    launchPos: {x: 147.60999, y: -25.869995}
-    launchVelocity: {x: -11.724001, y: 2.5588534}
-    landPos: {x: 141.60999, y: -25.869995}
-    flightTime: 0.51177067
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 47
     toSeg: 41
-    fromMin: 140
-    fromMax: 140
+    fromMin: 141
+    fromMax: 141
     toMin: 138
     toMax: 138
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 144.60999, y: -25.869995}
-    launchVelocity: {x: -2, y: -0}
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1591
+    launchPos: {x: 146.60999, y: -25.869995}
+    launchVelocity: {x: -3.7723002, y: 2.7189202}
     landPos: {x: 143.60999, y: -26.869995}
-    flightTime: 0.32
+    flightTime: 0.79527074
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 47
@@ -2520,6 +2512,21 @@ MonoBehaviour:
     launchVelocity: {x: -2.9906974, y: 1.8483529}
     landPos: {x: 143.60999, y: -26.869995}
     flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 47
+    toSeg: 46
+    fromMin: 142
+    fromMax: 142
+    toMin: 136
+    toMax: 136
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1024
+    launchPos: {x: 147.60999, y: -25.869995}
+    launchVelocity: {x: -11.724001, y: 2.5588534}
+    landPos: {x: 141.60999, y: -25.869995}
+    flightTime: 0.51177067
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 47
@@ -2539,17 +2546,62 @@ MonoBehaviour:
     gravityStrength: 10
   - fromSeg: 47
     toSeg: 41
-    fromMin: 141
-    fromMax: 141
+    fromMin: 140
+    fromMax: 140
     toMin: 138
     toMax: 138
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 144.60999, y: -25.869995}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 143.60999, y: -26.869995}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 48
+    toSeg: 82
+    fromMin: 25
+    fromMax: 25
+    toMin: 27
+    toMax: 27
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 31.61, y: 16.130005}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 32.61, y: 15.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 48
+    toSeg: 82
+    fromMin: 25
+    fromMax: 25
+    toMin: 27
+    toMax: 27
     moveType: 0
     requiredAbilities: 1
-    costFp: 1591
-    launchPos: {x: 146.60999, y: -25.869995}
-    launchVelocity: {x: -3.7723002, y: 2.7189202}
-    landPos: {x: 143.60999, y: -26.869995}
-    flightTime: 0.79527074
+    costFp: 1337
+    launchPos: {x: 30.61, y: 16.130005}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: 32.61, y: 15.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 48
+    toSeg: 3
+    fromMin: -21
+    fromMax: -21
+    toMin: -25
+    toMax: -25
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2561
+    launchPos: {x: -15.389999, y: 16.130005}
+    launchVelocity: {x: -3.123475, y: 8.74573}
+    landPos: {x: -19.39, y: 19.130005}
+    flightTime: 1.2806249
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 48
@@ -2568,36 +2620,6 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 48
-    toSeg: 81
-    fromMin: 25
-    fromMax: 25
-    toMin: 27
-    toMax: 27
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 31.61, y: 16.130005}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 32.61, y: 15.130005}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 48
-    toSeg: 81
-    fromMin: 25
-    fromMax: 25
-    toMin: 27
-    toMax: 27
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 30.61, y: 16.130005}
-    launchVelocity: {x: 2.9906974, y: 1.8483529}
-    landPos: {x: 32.61, y: 15.130005}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 48
     toSeg: 3
     fromMin: -20
     fromMax: -20
@@ -2612,53 +2634,23 @@ MonoBehaviour:
     flightTime: 0.9395369
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 48
-    toSeg: 3
-    fromMin: -21
-    fromMax: -21
-    toMin: -25
-    toMax: -25
+  - fromSeg: 49
+    toSeg: 83
+    fromMin: 117
+    fromMax: 117
+    toMin: 119
+    toMax: 119
     moveType: 0
     requiredAbilities: 1
-    costFp: 2561
-    launchPos: {x: -15.389999, y: 16.130005}
-    launchVelocity: {x: -3.123475, y: 8.74573}
-    landPos: {x: -19.39, y: 19.130005}
-    flightTime: 1.2806249
+    costFp: 1337
+    launchPos: {x: 122.609985, y: 16.130005}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: 124.609985, y: 15.130005}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 49
-    toSeg: 105
-    fromMin: 106
-    fromMax: 106
-    toMin: 102
-    toMax: 102
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 608
-    launchPos: {x: 110.609985, y: 16.130005}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 107.609985, y: 4.130005}
-    flightTime: 1.5199991
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 49
-    toSeg: 107
-    fromMin: 106
-    fromMax: 106
-    toMin: 105
-    toMax: 105
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 336
-    launchPos: {x: 110.609985, y: 16.130005}
-    launchVelocity: {x: -0, y: -0}
-    landPos: {x: 110.609985, y: 12.130005}
-    flightTime: 0.83999974
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 49
-    toSeg: 82
+    toSeg: 83
     fromMin: 117
     fromMax: 117
     toMin: 119
@@ -2673,18 +2665,33 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 49
-    toSeg: 82
-    fromMin: 117
-    fromMax: 117
-    toMin: 119
-    toMax: 119
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 122.609985, y: 16.130005}
-    launchVelocity: {x: 2.9906974, y: 1.8483529}
-    landPos: {x: 124.609985, y: 15.130005}
-    flightTime: 0.66874033
+    toSeg: 108
+    fromMin: 106
+    fromMax: 106
+    toMin: 105
+    toMax: 105
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 336
+    launchPos: {x: 110.609985, y: 16.130005}
+    launchVelocity: {x: -0, y: -0}
+    landPos: {x: 110.609985, y: 12.130005}
+    flightTime: 0.83999974
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 49
+    toSeg: 106
+    fromMin: 106
+    fromMax: 106
+    toMin: 102
+    toMax: 102
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 608
+    launchPos: {x: 110.609985, y: 16.130005}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 107.609985, y: 4.130005}
+    flightTime: 1.5199991
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 50
@@ -2703,17 +2710,17 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 50
-    toSeg: 9
-    fromMin: 56
-    fromMax: 56
-    toMin: 58
-    toMax: 58
+    toSeg: 8
+    fromMin: -14
+    fromMax: -14
+    toMin: -16
+    toMax: -16
     moveType: 1
     requiredAbilities: 0
     costFp: 128
-    launchPos: {x: 62.609985, y: -0.8699951}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 63.609985, y: -1.8699951}
+    launchPos: {x: -9.389999, y: -0.8699951}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: -10.389999, y: -1.8699951}
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
@@ -2733,22 +2740,37 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 50
-    toSeg: 8
-    fromMin: -14
-    fromMax: -14
-    toMin: -16
-    toMax: -16
+    toSeg: 9
+    fromMin: 56
+    fromMax: 56
+    toMin: 58
+    toMax: 58
     moveType: 1
     requiredAbilities: 0
     costFp: 128
-    launchPos: {x: -9.389999, y: -0.8699951}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: -10.389999, y: -1.8699951}
+    launchPos: {x: 62.609985, y: -0.8699951}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 63.609985, y: -1.8699951}
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 51
-    toSeg: 105
+    toSeg: 104
+    fromMin: 85
+    fromMax: 85
+    toMin: 83
+    toMax: 83
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 280
+    launchPos: {x: 89.609985, y: -0.8699951}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 88.609985, y: -3.869995}
+    flightTime: 0.69999987
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 51
+    toSeg: 106
     fromMin: 106
     fromMax: 106
     toMin: 103
@@ -2763,52 +2785,7 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 51
-    toSeg: 104
-    fromMin: 97
-    fromMax: 97
-    toMin: 95
-    toMax: 95
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 3066
-    launchPos: {x: 102.609985, y: -0.8699951}
-    launchVelocity: {x: -1.3048389, y: 10.925879}
-    landPos: {x: 100.609985, y: 4.130005}
-    flightTime: 1.5327563
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 51
-    toSeg: 105
-    fromMin: 97
-    fromMax: 97
-    toMin: 99
-    toMax: 99
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 3066
-    launchPos: {x: 102.609985, y: -0.8699951}
-    launchVelocity: {x: 1.3048389, y: 10.925879}
-    landPos: {x: 104.609985, y: 4.130005}
-    flightTime: 1.5327563
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 51
-    toSeg: 105
-    fromMin: 105
-    fromMax: 105
-    toMin: 103
-    toMax: 103
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 3066
-    launchPos: {x: 110.609985, y: -0.8699951}
-    launchVelocity: {x: -1.3048389, y: 10.925879}
-    landPos: {x: 108.609985, y: 4.130005}
-    flightTime: 1.5327563
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 51
-    toSeg: 115
+    toSeg: 116
     fromMin: 105
     fromMax: 105
     toMin: 107
@@ -2823,22 +2800,52 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 51
-    toSeg: 103
-    fromMin: 85
-    fromMax: 85
-    toMin: 83
-    toMax: 83
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 280
-    launchPos: {x: 89.609985, y: -0.8699951}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 88.609985, y: -3.869995}
-    flightTime: 0.69999987
+    toSeg: 105
+    fromMin: 97
+    fromMax: 97
+    toMin: 95
+    toMax: 95
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 3066
+    launchPos: {x: 102.609985, y: -0.8699951}
+    launchVelocity: {x: -1.3048389, y: 10.925879}
+    landPos: {x: 100.609985, y: 4.130005}
+    flightTime: 1.5327563
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 51
+    toSeg: 106
+    fromMin: 97
+    fromMax: 97
+    toMin: 99
+    toMax: 99
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 3066
+    launchPos: {x: 102.609985, y: -0.8699951}
+    launchVelocity: {x: 1.3048389, y: 10.925879}
+    landPos: {x: 104.609985, y: 4.130005}
+    flightTime: 1.5327563
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 51
+    toSeg: 106
+    fromMin: 105
+    fromMax: 105
+    toMin: 103
+    toMax: 103
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 3066
+    launchPos: {x: 110.609985, y: -0.8699951}
+    launchVelocity: {x: -1.3048389, y: 10.925879}
+    landPos: {x: 108.609985, y: 4.130005}
+    flightTime: 1.5327563
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 52
-    toSeg: 118
+    toSeg: 119
     fromMin: 144
     fromMax: 144
     toMin: 142
@@ -2928,18 +2935,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 57
-    toSeg: 65
+    toSeg: 60
     fromMin: 47
     fromMax: 47
-    toMin: 52
-    toMax: 52
+    toMin: 45
+    toMax: 45
     moveType: 0
     requiredAbilities: 1
-    costFp: 1830
+    costFp: 1337
     launchPos: {x: 52.609985, y: -9.869994}
-    launchVelocity: {x: 5.465453, y: 6.7603674}
-    landPos: {x: 57.609985, y: -7.869994}
-    flightTime: 0.91483724
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: 50.609985, y: -8.869994}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 57
@@ -2958,18 +2965,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 57
-    toSeg: 60
+    toSeg: 65
     fromMin: 47
     fromMax: 47
-    toMin: 45
-    toMax: 45
+    toMin: 52
+    toMax: 52
     moveType: 0
     requiredAbilities: 1
-    costFp: 1337
+    costFp: 1830
     launchPos: {x: 52.609985, y: -9.869994}
-    launchVelocity: {x: -2.9906974, y: 4.8390503}
-    landPos: {x: 50.609985, y: -8.869994}
-    flightTime: 0.66874033
+    launchVelocity: {x: 5.465453, y: 6.7603674}
+    landPos: {x: 57.609985, y: -7.869994}
+    flightTime: 0.91483724
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 57
@@ -3008,6 +3015,21 @@ MonoBehaviour:
     fromMax: -1
     toMin: -3
     toMax: -3
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 3.6100006, y: -22.869995}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 2.6100006, y: -23.869995}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 58
+    toSeg: 55
+    fromMin: -1
+    fromMax: -1
+    toMin: -3
+    toMax: -3
     moveType: 0
     requiredAbilities: 1
     costFp: 1337
@@ -3032,21 +3054,6 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 58
-    toSeg: 55
-    fromMin: -1
-    fromMax: -1
-    toMin: -3
-    toMax: -3
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 3.6100006, y: -22.869995}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 2.6100006, y: -23.869995}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
   - fromSeg: 59
     toSeg: 56
     fromMin: 3
@@ -3060,21 +3067,6 @@ MonoBehaviour:
     launchVelocity: {x: -0, y: -0}
     landPos: {x: 7.6100006, y: -9.869994}
     flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 60
-    toSeg: 57
-    fromMin: 44
-    fromMax: 44
-    toMin: 47
-    toMax: 47
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1591
-    launchPos: {x: 49.609985, y: -8.869994}
-    launchVelocity: {x: 3.7723002, y: 2.7189202}
-    landPos: {x: 52.609985, y: -9.869994}
-    flightTime: 0.79527074
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 60
@@ -3124,6 +3116,21 @@ MonoBehaviour:
     gravityStrength: 10
   - fromSeg: 60
     toSeg: 57
+    fromMin: 44
+    fromMax: 44
+    toMin: 47
+    toMax: 47
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1591
+    launchPos: {x: 49.609985, y: -8.869994}
+    launchVelocity: {x: 3.7723002, y: 2.7189202}
+    landPos: {x: 52.609985, y: -9.869994}
+    flightTime: 0.79527074
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 60
+    toSeg: 57
     fromMin: 45
     fromMax: 45
     toMin: 47
@@ -3149,6 +3156,21 @@ MonoBehaviour:
     launchPos: {x: 50.609985, y: -8.869994}
     launchVelocity: {x: 5.4772253, y: 5.477226}
     landPos: {x: 56.609985, y: -8.869994}
+    flightTime: 1.0954452
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 61
+    toSeg: 60
+    fromMin: 51
+    fromMax: 51
+    toMin: 45
+    toMax: 45
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2191
+    launchPos: {x: 56.609985, y: -8.869994}
+    launchVelocity: {x: -5.4772253, y: 5.477226}
+    landPos: {x: 50.609985, y: -8.869994}
     flightTime: 1.0954452
     linkGravity: 1
     gravityStrength: 10
@@ -3182,36 +3204,6 @@ MonoBehaviour:
     flightTime: 0.93999964
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 61
-    toSeg: 60
-    fromMin: 51
-    fromMax: 51
-    toMin: 45
-    toMax: 45
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2191
-    launchPos: {x: 56.609985, y: -8.869994}
-    launchVelocity: {x: -5.4772253, y: 5.477226}
-    landPos: {x: 50.609985, y: -8.869994}
-    flightTime: 1.0954452
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 62
-    toSeg: 58
-    fromMin: 9
-    fromMax: 9
-    toMin: 7
-    toMax: 7
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 14.610001, y: -21.869995}
-    launchVelocity: {x: -2.9906974, y: 1.8483529}
-    landPos: {x: 12.610001, y: -22.869995}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
   - fromSeg: 62
     toSeg: 58
     fromMin: 9
@@ -3225,21 +3217,6 @@ MonoBehaviour:
     launchVelocity: {x: -2, y: -0}
     landPos: {x: 12.610001, y: -22.869995}
     flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 62
-    toSeg: 79
-    fromMin: 19
-    fromMax: 19
-    toMin: 22
-    toMax: 22
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2501
-    launchPos: {x: 24.61, y: -21.869995}
-    launchVelocity: {x: 2.3986464, y: 8.652174}
-    landPos: {x: 27.61, y: -18.869995}
-    flightTime: 1.2507055
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 62
@@ -3272,6 +3249,36 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
+  - fromSeg: 62
+    toSeg: 79
+    fromMin: 19
+    fromMax: 19
+    toMin: 22
+    toMax: 22
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2501
+    launchPos: {x: 24.61, y: -21.869995}
+    launchVelocity: {x: 2.3986464, y: 8.652174}
+    landPos: {x: 27.61, y: -18.869995}
+    flightTime: 1.2507055
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 62
+    toSeg: 58
+    fromMin: 9
+    fromMax: 9
+    toMin: 7
+    toMax: 7
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 14.610001, y: -21.869995}
+    launchVelocity: {x: -2.9906974, y: 1.8483529}
+    landPos: {x: 12.610001, y: -22.869995}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
   - fromSeg: 63
     toSeg: 59
     fromMin: 9
@@ -3285,21 +3292,6 @@ MonoBehaviour:
     launchVelocity: {x: -2, y: -0}
     landPos: {x: 12.610001, y: -8.869994}
     flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 64
-    toSeg: 69
-    fromMin: 41
-    fromMax: 41
-    toMin: 39
-    toMax: 39
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 46.61, y: -7.869994}
-    launchVelocity: {x: -2.9906974, y: 4.8390503}
-    landPos: {x: 44.61, y: -6.869994}
-    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 64
@@ -3345,6 +3337,21 @@ MonoBehaviour:
     launchVelocity: {x: 5.2563863, y: 2.6535442}
     landPos: {x: 52.609985, y: -9.869994}
     flightTime: 0.951221
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 64
+    toSeg: 69
+    fromMin: 41
+    fromMax: 41
+    toMin: 39
+    toMax: 39
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 46.61, y: -7.869994}
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: 44.61, y: -6.869994}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 64
@@ -3438,21 +3445,6 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 66
-    toSeg: 65
-    fromMin: 58
-    fromMax: 58
-    toMin: 54
-    toMax: 54
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1789
-    launchPos: {x: 63.609985, y: -7.869994}
-    launchVelocity: {x: -4.472136, y: 4.472136}
-    landPos: {x: 59.609985, y: -7.869994}
-    flightTime: 0.8944272
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 66
     toSeg: 32
     fromMin: 58
     fromMax: 58
@@ -3468,18 +3460,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 66
-    toSeg: 70
-    fromMin: 59
-    fromMax: 59
-    toMin: 61
-    toMax: 61
+    toSeg: 65
+    fromMin: 58
+    fromMax: 58
+    toMin: 54
+    toMax: 54
     moveType: 0
     requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 64.609985, y: -7.869994}
-    launchVelocity: {x: 2.9906974, y: 4.8390503}
-    landPos: {x: 66.609985, y: -6.869994}
-    flightTime: 0.66874033
+    costFp: 1789
+    launchPos: {x: 63.609985, y: -7.869994}
+    launchVelocity: {x: -4.472136, y: 4.472136}
+    landPos: {x: 59.609985, y: -7.869994}
+    flightTime: 0.8944272
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 66
@@ -3495,6 +3487,21 @@ MonoBehaviour:
     launchVelocity: {x: -5, y: 5}
     landPos: {x: 59.609985, y: -7.869994}
     flightTime: 1
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 66
+    toSeg: 70
+    fromMin: 59
+    fromMax: 59
+    toMin: 61
+    toMax: 61
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 64.609985, y: -7.869994}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: 66.609985, y: -6.869994}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 67
@@ -3528,21 +3535,6 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 69
-    toSeg: 77
-    fromMin: 30
-    fromMax: 30
-    toMin: 28
-    toMax: 28
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 35.61, y: -6.869994}
-    launchVelocity: {x: -2.9906974, y: 4.8390503}
-    landPos: {x: 33.61, y: -5.869994}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 69
     toSeg: 64
     fromMin: 39
     fromMax: 39
@@ -3573,21 +3565,6 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 70
-    toSeg: 103
-    fromMin: 72
-    fromMax: 72
-    toMin: 74
-    toMax: 74
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2450
-    launchPos: {x: 77.609985, y: -6.869994}
-    launchVelocity: {x: 1.632691, y: 8.573894}
-    landPos: {x: 79.609985, y: -3.869995}
-    flightTime: 1.2249715
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 70
     toSeg: 66
     fromMin: 61
     fromMax: 61
@@ -3600,6 +3577,21 @@ MonoBehaviour:
     launchVelocity: {x: -2.9906974, y: 1.8483529}
     landPos: {x: 64.609985, y: -7.869994}
     flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 70
+    toSeg: 9
+    fromMin: 67
+    fromMax: 67
+    toMin: 65
+    toMax: 65
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 3066
+    launchPos: {x: 72.609985, y: -6.869994}
+    launchVelocity: {x: -1.3048389, y: 10.925879}
+    landPos: {x: 70.609985, y: -1.8699951}
+    flightTime: 1.5327563
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 70
@@ -3618,18 +3610,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 70
-    toSeg: 9
-    fromMin: 67
-    fromMax: 67
-    toMin: 65
-    toMax: 65
+    toSeg: 104
+    fromMin: 72
+    fromMax: 72
+    toMin: 74
+    toMax: 74
     moveType: 0
     requiredAbilities: 1
-    costFp: 3066
-    launchPos: {x: 72.609985, y: -6.869994}
-    launchVelocity: {x: -1.3048389, y: 10.925879}
-    landPos: {x: 70.609985, y: -1.8699951}
-    flightTime: 1.5327563
+    costFp: 2450
+    launchPos: {x: 77.609985, y: -6.869994}
+    launchVelocity: {x: 1.632691, y: 8.573894}
+    landPos: {x: 79.609985, y: -3.869995}
+    flightTime: 1.2249715
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 71
@@ -3693,7 +3685,7 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 74
-    toSeg: 119
+    toSeg: 120
     fromMin: 143
     fromMax: 143
     toMin: 144
@@ -3705,21 +3697,6 @@ MonoBehaviour:
     launchVelocity: {x: 0, y: 0}
     landPos: {x: 149.60999, y: 22.130005}
     flightTime: 0.69999987
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 75
-    toSeg: 72
-    fromMin: 16
-    fromMax: 16
-    toMin: 14
-    toMax: 14
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 21.61, y: 24.130005}
-    launchVelocity: {x: -2.9906974, y: 4.8390503}
-    landPos: {x: 19.61, y: 25.130005}
-    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 75
@@ -3735,6 +3712,21 @@ MonoBehaviour:
     launchVelocity: {x: 2, y: 0}
     landPos: {x: 24.61, y: 16.130005}
     flightTime: 1.2199994
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 75
+    toSeg: 72
+    fromMin: 16
+    fromMax: 16
+    toMin: 14
+    toMax: 14
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 21.61, y: 24.130005}
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: 19.61, y: 25.130005}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 76
@@ -3753,36 +3745,6 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 77
-    toSeg: 69
-    fromMin: 28
-    fromMax: 28
-    toMin: 30
-    toMax: 30
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 34.61, y: -5.869994}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 35.61, y: -6.869994}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 77
-    toSeg: 69
-    fromMin: 28
-    fromMax: 28
-    toMin: 30
-    toMax: 30
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 33.61, y: -5.869994}
-    launchVelocity: {x: 2.9906974, y: 1.8483529}
-    landPos: {x: 35.61, y: -6.869994}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 77
     toSeg: 80
     fromMin: 25
     fromMax: 25
@@ -3798,18 +3760,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 77
-    toSeg: 69
+    toSeg: 81
     fromMin: 25
     fromMax: 25
-    toMin: 30
-    toMax: 30
+    toMin: 27
+    toMax: 27
     moveType: 0
     requiredAbilities: 1
-    costFp: 2020
+    costFp: 1337
     launchPos: {x: 30.61, y: -5.869994}
-    launchVelocity: {x: 4.951214, y: 4.059024}
-    landPos: {x: 35.61, y: -6.869994}
-    flightTime: 1.0098534
+    launchVelocity: {x: 2.9906976, y: 4.839049}
+    landPos: {x: 32.61, y: -4.869995}
+    flightTime: 0.6687403
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 78
@@ -3843,22 +3805,22 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 79
-    toSeg: 31
-    fromMin: 32
-    fromMax: 32
-    toMin: 29
-    toMax: 29
+    toSeg: 28
+    fromMin: 30
+    fromMax: 30
+    toMin: 34
+    toMax: 34
     moveType: 0
     requiredAbilities: 1
-    costFp: 2468
-    launchPos: {x: 37.61, y: -18.869995}
-    launchVelocity: {x: -2.4308476, y: 10.222101}
-    landPos: {x: 34.61, y: -13.869994}
-    flightTime: 1.2341374
+    costFp: 2127
+    launchPos: {x: 35.61, y: -18.869995}
+    launchVelocity: {x: 3.760603, y: 9.078899}
+    landPos: {x: 39.61, y: -14.869994}
+    flightTime: 1.0636592
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 79
-    toSeg: 87
+    toSeg: 88
     fromMin: 31
     fromMax: 31
     toMin: 33
@@ -3918,48 +3880,18 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 79
-    toSeg: 28
-    fromMin: 30
-    fromMax: 30
-    toMin: 34
-    toMax: 34
+    toSeg: 31
+    fromMin: 32
+    fromMax: 32
+    toMin: 29
+    toMax: 29
     moveType: 0
     requiredAbilities: 1
-    costFp: 2127
-    launchPos: {x: 35.61, y: -18.869995}
-    launchVelocity: {x: 3.760603, y: 9.078899}
-    landPos: {x: 39.61, y: -14.869994}
-    flightTime: 1.0636592
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 80
-    toSeg: 77
-    fromMin: 23
-    fromMax: 23
-    toMin: 25
-    toMax: 25
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 29.61, y: -4.869995}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 30.61, y: -5.869994}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 80
-    toSeg: 76
-    fromMin: 22
-    fromMax: 22
-    toMin: 20
-    toMax: 20
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 26.61, y: -4.869995}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 25.61, y: -5.869994}
-    flightTime: 0.32
+    costFp: 2468
+    launchPos: {x: 37.61, y: -18.869995}
+    launchVelocity: {x: -2.4308476, y: 10.222101}
+    landPos: {x: 34.61, y: -13.869994}
+    flightTime: 1.2341374
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 80
@@ -3977,8 +3909,113 @@ MonoBehaviour:
     flightTime: 0.6687403
     linkGravity: 1
     gravityStrength: 10
+  - fromSeg: 80
+    toSeg: 81
+    fromMin: 23
+    fromMax: 23
+    toMin: 27
+    toMax: 27
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1789
+    launchPos: {x: 28.61, y: -4.869995}
+    launchVelocity: {x: 4.472136, y: 4.472136}
+    landPos: {x: 32.61, y: -4.869995}
+    flightTime: 0.8944272
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 80
+    toSeg: 77
+    fromMin: 23
+    fromMax: 23
+    toMin: 25
+    toMax: 25
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 29.61, y: -4.869995}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 30.61, y: -5.869994}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
   - fromSeg: 81
-    toSeg: 83
+    toSeg: 69
+    fromMin: 28
+    fromMax: 28
+    toMin: 30
+    toMax: 30
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 216
+    launchPos: {x: 34.61, y: -4.869995}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 35.61, y: -6.869994}
+    flightTime: 0.54
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 81
+    toSeg: 77
+    fromMin: 27
+    fromMax: 27
+    toMin: 25
+    toMax: 25
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 31.61, y: -4.869995}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 30.61, y: -5.869994}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 81
+    toSeg: 80
+    fromMin: 27
+    fromMax: 27
+    toMin: 23
+    toMax: 23
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1789
+    launchPos: {x: 32.61, y: -4.869995}
+    launchVelocity: {x: -4.472136, y: 4.472136}
+    landPos: {x: 28.61, y: -4.869995}
+    flightTime: 0.8944272
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 81
+    toSeg: 77
+    fromMin: 27
+    fromMax: 27
+    toMin: 25
+    toMax: 25
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 32.61, y: -4.869995}
+    launchVelocity: {x: -2.9906976, y: 1.848354}
+    landPos: {x: 30.61, y: -5.869994}
+    flightTime: 0.6687403
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 81
+    toSeg: 69
+    fromMin: 28
+    fromMax: 28
+    toMin: 31
+    toMax: 31
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1698
+    launchPos: {x: 33.61, y: -4.869995}
+    launchVelocity: {x: 3.534206, y: 1.888099}
+    landPos: {x: 36.61, y: -6.869994}
+    flightTime: 0.848847
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 82
+    toSeg: 84
     fromMin: 28
     fromMax: 28
     toMin: 29
@@ -3992,7 +4029,7 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 81
+  - fromSeg: 82
     toSeg: 48
     fromMin: 27
     fromMax: 27
@@ -4007,8 +4044,8 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 82
-    toSeg: 84
+  - fromSeg: 83
+    toSeg: 85
     fromMin: 129
     fromMax: 129
     toMin: 130
@@ -4022,22 +4059,7 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 82
-    toSeg: 86
-    fromMin: 129
-    fromMax: 129
-    toMin: 132
-    toMax: 132
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1698
-    launchPos: {x: 134.60999, y: 15.130005}
-    launchVelocity: {x: 3.534206, y: 1.8880978}
-    landPos: {x: 137.60999, y: 13.130005}
-    flightTime: 0.848847
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 82
+  - fromSeg: 83
     toSeg: 49
     fromMin: 119
     fromMax: 119
@@ -4053,7 +4075,22 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 83
-    toSeg: 85
+    toSeg: 87
+    fromMin: 129
+    fromMax: 129
+    toMin: 132
+    toMax: 132
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1698
+    launchPos: {x: 134.60999, y: 15.130005}
+    launchVelocity: {x: 3.534206, y: 1.8880978}
+    landPos: {x: 137.60999, y: 13.130005}
+    flightTime: 0.848847
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 84
+    toSeg: 86
     fromMin: 29
     fromMax: 29
     toMin: 30
@@ -4067,8 +4104,8 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 84
-    toSeg: 86
+  - fromSeg: 85
+    toSeg: 87
     fromMin: 130
     fromMax: 130
     toMin: 132
@@ -4082,8 +4119,8 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 84
-    toSeg: 86
+  - fromSeg: 85
+    toSeg: 87
     fromMin: 130
     fromMax: 130
     toMin: 132
@@ -4097,7 +4134,7 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 85
+  - fromSeg: 86
     toSeg: 50
     fromMin: 30
     fromMax: 30
@@ -4112,8 +4149,8 @@ MonoBehaviour:
     flightTime: 1.639999
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 86
-    toSeg: 84
+  - fromSeg: 87
+    toSeg: 85
     fromMin: 132
     fromMax: 132
     toMin: 130
@@ -4127,38 +4164,8 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 86
-    toSeg: 84
-    fromMin: 133
-    fromMax: 133
-    toMin: 130
-    toMax: 130
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1562
-    launchPos: {x: 138.60999, y: 13.130005}
-    launchVelocity: {x: -3.841048, y: 5.1855335}
-    landPos: {x: 135.60999, y: 14.130005}
-    flightTime: 0.78103685
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 86
-    toSeg: 82
-    fromMin: 132
-    fromMax: 132
-    toMin: 129
-    toMax: 129
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1592
-    launchPos: {x: 137.60999, y: 13.130005}
-    launchVelocity: {x: -3.767723, y: 6.493}
-    landPos: {x: 134.60999, y: 15.130005}
-    flightTime: 0.7962369
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 86
-    toSeg: 82
+  - fromSeg: 87
+    toSeg: 83
     fromMin: 133
     fromMax: 133
     toMin: 129
@@ -4172,23 +4179,8 @@ MonoBehaviour:
     flightTime: 0.85373515
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 86
-    toSeg: 92
-    fromMin: 134
-    fromMax: 134
-    toMin: 136
-    toMax: 136
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 280
-    launchPos: {x: 140.60999, y: 13.130005}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 141.60999, y: 10.130005}
-    flightTime: 0.69999987
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 86
-    toSeg: 114
+  - fromSeg: 87
+    toSeg: 115
     fromMin: 134
     fromMax: 134
     toMin: 135
@@ -4203,6 +4195,51 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 87
+    toSeg: 83
+    fromMin: 132
+    fromMax: 132
+    toMin: 129
+    toMax: 129
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1592
+    launchPos: {x: 137.60999, y: 13.130005}
+    launchVelocity: {x: -3.767723, y: 6.493}
+    landPos: {x: 134.60999, y: 15.130005}
+    flightTime: 0.7962369
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 87
+    toSeg: 93
+    fromMin: 134
+    fromMax: 134
+    toMin: 136
+    toMax: 136
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 280
+    launchPos: {x: 140.60999, y: 13.130005}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 141.60999, y: 10.130005}
+    flightTime: 0.69999987
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 87
+    toSeg: 85
+    fromMin: 133
+    fromMax: 133
+    toMin: 130
+    toMax: 130
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1562
+    launchPos: {x: 138.60999, y: 13.130005}
+    launchVelocity: {x: -3.841048, y: 5.1855335}
+    landPos: {x: 135.60999, y: 14.130005}
+    flightTime: 0.78103685
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 88
     toSeg: 31
     fromMin: 33
     fromMax: 33
@@ -4217,22 +4254,7 @@ MonoBehaviour:
     flightTime: 1.0636592
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 87
-    toSeg: 79
-    fromMin: 33
-    fromMax: 33
-    toMin: 31
-    toMax: 31
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 37.61, y: -17.869995}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 36.61, y: -18.869995}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 87
+  - fromSeg: 88
     toSeg: 79
     fromMin: 33
     fromMax: 33
@@ -4248,6 +4270,21 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 88
+    toSeg: 79
+    fromMin: 33
+    fromMax: 33
+    toMin: 31
+    toMax: 31
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 37.61, y: -17.869995}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 36.61, y: -18.869995}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 89
     toSeg: 7
     fromMin: 128
     fromMax: 128
@@ -4262,7 +4299,7 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 89
+  - fromSeg: 90
     toSeg: 50
     fromMin: 37
     fromMax: 37
@@ -4277,8 +4314,8 @@ MonoBehaviour:
     flightTime: 1.4399992
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 89
-    toSeg: 90
+  - fromSeg: 90
+    toSeg: 91
     fromMin: 39
     fromMax: 39
     toMin: 45
@@ -4292,8 +4329,8 @@ MonoBehaviour:
     flightTime: 0.5117692
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 89
-    toSeg: 94
+  - fromSeg: 90
+    toSeg: 95
     fromMin: 39
     fromMax: 39
     toMin: 43
@@ -4307,8 +4344,8 @@ MonoBehaviour:
     flightTime: 0.86628735
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 89
-    toSeg: 94
+  - fromSeg: 90
+    toSeg: 95
     fromMin: 38
     fromMax: 38
     toMin: 43
@@ -4322,8 +4359,8 @@ MonoBehaviour:
     flightTime: 0.92427903
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 89
-    toSeg: 95
+  - fromSeg: 90
+    toSeg: 96
     fromMin: 39
     fromMax: 39
     toMin: 42
@@ -4337,8 +4374,8 @@ MonoBehaviour:
     flightTime: 0.848847
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 89
-    toSeg: 95
+  - fromSeg: 90
+    toSeg: 96
     fromMin: 38
     fromMax: 38
     toMin: 42
@@ -4352,8 +4389,8 @@ MonoBehaviour:
     flightTime: 0.89864534
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 89
-    toSeg: 93
+  - fromSeg: 90
+    toSeg: 94
     fromMin: 39
     fromMax: 39
     toMin: 40
@@ -4367,83 +4404,8 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 90
-    toSeg: 94
-    fromMin: 45
-    fromMax: 45
-    toMin: 43
-    toMax: 43
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 49.609985, y: 10.130005}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 48.61, y: 9.130005}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 90
-    toSeg: 96
-    fromMin: 51
-    fromMax: 51
-    toMin: 53
-    toMax: 53
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 216
-    launchPos: {x: 57.609985, y: 10.130005}
-    launchVelocity: {x: 1.6, y: 0}
-    landPos: {x: 58.609985, y: 8.130005}
-    flightTime: 0.54
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 90
-    toSeg: 93
-    fromMin: 45
-    fromMax: 45
-    toMin: 40
-    toMax: 40
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1849
-    launchPos: {x: 50.609985, y: 10.130005}
-    launchVelocity: {x: -5.40961, y: 3.539466}
-    landPos: {x: 45.61, y: 9.130005}
-    flightTime: 0.92427826
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 90
-    toSeg: 89
-    fromMin: 45
-    fromMax: 45
-    toMin: 39
-    toMax: 39
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1024
-    launchPos: {x: 50.609985, y: 10.130005}
-    launchVelocity: {x: -11.724006, y: 2.558846}
-    landPos: {x: 44.61, y: 10.130005}
-    flightTime: 0.5117692
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 90
+  - fromSeg: 91
     toSeg: 95
-    fromMin: 45
-    fromMax: 45
-    toMin: 41
-    toMax: 41
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1797
-    launchPos: {x: 50.609985, y: 10.130005}
-    launchVelocity: {x: -4.4511304, y: 2.2676494}
-    landPos: {x: 46.61, y: 8.130005}
-    flightTime: 0.8986447
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 90
-    toSeg: 94
     fromMin: 45
     fromMax: 45
     toMin: 43
@@ -4459,6 +4421,81 @@ MonoBehaviour:
     gravityStrength: 10
   - fromSeg: 91
     toSeg: 96
+    fromMin: 45
+    fromMax: 45
+    toMin: 41
+    toMax: 41
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1797
+    launchPos: {x: 50.609985, y: 10.130005}
+    launchVelocity: {x: -4.4511304, y: 2.2676494}
+    landPos: {x: 46.61, y: 8.130005}
+    flightTime: 0.8986447
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 91
+    toSeg: 90
+    fromMin: 45
+    fromMax: 45
+    toMin: 39
+    toMax: 39
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1024
+    launchPos: {x: 50.609985, y: 10.130005}
+    launchVelocity: {x: -11.724006, y: 2.558846}
+    landPos: {x: 44.61, y: 10.130005}
+    flightTime: 0.5117692
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 91
+    toSeg: 95
+    fromMin: 45
+    fromMax: 45
+    toMin: 43
+    toMax: 43
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 49.609985, y: 10.130005}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 48.61, y: 9.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 91
+    toSeg: 97
+    fromMin: 51
+    fromMax: 51
+    toMin: 53
+    toMax: 53
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 216
+    launchPos: {x: 57.609985, y: 10.130005}
+    launchVelocity: {x: 1.6, y: 0}
+    landPos: {x: 58.609985, y: 8.130005}
+    flightTime: 0.54
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 91
+    toSeg: 94
+    fromMin: 45
+    fromMax: 45
+    toMin: 40
+    toMax: 40
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1849
+    launchPos: {x: 50.609985, y: 10.130005}
+    launchVelocity: {x: -5.40961, y: 3.539466}
+    landPos: {x: 45.61, y: 9.130005}
+    flightTime: 0.92427826
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 92
+    toSeg: 97
     fromMin: 54
     fromMax: 54
     toMin: 53
@@ -4472,82 +4509,7 @@ MonoBehaviour:
     flightTime: 0.54
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 92
-    toSeg: 114
-    fromMin: 137
-    fromMax: 137
-    toMin: 135
-    toMax: 135
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 142.60999, y: 10.130005}
-    launchVelocity: {x: -2.9906974, y: 4.8390503}
-    landPos: {x: 140.60999, y: 11.130005}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 92
-    toSeg: 114
-    fromMin: 140
-    fromMax: 140
-    toMin: 135
-    toMax: 135
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1809
-    launchPos: {x: 145.60999, y: 10.130005}
-    launchVelocity: {x: -5.527534, y: 5.6283193}
-    landPos: {x: 140.60999, y: 11.130005}
-    flightTime: 0.9045625
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 92
-    toSeg: 86
-    fromMin: 137
-    fromMax: 137
-    toMin: 132
-    toMax: 132
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2625
-    launchPos: {x: 142.60999, y: 10.130005}
-    launchVelocity: {x: -3.8090384, y: 8.84876}
-    landPos: {x: 137.60999, y: 13.130005}
-    flightTime: 1.3126673
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 92
-    toSeg: 86
-    fromMin: 137
-    fromMax: 137
-    toMin: 134
-    toMax: 134
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2501
-    launchPos: {x: 142.60999, y: 10.130005}
-    launchVelocity: {x: -2.3986464, y: 8.652174}
-    landPos: {x: 139.60999, y: 13.130005}
-    flightTime: 1.2507055
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 92
-    toSeg: 86
-    fromMin: 138
-    fromMax: 138
-    toMin: 134
-    toMax: 134
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1880
-    launchPos: {x: 143.60999, y: 10.130005}
-    launchVelocity: {x: -4.2558327, y: 7.8913074}
-    landPos: {x: 139.60999, y: 13.130005}
-    flightTime: 0.93988657
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 92
+  - fromSeg: 93
     toSeg: 52
     fromMin: 141
     fromMax: 141
@@ -4562,8 +4524,83 @@ MonoBehaviour:
     flightTime: 1.4399992
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 92
-    toSeg: 118
+  - fromSeg: 93
+    toSeg: 87
+    fromMin: 137
+    fromMax: 137
+    toMin: 132
+    toMax: 132
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2625
+    launchPos: {x: 142.60999, y: 10.130005}
+    launchVelocity: {x: -3.8090384, y: 8.84876}
+    landPos: {x: 137.60999, y: 13.130005}
+    flightTime: 1.3126673
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 93
+    toSeg: 87
+    fromMin: 138
+    fromMax: 138
+    toMin: 134
+    toMax: 134
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1880
+    launchPos: {x: 143.60999, y: 10.130005}
+    launchVelocity: {x: -4.2558327, y: 7.8913074}
+    landPos: {x: 139.60999, y: 13.130005}
+    flightTime: 0.93988657
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 93
+    toSeg: 115
+    fromMin: 140
+    fromMax: 140
+    toMin: 135
+    toMax: 135
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1809
+    launchPos: {x: 145.60999, y: 10.130005}
+    launchVelocity: {x: -5.527534, y: 5.6283193}
+    landPos: {x: 140.60999, y: 11.130005}
+    flightTime: 0.9045625
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 93
+    toSeg: 115
+    fromMin: 137
+    fromMax: 137
+    toMin: 135
+    toMax: 135
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 142.60999, y: 10.130005}
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: 140.60999, y: 11.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 93
+    toSeg: 87
+    fromMin: 137
+    fromMax: 137
+    toMin: 134
+    toMax: 134
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2501
+    launchPos: {x: 142.60999, y: 10.130005}
+    launchVelocity: {x: -2.3986464, y: 8.652174}
+    landPos: {x: 139.60999, y: 13.130005}
+    flightTime: 1.2507055
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 93
+    toSeg: 119
     fromMin: 141
     fromMax: 141
     toMin: 142
@@ -4577,53 +4614,8 @@ MonoBehaviour:
     flightTime: 1.3799993
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 93
-    toSeg: 90
-    fromMin: 40
-    fromMax: 40
-    toMin: 45
-    toMax: 45
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1809
-    launchPos: {x: 45.61, y: 9.130005}
-    launchVelocity: {x: 5.527524, y: 5.6283154}
-    landPos: {x: 50.609985, y: 10.130005}
-    flightTime: 0.9045614
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 93
-    toSeg: 94
-    fromMin: 40
-    fromMax: 40
-    toMin: 43
-    toMax: 43
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1549
-    launchPos: {x: 45.61, y: 9.130005}
-    launchVelocity: {x: 3.8729832, y: 3.8729835}
-    landPos: {x: 48.61, y: 9.130005}
-    flightTime: 0.7745967
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 93
-    toSeg: 95
-    fromMin: 40
-    fromMax: 40
-    toMin: 42
-    toMax: 42
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 45.61, y: 9.130005}
-    launchVelocity: {x: 2.9906974, y: 1.8483529}
-    landPos: {x: 47.61, y: 8.130005}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 93
-    toSeg: 95
+  - fromSeg: 94
+    toSeg: 96
     fromMin: 40
     fromMax: 40
     toMin: 42
@@ -4638,67 +4630,52 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 94
-    toSeg: 90
-    fromMin: 43
-    fromMax: 43
+    toSeg: 91
+    fromMin: 40
+    fromMax: 40
     toMin: 45
     toMax: 45
     moveType: 0
     requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 48.61, y: 9.130005}
-    launchVelocity: {x: 2.990684, y: 4.8390446}
+    costFp: 1809
+    launchPos: {x: 45.61, y: 9.130005}
+    launchVelocity: {x: 5.527524, y: 5.6283154}
     landPos: {x: 50.609985, y: 10.130005}
-    flightTime: 0.66873825
+    flightTime: 0.9045614
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 94
     toSeg: 95
-    fromMin: 43
-    fromMax: 43
-    toMin: 41
-    toMax: 41
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 48.61, y: 9.130005}
-    launchVelocity: {x: -2.9906974, y: 1.8483529}
-    landPos: {x: 46.61, y: 8.130005}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 94
-    toSeg: 93
-    fromMin: 43
-    fromMax: 43
-    toMin: 40
-    toMax: 40
+    fromMin: 40
+    fromMax: 40
+    toMin: 43
+    toMax: 43
     moveType: 0
     requiredAbilities: 1
     costFp: 1549
-    launchPos: {x: 48.61, y: 9.130005}
-    launchVelocity: {x: -3.8729832, y: 3.8729835}
-    landPos: {x: 45.61, y: 9.130005}
+    launchPos: {x: 45.61, y: 9.130005}
+    launchVelocity: {x: 3.8729832, y: 3.8729835}
+    landPos: {x: 48.61, y: 9.130005}
     flightTime: 0.7745967
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 94
-    toSeg: 95
-    fromMin: 43
-    fromMax: 43
-    toMin: 41
-    toMax: 41
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 47.61, y: 9.130005}
-    launchVelocity: {x: -2, y: -0}
-    landPos: {x: 46.61, y: 8.130005}
-    flightTime: 0.32
+    toSeg: 96
+    fromMin: 40
+    fromMax: 40
+    toMin: 42
+    toMax: 42
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 45.61, y: 9.130005}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: 47.61, y: 8.130005}
+    flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 94
-    toSeg: 89
+  - fromSeg: 95
+    toSeg: 90
     fromMin: 43
     fromMax: 43
     toMin: 39
@@ -4713,7 +4690,67 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 95
-    toSeg: 93
+    toSeg: 96
+    fromMin: 43
+    fromMax: 43
+    toMin: 41
+    toMax: 41
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 48.61, y: 9.130005}
+    launchVelocity: {x: -2.9906974, y: 1.8483529}
+    landPos: {x: 46.61, y: 8.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 95
+    toSeg: 91
+    fromMin: 43
+    fromMax: 43
+    toMin: 45
+    toMax: 45
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 48.61, y: 9.130005}
+    launchVelocity: {x: 2.990684, y: 4.8390446}
+    landPos: {x: 50.609985, y: 10.130005}
+    flightTime: 0.66873825
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 95
+    toSeg: 94
+    fromMin: 43
+    fromMax: 43
+    toMin: 40
+    toMax: 40
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1549
+    launchPos: {x: 48.61, y: 9.130005}
+    launchVelocity: {x: -3.8729832, y: 3.8729835}
+    landPos: {x: 45.61, y: 9.130005}
+    flightTime: 0.7745967
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 95
+    toSeg: 96
+    fromMin: 43
+    fromMax: 43
+    toMin: 41
+    toMax: 41
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 47.61, y: 9.130005}
+    launchVelocity: {x: -2, y: -0}
+    landPos: {x: 46.61, y: 8.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 96
+    toSeg: 94
     fromMin: 42
     fromMax: 42
     toMin: 40
@@ -4727,38 +4764,8 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 95
+  - fromSeg: 96
     toSeg: 90
-    fromMin: 41
-    fromMax: 41
-    toMin: 45
-    toMax: 45
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1707
-    launchPos: {x: 46.61, y: 8.130005}
-    launchVelocity: {x: 4.685281, y: 6.6113205}
-    landPos: {x: 50.609985, y: 10.130005}
-    flightTime: 0.85373425
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 95
-    toSeg: 94
-    fromMin: 41
-    fromMax: 41
-    toMin: 43
-    toMax: 43
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 46.61, y: 8.130005}
-    launchVelocity: {x: 2.9906974, y: 4.8390503}
-    landPos: {x: 48.61, y: 9.130005}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 95
-    toSeg: 89
     fromMin: 42
     fromMax: 42
     toMin: 39
@@ -4772,22 +4779,37 @@ MonoBehaviour:
     flightTime: 0.7962369
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 99
-    toSeg: 5
-    fromMin: 69
-    fromMax: 69
-    toMin: 71
-    toMax: 71
+  - fromSeg: 96
+    toSeg: 95
+    fromMin: 41
+    fromMax: 41
+    toMin: 43
+    toMax: 43
     moveType: 0
     requiredAbilities: 1
     costFp: 1337
-    launchPos: {x: 74.609985, y: 20.130005}
-    launchVelocity: {x: 2.9906974, y: 1.8483529}
-    landPos: {x: 76.609985, y: 19.130005}
+    launchPos: {x: 46.61, y: 8.130005}
+    launchVelocity: {x: 2.9906974, y: 4.8390503}
+    landPos: {x: 48.61, y: 9.130005}
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 99
+  - fromSeg: 96
+    toSeg: 91
+    fromMin: 41
+    fromMax: 41
+    toMin: 45
+    toMax: 45
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1707
+    launchPos: {x: 46.61, y: 8.130005}
+    launchVelocity: {x: 4.685281, y: 6.6113205}
+    landPos: {x: 50.609985, y: 10.130005}
+    flightTime: 0.85373425
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 100
     toSeg: 4
     fromMin: 57
     fromMax: 57
@@ -4802,7 +4824,22 @@ MonoBehaviour:
     flightTime: 0.66874033
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 99
+  - fromSeg: 100
+    toSeg: 5
+    fromMin: 69
+    fromMax: 69
+    toMin: 71
+    toMax: 71
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 74.609985, y: 20.130005}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: 76.609985, y: 19.130005}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 100
     toSeg: 5
     fromMin: 69
     fromMax: 69
@@ -4817,7 +4854,7 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 99
+  - fromSeg: 100
     toSeg: 4
     fromMin: 57
     fromMax: 57
@@ -4832,22 +4869,7 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 103
-    toSeg: 51
-    fromMin: 83
-    fromMax: 83
-    toMin: 85
-    toMax: 85
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2450
-    launchPos: {x: 88.609985, y: -3.869995}
-    launchVelocity: {x: 1.6326911, y: 8.573894}
-    landPos: {x: 90.609985, y: -0.8699951}
-    flightTime: 1.2249714
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 103
+  - fromSeg: 104
     toSeg: 70
     fromMin: 74
     fromMax: 74
@@ -4862,7 +4884,22 @@ MonoBehaviour:
     flightTime: 0.69999987
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 103
+  - fromSeg: 104
+    toSeg: 51
+    fromMin: 83
+    fromMax: 83
+    toMin: 85
+    toMax: 85
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2450
+    launchPos: {x: 88.609985, y: -3.869995}
+    launchVelocity: {x: 1.6326911, y: 8.573894}
+    landPos: {x: 90.609985, y: -0.8699951}
+    flightTime: 1.2249714
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 104
     toSeg: 51
     fromMin: 81
     fromMax: 81
@@ -4877,8 +4914,8 @@ MonoBehaviour:
     flightTime: 0.93988657
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 104
-    toSeg: 105
+  - fromSeg: 105
+    toSeg: 106
     fromMin: 95
     fromMax: 95
     toMin: 99
@@ -4892,7 +4929,7 @@ MonoBehaviour:
     flightTime: 0.8944272
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 104
+  - fromSeg: 105
     toSeg: 51
     fromMin: 95
     fromMax: 95
@@ -4907,8 +4944,8 @@ MonoBehaviour:
     flightTime: 0.93999964
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 105
-    toSeg: 104
+  - fromSeg: 106
+    toSeg: 105
     fromMin: 99
     fromMax: 99
     toMin: 95
@@ -4922,7 +4959,7 @@ MonoBehaviour:
     flightTime: 0.8944272
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 105
+  - fromSeg: 106
     toSeg: 51
     fromMin: 103
     fromMax: 103
@@ -4937,7 +4974,7 @@ MonoBehaviour:
     flightTime: 0.93999964
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 105
+  - fromSeg: 106
     toSeg: 51
     fromMin: 99
     fromMax: 99
@@ -4952,8 +4989,8 @@ MonoBehaviour:
     flightTime: 0.93999964
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 107
-    toSeg: 113
+  - fromSeg: 108
+    toSeg: 114
     fromMin: 105
     fromMax: 105
     toMin: 104
@@ -4967,8 +5004,8 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 109
-    toSeg: 112
+  - fromSeg: 110
+    toSeg: 113
     fromMin: 140
     fromMax: 140
     toMin: 138
@@ -4982,8 +5019,8 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 113
-    toSeg: 105
+  - fromSeg: 114
+    toSeg: 106
     fromMin: 104
     fromMax: 104
     toMin: 101
@@ -4997,23 +5034,8 @@ MonoBehaviour:
     flightTime: 1.1399995
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 114
-    toSeg: 92
-    fromMin: 135
-    fromMax: 135
-    toMin: 137
-    toMax: 137
-    moveType: 1
-    requiredAbilities: 0
-    costFp: 128
-    launchPos: {x: 141.60999, y: 11.130005}
-    launchVelocity: {x: 2, y: 0}
-    landPos: {x: 142.60999, y: 10.130005}
-    flightTime: 0.32
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 114
-    toSeg: 92
+  - fromSeg: 115
+    toSeg: 93
     fromMin: 135
     fromMax: 135
     toMin: 137
@@ -5028,6 +5050,21 @@ MonoBehaviour:
     linkGravity: 1
     gravityStrength: 10
   - fromSeg: 115
+    toSeg: 93
+    fromMin: 135
+    fromMax: 135
+    toMin: 137
+    toMax: 137
+    moveType: 1
+    requiredAbilities: 0
+    costFp: 128
+    launchPos: {x: 141.60999, y: 11.130005}
+    launchVelocity: {x: 2, y: 0}
+    landPos: {x: 142.60999, y: 10.130005}
+    flightTime: 0.32
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 116
     toSeg: 51
     fromMin: 107
     fromMax: 107
@@ -5042,23 +5079,8 @@ MonoBehaviour:
     flightTime: 0.54
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 115
-    toSeg: 117
-    fromMin: 109
-    fromMax: 109
-    toMin: 113
-    toMax: 113
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 2127
-    launchPos: {x: 114.609985, y: 1.1300049}
-    launchVelocity: {x: 3.760603, y: 9.078899}
-    landPos: {x: 118.609985, y: 5.130005}
-    flightTime: 1.0636592
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 115
-    toSeg: 105
+  - fromSeg: 116
+    toSeg: 106
     fromMin: 108
     fromMax: 108
     toMin: 103
@@ -5072,8 +5094,23 @@ MonoBehaviour:
     flightTime: 0.9395369
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 115
-    toSeg: 105
+  - fromSeg: 116
+    toSeg: 118
+    fromMin: 109
+    fromMax: 109
+    toMin: 113
+    toMax: 113
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 2127
+    launchPos: {x: 114.609985, y: 1.1300049}
+    launchVelocity: {x: 3.760603, y: 9.078899}
+    landPos: {x: 118.609985, y: 5.130005}
+    flightTime: 1.0636592
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 116
+    toSeg: 106
     fromMin: 107
     fromMax: 107
     toMin: 103
@@ -5087,7 +5124,7 @@ MonoBehaviour:
     flightTime: 0.93988657
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 115
+  - fromSeg: 116
     toSeg: 51
     fromMin: 107
     fromMax: 107
@@ -5102,8 +5139,8 @@ MonoBehaviour:
     flightTime: 0.848847
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 115
-    toSeg: 117
+  - fromSeg: 116
+    toSeg: 118
     fromMin: 111
     fromMax: 111
     toMin: 113
@@ -5117,38 +5154,8 @@ MonoBehaviour:
     flightTime: 1.6044768
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 116
+  - fromSeg: 117
     toSeg: 118
-    fromMin: 127
-    fromMax: 127
-    toMin: 129
-    toMax: 129
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 132.60999, y: 1.1300049}
-    launchVelocity: {x: 2.9906974, y: 1.8483529}
-    landPos: {x: 134.60999, y: 0.13000488}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 116
-    toSeg: 117
-    fromMin: 118
-    fromMax: 118
-    toMin: 116
-    toMax: 116
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 3209
-    launchPos: {x: 123.609985, y: 1.1300049}
-    launchVelocity: {x: -1.2465123, y: 10.5154085}
-    landPos: {x: 121.609985, y: 5.130005}
-    flightTime: 1.6044768
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 116
-    toSeg: 117
     fromMin: 120
     fromMax: 120
     toMin: 116
@@ -5162,8 +5169,38 @@ MonoBehaviour:
     flightTime: 1.0636592
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 116
+  - fromSeg: 117
+    toSeg: 119
+    fromMin: 127
+    fromMax: 127
+    toMin: 129
+    toMax: 129
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 132.60999, y: 1.1300049}
+    launchVelocity: {x: 2.9906974, y: 1.8483529}
+    landPos: {x: 134.60999, y: 0.13000488}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 117
     toSeg: 118
+    fromMin: 118
+    fromMax: 118
+    toMin: 116
+    toMax: 116
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 3209
+    launchPos: {x: 123.609985, y: 1.1300049}
+    launchVelocity: {x: -1.2465123, y: 10.5154085}
+    landPos: {x: 121.609985, y: 5.130005}
+    flightTime: 1.6044768
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 117
+    toSeg: 119
     fromMin: 127
     fromMax: 127
     toMin: 129
@@ -5177,8 +5214,8 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 117
-    toSeg: 116
+  - fromSeg: 118
+    toSeg: 117
     fromMin: 116
     fromMax: 116
     toMin: 119
@@ -5192,8 +5229,8 @@ MonoBehaviour:
     flightTime: 0.83999974
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 117
-    toSeg: 115
+  - fromSeg: 118
+    toSeg: 116
     fromMin: 113
     fromMax: 113
     toMin: 110
@@ -5207,7 +5244,22 @@ MonoBehaviour:
     flightTime: 0.83999974
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 118
+  - fromSeg: 119
+    toSeg: 117
+    fromMin: 129
+    fromMax: 129
+    toMin: 127
+    toMax: 127
+    moveType: 0
+    requiredAbilities: 1
+    costFp: 1337
+    launchPos: {x: 134.60999, y: 0.13000488}
+    launchVelocity: {x: -2.9906974, y: 4.8390503}
+    landPos: {x: 132.60999, y: 1.1300049}
+    flightTime: 0.66874033
+    linkGravity: 1
+    gravityStrength: 10
+  - fromSeg: 119
     toSeg: 52
     fromMin: 142
     fromMax: 142
@@ -5222,22 +5274,7 @@ MonoBehaviour:
     flightTime: 0.32
     linkGravity: 1
     gravityStrength: 10
-  - fromSeg: 118
-    toSeg: 116
-    fromMin: 129
-    fromMax: 129
-    toMin: 127
-    toMax: 127
-    moveType: 0
-    requiredAbilities: 1
-    costFp: 1337
-    launchPos: {x: 134.60999, y: 0.13000488}
-    launchVelocity: {x: -2.9906974, y: 4.8390503}
-    landPos: {x: 132.60999, y: 1.1300049}
-    flightTime: 0.66874033
-    linkGravity: 1
-    gravityStrength: 10
-  - fromSeg: 118
+  - fromSeg: 119
     toSeg: 52
     fromMin: 142
     fromMax: 142
@@ -5257,9 +5294,9 @@ MonoBehaviour:
     binSize: 4
     origin: -69
     binCount: 54
-    first: 0000000004000000070000000a0000000d00000011000000160000001b00000021000000250000002c0000002f00000034000000370000003b0000003e00000043000000480000004c00000050000000560000005d000000620000006a00000070000000780000007d000000830000008b000000930000009c000000a7000000ae000000b3000000b7000000bf000000c8000000cd000000d2000000db000000df000000e5000000ea000000ef000000f6000000f9000000fd0000000201000005010000080100000d010000110100001a01000022010000
-    count: 0400030003000300040005000500060004000700030005000300040003000500050004000400060007000500080006000800050006000800080009000b0007000500040008000900050005000900040006000500050007000300040005000300030005000400090008000400
-    refs: 0000000001000000020000000600000001000000020000000800000002000000080000000a000000080000000a0000000e000000080000000a0000000e00000014000000080000000a00000014000000160000001b000000080000000a000000160000001b0000001e00000003000000080000000a000000160000001e00000021000000030000000800000016000000210000000300000008000000160000002100000023000000250000002a00000003000000080000002a00000003000000080000000b0000002a00000030000000080000002a00000030000000080000002a00000030000000320000000f00000030000000320000000f0000003000000032000000350000003700000030000000320000003600000037000000380000003000000032000000380000003a00000030000000320000003a0000003b00000030000000320000003a0000003b0000003e0000003f00000030000000320000003e0000003f00000043000000470000004800000030000000320000003e000000440000004b00000030000000320000003e000000440000004c0000004e0000004f0000005000000030000000320000004d0000004f00000050000000510000001f00000032000000450000004d0000004f0000005100000053000000550000001c00000032000000450000004f000000570000000c0000001c000000200000003200000045000000590000000c00000020000000320000004000000045000000590000005d0000005f0000000c000000170000002000000032000000390000003c0000005a0000005e000000040000000c00000017000000200000002600000032000000390000005a000000610000000400000010000000200000002b000000320000003d000000410000005a0000005b000000600000006200000004000000090000002000000032000000420000005b0000006300000009000000200000004200000046000000630000000900000020000000460000006300000005000000110000001500000018000000200000002c00000046000000630000000500000019000000200000002700000046000000640000006500000067000000680000000500000020000000280000006700000068000000050000002000000067000000680000006a000000050000000d00000020000000330000006600000067000000680000006a0000006c0000000d0000002000000033000000680000000d000000200000003300000049000000680000006e00000012000000200000002d00000033000000680000001a0000001d000000200000003300000069000000070000001d0000003100000033000000690000006b0000007100000007000000310000007300000007000000310000007300000075000000070000003100000052000000740000007500000007000000520000007400000007000000520000007400000052000000540000005800000074000000760000001300000056000000580000007600000013000000290000002e000000580000005c0000006f00000070000000720000007600000024000000290000002f000000580000005c0000006d000000700000007600000022000000340000004a00000077000000
+    first: 0000000004000000070000000a0000000d00000011000000160000001b00000021000000250000002c0000002f00000034000000370000003b0000003e00000043000000480000004c00000050000000560000005d00000062000000690000006f000000770000007c000000820000008a000000920000009b000000a6000000ad000000b2000000b6000000be000000c7000000cc000000d1000000da000000de000000e4000000e9000000ee000000f5000000f8000000fc0000000101000004010000070100000c010000100100001901000021010000
+    count: 0400030003000300040005000500060004000700030005000300040003000500050004000400060007000500070006000800050006000800080009000b0007000500040008000900050005000900040006000500050007000300040005000300030005000400090008000400
+    refs: 0000000001000000020000000600000001000000020000000800000002000000080000000a000000080000000a0000000e000000080000000a0000000e00000014000000080000000a00000014000000160000001b000000080000000a000000160000001b0000001e00000003000000080000000a000000160000001e00000021000000030000000800000016000000210000000300000008000000160000002100000023000000250000002a00000003000000080000002a00000003000000080000000b0000002a00000030000000080000002a00000030000000080000002a00000030000000320000000f00000030000000320000000f0000003000000032000000350000003700000030000000320000003600000037000000380000003000000032000000380000003a00000030000000320000003a0000003b00000030000000320000003a0000003b0000003e0000003f00000030000000320000003e0000003f00000043000000470000004800000030000000320000003e000000440000004b00000030000000320000003e000000440000004c0000004e0000004f00000030000000320000004d0000004f00000050000000520000001f00000032000000450000004f000000510000005200000054000000560000001c00000032000000450000004f000000580000000c0000001c0000002000000032000000450000005a0000000c000000200000003200000040000000450000005a0000005e000000600000000c000000170000002000000032000000390000003c0000005b0000005f000000040000000c00000017000000200000002600000032000000390000005b000000620000000400000010000000200000002b000000320000003d000000410000005b0000005c000000610000006300000004000000090000002000000032000000420000005c0000006400000009000000200000004200000046000000640000000900000020000000460000006400000005000000110000001500000018000000200000002c00000046000000640000000500000019000000200000002700000046000000650000006600000068000000690000000500000020000000280000006800000069000000050000002000000068000000690000006b000000050000000d00000020000000330000006700000068000000690000006b0000006d0000000d0000002000000033000000690000000d000000200000003300000049000000690000006f00000012000000200000002d00000033000000690000001a0000001d00000020000000330000006a000000070000001d00000031000000330000006a0000006c0000007200000007000000310000007400000007000000310000007400000076000000070000003100000053000000750000007600000007000000530000007500000007000000530000007500000053000000550000005900000075000000770000001300000057000000590000007700000013000000290000002e000000590000005d0000007000000071000000730000007700000024000000290000002f000000590000005d0000006e000000710000007700000022000000340000004a00000078000000
   verticalBins:
     axis: 1
     binSize: 4
