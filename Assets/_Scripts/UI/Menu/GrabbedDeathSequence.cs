@@ -81,7 +81,12 @@ public class GrabbedDeathSequence : MonoBehaviour, ISceneLifecycle
         }
 
         if (!string.IsNullOrEmpty(_nextScene))
-            Utility.SceneLoader.Load(_nextScene);
+        {
+            if (Services.IsRegistered<SceneTransitionManager>())
+                Services.Get<SceneTransitionManager>().TransitionTo(_nextScene);
+            else
+                Utility.SceneLoader.Load(_nextScene);
+        }
         else if (deathMenu != null)
             deathMenu.ShowNow();
     }

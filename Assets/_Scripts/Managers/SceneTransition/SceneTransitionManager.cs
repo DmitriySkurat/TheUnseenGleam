@@ -23,15 +23,24 @@ public class SceneTransitionManager : MonoBehaviour, IService
     /// </summary>
     public void TransitionTo(string targetSceneName)
     {
-        if (Services.IsRegistered<PlayerContext>() && SaveVariables.ActiveSlot >= 0)
+        if (SaveVariables.ActiveSlot >= 0)
         {
-            var ctx = Services.Get<PlayerContext>();
-            var entries = ctx.inventory?.GetEntries();
+            var slot = SaveVariables.ActiveSlot;
 
-            SaveManager.Save(SaveVariables.ActiveSlot, ctx.health.CurrentHealth, ctx.stamina, targetSceneName, entries);
+            if (Services.IsRegistered<PlayerContext>())
+            {
+                var ctx = Services.Get<PlayerContext>();
+                float health = ctx.health?.CurrentHealth ?? 0f;
+                SaveManager.Save(slot, health, ctx.stamina, targetSceneName, ctx.inventory?.GetEntries());
+            }
+            else
+            {
+                // Сцена без игрока (катсцена) — сохраняем существующие статы, обновляем только sceneName
+                var existing = SaveManager.Load(slot);
+                SaveManager.Save(slot, existing?.playerHealth ?? 0f, existing?.stamina ?? 0f, targetSceneName, null);
+            }
 
-            // Keep inventory accessible for the new scene's PlayerInventory.RestoreFromSave()
-            SaveVariables.PendingSave = SaveManager.Load(SaveVariables.ActiveSlot);
+            SaveVariables.PendingSave = SaveManager.Load(slot);
         }
 
         Utility.SceneLoader.Load(targetSceneName);
