@@ -65,9 +65,10 @@ MonoBehaviour:
   PressToWallWidthMultiplier: 0.5
   StumbleMinFallHeight: 8
   StumbleDuration: 1
+  StumbleImpulse: 3
   LimpDuration: 1000
   LimpSpeedMultiplier: 0.25
-  GrabDamagePerSecond: 30
+  GrabDamagePerSecond: 50
   GrabProgressDrainPerSecond: 100
   AdrenalineRegenMultiplier: 3
   AdrenalineDuration: 8
@@ -94,5 +95,5 @@ MonoBehaviour:
   LedgeClimbTeleportDelay: 0.65
   WallGrabMaxDuration: 7
   WallGrabPassiveDuration: 2
-  LedgeGrabMaxFallSpeed: 25
+  LedgeGrabMaxFallTiles: 3
   LedgeGrabCooldown: 0.3

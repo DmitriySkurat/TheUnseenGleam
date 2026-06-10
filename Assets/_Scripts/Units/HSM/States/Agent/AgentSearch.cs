@@ -102,6 +102,9 @@ namespace HSM {
                 if (ctx.nav.State == PlatNavState.Idle)
                 {
                     _navigating = false;
+
+                    ctx.anim?.Play(AgentAnimations.Idle, 0, 0f);
+
                     StartWandering();
                 }
             }
@@ -168,8 +171,12 @@ namespace HSM {
             {
                 ctx.searchWaitTimer -= deltaTime;
                 if (ctx.searchWaitTimer <= 0f)
+                if (ctx.searchWaitTimer <= 0f)
                 {
                     _waitingAtWanderPoint = false;
+
+                    ctx.anim?.Play(AgentAnimations.Walk, 0, 0f);
+
                     AdvanceWanderPoint();
                 }
             }
@@ -185,6 +192,8 @@ namespace HSM {
                     _navigating           = false;
                     _waitingAtWanderPoint = true;
                     ctx.searchWaitTimer   = ctx.stats.SearchWaitTime;
+
+                    ctx.anim?.Play(AgentAnimations.Idle, 0, 0f);
                 }
             }
             else
@@ -196,6 +205,8 @@ namespace HSM {
 
         void StartNavigatingToSearchPoint()
         {
+            ctx.anim?.Play(AgentAnimations.Walk, 0, 0f);
+
             _navigating = ctx.nav.MoveTo(ctx.suspicionPosition, ctx.stats.SearchSpeed);
 
             if (!_navigating)
@@ -223,9 +234,10 @@ namespace HSM {
 
         void NavigateToCurrentWanderPoint()
         {
+            ctx.anim?.Play(AgentAnimations.Walk, 0, 0f);
             _navigating = ctx.nav.MoveTo(_wanderPoints[_wanderIndex], ctx.stats.SearchSpeed);
         }
-
+        
         void AdvanceWanderPoint()
         {
             _wanderIndex = (_wanderIndex + 1) % _wanderPoints.Length;
