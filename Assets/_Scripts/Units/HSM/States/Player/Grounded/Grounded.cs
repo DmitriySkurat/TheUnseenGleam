@@ -39,7 +39,7 @@ namespace HSM {
             if (!ctx.grounded && Time.time >= ctx.frameLeftGrounded + Time.fixedDeltaTime) return Machine != null ? Machine.GetState<Airborne>() : null;
 
             // W нажат, не на лестнице → прижаться к стене
-            if (!ctx.isHiding && ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold && !ctx.OnClimbable)
+            if (!ctx.isHiding && !ctx.forcedCrouchAbove && ctx.input.Move.y > ctx.stats.VerticalDeadZoneThreshold && !ctx.OnClimbable)
                 return Machine != null ? Machine.GetState<PressToWall>() : null;
 
             return null;

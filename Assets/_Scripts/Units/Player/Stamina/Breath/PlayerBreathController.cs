@@ -50,6 +50,10 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
         {
             _ctx.isHoldingBreath  = false;
             _breathingNoiseTimer  = 0f;
+            
+            if (_breathingSource != null && _breathingSource.isPlaying)
+               _breathingSource.Stop();
+        
             return;
         }
 
