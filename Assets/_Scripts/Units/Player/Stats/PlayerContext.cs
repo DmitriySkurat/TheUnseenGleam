@@ -127,7 +127,7 @@ public class PlayerContext
     public float timeRunStarted;
     public float timeCrouchWasPressed = float.MinValue;
     public float landingRollEndTime = float.MinValue;
-    
+    public float jumpBlockedUntil = float.MinValue;
      
     // ===== DERIVED PROPERTIES =====
     public bool HasBufferedJump => bufferedJumpUsable && stats != null && Time.time < timeJumpWasPressed + stats.JumpBuffer;

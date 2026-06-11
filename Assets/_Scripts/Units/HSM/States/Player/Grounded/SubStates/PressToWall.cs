@@ -17,6 +17,9 @@ namespace HSM {
         
         float enterTime;
         
+        float timeBlockJump = 0.35f;
+        float timeBlockMove = 0.35f;
+        
 
         public PressToWall(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
@@ -27,6 +30,7 @@ namespace HSM {
 
         protected override void OnEnter() {
             enterTime = Time.time;
+            ctx.jumpBlockedUntil = Time.time + timeBlockJump;
         
             ctx.isPressedToWall = true;
             ctx.velocity        = Vector2.zero;
@@ -79,8 +83,8 @@ namespace HSM {
         protected override State GetTransition() {
             float timeSinceEnter = Time.time - enterTime;
             
-            // Первые 0.3 сек запрещаем любое движение
-            if (timeSinceEnter < 0.3f)
+            // Первые N сек запрещаем любое движение
+            if (timeSinceEnter < timeBlockMove)
                 return null;
             
             // На лестнице — выйти (Climb подхватит родительский Grounded)

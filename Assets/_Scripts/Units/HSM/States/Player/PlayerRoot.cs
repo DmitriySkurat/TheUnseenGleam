@@ -93,6 +93,12 @@ namespace HSM {
                 ctx.jumpToConsume = false;
                 return;
             }
+            
+            if (Time.time < ctx.jumpBlockedUntil)
+            {
+                ctx.jumpToConsume = false;
+                return;
+            }
 
             if (ctx.isStumbleFalling || ctx.stumblePending)
             {
