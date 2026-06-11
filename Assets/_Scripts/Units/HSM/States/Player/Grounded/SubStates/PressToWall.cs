@@ -14,6 +14,9 @@ namespace HSM {
         CapsuleCollider2D col;
         Vector2 originalColliderSize;
         Vector2 originalColliderOffset;
+        
+        float enterTime;
+        
 
         public PressToWall(StateMachine m, State parent, PlayerContext ctx) : base(m, parent) {
             this.ctx = ctx;
@@ -23,6 +26,8 @@ namespace HSM {
         }
 
         protected override void OnEnter() {
+            enterTime = Time.time;
+        
             ctx.isPressedToWall = true;
             ctx.velocity        = Vector2.zero;
 
@@ -72,6 +77,12 @@ namespace HSM {
         }
 
         protected override State GetTransition() {
+            float timeSinceEnter = Time.time - enterTime;
+            
+            // Первые 0.3 сек запрещаем любое движение
+            if (timeSinceEnter < 0.3f)
+                return null;
+            
             // На лестнице — выйти (Climb подхватит родительский Grounded)
             if (ctx.OnClimbable)
                 return Machine?.GetState<Idle>();

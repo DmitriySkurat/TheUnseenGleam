@@ -242,11 +242,11 @@ MonoBehaviour:
   lightSpawnPoint: {fileID: 7762092777318196455}
   mirrorLightPrefab: {fileID: 3001410656907869080, guid: 1c99589f4e4acb646920d154da8ba4dd, type: 3}
   maxCharge: 100
-  initialCharge: 0.1
-  chargePerSecond: 10
+  initialCharge: 0.15
+  chargePerSecond: 18
   minLightStrengthToCharge: 0.1
   chargeOnlyWhenGrounded: 1
-  chargeCostPerSecond: 20
+  chargeCostPerSecond: 17
   flickerCharge: 40
   minChargeToReactivate: 5
   minLightIntensity: 5
@@ -1323,6 +1323,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStaminaBreathController
   _hidingLightThreshold: 0.5
+  _enemyMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _sfxGroup: {fileID: 0}
 --- !u!114 &4384193120335901177
 MonoBehaviour:
   m_ObjectHideFlags: 0

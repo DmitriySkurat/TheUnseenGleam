@@ -19,8 +19,9 @@ public static class PlayerAnimations
     public static readonly int Hide = Animator.StringToHash("Hide");
     public static readonly int Grabbed = Animator.StringToHash("Grabbed");
     public static readonly int Interact = Animator.StringToHash("Interact");
-    public static readonly int Stop    = Animator.StringToHash("Stop");
-    public static readonly int Stumble          = Animator.StringToHash("Stumble");
-    public static readonly int Limp             = Animator.StringToHash("Limp");
+    public static readonly int Stop = Animator.StringToHash("Stop");
+    public static readonly int Stumble = Animator.StringToHash("Stumble");
+    public static readonly int Limp = Animator.StringToHash("Limp");
     public static readonly int WalkAfterStumble = Animator.StringToHash("WalkAfterStumble");
+    public static readonly int Roll = Animator.StringToHash("Roll");
 }

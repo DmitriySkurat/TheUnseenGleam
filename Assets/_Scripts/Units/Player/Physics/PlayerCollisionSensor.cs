@@ -144,6 +144,10 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
         _ctx.lastFallHeight = fallHeight;
 
         bool didRoll = ShouldStartLandingRoll(fallHeight);
+        
+        if (didRoll)
+            _ctx.anim?.Play(PlayerAnimations.Roll, 0, 0f);
+        
         _ctx.landingRollEndTime = didRoll
             ? Time.time + _ctx.stats.LandingRollDuration
             : float.MinValue;
