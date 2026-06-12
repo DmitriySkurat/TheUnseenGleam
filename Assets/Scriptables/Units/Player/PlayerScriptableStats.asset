@@ -47,6 +47,7 @@ MonoBehaviour:
   CrouchStaminaBreathDrainMultiplier: 0.8
   HideStaminaBreathDrainMultiplier: 0.5
   PressToWallStaminaBreathDrainMultiplier: 1
+  LandingRollSpeed: 8
   JumpClip: {fileID: 0}
   JumpPower: 31
   MaxFallSpeed: 40
@@ -76,10 +77,10 @@ MonoBehaviour:
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 3.3
   LandingRollMinHorizontalSpeed: 2
-  LandingRollDuration: 0.35
+  LandingRollDuration: 0.6
   LandingRollDeceleration: 45
-  FallDamageMinHeight: 10
-  FallDamagePerUnit: 5
+  FallDamageMinHeight: 6
+  FallDamagePerUnit: 10
   FallDamageLethalHeight: 40
   FallDamageRollMultiplier: 0.35
   ClimbVerticalSpeedMultiplier: 0.5

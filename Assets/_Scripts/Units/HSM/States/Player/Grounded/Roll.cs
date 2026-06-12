@@ -15,16 +15,18 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            ctx.velocity.x =
+                ctx.landingRollDirection *
+                ctx.stats.LandingRollSpeed;
+        
             ctx.isRolling = true;
 
             base.OnEnter();
         }
 
-        protected override void OnUpdate(float dt)
-        {
-            ctx.velocity.x =
-                ctx.landingRollDirection *
-                ctx.stats.LandingRollSpeed;
+        protected override void OnUpdate(float deltaTime)
+        {            
+            base.OnUpdate(deltaTime);
         }
 
         protected override void OnExit()
@@ -36,8 +38,14 @@ namespace HSM {
 
         protected override State GetTransition()
         {
+            
+            Debug.Log(
+    $"now={Time.time} end={ctx.landingRollEndTime}"
+);
+    
             if (Time.time >= ctx.landingRollEndTime)
             {
+                Debug.Log("ROLL EXIT");
                 if (ctx.WantsCrouch)
                     return Machine.GetState<Crouch>();
 
