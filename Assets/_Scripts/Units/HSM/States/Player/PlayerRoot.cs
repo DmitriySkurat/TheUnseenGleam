@@ -9,7 +9,6 @@ namespace HSM {
         public readonly Death Death;
         public readonly PlayerGrabbed Grabbed;
         public readonly LedgeClimb LedgeClimb;
-        public readonly InDarkness InDarkness;
         public readonly OnSpikes OnSpikes;
         public readonly Stumble Stumble;
         public readonly Roll Roll;
@@ -31,7 +30,6 @@ namespace HSM {
             Death       = new Death(m, this, ctx);
             Grabbed     = new PlayerGrabbed(m, this, ctx);
             LedgeClimb  = new LedgeClimb(m, this, ctx);
-            InDarkness  = new InDarkness(m, this, ctx);
             OnSpikes    = new OnSpikes(m, this, ctx);
             Stumble     = new Stumble(m, this, ctx);
             Roll        = new Roll(m, this, ctx);
@@ -48,13 +46,12 @@ namespace HSM {
             if (ctx.OnClimbable) return null;
             if (ctx.isLedgeGrabbing) return null;
             if (ctx.isOnSpikes   && ctx.grounded) return Machine?.GetState<OnSpikes>();
-            if (ctx.isInDarkness && ctx.grounded) return Machine?.GetState<InDarkness>();
             if (!ctx.grounded && Time.time >= ctx.frameLeftGrounded + Time.fixedDeltaTime) return Machine?.GetState<Airborne>();
             return null;
         }
 
         protected override void OnUpdate(float deltaTime)
-        {
+        {            
             if (!ctx.isAlive)
             {
                 base.OnUpdate(deltaTime);

@@ -38,7 +38,16 @@ public class PlayerHealth : MonoBehaviour, ISessionLifecycle
 
     private void Update()
     {
+        CheckDarknessDamage(Time.deltaTime);
         HandleRegen();
+    }
+    
+    private void CheckDarknessDamage(float deltaTime)
+    {
+        if (_ctx.isInDarkness)
+        {
+            _ctx.health?.TakeDamage(_ctx.darknessDamagePerSecond * deltaTime);
+        }
     }
 
     private void HandleRegen()
