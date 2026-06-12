@@ -141,22 +141,36 @@ public class PlayerCollisionSensor : MonoBehaviour, ISceneLifecycle
     void HandleLanding(float landingY)
     {
         float fallHeight = Mathf.Max(0f, _ctx.airborneStartY - landingY);
+
         _ctx.lastFallHeight = fallHeight;
 
         bool didRoll = ShouldStartLandingRoll(fallHeight);
-        
+        _ctx.lastLandingWasRoll = didRoll;
+
         if (didRoll)
-            _ctx.anim?.Play(PlayerAnimations.Roll, 0, 0f);
+        {
+            Debug.Log("START ROLL");
+            _ctx.rollPending = true;    
+            Debug.Log(_ctx.anim.GetCurrentAnimatorStateInfo(0).shortNameHash);
+            Debug.Log(PlayerAnimations.Roll);
+        }
         
         _ctx.landingRollEndTime = didRoll
             ? Time.time + _ctx.stats.LandingRollDuration
             : float.MinValue;
-        _ctx.landingRollDirection = didRoll ? Mathf.Sign(_ctx.velocity.x != 0f ? _ctx.velocity.x : _ctx.input.Move.x) : 0f;
+
+        _ctx.landingRollDirection = didRoll
+            ? Mathf.Sign(_ctx.velocity.x != 0f ? _ctx.velocity.x : _ctx.input.Move.x)
+            : 0f;
 
         EmitLandingNoise(fallHeight, didRoll);
 
-        if (!didRoll && _ctx.stats != null && fallHeight >= _ctx.stats.StumbleMinFallHeight)
+        if (!didRoll &&
+            _ctx.stats != null &&
+            fallHeight >= _ctx.stats.StumbleMinFallHeight)
+        {
             _ctx.stumblePending = true;
+        }
 
         _ctx.airborneStartY = landingY;
     }

@@ -15,6 +15,12 @@ namespace HSM {
         
         protected override State GetTransition()
         {
+            if (ctx.rollPending)
+            {
+                ctx.rollPending = false;
+                return Machine.GetState<Roll>();
+            }
+    
             if (ctx.OnClimbable && Mathf.Abs(ctx.input.Move.y) > 0.1f && !ctx.isClimbing) return Machine.GetState<Climb>();
             if (ctx.canGrabLedge) return Machine?.GetState<LedgeClimb>();
             if (ctx.grounded) return Machine != null ? Machine.GetState<Grounded>() : null;

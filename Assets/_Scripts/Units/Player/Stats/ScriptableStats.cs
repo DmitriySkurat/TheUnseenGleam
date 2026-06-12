@@ -111,6 +111,9 @@ public class PlayerScriptableStats : ScriptableObject
     [Tooltip("Breath drain multiplier while pressed to wall")]
     [Min(0f)]
     public float PressToWallStaminaBreathDrainMultiplier = 1f;
+    
+    [Header("Roll")]
+    public float LandingRollSpeed = 8f;
 
     [Header("JUMP")]
     [Tooltip("Sound played at the moment of jump (stays at jump position)")]

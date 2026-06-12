@@ -32,6 +32,13 @@ namespace HSM
         {
             ctx.isClimbing = false;
             
+            // Если сошли с лестницы/лианы в воздухе —
+            // начинаем отсчет падения заново
+            if (!ctx.grounded)
+            {
+                ctx.airborneStartY = ctx.transform.position.y;
+            }
+            
             ctx.currentStaminaDrainMultiplier = 0f;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
             

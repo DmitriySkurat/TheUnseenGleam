@@ -12,6 +12,7 @@ namespace HSM {
         public readonly InDarkness InDarkness;
         public readonly OnSpikes OnSpikes;
         public readonly Stumble Stumble;
+        public readonly Roll Roll;
 
         readonly PlayerContext ctx;
         private float _footstepTimer;
@@ -33,6 +34,7 @@ namespace HSM {
             InDarkness  = new InDarkness(m, this, ctx);
             OnSpikes    = new OnSpikes(m, this, ctx);
             Stumble     = new Stumble(m, this, ctx);
+            Roll        = new Roll(m, this, ctx);
 
             _noiseSystem = Services.Get<NoiseSystem>();
             _audioManager = Services.Get<AudioManager>();

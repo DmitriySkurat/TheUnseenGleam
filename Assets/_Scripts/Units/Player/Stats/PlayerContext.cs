@@ -39,6 +39,10 @@ public class PlayerContext
     public bool gateBlocksStanding;
     public Vector2 standingColliderSize;
     public Vector2 standingColliderOffset;
+    
+    public bool rollPending;
+    public bool isRolling;
+    public bool lastLandingWasRoll;
 
     public bool ceilingAbove;
     public bool isInteracting; // for Complex interactables (may be in future)
