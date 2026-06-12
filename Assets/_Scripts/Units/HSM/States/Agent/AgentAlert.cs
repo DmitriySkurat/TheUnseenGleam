@@ -19,7 +19,8 @@ namespace HSM {
         {
             this.ctx = ctx;
             if (ctx.anim != null)
-                Add(new AnimatorPlayActivity(ctx.anim, AgentAnimations.Alert));
+                Add(new AnimatorPlayActivity(ctx.anim, AgentAnimations.Idle));
+                //Add(new AnimatorPlayActivity(ctx.anim, AgentAnimations.Alert));
         }
 
         protected override void OnEnter()

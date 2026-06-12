@@ -10,4 +10,6 @@ public static class AgentAnimations
     public static readonly int Suspicious  = Animator.StringToHash("Suspicious");
     public static readonly int Alert       = Animator.StringToHash("Alert");
     public static readonly int GrabPlayer  = Animator.StringToHash("GrabPlayer");
+    public static readonly int Blinded     = Animator.StringToHash("Blinded");
+    public static readonly int Stunned     = Animator.StringToHash("Stunned");
 }

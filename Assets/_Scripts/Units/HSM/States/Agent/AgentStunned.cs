@@ -18,6 +18,8 @@ namespace HSM {
         {
             ctx.nav.Abort();
             _stunTimer = ctx.stats.StunDuration;
+            ctx.anim?.Play(AgentAnimations.Stunned, 0, 0f);
+            
             // Сброс таймера: чтобы Root не сразу запросил повторный стан
             ctx.blindedByPlayerTimer = 0f;
             base.OnEnter();

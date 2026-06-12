@@ -100,6 +100,10 @@ public class PlayerBreathController : MonoBehaviour, ISceneLifecycle
             || _ctx.noiseStats.BreathingNoiseRadius <= 0f
             || _ctx.noiseStats.BreathingNoiseInterval <= 0f)
         {
+        
+            if (_breathingSource != null && _breathingSource.isPlaying)
+                _breathingSource.Stop();
+            
             _breathingNoiseTimer = 0f;
             return;
         }

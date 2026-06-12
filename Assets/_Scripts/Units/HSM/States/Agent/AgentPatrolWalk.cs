@@ -68,6 +68,8 @@ namespace HSM {
                     {
                         _navigating = false;
                         ctx.patrolWaitTimer = ctx.stats.PatrolWaitTime;
+                        
+                        ctx.anim?.Play(AgentAnimations.Idle, 0, 0f);
                     }
                     else
                     {
@@ -116,6 +118,8 @@ namespace HSM {
         {
             if (ctx.PatrolCount == 0) return;
             _navigating = ctx.nav.MoveTo(ctx.CurrentPatrolPosition, ctx.stats.PatrolSpeed);
+            
+            ctx.anim?.Play(AgentAnimations.Walk, 0, 0f);
         }
 
         void AdvanceToNextPoint()

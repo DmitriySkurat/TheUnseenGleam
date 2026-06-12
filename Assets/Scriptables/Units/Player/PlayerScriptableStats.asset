@@ -77,7 +77,7 @@ MonoBehaviour:
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 3.3
   LandingRollMinHorizontalSpeed: 2
-  LandingRollDuration: 0.6
+  LandingRollDuration: 0.8
   LandingRollDeceleration: 45
   FallDamageMinHeight: 6
   FallDamagePerUnit: 10
