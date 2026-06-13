@@ -19,13 +19,19 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.nav.Abort();
-            // Первый захват в этой погоне — полная задержка;
-            // повторный — без задержки, паузу уже отыграл GrabCooldown в AgentChase
-            ctx.grabFirstHitTimer = ctx.grabOccurredInChase
-                ? 0f
-                : ctx.stats.AttackFirstHitDelay;
+
+            bool ledgeGrab =
+                ctx.playerCtx != null &&
+                ctx.playerCtx.isLedgeGrabbing;
+
+            ctx.grabFirstHitTimer =
+                (ctx.grabOccurredInChase || ledgeGrab)
+                    ? 0f
+                    : ctx.stats.AttackFirstHitDelay;
+
             _isHolding = false;
             _isDragging = false;
+
             base.OnEnter();
         }
 
@@ -49,6 +55,10 @@ namespace HSM {
                 if (ctx.nav.State == PlatNavState.Idle)
                     StartDragging();
 
+                KeepPlayerAttached();
+            }
+            else
+            {
                 KeepPlayerAttached();
             }
 
@@ -82,6 +92,8 @@ namespace HSM {
             // Гарантированно снимаем захват при любом выходе из состояния
             if (ctx.playerCtx != null)
                 ctx.playerCtx.isGrabbed = false;
+                
+                Debug.Log("UNGRAB FROM " + GetType().Name);
 
             // Запускаем кулдаун, чтобы агент не мог сразу схватить снова
             ctx.grabCooldownTimer = ctx.stats.GrabCooldown;
@@ -114,6 +126,8 @@ namespace HSM {
         void StartGrab()
         {
             if (ctx.playerCtx == null) return;
+            
+            Debug.Log($"START GRAB ledge={ctx.playerCtx.isLedgeGrabbing}");
 
             // Сбрасываем скорость игрока, иначе инерция сдвинет его с позиции захвата
             // до того, как PlayerGrabbed.OnUpdate успеет обнулить ctx.velocity
@@ -124,7 +138,7 @@ namespace HSM {
             float facingDir = ctx.transform.localScale.x >= 0f ? 1f : -1f;
             Vector2 grabPos = (Vector2)ctx.transform.position + Vector2.right * (facingDir * ctx.stats.GrabPlayerOffset);
             ctx.playerRb.position = grabPos;
-
+Debug.Log($"GrabPos={grabPos} PlayerPos={ctx.playerRb.position}");
             ctx.isGrabbingPlayer = true;
             ctx.playerCtx.isGrabbed = true;
             if (Services.IsRegistered<DialogManager>())

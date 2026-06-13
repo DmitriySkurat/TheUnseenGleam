@@ -93,6 +93,9 @@ public class AgentScriptableStats : ScriptableObject
     [Tooltip("Distance from the player at which the agent stops chasing and initiates a grab")]
     [Min(0f)]
     public float AttackRange = 1.5f;
+    
+    [Min(0f)]
+    public float LedgeGrabAttackBonus = 0.5f;
 
     [Tooltip("Delay (seconds) before the grab locks the player on first contact in a chase")]
     [Min(0f)]

@@ -37,6 +37,7 @@ namespace HSM
             if (!ctx.grounded)
             {
                 ctx.airborneStartY = ctx.transform.position.y;
+                Debug.Log($"EXIT CLIMB airborneStartY={ctx.airborneStartY}");
             }
             
             ctx.currentStaminaDrainMultiplier = 0f;

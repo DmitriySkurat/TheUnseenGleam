@@ -36,6 +36,7 @@ namespace HSM {
 
         protected override void OnUpdate(float deltaTime)
         {
+            Debug.Log($"PLAYER GRABBED state flag={ctx.isGrabbed}");
             // Замораживаем игрока
             ctx.velocity       = Vector2.zero;
             ctx.jumpToConsume  = false;
@@ -66,6 +67,8 @@ namespace HSM {
 
             if (!ctx.grabEscapeDisabled && _progressFraction >= ctx.grabEscapeCount)
                 ctx.isGrabbed = false; // сигнал агенту
+                
+                Debug.Log("UNGRAB FROM " + GetType().Name);
 
             // Постепенный урон пока игрок схвачен
             ctx.health?.TakeDamage(ctx.stats.GrabDamagePerSecond * deltaTime);

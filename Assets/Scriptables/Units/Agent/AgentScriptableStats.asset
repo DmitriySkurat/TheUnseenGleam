@@ -35,6 +35,7 @@ MonoBehaviour:
   BlindedByEnvironmentSpeed: 5
   GrabProximityGraceWindow: 0.4
   AttackRange: 1.5
+  LedgeGrabAttackBonus: 1
   AttackFirstHitDelay: 0.05
   GrabEscapeCount: 10
   GrabCooldown: 1

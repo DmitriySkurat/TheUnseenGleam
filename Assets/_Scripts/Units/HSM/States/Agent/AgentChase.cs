@@ -90,7 +90,20 @@ namespace HSM {
             if (ctx.grabCooldownTimer <= 0f && ctx.playerTransform != null)
             {
                 float dist = Vector2.Distance(ctx.transform.position, ctx.playerTransform.position);
-                bool inRange = dist <= ctx.stats.AttackRange;
+                
+                float attackRange = ctx.stats.AttackRange;
+
+                if (ctx.playerCtx != null && ctx.playerCtx.isLedgeGrabbing)
+                    attackRange += ctx.stats.LedgeGrabAttackBonus;
+    
+                bool inRange = dist <= attackRange;
+
+                                Debug.Log(
+                    $"CanSee={ctx.vision?.CanSeePlayer} " +
+                    $"LostTimer={ctx.chaseVisionLostTimer} " +
+                    $"Grace={ctx.stats.GrabProximityGraceWindow} " +
+                    $"Blinded={ctx.isBlindedByPlayer}"
+                );
 
                 // Видим игрока, или только что потеряли его в пределах окна,
                 // или ослеплены окружением но вплотную — всё равно хватаем.
@@ -100,7 +113,13 @@ namespace HSM {
 
                 bool playerAlreadyGrabbed = ctx.playerCtx != null && ctx.playerCtx.isGrabbed;
                 if (inRange && canSense && !playerAlreadyGrabbed)
+                {
+                    Debug.Log(
+    $"inRange={inRange} canSense={canSense} grabbed={playerAlreadyGrabbed}"
+);
                     return Machine != null ? Machine.GetState<AgentGrabPlayer>() : null;
+
+                }
             }
 
             return null;
