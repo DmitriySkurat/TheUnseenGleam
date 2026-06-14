@@ -40,7 +40,7 @@ MonoBehaviour:
   GrabEscapeCount: 10
   GrabCooldown: 1
   GrabReactionDelay: 0.7
-  GrabPlayerOffset: 0.5
+  GrabPlayerOffset: 0.15
   LookAroundMinInterval: 5
   LookAroundMaxInterval: 12
   LookAroundTurnDelay: 0.5

@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PrisonBeginning.unity
     guid: f02b663ebdaabd04d8aa3484d66682a1
+  - enabled: 1
+    path: Assets/Scenes/DungeonScene2.unity
+    guid: 202d447b1126f894ebac7ef1c0038e0e
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: ca36ff33029fe5a44b28fc20505ce7d1, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

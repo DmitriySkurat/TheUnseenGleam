@@ -87,22 +87,31 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
 
     void UpdateTraversalAnimation()
     {
+        // ЕСЛИ АГЕНТ ДЕРЖИТ ИГРОКА — ОН ВСЕГДА В DEATHGRABBED, ДАЖЕ ПРИ ПРЫЖКАХ И ПАДЕНИЯХ
+        if (_phase == Phase.Carry && _targetPlayer)
+        {
+            if (_anim != null && !_anim.GetCurrentAnimatorStateInfo(0).IsName("DeathGrabbed"))
+            {
+                _anim.Play(AgentAnimations.DeathGrabbed);
+            }
+            return; 
+        }
+
         var navState = _nav.State;
         bool traversing = navState == PlatNavState.TraversingLink;
 
+        // Наземная анимация для пустого агента или несущего NPC
+        int defaultGroundAnim = (_phase == Phase.Carry) ? AgentAnimations.Walk : AgentAnimations.Run;
+
         if (traversing != _wasTraversing)
         {
-            int anim = traversing
-                ? (_nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump)
-                : AgentAnimations.Walk;
-            _anim?.Play(anim, 0, 0f);
+            var traversalAnim = _nav.IsTraversingFall ? AgentAnimations.Dropdown : AgentAnimations.Jump;
+            _anim?.Play(traversing ? traversalAnim : defaultGroundAnim, 0, 0f);
             _wasTraversing = traversing;
         }
-        else if (!traversing && _prevNavState == PlatNavState.Idle
-                 && navState == PlatNavState.WalkingSegment)
+        else if (!traversing && _prevNavState == PlatNavState.Idle && navState == PlatNavState.WalkingSegment)
         {
-            // Nav resumed walking after a brief Idle — restore movement animation
-            _anim?.Play(AgentAnimations.Walk, 0, 0f);
+            _anim?.Play(defaultGroundAnim, 0, 0f);
         }
 
         _prevNavState = navState;
@@ -115,9 +124,8 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         if (_targetPlayer)
         {
             if (_playerCtx == null || !_playerCtx.isAlive) return;
-            // Ждём, пока игрок войдёт в Stumble (можно атаковать всегда — на усмотрение дизайнера)
             _phase = Phase.Chase;
-            _anim?.Play(AgentAnimations.Walk, 0, 0f);
+            _anim?.Play(AgentAnimations.Run, 0, 0f);
             _nav.SetSpeed(_runSpeed);
             _nav.SetTarget(_playerCtx.transform);
         }
@@ -127,7 +135,7 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
             if (_target == null) return;
 
             _phase = Phase.Chase;
-            _anim?.Play(AgentAnimations.Walk, 0, 0f);
+            _anim?.Play(AgentAnimations.Run, 0, 0f);
             _nav.SetSpeed(_runSpeed);
             _nav.SetTarget(_target.transform);
         }
@@ -184,14 +192,17 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
     {
         if (_nav.State == PlatNavState.Idle)
         {
-            if (_exitPoint == null ||
-                Vector2.Distance(transform.position, _exitPoint.position) <= 0.5f)
+            if (_exitPoint == null || Vector2.Distance(transform.position, _exitPoint.position) <= 0.5f)
             {
                 _phase = Phase.Done;
+                _anim?.Play(AgentAnimations.Idle, 0, 0f);
                 return;
             }
             if (_nav.MoveTo(_exitPoint.position, _runSpeed))
-                _anim?.Play(AgentAnimations.Walk, 0, 0f);
+            {
+                int anim = _targetPlayer ? AgentAnimations.DeathGrabbed : AgentAnimations.Walk;
+                _anim?.Play(anim, 0, 0f);
+            }
         }
 
         _nav.Tick(deltaTime);
@@ -212,8 +223,8 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         _target.Grab();
         _phase = Phase.Carry;
 
-        bool willMove = _exitPoint != null && _nav.MoveTo(_exitPoint.position, _runSpeed);
-        _anim?.Play(willMove ? AgentAnimations.Walk : AgentAnimations.GrabPlayer, 0, 0f);
+        _anim?.Play(AgentAnimations.Walk, 0, 0f);
+        _nav.MoveTo(_exitPoint.position, _runSpeed);
     }
 
     void BeginGrabPlayer()
@@ -226,12 +237,12 @@ public class ScriptedAgent : MonoBehaviour, ISceneLifecycle
         _playerCtx.isGrabbed           = true;
         if (Services.IsRegistered<DialogManager>())
             Services.Get<DialogManager>().Cancel();
-        _playerCtx.grabEscapeCount     = 10; // значение не важно — grabEscapeDisabled блокирует побег
+        _playerCtx.grabEscapeCount     = 10; 
 
         _phase = Phase.Carry;
 
-        bool willMove = _exitPoint != null && _nav.MoveTo(_exitPoint.position, _runSpeed);
-        _anim?.Play(willMove ? AgentAnimations.Walk : AgentAnimations.GrabPlayer, 0, 0f);
+        _anim?.Play(AgentAnimations.DeathGrabbed, 0, 0f);
+        _nav.MoveTo(_exitPoint.position, _runSpeed);
     }
 
     // ── Attach ───────────────────────────────────────────────────────────────

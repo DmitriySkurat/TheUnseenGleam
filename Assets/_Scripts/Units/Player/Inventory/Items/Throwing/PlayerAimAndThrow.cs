@@ -14,6 +14,12 @@ public class PlayerAimAndThrow : MonoBehaviour, ISceneLifecycle
     [SerializeField] private float maxSpeedMultiplier = 2f;
     [SerializeField] private float maxDownDistance = 2f;
     
+    [Header("Crouch Settings")]
+    [SerializeField] private Vector3 crouchHandOffset = new Vector3(0f, -0.5f, 0f);
+    
+    private Vector3 _originalLocalHandPos;
+    private bool _isLocalPosSaved;
+    
     private GameObject bulletInst;
     
     private Vector2 worldPosition;
@@ -77,9 +83,28 @@ public class PlayerAimAndThrow : MonoBehaviour, ISceneLifecycle
         _wasAttackHeld = attackHeld;
     }
     
+    private void SaveOriginalHandPosition()
+    {
+        if (hand != null && !_isLocalPosSaved)
+        {
+            _originalLocalHandPos = hand.transform.localPosition;
+            _isLocalPosSaved = true;
+        }
+    }
+    
     private void HandleHandRotation()
     {
         if (_ctx == null || hand == null) return;
+        SaveOriginalHandPosition();
+        
+        if (_ctx.isCrouching)
+        {
+            hand.transform.localPosition = _originalLocalHandPos + crouchHandOffset;
+        }
+        else
+        {
+            hand.transform.localPosition = _originalLocalHandPos;
+        }
         
         if (!_ctx.input.AttackHeld) return;
 

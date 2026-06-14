@@ -29,6 +29,11 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
     [SerializeField] private float minLightIntensity = 7f;
     [SerializeField] private float maxLightIntensity = 20f;
     
+    [Header("Crouch Settings")]
+    [SerializeField] private Vector3 crouchHandOffset = new Vector3(0f, -0.5f, 0f);
+    
+    private Vector3 _originalLocalHandPos;
+    private bool _isLocalPosSaved;
     
     private GameObject _lightInstance;
     private Light2D _light2D;
@@ -140,9 +145,28 @@ public class MagicalMirror : MonoBehaviour, ISceneLifecycle
             _lightSystem?.UnregisterSpotLight(_light2D);
     }
     
+    private void SaveOriginalHandPosition()
+    {
+        if (hand != null && !_isLocalPosSaved)
+        {
+            _originalLocalHandPos = hand.localPosition;
+            _isLocalPosSaved = true;
+        }
+    }
+    
     private void UpdateLight()
     {
         if (hand == null) return;
+        SaveOriginalHandPosition();
+
+        if (_ctx != null && _ctx.isCrouching)
+        {
+            hand.localPosition = _originalLocalHandPos + crouchHandOffset;
+        }
+        else
+        {
+            hand.localPosition = _originalLocalHandPos;
+        }
 
         var camera = Camera.main;
         if (camera == null) return;
