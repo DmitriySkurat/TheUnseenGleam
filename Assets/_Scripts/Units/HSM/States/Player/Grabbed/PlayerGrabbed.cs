@@ -26,6 +26,10 @@ namespace HSM {
             _progressFraction = 0f;
             ctx.currentStaminaDrainMultiplier = ctx.stats.GrabbedStaminaDrainMultiplier;
             ctx.currentStaminaBreathDrainMultiplier = 0f;
+            
+            ctx.isStumbling = false;
+            ctx.stumblePending = false;
+            ctx.limpTimeRemaining = 0f;
 
             if (!ctx.IsAdrenalineOnCooldown)
             {
