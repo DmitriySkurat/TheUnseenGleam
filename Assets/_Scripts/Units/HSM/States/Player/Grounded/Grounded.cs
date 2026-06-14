@@ -41,7 +41,7 @@ namespace HSM {
             }
             
             if (ctx.OnClimbable && ctx.input.Move.y > 0.1f) return Machine.GetState<Climb>();
-            if (ctx.OnClimbable && ctx.input.Move.y < -0.1f) return Machine.GetState<Climb>();
+            if (!ctx.grounded &&ctx.OnClimbable && ctx.input.Move.y < -0.1f) return Machine.GetState<Climb>();
             if (!ctx.grounded && Time.time >= ctx.frameLeftGrounded + Time.fixedDeltaTime) return Machine != null ? Machine.GetState<Airborne>() : null;
 
             // W нажат, не на лестнице → прижаться к стене

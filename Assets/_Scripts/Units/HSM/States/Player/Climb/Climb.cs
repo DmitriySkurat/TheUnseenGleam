@@ -80,7 +80,10 @@ namespace HSM
             }
 
             if (ctx.grounded && ctx.input.Move.y <= 0)
+            {
+                ctx.isClimbing = false; 
                 return Machine.GetState<Grounded>();
+            }
 
             if (!ctx.OnClimbable)
                 return ctx.grounded
