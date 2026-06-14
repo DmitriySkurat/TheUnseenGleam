@@ -430,7 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrabProgressBar
   barRoot: {fileID: 940905387195005935}
   fillImage: {fileID: 5706923661217368553}
-  verticalPadding: 0.35
+  verticalPadding: 1
   fallbackHeight: 1.5
 --- !u!1 &662871617382107854
 GameObject:

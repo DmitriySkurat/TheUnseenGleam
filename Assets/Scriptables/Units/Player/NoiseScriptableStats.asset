@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d5852d28cadb7849b352aaa25bd8a93, type: 3}
   m_Name: NoiseScriptableStats
   m_EditorClassIdentifier: Assembly-CSharp::NoiseScriptableStats
-  MinFootstepVisualizationRadius: 7
+  MinFootstepVisualizationRadius: 10
   VisualizationEnemyDetectionRadius: 10
   MaxSimultaneousWaves: 8
   FootstepClips:
@@ -30,19 +30,19 @@ MonoBehaviour:
   WalkFootstepInterval: 0.44
   RunFootstepInterval: 0.3
   CrouchFootstepInterval: 0.55
-  WalkNoiseRadius: 6
-  RunNoiseRadius: 9
-  CrouchNoiseRadius: 4
-  JumpStartNoiseRadius: 4
+  WalkNoiseRadius: 9
+  RunNoiseRadius: 13
+  CrouchNoiseRadius: 5
+  JumpStartNoiseRadius: 7
   LandingNoiseMinFallHeight: 0.75
   LandingNoiseMaxFallHeight: 10
-  LandingNoiseMinRadius: 1.5
-  LandingNoiseMaxRadius: 12
+  LandingNoiseMinRadius: 6
+  LandingNoiseMaxRadius: 16
   LandingRollNoiseMultiplier: 0.432
   BreathingNoiseInterval: 0.75
-  BreathingNoiseRadius: 3.5
+  BreathingNoiseRadius: 4
   BreathingEnemyProximityRadius: 10
   BreathingClip: {fileID: 8300000, guid: 458cd52d86eadfd4f8bb1db0482e31c3, type: 3}
-  PebbleImpactNoiseRadius: 10
-  ItemDropNoiseRadius: 1.5
+  PebbleImpactNoiseRadius: 14
+  ItemDropNoiseRadius: 5
   RadiusVariance: 0.1

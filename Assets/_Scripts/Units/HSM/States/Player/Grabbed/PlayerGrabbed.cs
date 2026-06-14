@@ -18,6 +18,8 @@ namespace HSM {
 
         protected override void OnEnter()
         {
+            ctx.renderer.enabled = false;
+            
             _progress = 0;
             _lastDir  = 0;
             ctx.grabProgress = 0f;
@@ -78,6 +80,8 @@ namespace HSM {
 
         protected override void OnExit()
         {
+            ctx.renderer.enabled = true;
+            
             ctx.grabEscapeDisabled = false;
             ctx.isStumbling        = false;
             base.OnExit();

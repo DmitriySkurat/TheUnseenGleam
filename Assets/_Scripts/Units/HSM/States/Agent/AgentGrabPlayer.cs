@@ -68,6 +68,9 @@ namespace HSM {
         void StartDragging()
         {
             _isDragging = true;
+            
+            ctx.anim?.Play(AgentAnimations.DeathGrabbed, 0, 0f);
+            
             ctx.nav.SetTarget(null);
             float facingDir = ctx.transform.localScale.x >= 0f ? 1f : -1f;
             Vector2 farPoint = (Vector2)ctx.transform.position + Vector2.right * (facingDir * 60f);
