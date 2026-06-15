@@ -59,14 +59,11 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
 
         
         
-        if (_ctx.isGrabbed || _ctx.isStumbling || _ctx.isInCutscene)
+        if (_ctx.isGrabbed || _ctx.isStumbleFalling || _ctx.isInCutscene)
         {
             _frameInput.AttackDown = false;
             _frameInput.AttackHeld = false;
             _frameInput.DropDown   = false;
-        }
-        if (_ctx.isGrabbed || _ctx.isStumbleFalling || _ctx.isInCutscene)
-        {
             _frameInput.LookAroundHeld = false;
         }
 

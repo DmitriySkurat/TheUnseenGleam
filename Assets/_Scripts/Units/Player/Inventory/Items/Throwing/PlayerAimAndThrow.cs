@@ -154,6 +154,7 @@ public class PlayerAimAndThrow : MonoBehaviour, ISceneLifecycle
     {
         return _ctx != null
             && !_ctx.isLedgeGrabbing
+            && !_ctx.isStumbleFalling
             && _ctx.SelectedHotbarItem != null
             && _ctx.SelectedHotbarItem.itemName == ItemName.Pebble
             && _ctx.inventory != null
