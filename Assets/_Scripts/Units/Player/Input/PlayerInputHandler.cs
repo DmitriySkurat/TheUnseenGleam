@@ -57,7 +57,11 @@ public class PlayerInputHandler : MonoBehaviour, ISceneLifecycle
         if (_ctx == null)
             return;
 
-        
+        if (_ctx.isInDialog)
+        {
+            _ctx.input = new FrameInput();
+            return;
+        }
         
         if (_ctx.isGrabbed || _ctx.isStumbleFalling || _ctx.isInCutscene)
         {

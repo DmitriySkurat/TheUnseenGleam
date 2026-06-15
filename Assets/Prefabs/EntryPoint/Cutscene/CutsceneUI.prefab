@@ -556,7 +556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseGameMenu: {fileID: 185022601251604895}
   optionsMenu: {fileID: 1784053469192211936}
-  _backgroundOverlay: {fileID: 0}
+  _backgroundOverlay: {fileID: 4514692079839456775}
   _fadeDuration: 0.15
 --- !u!114 &3639003143225621697
 MonoBehaviour:
