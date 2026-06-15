@@ -51,10 +51,9 @@ public class PlayerStaminaController : MonoBehaviour, ISessionLifecycle
         {
             _ctx.stamina = Mathf.Max(0f, _ctx.stamina - consumption);
         }
-        else if (_ctx.grounded && _ctx.isAlive)
-        {
+        
             RegenStamina(deltaTime);
-        }
+        
     }
     
     private void RegenStamina(float deltaTime)

@@ -71,8 +71,8 @@ MonoBehaviour:
   LimpSpeedMultiplier: 0.25
   GrabDamagePerSecond: 20
   GrabProgressDrainPerSecond: 0.15
-  AdrenalineRegenMultiplier: 3
-  AdrenalineDuration: 8
+  AdrenalineRegenMultiplier: 2
+  AdrenalineDuration: 10
   AdrenalineCooldown: 60
   LandingRollBuffer: 0.2
   LandingRollMinFallHeight: 3.3

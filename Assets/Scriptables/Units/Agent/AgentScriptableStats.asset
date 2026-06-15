@@ -30,8 +30,9 @@ MonoBehaviour:
   SearchWanderDuration: 8
   SearchWanderDistance: 3
   BlindedByPlayerReactionTime: 0.5
-  BlindDurationToStun: 1.7
+  BlindDurationToStun: 3
   StunDuration: 5
+  StunCooldownRate: 0.3
   BlindedByEnvironmentSpeed: 5
   GrabProximityGraceWindow: 0.4
   AttackRange: 1.5
