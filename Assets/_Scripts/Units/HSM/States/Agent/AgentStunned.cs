@@ -20,6 +20,8 @@ namespace HSM {
             _stunTimer = ctx.stats.StunDuration;
             ctx.anim?.Play(AgentAnimations.Stunned, 0, 0f);
             
+            ctx.isStunned = true;
+            
             // Сброс таймера: чтобы Root не сразу запросил повторный стан
             ctx.blindedByPlayerTimer = 0f;
             base.OnEnter();
@@ -29,6 +31,7 @@ namespace HSM {
         {
             // Сброс и при выходе: игроку нужно слепить заново BlindDurationToStun секунд
             ctx.blindedByPlayerTimer = 0f;
+            ctx.isStunned = false;
             base.OnExit();
         }
 

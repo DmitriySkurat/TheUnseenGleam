@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace HSM {
     public class AgentRoot : State
     {
@@ -37,6 +39,9 @@ namespace HSM {
             if (!ctx.IsTraversingLink &&
                 ctx.blindedByPlayerTimer >= ctx.stats.BlindDurationToStun)
                 return Machine?.GetState<AgentStunned>();
+                
+            if (!ctx.IsTraversingLink && ctx.isBlindedByPlayer && !(ActiveChild is AgentBlindedByPlayer) && !ctx.isStunned)
+                return Machine?.GetState<AgentBlindedByPlayer>();
 
             // Пока игрок захвачен другим агентом — все остальные возвращаются на патруль,
             // но только после истечения таймера реакции (агенты немного стоят перед уходом).
@@ -49,6 +54,20 @@ namespace HSM {
                 return Machine?.GetState<AgentPatrol>();
 
             return null;
+        }
+        
+        protected override void OnUpdate(float deltaTime)
+        {
+            if (ctx.isBlindedByPlayer)
+            {
+                ctx.blindedByPlayerTimer += deltaTime;
+            }
+            else
+            {
+                ctx.blindedByPlayerTimer = Mathf.Max(0f, ctx.blindedByPlayerTimer - deltaTime * ctx.stats.StunCooldownRate);
+            }
+            //Debug.Log($"BlindedByPlayerTimer: {ctx.blindedByPlayerTimer}");
+            base.OnUpdate(deltaTime);
         }
     }
 }

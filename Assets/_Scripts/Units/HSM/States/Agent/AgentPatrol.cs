@@ -28,8 +28,8 @@ namespace HSM {
         {
             if (ctx.IsTraversingLink) return null;
 
-            if (ctx.isBlindedByPlayer)
-                return Machine?.GetState<AgentBlindedByPlayer>();
+            // if (ctx.isBlindedByPlayer)
+            //     return Machine?.GetState<AgentBlindedByPlayer>();
 
             if (ctx.vision != null && ctx.vision.CanSeePlayer)
                 return Machine?.GetState<AgentSuspicious>();

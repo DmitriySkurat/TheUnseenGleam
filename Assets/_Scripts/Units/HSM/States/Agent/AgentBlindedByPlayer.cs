@@ -19,7 +19,12 @@ namespace HSM {
         protected override void OnEnter()
         {
             ctx.nav.Abort();
+            ctx.nav.SetTarget(null);
+            
             _reactionTimer = ctx.stats.BlindedByPlayerReactionTime;
+            
+            ctx.anim?.Play(AgentAnimations.Idle, 0, 0f);
+            
             base.OnEnter();
         }
 
@@ -27,7 +32,10 @@ namespace HSM {
         {
             // Обновляем позицию источника пока он активен (свет = позиция игрока)
             if (ctx.isBlindedByPlayer)
+            {
                 ctx.suspicionPosition = ctx.blindingSourcePosition;
+                ctx.nav.Abort();
+            }
 
             if (_reactionTimer > 0f)
                 _reactionTimer -= deltaTime;
@@ -40,7 +48,7 @@ namespace HSM {
             if (ctx.IsTraversingLink) return null;
 
             // Свет погас и минимальная пауза прошла — бежим на игрока
-            if (!ctx.isBlindedByPlayer && _reactionTimer <= 0f)
+            if (!ctx.isBlindedByPlayer && _reactionTimer <= 0f && ctx.blindedByPlayerTimer <= ctx.stats.BlindDurationToStun)
                 return Machine?.GetState<AgentChase>();
 
             // Стан (длительное ослепление) обрабатывается глобально в AgentRoot

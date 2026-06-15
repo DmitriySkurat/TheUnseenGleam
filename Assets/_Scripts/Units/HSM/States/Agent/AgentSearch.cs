@@ -123,9 +123,9 @@ namespace HSM {
         {
             if (ctx.IsTraversingLink) return null;
 
-            // Игрок слепит агента — переходим в BlindedByPlayer
-            if (ctx.isBlindedByPlayer)
-                return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
+            // // Игрок слепит агента — переходим в BlindedByPlayer
+            // if (ctx.isBlindedByPlayer)
+            //     return Machine != null ? Machine.GetState<AgentBlindedByPlayer>() : null;
 
             // Chase if player is currently visible OR was spotted during the last jump
             if ((ctx.vision != null && ctx.vision.CanSeePlayer) || _seenPlayerDuringLink)

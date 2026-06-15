@@ -98,10 +98,10 @@ namespace HSM {
             }
 
             // Таймер непрерывного ослепления игроком — растёт во всех состояниях
-            if (_ctx.isBlindedByPlayer)
-                _ctx.blindedByPlayerTimer += Time.fixedDeltaTime;
-            else
-                _ctx.blindedByPlayerTimer = 0f;
+            // if (_ctx.isBlindedByPlayer)
+            //     _ctx.blindedByPlayerTimer += Time.fixedDeltaTime;
+            // else
+            //     _ctx.blindedByPlayerTimer = 0f;
         }
 
         bool _wasPlayerGrabbed;

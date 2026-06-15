@@ -79,6 +79,10 @@ public class AgentContext
     public Vector2 blindingSourcePosition;
     // Сколько секунд агент непрерывно ослеплён светом игрока (растёт во всех состояниях)
     public float blindedByPlayerTimer;
+    
+    // ===== STUN =====
+    
+    public bool isStunned;
 
     // ===== PENDING NOISE (written by AgentStateDriver, read by states) =====
     public bool pendingNoiseAlert;
