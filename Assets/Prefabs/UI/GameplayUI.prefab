@@ -1185,7 +1185,7 @@ MonoBehaviour:
   fpsLabel: {fileID: 4833273342669615242}
   fullScreenToggle: {fileID: 6155300658813480231}
   resolutionDropdown: {fileID: 4938707051893420087}
-  menuButtonsParent: {fileID: 0}
+  menuButtonsParent: {fileID: 7143135442285483411}
   settingsSavedToast: {fileID: 4174527372018973498}
 --- !u!1 &2101788802889283233
 GameObject:

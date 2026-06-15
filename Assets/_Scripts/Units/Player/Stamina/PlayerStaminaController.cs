@@ -52,7 +52,7 @@ public class PlayerStaminaController : MonoBehaviour, ISessionLifecycle
             _ctx.stamina = Mathf.Max(0f, _ctx.stamina - consumption);
         }
         
-            RegenStamina(deltaTime);
+        RegenStamina(deltaTime);
         
     }
     
