@@ -25,6 +25,8 @@ namespace HSM
 
         protected override void OnEnter()
         {
+            ctx.renderer.enabled = false;
+            
             ctx.velocity = Vector2.zero;
 
             ctx.currentNoiseRadius = 0f;
@@ -34,10 +36,17 @@ namespace HSM
 
             base.OnEnter();
         }
+        
 
         protected override State GetTransition()
         {
-            if (ctx.isAlive) return Machine?.GetState<PlayerRoot>();
+            if (ctx.isAlive)
+            {
+                if (ctx.isGrabbed)
+                    return Machine?.GetState<DeathGrabbed>();
+                else
+                    return Machine?.GetState<PlayerRoot>();
+            }
             
             return null;
         }

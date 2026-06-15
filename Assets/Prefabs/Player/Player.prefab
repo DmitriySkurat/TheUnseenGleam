@@ -251,6 +251,7 @@ MonoBehaviour:
   minChargeToReactivate: 5
   minLightIntensity: 5
   maxLightIntensity: 15
+  crouchHandOffset: {x: 0, y: -0.5, z: 0}
 --- !u!1 &4801114399454441880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,6 +1279,7 @@ MonoBehaviour:
   maxThrowRadius: 4
   maxSpeedMultiplier: 2
   maxDownDistance: 2
+  crouchHandOffset: {x: 0, y: -0.5, z: 0}
 --- !u!114 &5490602481864773789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1325,8 +1327,8 @@ MonoBehaviour:
   _hidingLightThreshold: 0.5
   _enemyMask:
     serializedVersion: 2
-    m_Bits: 0
-  _sfxGroup: {fileID: 0}
+    m_Bits: 4096
+  _sfxGroup: {fileID: -8394504123094611831, guid: 12d290812e2156548966b88a31cb58e4, type: 2}
 --- !u!114 &4384193120335901177
 MonoBehaviour:
   m_ObjectHideFlags: 0
