@@ -23,7 +23,7 @@ namespace HSM {
             
             _reactionTimer = ctx.stats.BlindedByPlayerReactionTime;
             
-            ctx.anim?.Play(AgentAnimations.Idle, 0, 0f);
+            ctx.anim?.Play(AgentAnimations.Blinded, 0, 0f);
             
             base.OnEnter();
         }
